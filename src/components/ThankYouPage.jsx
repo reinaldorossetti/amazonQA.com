@@ -16,10 +16,12 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const ThankYouPage = ({ clearCart }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLanguage();
   // Extrair cartItems do estado do roteador
   const items = location.state?.cartItems ?? [];
 
@@ -50,27 +52,27 @@ const ThankYouPage = ({ clearCart }) => {
         <CheckCircleOutlineIcon color="success" sx={{ fontSize: 100, mb: 2 }} />
 
         <Typography variant="h3" component="h1" gutterBottom fontWeight={700}>
-          Obrigado pela sua compra!
+          {t("thank_you.title")}
         </Typography>
 
         <Typography variant="h6" color="text.secondary" gutterBottom sx={{ mb: 4 }}>
-          Seu pedido foi processado e já estamos preparando para envio.
+          {t("thank_you.subtitle")}
         </Typography>
 
         {items.length > 0 && (
-          <Box sx={{ width: "100%", mb: 4, textAlign: "left" }}>
+          <Box id="thank-you-summary-wrapper" sx={{ width: "100%", mb: 4, textAlign: "left" }}>
             <Typography variant="h5" gutterBottom fontWeight={600}>
-              Resumo do Pedido
+              {t("thank_you.summary")}
             </Typography>
 
             <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
               <Table aria-label="tabela de itens do pedido">
                 <TableHead sx={{ backgroundColor: "rgba(0, 0, 0, 0.04)" }}>
                   <TableRow>
-                    <TableCell><strong>Produto</strong></TableCell>
-                    <TableCell align="center"><strong>Qtd</strong></TableCell>
-                    <TableCell align="right"><strong>Preço Un.</strong></TableCell>
-                    <TableCell align="right"><strong>Total</strong></TableCell>
+                    <TableCell><strong>{t("thank_you.product")}</strong></TableCell>
+                    <TableCell align="center"><strong>{t("thank_you.qty")}</strong></TableCell>
+                    <TableCell align="right"><strong>{t("thank_you.unit_price")}</strong></TableCell>
+                    <TableCell align="right"><strong>{t("thank_you.table_total")}</strong></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -90,9 +92,9 @@ const ThankYouPage = ({ clearCart }) => {
               </Table>
             </TableContainer>
 
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mr: 2 }}>
+            <Box id="thank-you-total-wrapper" sx={{ display: "flex", justifyContent: "flex-end", mr: 2 }}>
               <Typography variant="h5" fontWeight={700} color="primary">
-                Total: R$ {totalPrice.toFixed(2)}
+                {t("thank_you.total", { total: totalPrice.toFixed(2) })}
               </Typography>
             </Box>
           </Box>
@@ -108,7 +110,7 @@ const ThankYouPage = ({ clearCart }) => {
           onClick={() => navigate("/")}
           sx={{ px: 4, py: 1.5, borderRadius: 2 }}
         >
-          Voltar ao Catálogo
+          {t("thank_you.back")}
         </Button>
       </Paper>
     </Container>

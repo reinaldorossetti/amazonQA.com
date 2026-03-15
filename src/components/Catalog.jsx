@@ -11,40 +11,60 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Product from "./Product";
-import productsData from "../data/products_mock.json";
+import { useLanguage } from "../contexts/LanguageContext";
+import { getProducts } from "../db/database";
 
 const Catalog = ({ onAddToCart, search, setSearch }) => {
+  const { t } = useLanguage();
   const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Set initial category when translation is ready
+  useEffect(() => {
+    if (!selectedCategory && t("catalog.all_categories")) {
+        setSelectedCategory(t("catalog.all_categories"));
+    }
+  }, [t, selectedCategory]);
 
   useEffect(() => {
-    setProducts(productsData);
+    const fetchProducts = async () => {
+        setIsLoading(true);
+        try {
+            const data = await getProducts();
+            setProducts(data);
+        } catch (error) {
+            console.error("Failed to load products from SQLite", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    fetchProducts();
   }, []);
 
-  const categories = ["Todos", ...new Set(productsData.map((p) => p.category))];
+  const categories = [t("catalog.all_categories"), ...new Set(products.map((p) => p.category))];
 
   const filtered = products.filter((p) => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchCategory =
-      selectedCategory === "Todos" || p.category === selectedCategory;
+      selectedCategory === t("catalog.all_categories") || p.category === selectedCategory;
     return matchSearch && matchCategory;
   });
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ mb: 4 }}>
+      <Box id="catalog-header-wrapper" sx={{ mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Catálogo de Produtos
+          {t("catalog.title")}
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-          {filtered.length} produto{filtered.length !== 1 ? "s" : ""} encontrado
-          {filtered.length !== 1 ? "s" : ""}
+        <Typography variant="body1" sx={{ color: "#fff", mb: 3 }}>
+          {t("catalog.products_found", { count: filtered.length, plural: filtered.length !== 1 ? "s" : "" })}
         </Typography>
 
-        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center", mb: 2 }}>
+        <Box id="catalog-search-filters-wrapper" sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center", mb: 2 }}>
           <TextField
             size="small"
-            placeholder="Pesquisar produtos..."
+            placeholder={t("catalog.search_placeholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             sx={{ minWidth: 240 }}
@@ -72,17 +92,25 @@ const Catalog = ({ onAddToCart, search, setSearch }) => {
       </Box>
 
       <Grid container spacing={3}>
-        {filtered.map((product) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
-            <Product product={product} onAddToCart={onAddToCart} />
-          </Grid>
-        ))}
+        {isLoading ? (
+           <Box id="catalog-loading-wrapper" sx={{ width: "100%", textAlign: "center", py: 8 }}>
+             <Typography variant="h6" color="text.secondary">
+               Carregando produtos...
+             </Typography>
+           </Box>
+        ) : (
+          filtered.map((product) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
+              <Product product={product} onAddToCart={onAddToCart} />
+            </Grid>
+          ))
+        )}
       </Grid>
 
-      {filtered.length === 0 && (
-        <Box sx={{ textAlign: "center", py: 8 }}>
+      {!isLoading && filtered.length === 0 && (
+        <Box id="catalog-empty-wrapper" sx={{ textAlign: "center", py: 8 }}>
           <Typography variant="h6" color="text.secondary">
-            Nenhum produto encontrado.
+            {t("catalog.no_products")}
           </Typography>
         </Box>
       )}

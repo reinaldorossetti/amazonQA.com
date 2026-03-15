@@ -14,8 +14,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import CheckoutButton from "./CheckoutButton";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
+  const { t } = useLanguage();
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -26,7 +28,7 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
   return (
     <Container maxWidth="md">
       <Typography variant="h4" component="h1" gutterBottom fontWeight={700}>
-        Meu Carrinho
+        {t("cart.title")}
       </Typography>
 
       {cartItems.length === 0 ? (
@@ -45,10 +47,10 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
             sx={{ fontSize: 80, color: "text.disabled", mb: 2 }}
           />
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            Seu carrinho está vazio
+            {t("cart.empty_title")}
           </Typography>
           <Typography variant="body2" color="text.disabled" sx={{ mb: 3 }}>
-            Adicione produtos do catálogo para começar.
+            {t("cart.empty_desc")}
           </Typography>
           <Button
             component={Link}
@@ -56,13 +58,13 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
             variant="contained"
             startIcon={<ArrowBackIcon />}
           >
-            Ir ao Catálogo
+            {t("cart.go_to_catalog")}
           </Button>
         </Paper>
       ) : (
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 3 }}>
+        <Box id="cart-content-wrapper" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 3 }}>
           {/* Lista de itens */}
-          <Box sx={{ flex: 1 }}>
+          <Box id="cart-item-list-wrapper" sx={{ flex: 1 }}>
             <Paper elevation={2} sx={{ borderRadius: 3, overflow: "hidden" }}>
               <List disablePadding>
                 {cartItems.map((item, index) => (
@@ -80,31 +82,31 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
           </Box>
 
           {/* Resumo do pedido */}
-          <Box sx={{ width: { xs: "100%", md: 300 } }}>
+          <Box id="cart-order-summary-wrapper" sx={{ width: { xs: "100%", md: 300 } }}>
             <Paper elevation={2} sx={{ borderRadius: 3, p: 3 }}>
               <Typography variant="h6" gutterBottom fontWeight={700}>
-                Resumo do Pedido
+                {t("cart.order_summary")}
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
               <Stack spacing={1} sx={{ mb: 2 }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box id="cart-order-items-count" sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography color="text.secondary">
-                    Itens ({totalItems})
+                    {t("cart.items", { count: totalItems })}
                   </Typography>
                   <Typography>R$ {totalPrice.toFixed(2)}</Typography>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography color="text.secondary">Frete</Typography>
+                <Box id="cart-order-shipping" sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography color="text.secondary">{t("cart.shipping")}</Typography>
                   <Typography color="success.main" fontWeight={600}>
-                    Grátis
+                    {t("cart.free")}
                   </Typography>
                 </Box>
               </Stack>
 
               <Divider sx={{ mb: 2 }} />
 
-              <Box
+              <Box id="cart-order-total"
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -112,7 +114,7 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
                 }}
               >
                 <Typography variant="h6" fontWeight={700}>
-                  Total
+                  {t("cart.total")}
                 </Typography>
                 <Typography variant="h6" fontWeight={700} color="primary">
                   R$ {totalPrice.toFixed(2)}
@@ -132,7 +134,7 @@ const Cart = ({ cartItems, onUpdateCart, onRemoveFromCart, setCartItems }) => {
                 startIcon={<ArrowBackIcon />}
                 sx={{ mt: 1 }}
               >
-                Continuar comprando
+                {t("cart.continue_shopping")}
               </Button>
             </Paper>
           </Box>

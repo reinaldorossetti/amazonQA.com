@@ -22,6 +22,9 @@ import { Link } from "react-router-dom";
 import Catalog from "./components/Catalog";
 import Cart from "./components/Cart";
 import ThankYouPage from "./components/ThankYouPage";
+import ProductDetails from "./components/ProductDetails";
+
+import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 
 const theme = createTheme({
   palette: {
@@ -101,7 +104,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#131921", // Amazon's specific top navbar color
+          backgroundColor: "#0f1111", // Amazon's specific top navbar color
         },
       },
     },
@@ -109,15 +112,18 @@ const theme = createTheme({
 });
 
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import LanguageIcon from "@mui/icons-material/Language";
 
 const NavBar = ({ cartCount, search, setSearch }) => {
+  const { language, toggleLanguage, setAppLanguage, t } = useLanguage();
+
   return (
     <AppBar position="sticky" elevation={0} sx={{ backgroundColor: "#131921", border: "none", borderRadius: 0 }}>
       {/* Container fluido zero padding lateral para ficar igual Amazon (ponta a ponta) */}
       <Toolbar disableGutters sx={{ minHeight: "60px !important", px: 2, display: "flex", alignItems: "center", gap: 1 }}>
-        
+
         {/* Logo Ouro da Amazon, escrito tester.com */}
-        <Box
+        <Box id="nav-logo-wrapper"
           component={Link}
           to="/"
           sx={{
@@ -133,24 +139,19 @@ const NavBar = ({ cartCount, search, setSearch }) => {
             "&:hover": { border: "1px solid #fff" },
           }}
         >
-          <Typography
+          <Box id="nav-logo-img"
+            component="img"
+            src="/logo.PNG"
+            alt="Logo"
             sx={{
-              fontWeight: 800,
-              letterSpacing: "-0.5px",
-              display: "flex",
-              alignItems: "baseline",
-              fontSize: "1.5rem",
-              lineHeight: 1,
-              fontFamily: "Arial, sans-serif",
-              color: "#fff"
+              height: { xs: "30px", sm: "40px" },
+              objectFit: "contain"
             }}
-          >
-            tester<Box component="span" sx={{ color: "#ff9900", fontSize: "1.2rem", ml: "1px" }}>.com</Box>
-          </Typography>
+          />
         </Box>
 
         {/* Botão de Catálogo */}
-        <Box
+        <Box id="nav-catalog-btn"
           component={Link}
           to="/"
           sx={{
@@ -166,12 +167,12 @@ const NavBar = ({ cartCount, search, setSearch }) => {
             "&:hover": { border: "1px solid #fff" },
           }}
         >
-          <Typography sx={{ fontSize: "0.75rem", color: "#ccc", lineHeight: 1 }}>Navegue pelo</Typography>
-          <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1 }}>Catálogo</Typography>
+          <Typography sx={{ fontSize: "0.75rem", color: "#ccc", lineHeight: 1 }}>{t("nav.browse")}</Typography>
+          <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1 }}>{t("nav.catalog")}</Typography>
         </Box>
 
         {/* Barra de Pesquisa Central Estilo Amazon */}
-        <Box
+        <Box id="nav-search-bar-wrapper"
           sx={{
             display: { xs: "none", sm: "flex" },
             flexGrow: 1,
@@ -179,12 +180,12 @@ const NavBar = ({ cartCount, search, setSearch }) => {
             borderRadius: "4px", // Amazon search has mildly rounded corners inside
             overflow: "hidden",
             "&:focus-within": {
-              boxShadow: "0 0 0 2px #f90, 0 0 0 3px #131921",
+              boxShadow: "0 0 0 2px #f90, 0 0 0 3px #0f1111",
             },
             mx: 1
           }}
         >
-          <Box
+          <Box id="nav-search-category-dropdown"
             sx={{
               backgroundColor: "#f3f3f3",
               color: "#555",
@@ -197,11 +198,11 @@ const NavBar = ({ cartCount, search, setSearch }) => {
               "&:hover": { backgroundColor: "#d4d4d4", color: "#000" },
             }}
           >
-            Todos ▾
+            {t("nav.all")}
           </Box>
-          <Box
+          <Box id="nav-search-input"
             component="input"
-            placeholder="Pesquisa tester.com"
+            placeholder={t("nav.search_placeholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             sx={{
@@ -213,7 +214,7 @@ const NavBar = ({ cartCount, search, setSearch }) => {
               color: "#111",
             }}
           />
-          <Box
+          <Box id="nav-search-submit"
             sx={{
               backgroundColor: "#febd69",
               display: "flex",
@@ -230,8 +231,30 @@ const NavBar = ({ cartCount, search, setSearch }) => {
           </Box>
         </Box>
 
+        {/* Language Toggle */}
+        <Box id="nav-language-toggle"
+          onClick={toggleLanguage}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+            color: "#fff",
+            px: 1,
+            py: 1,
+            cursor: "pointer",
+            borderRadius: "2px",
+            border: "1px solid transparent",
+            "&:hover": { border: "1px solid #fff" },
+          }}
+        >
+          <LanguageIcon fontSize="small" sx={{ mr: 0.5 }} />
+          <Typography sx={{ fontSize: "14px", fontWeight: 700, textTransform: "uppercase" }}>
+            {language}
+          </Typography>
+        </Box>
+
         {/* Carrinho Estilo Amazon idêntico: número flutuante laranja sob SVG */}
-        <Box
+        <Box id="nav-cart-btn"
           component={Link}
           to="/cart"
           sx={{
@@ -246,8 +269,8 @@ const NavBar = ({ cartCount, search, setSearch }) => {
             "&:hover": { border: "1px solid #fff" },
           }}
         >
-          <Box sx={{ position: "relative", width: 40, height: 35 }}>
-            <Box
+          <Box id="nav-cart-icon-wrapper" sx={{ position: "relative", width: 40, height: 35 }}>
+            <Box id="nav-cart-count-badge"
               sx={{
                 position: "absolute",
                 top: -2,
@@ -296,7 +319,7 @@ const NavBar = ({ cartCount, search, setSearch }) => {
               color: "#fff"
             }}
           >
-            Carrinho
+            {t("nav.cart")}
           </Typography>
         </Box>
       </Toolbar>
@@ -304,9 +327,10 @@ const NavBar = ({ cartCount, search, setSearch }) => {
   );
 };
 
-const App = () => {
+const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -314,14 +338,14 @@ const App = () => {
     setCartItems((prevItems) => {
       const itemExists = prevItems.find((item) => item.id === product.id);
       if (itemExists) {
-        toast.info(`Quantidade atualizada: ${product.name}`);
+        toast.info(t("app.toast.qty_updated", { name: product.name }));
         return prevItems.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + Number(quantity) }
             : item
         );
       } else {
-        toast.success(`${product.name} adicionado ao carrinho!`);
+        toast.success(t("app.toast.added", { name: product.name }));
         return [...prevItems, { ...product, quantity: Number(quantity) }];
       }
     });
@@ -329,7 +353,7 @@ const App = () => {
 
   const handleUpdateCart = (product, quantity) => {
     setCartItems((prevItems) => {
-      toast.info(`Quantidade atualizada: ${product.name}`);
+      toast.info(t("app.toast.qty_updated", { name: product.name }));
       return prevItems.map((item) =>
         item.id === product.id ? { ...item, quantity: +quantity } : item
       );
@@ -338,7 +362,7 @@ const App = () => {
 
   const handleRemoveFromCart = (product) => {
     setCartItems((prevItems) => {
-      toast.error(`${product.name} removido do carrinho.`);
+      toast.error(t("app.toast.removed", { name: product.name }));
       return prevItems.filter((item) => item.id !== product.id);
     });
   };
@@ -348,9 +372,10 @@ const App = () => {
       <CssBaseline />
       <BrowserRouter>
         <NavBar cartCount={cartCount} search={search} setSearch={setSearch} />
-        <Box sx={{ minHeight: "calc(100vh - 64px)", py: 3 }}>
+        <Box id="main-content-wrapper" sx={{ minHeight: "calc(100vh - 64px)", py: 3 }}>
           <Routes>
             <Route path="/" element={<Catalog onAddToCart={handleAddToCart} search={search} setSearch={setSearch} />} />
+            <Route path="/product/:id" element={<ProductDetails onAddToCart={handleAddToCart} />} />
             <Route
               path="/cart"
               element={
@@ -384,6 +409,17 @@ const App = () => {
         />
       </BrowserRouter>
     </ThemeProvider>
+  );
+};
+
+const App = () => {
+  return (
+    <LanguageProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppInner />
+      </ThemeProvider>
+    </LanguageProvider>
   );
 };
 

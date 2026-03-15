@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const CheckoutButton = ({ cartItems, setCartItems }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleCheckout = () => {
     if (cartItems.length > 0) {
-      toast.success("Compra finalizada com sucesso!");
+      toast.success(t("checkout.processing")); // Replaced "Compra finalizada com sucesso!"
       navigate("/thank-you", { state: { cartItems } }); // Passa os cartItems via state
       // Não limpe o cartItems aqui, deixamos a ThankYouPage limpar
     } else {
-      toast.error("Seu carrinho está vazio.");
+      toast.error(t("checkout.toast.empty"));
     }
   };
 
@@ -28,7 +30,7 @@ const CheckoutButton = ({ cartItems, setCartItems }) => {
       sx={{ py: 1.5, fontSize: "1.1rem" }}
       disabled={cartItems.length === 0}
     >
-      Finalizar Compra
+      {t("checkout.button")}
     </Button>
   );
 };

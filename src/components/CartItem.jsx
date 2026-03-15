@@ -11,8 +11,10 @@ import {
   Tooltip,
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
+  const { t } = useLanguage();
   return (
     <ListItem
       alignItems="flex-start"
@@ -22,7 +24,7 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
         gap: { xs: 2, sm: 0 },
       }}
     >
-      <Box sx={{ display: "flex", width: "100%", alignItems: "center" }}>
+      <Box id="cart-item-details-wrapper" sx={{ display: "flex", width: "100%", alignItems: "center" }}>
         <ListItemAvatar>
           <Avatar
             variant="rounded"
@@ -45,7 +47,7 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
         />
       </Box>
 
-      <Box
+      <Box id="cart-item-actions-wrapper"
         sx={{
           display: "flex",
           alignItems: "center",
@@ -54,11 +56,11 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
           pl: { xs: 0, sm: 2 },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box id="cart-item-quantity-wrapper" sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <TextField
             type="number"
             size="small"
-            label="Qtd"
+            label={t("cart_item.qty")}
             value={item.quantity}
             onChange={(e) => {
               const val = parseInt(e.target.value);
@@ -78,7 +80,7 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart }) => {
           </Typography>
         </Box>
 
-        <Tooltip title="Remover item">
+        <Tooltip title={t("cart_item.delete")}>
           <IconButton
             edge="end"
             aria-label="delete"

@@ -14,10 +14,14 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const Product = ({ product, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
+  const { t } = useLanguage();
+  const navigate = useNavigate();
 
   return (
     <Card
@@ -32,13 +36,18 @@ const Product = ({ product, onAddToCart }) => {
         },
       }}
     >
-      <CardMedia
-        component="img"
-        height="200"
-        image={product.image}
-        alt={product.name}
-        sx={{ objectFit: "cover" }}
-      />
+      <Box id={`product-card-image-wrapper-${product.id}`}
+        onClick={() => navigate(`/product/${product.id}`)}
+        sx={{ cursor: "pointer" }}
+      >
+        <CardMedia
+          component="img"
+          height="200"
+          image={product.image}
+          alt={product.name}
+          sx={{ objectFit: "cover" }}
+        />
+      </Box>
       <CardContent sx={{ flexGrow: 1, pb: 1 }}>
         <Chip
           label={product.category}
@@ -47,7 +56,13 @@ const Product = ({ product, onAddToCart }) => {
           variant="outlined"
           sx={{ mb: 1, fontSize: "0.7rem" }}
         />
-        <Typography variant="h6" component="h2" gutterBottom sx={{ fontSize: "1rem", fontWeight: 700, lineHeight: 1.3 }}>
+        <Typography 
+          variant="h6" 
+          component="h2" 
+          gutterBottom 
+          sx={{ fontSize: "1rem", fontWeight: 700, lineHeight: 1.3, cursor: "pointer", "&:hover": { color: "primary.main" } }}
+          onClick={() => navigate(`/product/${product.id}`)}
+        >
           {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, fontSize: "0.82rem" }}>
@@ -60,11 +75,11 @@ const Product = ({ product, onAddToCart }) => {
 
       <CardActions sx={{ px: 2, pb: 2, gap: 1, flexWrap: "wrap" }}>
         <FormControl size="small" sx={{ minWidth: 70 }}>
-          <InputLabel id={`qty-label-${product.id}`}>Qtd</InputLabel>
+          <InputLabel id={`qty-label-${product.id}`}>{t("cart_item.qty").replace(":", "")}</InputLabel>
           <Select
             labelId={`qty-label-${product.id}`}
             value={quantity}
-            label="Qtd"
+            label={t("cart_item.qty").replace(":", "")}
             onChange={(e) => setQuantity(e.target.value)}
           >
             {[...Array(10).keys()].map((x) => (
@@ -83,7 +98,7 @@ const Product = ({ product, onAddToCart }) => {
             onClick={() => onAddToCart(product, quantity)}
             sx={{ flexGrow: 1 }}
           >
-            Adicionar
+            {t("product.add_to_cart")}
           </Button>
         </Tooltip>
       </CardActions>

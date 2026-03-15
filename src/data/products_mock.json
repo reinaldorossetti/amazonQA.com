@@ -5,7 +5,10 @@
     "price": 50.99,
     "description": "Relógio de pulso clássico com pulseira de couro e mostrador analógico.",
     "category": "Acessórios",
-    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=400&h=300&fit=crop",
+    "manufacturer": "TimeX",
+    "line": "Classic",
+    "model": "TX-100"
   },
   {
     "id": 2,
@@ -13,7 +16,10 @@
     "price": 85.50,
     "description": "Câmera analógica retrô, perfeita para fotografia artística.",
     "category": "Eletrônicos",
-    "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop",
+    "manufacturer": "RetroCam",
+    "line": "Artisan",
+    "model": "RC-500"
   },
   {
     "id": 3,
@@ -21,7 +27,10 @@
     "price": 35.99,
     "description": "Fones over-ear com cancelamento de ruído e som de alta fidelidade.",
     "category": "Eletrônicos",
-    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+    "manufacturer": "SoundBeat",
+    "line": "ProAudio",
+    "model": "SB-NoiseCancelling"
   },
   {
     "id": 4,
@@ -29,7 +38,10 @@
     "price": 120.00,
     "description": "Tênis leve e respirável para corridas e treinos intensos.",
     "category": "Esportes",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
+    "manufacturer": "RunFast",
+    "line": "Athletics",
+    "model": "RF-Speed"
   },
   {
     "id": 5,
@@ -37,7 +49,10 @@
     "price": 299.99,
     "description": "Smartphone com câmera tripla, tela AMOLED e bateria de longa duração.",
     "category": "Eletrônicos",
-    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
+    "manufacturer": "TechNova",
+    "line": "Galaxy",
+    "model": "TN-XPro"
   },
   {
     "id": 6,
@@ -45,7 +60,10 @@
     "price": 19.99,
     "description": "Um romance de aventura épico que te prende do começo ao fim.",
     "category": "Livros",
-    "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop",
+    "manufacturer": "Editora XYZ",
+    "line": "Ficção",
+    "model": "Edição Capa Dura"
   },
   {
     "id": 7,
@@ -53,7 +71,10 @@
     "price": 79.90,
     "description": "Mochila resistente para o dia a dia com compartimento para notebook.",
     "category": "Acessórios",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop",
+    "manufacturer": "BagPackers",
+    "line": "Urban",
+    "model": "BP-20"
   },
   {
     "id": 8,
@@ -61,6 +82,20 @@
     "price": 45.00,
     "description": "Mantém bebidas quentes por 12h e frias por 24h. 500ml.",
     "category": "Esportes",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=300&fit=crop"
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=300&fit=crop",
+    "manufacturer": "ThermoLife",
+    "line": "Active",
+    "model": "TL-500"
+  },
+  {
+    "id": 9,
+    "name": "Caneca Na Minha Máquina Funciona",
+    "price": 39.90,
+    "description": "A clássica caneca do programador. Ideal para muito café durante o desenvolvimento.",
+    "category": "Acessórios",
+    "image": "https://http2.mlstatic.com/D_NQ_NP_2X_888916-MLB71965585666_092023-F.webp",
+    "manufacturer": "DevMugs",
+    "line": "Programmer Jokes",
+    "model": "MUG-123"
   }
 ]
