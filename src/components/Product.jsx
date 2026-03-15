@@ -38,14 +38,14 @@ const Product = ({ product, onAddToCart }) => {
     >
       <Box id={`product-card-image-wrapper-${product.id}`}
         onClick={() => navigate(`/product/${product.id}`)}
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", p: 1 }}
       >
         <CardMedia
           component="img"
           height="200"
           image={product.image}
           alt={product.name}
-          sx={{ objectFit: "cover" }}
+          sx={{ objectFit: "contain" }}
         />
       </Box>
       <CardContent sx={{ flexGrow: 1, pb: 1 }}>

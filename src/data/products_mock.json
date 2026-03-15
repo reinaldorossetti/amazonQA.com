@@ -56,36 +56,36 @@
   },
   {
     "id": 6,
-    "name": "Livro de Aventura",
-    "price": 19.99,
-    "description": "Um romance de aventura épico que te prende do começo ao fim.",
+    "name": "Clean Architecture: A Craftsman's Guide to Software Structure and Design",
+    "price": 233.44,
+    "description": "Um guia prático sobre arquitetura de software, design patterns e boas práticas de desenvolvimento.",
     "category": "Livros",
-    "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop",
-    "manufacturer": "Editora XYZ",
-    "line": "Ficção",
-    "model": "Edição Capa Dura"
+    "image": "https://m.media-amazon.com/images/I/71stxGw9JgL._SY522_.jpg",
+    "manufacturer": "Robert C. Martin",
+    "line": "Software Architecture",
+    "model": "Clean Architecture"
   },
   {
     "id": 7,
-    "name": "Mochila Urban",
-    "price": 79.90,
+    "name": "Gshield Mochila Mala de Mão",
+    "price": 284.99,
     "description": "Mochila resistente para o dia a dia com compartimento para notebook.",
     "category": "Acessórios",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop",
-    "manufacturer": "BagPackers",
-    "line": "Urban",
-    "model": "BP-20"
+    "image": "https://m.media-amazon.com/images/I/719xnEvLS7L._AC_SX679_.jpg",
+    "manufacturer": "Gshield",
+    "line": "Armor",
+    "model": "Mala de Mão Executiva"
   },
   {
     "id": 8,
     "name": "Garrafa Térmica",
     "price": 45.00,
     "description": "Mantém bebidas quentes por 12h e frias por 24h. 500ml.",
-    "category": "Esportes",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=300&fit=crop",
-    "manufacturer": "ThermoLife",
-    "line": "Active",
-    "model": "TL-500"
+    "category": "Acessórios",
+    "image": "https://http2.mlstatic.com/D_NQ_NP_2X_874068-MLA99368716490_112025-F.webp",
+    "manufacturer": "Dried Pine 950ml Stanley",
+    "line": "Classic",
+    "model": "GT Classic"
   },
   {
     "id": 9,
@@ -97,5 +97,16 @@
     "manufacturer": "DevMugs",
     "line": "Programmer Jokes",
     "model": "MUG-123"
+  },
+  {
+    "id": 10,
+    "name": "eXtreme Go Horse (XGH)",
+    "price": 49.90,
+    "description": "O famoso guia prático sobre a metodologia eXtreme Go Horse em que a principal filosofia é: Vai lá e faz.",
+    "category": "Livros",
+    "image": "https://gohorse.com.br/wp-content/uploads/2017/05/cropped-xgh-e1330433625262.jpg",
+    "manufacturer": "O'Reilly Books",
+    "line": "Humor Tecnológico",
+    "model": "In Action"
   }
 ]

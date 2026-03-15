@@ -45,35 +45,42 @@ const createDatabase = async () => {
         );
     `);
 
-    // 4. Populate DB if empty
-    const res = db.exec("SELECT COUNT(*) as count FROM products");
-    const count = res[0].values[0][0];
-
-    if (count === 0) {
-        const stmt = db.prepare(`
-            INSERT INTO products (id, name, price, description, category, image, manufacturer, line, model) 
-            VALUES ($id, $name, $price, $description, $category, $image, $manufacturer, $line, $model)
-        `);
-        
-        db.run("BEGIN TRANSACTION;");
-        productsMock.forEach(p => {
-            stmt.run({
-                $id: p.id,
-                $name: p.name,
-                $price: p.price,
-                $description: p.description,
-                $category: p.category,
-                $image: p.image,
-                $manufacturer: p.manufacturer || null,
-                $line: p.line || null,
-                $model: p.model || null
-            });
+    // 4. Sync mock data to ensure any new products added to the JSON are inserted
+    const stmt = db.prepare(`
+        INSERT INTO products (id, name, price, description, category, image, manufacturer, line, model) 
+        VALUES ($id, $name, $price, $description, $category, $image, $manufacturer, $line, $model)
+        ON CONFLICT(id) DO UPDATE SET
+            name = excluded.name,
+            price = excluded.price,
+            description = excluded.description,
+            category = excluded.category,
+            image = excluded.image,
+            manufacturer = excluded.manufacturer,
+            line = excluded.line,
+            model = excluded.model
+    `);
+    
+    db.run("BEGIN TRANSACTION;");
+    let addedCount = 0;
+    productsMock.forEach(p => {
+        // Checking if product exists theoretically not needed with IGNORE, but we can track if we need to save
+        stmt.run({
+            $id: p.id,
+            $name: p.name,
+            $price: p.price,
+            $description: p.description,
+            $category: p.category,
+            $image: p.image,
+            $manufacturer: p.manufacturer || null,
+            $line: p.line || null,
+            $model: p.model || null
         });
-        db.run("COMMIT;");
-        stmt.free();
-        
-        saveDatabase(db);
-    }
+    });
+    db.run("COMMIT;");
+    stmt.free();
+    
+    // Always resave to sync in case new products were ignored/inserted
+    saveDatabase(db);
 
     return db;
 };
@@ -100,7 +107,7 @@ export const getDatabase = () => {
 // Helper: Get all products
 export const getProducts = async () => {
     const db = await getDatabase();
-    const res = db.exec("SELECT * FROM products");
+    const res = db.exec("SELECT * FROM products ORDER BY name ASC");
     if (res.length === 0) return [];
     
     // Convert SQL.js result payload back to array of objects

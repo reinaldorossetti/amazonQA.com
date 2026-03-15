@@ -45,7 +45,7 @@ Para acelerar o desenvolvimento de interfaces e garantir consistência cross-bro
 Fizemos uso avançado do **`ThemeProvider`** e **`createTheme`** para desviar do visual "padrão" do Google e aproxima-lo à identidade de e-commerce similar à Amazon:
 
 *   **Paleta de Cores Customizada:** 
-    *   *Primary (Dark Blue)*: `#232f3e` e `#131921` para fundos dominantes, como a NavBar.
+    *   *Primary (Dark Blue)*: `#131921` para fundos dominantes, como a NavBar.
     *   *Secondary (Amazon Orange/Yellow)*: `#ff9900`, `#FFD814` e `#FFA41C` focando em chamadas de ação (Call to Action) e destaques de preço.
 *   **Tipografia:** Substituímos a família padrão pelo conjunto limpo utilizando estilos de títulos com peso maior (`font-weight: 700`) e variação de cor escura para garantir alto contraste e legibilidade (`#0F1111`).
 *   **Sobrescrita de Componentes (StyleOverrides):**
