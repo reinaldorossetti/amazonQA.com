@@ -30,7 +30,7 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#232f3e", // Amazon Dark Blue (Navbar)
+      main: "#131921", // Amazon Dark Blue (Navbar)
       light: "#37475A",
       contrastText: "#fff",
     },

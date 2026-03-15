@@ -16,6 +16,16 @@ A aplicação foi desenvolvida com o intuito de simular as principais funcionali
 *   **Checkout / Finalização:** Uma página de agradecimento ("Thank You Page") simulando o pós-compra, que também se encarrega de limpar os itens do carrinho após a confirmação.
 *   **Contador Dinâmico:** O ícone do carrinho na barra de navegação exibe uma contagem exata e em tempo real da quantidade total de itens no carrinho.
 
+## 💾 Banco de Dados Local (SQLite via WebAssembly)
+
+Nesta arquitetura moderna *client-side*, a aplicação embute um banco de dados **SQLite real rodando diretamente no navegador** do usuário, sem a necessidade imediata de uma API/Backend externo para operar o catálogo online.
+
+*   **Poder do WebAssembly (WASM):** Utilizamos a biblioteca `sql.js` (compilada em WebAssembly) para executar um motor SQL robusto totalmente na memória, de forma extremamente rápida.
+*   **Camada de Conexão:** Na pasta nova `src/db/`, o arquivo `database.js` concentra as funções de criação de tabelas, inserção primária de dados estáticos (`products_mock.json`) e consultas diretas ao banco (queries puras como `SELECT * FROM products`).
+*   **Contexto Global (`DatabaseContext.jsx`):** A estrutura React aguarda a inicialização do banco via Context API (pasta `src/contexts/`), que compartilha a conexão pronta aos componentes filhos (`Catalog` e `ProductDetails`) possibilitando carregamentos assíncronos precisos.
+*   **Persistência Automática:** Apesar de viver na memória do navegador, criamos um listener: toda vez que carregamos dados atualizados, o array binário original do WebAssembly é convertido para Base64 e salvo discretamente no uso do `localStorage`. Assim, o estado transacional persiste perfeitamente recarregamentos de página (refresh).
+*   **Script de Geração Física:** Para casos mais complexos de manipulação externa, acoplamos também utilitário Node.js secundário (`src/db/generate_db.js`) capaz de compilar o arquivo `.sqlite` físico real localmente ao apenas ser executado, que inclusive auxilia se a aplicação migrar para o backend.
+
 ## 🧩 Componentes Criados
 
 A estrutura do projeto foi devidamente componentizada para promover a manutenção e o reuso de código. Os principais componentes localizam-se no diretório `src/components/`:
@@ -49,12 +59,14 @@ Abaixo está a organização principal dos diretórios do projeto e suas respons
 
 ```text
 tester.com/
-├── public/              # Arquivos estáticos públicos (ex: favicon) que não passam pelo pipeline do Vite.
+├── public/              # Arquivos estáticos públicos e módulos WASM essenciais como sql-wasm.wasm.
 ├── src/                 # Código-fonte principal da aplicação React.
 │   ├── assets/          # Arquivos de mídia, como imagens e ícones.
-│   ├── components/      # Componentes React (botões, cards, navbar, carrinho).
-│   ├── data/            # Dados estáticos/mocks em JSON para simular a API dos produtos.
-│   ├── App.jsx          # Componente raiz que configura rotas e o tema da aplicação.
+│   ├── components/      # Componentes visuais do React (botões, cards, navbar, carrinho).
+│   ├── contexts/        # React Contexts para estados globais (idiomas, conexões ao banco db).
+│   ├── data/            # Dados estáticos/mocks em JSON (usados inicialmente como seed p/ o SQLite).
+│   ├── db/              # Controladores locais do SQLite (database.js) e scripts geradores físicos (generate_db.js).
+│   ├── App.jsx          # Componente raiz da aplicação, abarcando roteadores e contextos.
 │   ├── main.jsx         # Ponto de entrada do React que renderiza o App no DOM.
 │   └── index.css/App.css# Estilos globais e escopos básicos.
 ├── package.json         # Gerenciamento de dependências e scripts do projeto.
@@ -114,5 +126,6 @@ Este projeto foi inicializado utilizando o **Vite**, que oferece um tempo de boo
 *   `react` & `react-dom`
 *   `react-router-dom` (Roteamento SPA)
 *   `@mui/material`, `@mui/icons-material`, `@emotion/react`, `@emotion/styled` (Design System)
-*   `react-toastify` (Notificações)
+*   `sql.js` (Core do SQLite via WebAssembly rodando diretamente no Front-end)
+*   `react-toastify` (Alertas Otimizados)
 *   `vite` & `@vitejs/plugin-react` (Build Toolchain)
