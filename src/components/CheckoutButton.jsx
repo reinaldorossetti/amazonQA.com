@@ -1,22 +1,33 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import LockIcon from "@mui/icons-material/Lock";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const CheckoutButton = ({ cartItems, setCartItems }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useLanguage();
+  const { isLoggedIn } = useAuth();
 
   const handleCheckout = () => {
-    if (cartItems.length > 0) {
-      toast.success(t("checkout.processing")); // Replaced "Compra finalizada com sucesso!"
-      navigate("/thank-you", { state: { cartItems } }); // Passa os cartItems via state
-      // Não limpe o cartItems aqui, deixamos a ThankYouPage limpar
-    } else {
+    if (cartItems.length === 0) {
       toast.error(t("checkout.toast.empty"));
+      return;
     }
+
+    if (!isLoggedIn) {
+      toast.info("Faça login para finalizar seu pedido.");
+      // Preserve current path so we can come back after login
+      navigate(`/login?next=${encodeURIComponent(location.pathname)}`);
+      return;
+    }
+
+    toast.success(t("checkout.processing"));
+    navigate("/thank-you", { state: { cartItems } });
   };
 
   return (
@@ -25,12 +36,12 @@ const CheckoutButton = ({ cartItems, setCartItems }) => {
       color="primary"
       size="large"
       fullWidth
-      startIcon={<ShoppingCartCheckoutIcon />}
+      startIcon={isLoggedIn ? <ShoppingCartCheckoutIcon /> : <LockIcon />}
       onClick={handleCheckout}
       sx={{ py: 1.5, fontSize: "1.1rem" }}
       disabled={cartItems.length === 0}
     >
-      {t("checkout.button")}
+      {isLoggedIn ? t("checkout.button") : "Entrar para Finalizar"}
     </Button>
   );
 };

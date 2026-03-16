@@ -9,6 +9,10 @@ const translations = {
     "nav.all": "Todos ▾",
     "nav.search_placeholder": "Pesquisa tester.com",
     "nav.cart": "Carrinho",
+    "nav.new_customer": "Cliente novo?",
+    "nav.start_here": "Comece aqui.",
+    "nav.hello": "Olá,",
+    "nav.logout_tooltip": "Sair",
     
     // Catalog
     "catalog.title": "Catálogo de Produtos",
@@ -75,6 +79,10 @@ const translations = {
     "nav.all": "All ▾",
     "nav.search_placeholder": "Search tester.com",
     "nav.cart": "Cart",
+    "nav.new_customer": "New here?",
+    "nav.start_here": "Start here.",
+    "nav.hello": "Hello,",
+    "nav.logout_tooltip": "Sign out",
     
     // Catalog
     "catalog.title": "Product Catalog",

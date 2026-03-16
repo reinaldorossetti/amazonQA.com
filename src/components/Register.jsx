@@ -814,7 +814,7 @@ const Register = () => {
                 component="span"
                 id="register-signin-link"
                 sx={{ color: "#0066c0", cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/login")}
               >
                 Fazer login
               </Box>

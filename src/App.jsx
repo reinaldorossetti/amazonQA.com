@@ -24,8 +24,10 @@ import Cart from "./components/Cart";
 import ThankYouPage from "./components/ThankYouPage";
 import ProductDetails from "./components/ProductDetails";
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 const theme = createTheme({
   palette: {
@@ -114,9 +116,12 @@ const theme = createTheme({
 
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import LanguageIcon from "@mui/icons-material/Language";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const NavBar = ({ cartCount, search, setSearch }) => {
   const { language, toggleLanguage, setAppLanguage, t } = useLanguage();
+  const { isLoggedIn, user, logout } = useAuth();
 
   return (
     <AppBar position="sticky" elevation={0} sx={{ backgroundColor: "#131921", border: "none", borderRadius: 0 }}>
@@ -254,27 +259,67 @@ const NavBar = ({ cartCount, search, setSearch }) => {
           </Typography>
         </Box>
 
-        {/* Cadastre-se button */}
-        <Box
-          id="nav-register-btn"
-          component={Link}
-          to="/register"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            textDecoration: "none",
-            color: "#fff",
-            px: 1,
-            py: 1,
-            borderRadius: "2px",
-            border: "1px solid transparent",
-            "&:hover": { border: "1px solid #fff" },
-          }}
-        >
-          <Typography sx={{ fontSize: "0.75rem", color: "#ccc", lineHeight: 1 }}>Novo?</Typography>
-          <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1 }}>Cadastre-se</Typography>
-        </Box>
+        {/* Auth area: show user+logout when logged in, or register link when not */}
+        {isLoggedIn ? (
+          <Box id="nav-user-area" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <Box
+              id="nav-user-greeting"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                color: "#fff",
+                px: 1,
+                py: 1,
+                borderRadius: "2px",
+                border: "1px solid transparent",
+              }}
+            >
+              <Typography sx={{ fontSize: "0.75rem", color: "#ccc", lineHeight: 1 }}>{t("nav.hello")}</Typography>
+              <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1, maxWidth: 100, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {user?.name}
+              </Typography>
+            </Box>
+            <Box
+              id="nav-logout-btn"
+              onClick={logout}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                color: "#ccc",
+                px: 0.5,
+                py: 1,
+                cursor: "pointer",
+                borderRadius: "2px",
+                border: "1px solid transparent",
+                "&:hover": { border: "1px solid #fff", color: "#fff" },
+              }}
+            >
+              <LogoutIcon fontSize="small" />
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            id="nav-register-btn"
+            component={Link}
+            to="/register"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              textDecoration: "none",
+              color: "#fff",
+              px: 1,
+              py: 1,
+              borderRadius: "2px",
+              border: "1px solid transparent",
+              "&:hover": { border: "1px solid #fff" },
+            }}
+          >
+            <Typography sx={{ fontSize: "0.75rem", color: "#ccc", lineHeight: 1 }}>{t("nav.new_customer")}</Typography>
+            <Typography sx={{ fontSize: "0.9rem", fontWeight: 700, lineHeight: 1 }}>{t("nav.start_here")}</Typography>
+          </Box>
+        )}
 
         {/* Carrinho Estilo Amazon idêntico: número flutuante laranja sob SVG */}
         <Box id="nav-cart-btn"
@@ -417,6 +462,7 @@ const AppInner = () => {
               }
             />
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Box>
         <ToastContainer
@@ -439,10 +485,12 @@ const AppInner = () => {
 const App = () => {
   return (
     <LanguageProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppInner />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AppInner />
+        </ThemeProvider>
+      </AuthProvider>
     </LanguageProvider>
   );
 };
