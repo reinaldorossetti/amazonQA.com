@@ -20,7 +20,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LoginIcon from "@mui/icons-material/Login";
 
 import { useAuth } from "../contexts/AuthContext";
-import { getUserByEmail } from "../db/database";
+import { loginUser } from "../db/api";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,19 +61,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const dbUser = await getUserByEmail(email.trim().toLowerCase());
-
-      if (!dbUser) {
-        setError("E-mail não encontrado. Verifique ou crie uma conta.");
-        setLoading(false);
-        return;
-      }
-
-      if (dbUser.password !== password) {
-        setError("Senha incorreta. Tente novamente.");
-        setLoading(false);
-        return;
-      }
+      const dbUser = await loginUser({ email: email.trim().toLowerCase(), password });
 
       login({
         id: dbUser.id,
@@ -85,7 +74,7 @@ const Login = () => {
       toast.success(`Bem-vindo(a) de volta, ${dbUser.first_name}! 👋`);
       navigate(nextPath);
     } catch (err) {
-      setError("Erro ao realizar login. Tente novamente.");
+      setError(err.message || 'Credenciais inválidas. Tente novamente.');
     } finally {
       setLoading(false);
     }

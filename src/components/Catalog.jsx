@@ -12,7 +12,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import Product from "./Product";
 import { useLanguage } from "../contexts/LanguageContext";
-import { getProducts } from "../db/database";
+import { getProducts } from "../db/api";
 
 const Catalog = ({ onAddToCart, search, setSearch }) => {
   const { t } = useLanguage();

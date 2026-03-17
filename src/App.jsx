@@ -128,7 +128,7 @@ const NavBar = ({ cartCount, search, setSearch }) => {
       {/* Container fluido zero padding lateral para ficar igual Amazon (ponta a ponta) */}
       <Toolbar disableGutters sx={{ minHeight: "60px !important", px: 2, display: "flex", alignItems: "center", gap: 1 }}>
 
-        {/* Logo Ouro da Amazon, escrito tester.com */}
+        {/* Logo Ouro da Amazon, escrito amazonQA.com */}
         <Box id="nav-logo-wrapper"
           component={Link}
           to="/"

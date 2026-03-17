@@ -33,7 +33,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 import { useLanguage } from "../contexts/LanguageContext";
-import { registerUser } from "../db/database";
+import { registerUser } from "../db/api";
+
 
 // ─── Validation helpers ──────────────────────────────────────────────────────
 

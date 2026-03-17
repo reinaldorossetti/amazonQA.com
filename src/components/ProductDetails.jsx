@@ -22,7 +22,8 @@ import {
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLanguage } from "../contexts/LanguageContext";
-import { getProductById } from "../db/database";
+import { getProductById } from "../db/api";
+
 
 const ProductDetails = ({ onAddToCart }) => {
   const { id } = useParams();
@@ -34,27 +35,27 @@ const ProductDetails = ({ onAddToCart }) => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-        setIsLoading(true);
-        try {
-            const data = await getProductById(id);
-            setProduct(data);
-        } catch (error) {
-            console.error("Failed to fetch product", error);
-        } finally {
-            setIsLoading(false);
-        }
+      setIsLoading(true);
+      try {
+        const data = await getProductById(id);
+        setProduct(data);
+      } catch (error) {
+        console.error("Failed to fetch product", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchProduct();
   }, [id]);
 
   if (isLoading) {
-      return (
-        <Container maxWidth="lg" sx={{ textAlign: "center", py: 8 }}>
-          <Typography variant="h6" color="text.secondary">
-            Carregando detalhes...
-          </Typography>
-        </Container>
-      );
+    return (
+      <Container maxWidth="lg" sx={{ textAlign: "center", py: 8 }}>
+        <Typography variant="h6" color="text.secondary">
+          Carregando detalhes...
+        </Typography>
+      </Container>
+    );
   }
 
   if (!product) {
@@ -63,8 +64,8 @@ const ProductDetails = ({ onAddToCart }) => {
         <Typography variant="h5" color="text.secondary">
           {t("product_details.not_found")}
         </Typography>
-        <Button 
-          startIcon={<ArrowBackIcon />} 
+        <Button
+          startIcon={<ArrowBackIcon />}
           onClick={() => navigate("/")}
           sx={{ mt: 3 }}
         >
@@ -76,8 +77,8 @@ const ProductDetails = ({ onAddToCart }) => {
 
   return (
     <Container maxWidth="lg">
-      <Button 
-        startIcon={<ArrowBackIcon />} 
+      <Button
+        startIcon={<ArrowBackIcon />}
         onClick={() => navigate("/")}
         sx={{ mb: 3 }}
       >
@@ -107,7 +108,7 @@ const ProductDetails = ({ onAddToCart }) => {
             <Typography variant="h3" component="h1" gutterBottom fontWeight={800} sx={{ fontSize: { xs: "2rem", md: "2.5rem" } }}>
               {product.name}
             </Typography>
-            
+
             <Typography variant="h4" color="primary" fontWeight={700} sx={{ mb: 3 }}>
               R$ {product.price.toFixed(2)}
             </Typography>
@@ -177,7 +178,7 @@ const ProductDetails = ({ onAddToCart }) => {
                     ))}
                   </Select>
                 </FormControl>
-                
+
                 <Button
                   variant="contained"
                   color="secondary"
