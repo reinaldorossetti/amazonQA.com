@@ -1,0 +1,42 @@
+export const selectors = {
+  nav: {
+    cartButton: '#nav-cart-btn',
+    cartBadge: '#nav-cart-count-badge',
+    languageToggle: '#nav-language-toggle',
+    userGreeting: '#nav-user-greeting',
+    logoutButton: '#nav-logout-btn',
+    searchInput: '#nav-search-input',
+  },
+  catalog: {
+    header: '#catalog-header-wrapper',
+    filters: '#catalog-search-filters-wrapper',
+    empty: '#catalog-empty-wrapper',
+    loading: '#catalog-loading-wrapper',
+    productImageById: (id: number) => `#product-card-image-wrapper-${id}`,
+  },
+  productDetails: {
+    image: '#product-details-image',
+    actions: '#product-details-actions-wrapper',
+  },
+  cart: {
+    content: '#cart-content-wrapper',
+    total: '#cart-order-total',
+  },
+  login: {
+    email: '#login-email',
+    password: '#login-password',
+    submit: '#login-submit-btn',
+    error: '#login-error-alert',
+  },
+  register: {
+    body: '#register-form-body',
+    firstName: '#register-first-name',
+    lastName: '#register-last-name',
+    email: '#register-email',
+    password: '#register-password',
+    confirmPassword: '#register-confirm-password',
+    next: '#register-next-btn',
+    submit: '#register-submit-btn',
+    error: '#register-error-alert',
+  },
+} as const;

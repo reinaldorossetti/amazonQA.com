@@ -1,0 +1,490 @@
+<testsuites id="" name="" tests="6" failures="6" skipped="0" errors="0" time="43.460931">
+<testsuite name="frontend\register.spec.ts" timestamp="2026-03-18T22:52:58.324Z" hostname="frontend-chromium" tests="6" failures="6" skipped="0" time="225.339" errors="0">
+<testcase name="Register › TS01 - registro com dados válidos aleatórios" classname="frontend\register.spec.ts" time="37.718">
+<failure message="register.spec.ts:56:3 TS01 - registro com dados válidos aleatórios" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:56:3 › Register › TS01 - registro com dados válidos aleatórios 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      66 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      67 |
+    > 68 |     await page.click(selectors.register.submit);
+         |                ^
+      69 |
+      70 |     await expect(page).toHaveURL('/');
+      71 |     await expect(page.locator(selectors.nav.userGreeting)).toContainText(userData.firstName);
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:68:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      66 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      67 |
+    > 68 |     await page.click(selectors.register.submit);
+         |                ^
+      69 |
+      70 |     await expect(page).toHaveURL('/');
+      71 |     await expect(page.locator(selectors.nav.userGreeting)).toContainText(userData.firstName);
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:68:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-9f37f-om-dados-válidos-aleatórios-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend\register.spec.ts" time="37.339">
+<failure message="register.spec.ts:74:3 TS02 - rejeita email em formato inválido aleatório" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:74:3 › Register › TS02 - rejeita email em formato inválido aleatório 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      85 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      86 |
+    > 87 |     await page.click(selectors.register.submit);
+         |                ^
+      88 |
+      89 |     await expect(page.locator(selectors.register.error)).toContainText(/Email inválido/i);
+      90 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:87:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      85 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      86 |
+    > 87 |     await page.click(selectors.register.submit);
+         |                ^
+      88 |
+      89 |     await expect(page.locator(selectors.register.error)).toContainText(/Email inválido/i);
+      90 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:87:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Register › TS03 - rejeita senha fraca aleatória" classname="frontend\register.spec.ts" time="37.943">
+<failure message="register.spec.ts:92:3 TS03 - rejeita senha fraca aleatória" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:92:3 › Register › TS03 - rejeita senha fraca aleatória 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      103 |     await page.fill(selectors.register.confirmPassword, weakPassword);
+      104 |
+    > 105 |     await page.click(selectors.register.submit);
+          |                ^
+      106 |
+      107 |     await expect(page.locator(selectors.register.error)).toContainText(/Senha fraca/i);
+      108 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:105:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      103 |     await page.fill(selectors.register.confirmPassword, weakPassword);
+      104 |
+    > 105 |     await page.click(selectors.register.submit);
+          |                ^
+      106 |
+      107 |     await expect(page.locator(selectors.register.error)).toContainText(/Senha fraca/i);
+      108 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:105:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-e62a6-jeita-senha-fraca-aleatória-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend\register.spec.ts" time="37">
+<failure message="register.spec.ts:110:3 TS04 - rejeita senhas não-correspondentes com dados aleatórios" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:110:3 › Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      121 |     await page.fill(selectors.register.confirmPassword, differentPassword);
+      122 |
+    > 123 |     await page.click(selectors.register.submit);
+          |                ^
+      124 |
+      125 |     await expect(page.locator(selectors.register.error)).toContainText(/senhas não correspondem/i);
+      126 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:123:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      121 |     await page.fill(selectors.register.confirmPassword, differentPassword);
+      122 |
+    > 123 |     await page.click(selectors.register.submit);
+          |                ^
+      124 |
+      125 |     await expect(page.locator(selectors.register.error)).toContainText(/senhas não correspondem/i);
+      126 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:123:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Register › TS05 - valida campos obrigatórios aleatoriamente vazios" classname="frontend\register.spec.ts" time="37.802">
+<failure message="register.spec.ts:128:3 TS05 - valida campos obrigatórios aleatoriamente vazios" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:128:3 › Register › TS05 - valida campos obrigatórios aleatoriamente vazios 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      138 |     if (missingField !== 'confirmPassword') await page.fill(selectors.register.confirmPassword, faker.internet.password() + 'Aa1@');
+      139 |
+    > 140 |     await page.click(selectors.register.submit);
+          |                ^
+      141 |
+      142 |     await expect(page.locator(selectors.register.error)).toContainText(/Preencha todos os campos/i);
+      143 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:140:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      138 |     if (missingField !== 'confirmPassword') await page.fill(selectors.register.confirmPassword, faker.internet.password() + 'Aa1@');
+      139 |
+    > 140 |     await page.click(selectors.register.submit);
+          |                ^
+      141 |
+      142 |     await expect(page.locator(selectors.register.error)).toContainText(/Preencha todos os campos/i);
+      143 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:140:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-14584-órios-aleatoriamente-vazios-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend\register.spec.ts" time="37.537">
+<failure message="register.spec.ts:145:3 TS06 - rejeita email duplicado com dados aleatórios" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register.spec.ts:145:3 › Register › TS06 - rejeita email duplicado com dados aleatórios 
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      182 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      183 |
+    > 184 |     await page.click(selectors.register.submit);
+          |                ^
+      185 |
+      186 |     await expect(page.locator(selectors.register.error)).toContainText(/Email já cadastrado/i);
+      187 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:184:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('#register-submit-btn')
+
+
+      182 |     await page.fill(selectors.register.confirmPassword, userData.password);
+      183 |
+    > 184 |     await page.click(selectors.register.submit);
+          |                ^
+      185 |
+      186 |     await expect(page.locator(selectors.register.error)).toContainText(/Email já cadastrado/i);
+      187 |   });
+        at D:\github-projects\tester.com\e2e\specs\frontend\register.spec.ts:184:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
