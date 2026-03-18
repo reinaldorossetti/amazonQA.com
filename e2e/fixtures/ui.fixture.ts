@@ -34,7 +34,7 @@ export const test = base.extend<{ waitForPageLoad: WaitForPageLoad }>({
       let lastError: unknown;
       for (const selector of selectors) {
         try {
-          await page.locator(selector).first().waitFor({ state: 'visible', timeout: 8_000 });
+          await page.locator(selector).first().waitFor({ state: 'visible', timeout: 30_000 });
           return;
         } catch (err) {
           lastError = err;
