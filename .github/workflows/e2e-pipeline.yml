@@ -10,6 +10,8 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
 
     steps:
       - name: Checkout
@@ -34,8 +36,29 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Start PostgreSQL with Docker Compose
-        run: docker compose up -d
+      - name: Setup PostgreSQL
+        uses: tj-actions/install-postgresql@v3
+        with:
+          postgresql-version: 17
+
+      - name: Configure PostgreSQL database
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+
+      - name: Wait for PostgreSQL readiness
+        run: |
+          for i in {1..60}; do
+            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
+              echo "PostgreSQL pronto para conexões."
+              exit 0
+            fi
+            echo "Aguardando PostgreSQL ficar pronto..."
+            sleep 2
+          done
+          echo "PostgreSQL não ficou pronto no tempo esperado."
+          exit 1
 
       - name: Seed backend database
         working-directory: server
@@ -93,6 +116,3 @@ jobs:
             kill $(cat frontend.pid) || true
           fi
 
-      - name: Stop docker services
-        if: always()
-        run: docker compose down -v
