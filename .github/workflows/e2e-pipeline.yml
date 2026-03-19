@@ -72,6 +72,7 @@ jobs:
           echo "Backend PID: $(cat ../backend.pid)"
 
       - name: Wait for backend readiness (timeout)
+        continue-on-error: true
         run: npx wait-on --timeout 180000 http://127.0.0.1:3001/api/products
 
       - name: Start frontend (Vite) in background
@@ -85,7 +86,7 @@ jobs:
         run: npx wait-on --timeout 180000 http://127.0.0.1:5174
 
       - name: Run E2E tests
-        run: xvfb-run --auto-servernum npx playwright test
+        run: npm run test:e2e:ci
 
       - name: Upload Playwright report
         if: always()

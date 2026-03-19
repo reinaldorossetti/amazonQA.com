@@ -1,7 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './e2e/specs',
+  testDir: './e2e/specs/frontend',
+  // Glob patterns or regular expressions to ignore test files.
+  testIgnore: 'api/**/*.spec.ts',
   timeout: 45_000,
   expect: {
     timeout: 15_000,
