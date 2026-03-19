@@ -1,7 +1,48 @@
 import { Page } from '@playwright/test';
 
+type PageName = 'catalog' | 'productDetails' | 'cart' | 'login' | 'register' | 'thankYou';
+
+const readinessSelectorByPage: Record<PageName, string[]> = {
+  catalog: ['#catalog-header-wrapper'],
+  productDetails: ['#product-details-actions-wrapper'],
+  cart: ['#cart-content-wrapper', 'text=Seu carrinho está vazio', 'text=Your cart is empty'],
+  login: ['#login-form-body'],
+  register: ['#register-form-body'],
+  thankYou: ['#thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
+};
+
+async function waitForLoadingTransition(page: Page, pageName: PageName) {
+  const loadingSelector = pageName === 'catalog' ? '#catalog-loading-wrapper' : '#loading';
+  const loading = page.locator(loadingSelector);
+
+  try {
+    await loading.waitFor({ state: 'visible', timeout: 1_200 });
+    await loading.waitFor({ state: 'hidden', timeout: 10_000 });
+  } catch {
+    // Não bloqueia quando o loading é rápido ou não existe na página.
+  }
+}
+
+export async function waitForPageLoad(page: Page, pageName: PageName): Promise<void> {
+  await waitForLoadingTransition(page, pageName);
+  const selectors = readinessSelectorByPage[pageName];
+
+  let lastError: unknown;
+  for (const selector of selectors) {
+    try {
+      await page.locator(selector).first().waitFor({ state: 'visible', timeout: 30_000 });
+      return;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError;
+}
+
 export class PageBase {
   protected page: Page;
+  timeOut = 20_000;
 
   constructor(page: Page) {
     this.page = page;
@@ -37,6 +78,8 @@ export class PageBase {
    * Preenche um campo de texto
    */
   async fill(selector: string, text: string) {
+    await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
+    await this.page.click(selector);
     await this.page.fill(selector, text);
   }
 
@@ -61,7 +104,7 @@ export class PageBase {
 
     const selector = selectors[context];
     if (selector) {
-      await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: 10_000 });
+      await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: 15_000 });
     }
   }
 }

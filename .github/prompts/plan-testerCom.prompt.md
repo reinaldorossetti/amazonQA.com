@@ -16,7 +16,7 @@ Criar uma suíte de testes automatizados com Playwright cobrindo os fluxos crít
    - captura de trace/screenshot/video em falhas;
    - retry condicional para CI;
    - estratégia de `webServer` para subir front (Vite) e server (Next) de forma controlada.
-   - timeout global definido em 45s e timeout do expect para 15s.
+   - timeout global definido em 45s em todos os métodos e globalmente e timeout do expect para 15s.
    - Definir workers para 7 localmente e auto para a CI (ajustável conforme estabilidade).
    2.3 Adicionar scripts NPM na raiz para execução (`test:e2e`, `test:e2e:ui`, `test:e2e:debug`, `test:e2e:headed`, `test:e2e:report`).
    2.4 Atualizar `.gitignore` para artefatos de execução (report, test-results, traces, videos, screenshots).

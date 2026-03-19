@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { mockProducts } from '../../data/products.mock';
-import { selectors } from '../../helpers/selectors';
+import { selectors } from '../../fixtures/selectors/selectors';
 import { expect, test } from '../../fixtures/ui.fixture';
 import { RegisterPage } from '../../helpers/RegisterPage';
 
@@ -41,7 +41,7 @@ test.describe('Register and Language', () => {
 
     // Validar mensagem de sucesso
     await registerPage.waitForSuccessMessage();
-    await expect(page).toHaveURL('/', { timeout: 8_000 });
+    await expect(page).toHaveURL('/', { timeout: 15_000 });
   });
 
   test('TS03 validação de campos obrigatórios no registro', async ({ page, waitForPageLoad }) => {

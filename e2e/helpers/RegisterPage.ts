@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Page } from '@playwright/test';
 import { PageBase } from './PageBase';
-import { selectors } from './selectors';
+import { selectors } from '../fixtures/selectors/selectors';
 
 export class RegisterPage extends PageBase {
   constructor(page: Page) {

@@ -1,6 +1,6 @@
 import { mockProducts } from '../../data/products.mock';
 import { setAuthenticatedUser } from '../../helpers/auth';
-import { selectors } from '../../helpers/selectors';
+import { selectors } from '../../fixtures/selectors/selectors';
 import { expect, test } from '../../fixtures/ui.fixture';
 
 test.describe('Cart and Checkout', () => {
