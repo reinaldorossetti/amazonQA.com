@@ -11,20 +11,7 @@ const readinessSelectorByPage: Record<PageName, string[]> = {
   thankYou: ['#thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
 };
 
-async function waitForLoadingTransition(page: Page, pageName: PageName) {
-  const loadingSelector = pageName === 'catalog' ? '#catalog-loading-wrapper' : '#loading';
-  const loading = page.locator(loadingSelector);
-
-  try {
-    await loading.waitFor({ state: 'visible', timeout: 1_200 });
-    await loading.waitFor({ state: 'hidden', timeout: 10_000 });
-  } catch {
-    // Não bloqueia quando o loading é rápido ou não existe na página.
-  }
-}
-
 export async function waitForPageLoad(page: Page, pageName: PageName): Promise<void> {
-  await waitForLoadingTransition(page, pageName);
   const selectors = readinessSelectorByPage[pageName];
 
   let lastError: unknown;

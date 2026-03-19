@@ -11,7 +11,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
-  workers: process.env.CI ? 3 : 7,
+  workers: process.env.CI ? 3 : '70%',
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],

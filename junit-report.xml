@@ -1,210 +1,70 @@
-<testsuites id="" name="" tests="28" failures="0" skipped="0" errors="0" time="18.692396999999882">
-<testsuite name="frontend\auth.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="24.439" errors="0">
-<testcase name="Login › TS01 - login válido com redirect next e saudação" classname="frontend\auth.spec.ts" time="3.704">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS01---7e230-om-redirect-next-e-saudação-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuites id="" name="" tests="28" failures="0" skipped="0" errors="0" time="16.731128000000002">
+<testsuite name="auth.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="32.467" errors="0">
+<testcase name="Login › TS01 - login válido com redirect next e saudação" classname="auth.spec.ts" time="3.777">
 </testcase>
-<testcase name="Login › TS02 - deve exibir erro para credenciais inválidas" classname="frontend\auth.spec.ts" time="4.189">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS02---0564a--para-credenciais-inválidas-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Login › TS02 - deve exibir erro para credenciais inválidas" classname="auth.spec.ts" time="5.917">
 </testcase>
-<testcase name="Login › TS03 - deve validar campos obrigatórios" classname="frontend\auth.spec.ts" time="3.759">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS03---deve-validar-campos-obrigatórios-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Login › TS03 - deve validar campos obrigatórios" classname="auth.spec.ts" time="5.008">
 </testcase>
-<testcase name="Login › TS04 - login com senha em branco" classname="frontend\auth.spec.ts" time="3.986">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS04---login-com-senha-em-branco-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Login › TS04 - login com senha em branco" classname="auth.spec.ts" time="5.542">
 </testcase>
-<testcase name="Login › TS05 - login com usuário em branco" classname="frontend\auth.spec.ts" time="4.01">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS05---login-com-usuário-em-branco-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Login › TS05 - login com usuário em branco" classname="auth.spec.ts" time="5.933">
 </testcase>
-<testcase name="Login › TS06 - deve manter estado autenticado após reload" classname="frontend\auth.spec.ts" time="4.791">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-auth-Login-TS06---4b9f1-ado-autenticado-após-reload-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Login › TS06 - deve manter estado autenticado após reload" classname="auth.spec.ts" time="6.29">
 </testcase>
 </testsuite>
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="17.101" errors="0">
-<testcase name="Cart and Checkout › TS01 usuário logado deve finalizar checkout e ir para thank-you" classname="frontend\cart-checkout.spec.ts" time="8.856">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-18e6d-heckout-e-ir-para-thank-you-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuite name="cart-checkout.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="25.997" errors="0">
+<testcase name="Cart and Checkout › TS01 usuário logado deve finalizar checkout e ir para thank-you" classname="cart-checkout.spec.ts" time="10.866">
 </testcase>
-<testcase name="Cart and Checkout › TS02 usuário não logado deve ser redirecionado para login com next" classname="frontend\cart-checkout.spec.ts" time="6.864">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-fedd7-cionado-para-login-com-next-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Cart and Checkout › TS02 usuário não logado deve ser redirecionado para login com next" classname="cart-checkout.spec.ts" time="10.323">
 </testcase>
-<testcase name="Cart and Checkout › TS03 carrinho vazio deve manter checkout desabilitado" classname="frontend\cart-checkout.spec.ts" time="1.381">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-967e9-anter-checkout-desabilitado-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Cart and Checkout › TS03 carrinho vazio deve manter checkout desabilitado" classname="cart-checkout.spec.ts" time="4.808">
 </testcase>
 </testsuite>
-<testsuite name="frontend\catalog.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="8.386" errors="0">
-<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend\catalog.spec.ts" time="1.538">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-catalog-Catalog-P-932fa-produtos-ao-carregar-página-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuite name="catalog.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="25.23" errors="0">
+<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="catalog.spec.ts" time="5.109">
 </testcase>
-<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend\catalog.spec.ts" time="1.742">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-catalog-Catalog-P-de201--texto-e-atualizar-contagem-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="catalog.spec.ts" time="5.04">
 </testcase>
-<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend\catalog.spec.ts" time="1.774">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-catalog-Catalog-P-5034d-plicar-filtro-por-categoria-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="catalog.spec.ts" time="4.956">
 </testcase>
-<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend\catalog.spec.ts" time="1.456">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-catalog-Catalog-P-c8302-ndo-busca-não-retorna-itens-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="catalog.spec.ts" time="5.327">
 </testcase>
-<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend\catalog.spec.ts" time="1.876">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-catalog-Catalog-P-533ff-talhes-ao-clicar-no-produto-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="catalog.spec.ts" time="4.798">
 </testcase>
 </testsuite>
-<testsuite name="frontend\product-details.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="9.104" errors="0">
-<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend\product-details.spec.ts" time="2.376">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-product-details-P-d9e18-dados-principais-do-produto-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuite name="product-details.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="17.891" errors="0">
+<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="product-details.spec.ts" time="6.594">
 </testcase>
-<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend\product-details.spec.ts" time="3.131">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-product-details-P-93596--carrinho-e-atualizar-badge-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="product-details.spec.ts" time="5.408">
 </testcase>
-<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend\product-details.spec.ts" time="1.181">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-product-details-P-653c9-S04-deve-tratar-ID-inválido-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Product Details › TS04 deve tratar ID inválido" classname="product-details.spec.ts" time="3.277">
 </testcase>
-<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend\product-details.spec.ts" time="2.416">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-product-details-P-994eb-5-deve-voltar-para-catálogo-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Product Details › TS05 deve voltar para catálogo" classname="product-details.spec.ts" time="2.612">
 </testcase>
 </testsuite>
-<testsuite name="frontend\register-language.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="10.902" errors="0">
-<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend\register-language.spec.ts" time="6.728">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-language-f9a76-tro-PF-completo-com-sucesso-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuite name="register-language.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="12.593" errors="0">
+<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="register-language.spec.ts" time="7.22">
 </testcase>
-<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend\register-language.spec.ts" time="2.534">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-language-db1a2-os-obrigatórios-no-registro-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="register-language.spec.ts" time="1.936">
 </testcase>
-<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend\register-language.spec.ts" time="1.64">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-language-7ddfe-erna-e-persiste-após-reload-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="register-language.spec.ts" time="3.437">
 </testcase>
 </testsuite>
-<testsuite name="frontend\register.spec.ts" timestamp="2026-03-19T18:47:55.832Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="21.786" errors="0">
-<testcase name="Register › TS01 - Validar registro realizado com sucesso" classname="frontend\register.spec.ts" time="3.684">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-8d2a4-istro-realizado-com-sucesso-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testsuite name="register.spec.ts" timestamp="2026-03-19T21:21:51.739Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="23.895" errors="0">
+<testcase name="Register › TS01 - Validar registro realizado com sucesso" classname="register.spec.ts" time="4.043">
 </testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend\register.spec.ts" time="2.964">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-2c6f1--formato-inválido-aleatório-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="register.spec.ts" time="2.972">
 </testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend\register.spec.ts" time="3.021">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-a2897-jeita-senha-curta-no-step-0-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="register.spec.ts" time="3.837">
 </testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend\register.spec.ts" time="3.147">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-6087e-dentes-com-dados-aleatórios-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="register.spec.ts" time="3.305">
 </testcase>
-<testcase name="Register › TS05 - valida campo obrigatório faltando no step 0" classname="frontend\register.spec.ts" time="3.117">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-10eed-igatório-faltando-no-step-0-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS05 - valida campo obrigatório faltando no step 0" classname="register.spec.ts" time="3.045">
 </testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend\register.spec.ts" time="3.433">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-d5498-licado-com-dados-aleatórios-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="register.spec.ts" time="3.965">
 </testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend\register.spec.ts" time="2.42">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-register-Register-18739-ns-de-validação-individuais-frontend-chromium\trace.zip]]
-]]>
-</system-out>
+<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="register.spec.ts" time="2.728">
 </testcase>
 </testsuite>
 </testsuites>
