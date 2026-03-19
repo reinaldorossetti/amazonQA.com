@@ -10,7 +10,7 @@
     "preview": "vite preview --port 5174 --host 127.0.0.1",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:ci": "xvfb-run --auto-servernum npm run test --debug",
+    "test:e2e:ci": "xvfb-run --auto-servernum npx playwright test --debug",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
