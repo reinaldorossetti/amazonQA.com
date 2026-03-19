@@ -15,6 +15,10 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [frontend-chromium, frontend-webkit, frontend-edge]
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
 
@@ -91,13 +95,13 @@ jobs:
         run: npx wait-on --timeout 180000 http://127.0.0.1:5174
 
       - name: Run E2E tests
-        run: xvfb-run --auto-servernum npx playwright test
+        run: xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
 
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report
           if-no-files-found: ignore
 
@@ -105,7 +109,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-and-logs
+          name: test-results-and-logs-${{ matrix.project }}
           path: |
             test-results
             junit-report.xml
@@ -136,8 +140,26 @@ jobs:
       - name: Download Playwright report artifact
         uses: actions/download-artifact@v4
         with:
-          name: playwright-report
+          pattern: playwright-report-*
           path: playwright-report
+
+      - name: Generate Index HTML
+        run: |
+          cat << 'EOF' > playwright-report/index.html
+          <!DOCTYPE html>
+          <html>
+            <head><title>Playwright Reports</title><style>body { font-family: sans-serif; padding: 2rem; }</style></head>
+            <body>
+              <h1>Test Reports</h1>
+              <ul>
+                <li><a href="playwright-report-frontend-chromium/index.html">Chromium</a></li>
+                <li><a href="playwright-report-frontend-edge/index.html">Edge</a></li>
+                <li><a href="playwright-report-frontend-webkit/index.html">WebKit</a></li>
+                <li><a href="playwright-report-api/index.html">API</a></li>
+              </ul>
+            </body>
+          </html>
+          EOF
 
       - name: Deploy Playwright report to gh-pages
         if: always() && github.event_name == 'push'
