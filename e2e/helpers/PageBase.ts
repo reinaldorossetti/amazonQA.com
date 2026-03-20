@@ -1,6 +1,8 @@
 import { Page } from '@playwright/test';
+import { faker } from '@faker-js/faker';
 
 type PageName = 'catalog' | 'productDetails' | 'cart' | 'login' | 'register' | 'thankYou';
+
 
 const readinessSelectorByPage: Record<PageName, string[]> = {
   catalog: ['#catalog-header-wrapper'],
@@ -28,11 +30,40 @@ export async function waitForPageLoad(page: Page, pageName: PageName): Promise<v
 }
 
 export class PageBase {
+  generateUserData() {
+    return {
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      email: faker.internet.email().toLowerCase(),
+      password: faker.internet.password({ length: 12, memorable: false, pattern: /[A-Za-z0-9@]/ }) + 'Aa1@',
+    };
+  }
   protected page: Page;
   timeOut = 20_000;
 
   constructor(page: Page) {
     this.page = page;
+  }
+
+  /**
+   * Generate invalid email (no @ symbol)
+   */
+  generateInvalidEmail() {
+    return faker.lorem.word() + faker.lorem.word() + '.com';
+  }
+
+  /**
+   * Generate password shorter than 8 chars (fails local validation)
+   */
+  generateShortPassword() {
+    return faker.string.alphanumeric(5);
+  }
+
+  /**
+   * Generate different password for mismatch test
+   */
+  generateDifferentPassword() {
+    return faker.internet.password({ length: 12, memorable: false, pattern: /[A-Za-z0-9@]/ }) + 'Bb2@';
   }
 
   /**

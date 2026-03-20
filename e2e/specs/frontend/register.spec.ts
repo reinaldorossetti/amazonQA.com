@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { expect } from '../../fixtures/ui.fixture';
 import { test, REGISTER_VALIDATION } from '../../fixtures/register.fixture';
 import { selectors } from '../../fixtures/selectors/selectors';
@@ -6,48 +5,22 @@ import { RegisterPage } from '../../helpers/RegisterPage';
 import { waitForPageLoad, PageBase } from '../../helpers/PageBase';
 
 test.describe('Register', () => {
-  /**
-   * Generate random user data for test cases
-   */
-  const generateUserData = () => ({
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
-    email: faker.internet.email().toLowerCase(),
-    password: faker.internet.password({ length: 12, memorable: false, pattern: /[A-Za-z0-9@]/ }) + 'Aa1@',
-  });
 
   /**
-   * Generate invalid email (no @ symbol)
+   * TS01 - Happy path: fills out both steps completely and verifies success via toast message
    */
-  const generateInvalidEmail = () => faker.lorem.word() + faker.lorem.word() + '.com';
-
-  /**
-   * Generate password shorter than 8 chars (fails local validation)
-   */
-  const generateShortPassword = () => faker.string.alphanumeric(5);
-
-  /**
-   * Generate different password for mismatch test
-   */
-  const generateDifferentPassword = () =>
-    faker.internet.password({ length: 12, memorable: false, pattern: /[A-Za-z0-9@]/ }) + 'Bb2@';
-
-  /**
-   * TS01 - Happy path: preenche os dois steps completos e verifica sucesso via toast
-   */
-  test('TS01 - Validar registro realizado com sucesso', async ({ page, setupViacepMock }) => {
-    const userData = generateUserData();
+  test('TS01 - Should successfully register a new user when providing all valid requirements', async ({ page, setupViacepMock }) => {
     const registerPage = new RegisterPage(page);
     const base = new PageBase(page);
+    const userData = base.generateUserData();
     const cpf = registerPage.generateValidCPF();
 
-    // Mock do ViaCEP para não depender de rede externa
+    // ViaCEP mock to avoid depending on external network
     await setupViacepMock(page);
 
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
 
-    // ── Step 0: Dados Pessoais ────────────────────────────────────────────────
     await base.fill(selectors.register.firstName, userData.firstName);
     await base.fill(selectors.register.lastName, userData.lastName);
     await base.fill(selectors.register.cpf, cpf);
@@ -55,18 +28,13 @@ test.describe('Register', () => {
     await base.fill(selectors.register.phone, REGISTER_VALIDATION.testData.validPhone);
     await base.fill(selectors.register.password, userData.password);
     await base.fill(selectors.register.confirmPassword, userData.password);
-
     await base.click(selectors.register.next);
-
-    // ── Step 1: Endereço ──────────────────────────────────────────────────────
     await base.fill(selectors.register.addressZip, REGISTER_VALIDATION.testData.validZipCode);
-    // Aguarda o ViaCEP preencher automaticamente o logradouro
+    
     await expect(page.locator(selectors.register.addressStreet)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(selectors.register.addressNumber, REGISTER_VALIDATION.testData.addressNumber);
-
     await page.click(selectors.register.submit);
 
-    // ── Verificações ──────────────────────────────────────────────────────────
     await expect(page.locator('body')).toContainText(/Cadastro realizado com sucesso!/i, { timeout: 10_000 });
   });
 
@@ -74,9 +42,9 @@ test.describe('Register', () => {
    * TS02 - Email em formato inválido: erro aparece no helper text do campo email no step 0
    */
   test('TS02 - rejeita email em formato inválido aleatório', async ({ page }) => {
-    const userData = generateUserData();
-    const invalidEmail = generateInvalidEmail();
     const base = new PageBase(page);
+    const userData = base.generateUserData();
+    const invalidEmail = base.generateInvalidEmail();
 
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
@@ -86,7 +54,6 @@ test.describe('Register', () => {
     await base.fill(selectors.register.email, invalidEmail);
     await base.fill(selectors.register.password, userData.password);
     await base.fill(selectors.register.confirmPassword, userData.password);
-
     await base.click(selectors.register.next);
 
     await expect(page.locator(selectors.register.errorEmail)).toContainText(REGISTER_VALIDATION.errorMessages.emailInvalid);
@@ -96,9 +63,9 @@ test.describe('Register', () => {
    * TS03 - Senha curta (< 8 chars): falha na validação local do step 0
    */
   test('TS03 - rejeita senha curta no step 0', async ({ page }) => {
-    const userData = generateUserData();
-    const shortPassword = generateShortPassword();
     const base = new PageBase(page);
+    const userData = base.generateUserData();
+    const shortPassword = base.generateShortPassword();
 
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
@@ -118,9 +85,9 @@ test.describe('Register', () => {
    * TS04 - Senhas não correspondem: erro aparece no helper text do campo confirmar senha
    */
   test('TS04 - rejeita senhas não-correspondentes com dados aleatórios', async ({ page }) => {
-    const userData = generateUserData();
-    const differentPassword = generateDifferentPassword();
     const base = new PageBase(page);
+    const userData = base.generateUserData();
+    const differentPassword = base.generateDifferentPassword();
 
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
@@ -130,45 +97,79 @@ test.describe('Register', () => {
     await base.fill(selectors.register.email, userData.email);
     await base.fill(selectors.register.password, userData.password);
     await base.fill(selectors.register.confirmPassword, differentPassword);
-
     await base.click(selectors.register.next);
 
     await expect(page.locator(selectors.register.errorConfirmPassword)).toContainText(/As senhas não coincidem/i);
   });
 
   /**
-   * TS05 - Campo obrigatório faltando: ao clicar em Next o step não avança
-   *        e o campo sem preenchimento exibe sua mensagem de erro individual.
+   * TS05 - Missing required field: clicking Next should not advance to step 1
+   *        and the empty field should display its specific validation error message.
    */
-  test('TS05 - valida campo obrigatório faltando no step 0', async ({ page }) => {
-    const missingField = faker.helpers.arrayElement(['firstName', 'lastName', 'email', 'password']);
+  test('TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty', async ({ page }) => {
     const base = new PageBase(page);
+    const userData = base.generateUserData();
+    
+    // We can define the test scenarios mapping each field to its selectors
+    const testCases = [
+      {
+        fieldToOmit: 'firstName',
+        fillAction: async () => {
+          await base.fill(selectors.register.lastName, userData.lastName);
+          await base.fill(selectors.register.email, userData.email);
+          await base.fill(selectors.register.password, userData.password);
+          await base.fill(selectors.register.confirmPassword, userData.password);
+        },
+        expectedErrorSelector: selectors.register.errorFirstName
+      },
+      {
+        fieldToOmit: 'lastName',
+        fillAction: async () => {
+          await base.fill(selectors.register.firstName, userData.firstName);
+          await base.fill(selectors.register.email, userData.email);
+          await base.fill(selectors.register.password, userData.password);
+          await base.fill(selectors.register.confirmPassword, userData.password);
+        },
+        expectedErrorSelector: selectors.register.errorLastName
+      },
+      {
+        fieldToOmit: 'email',
+        fillAction: async () => {
+          await base.fill(selectors.register.firstName, userData.firstName);
+          await base.fill(selectors.register.lastName, userData.lastName);
+          await base.fill(selectors.register.password, userData.password);
+          await base.fill(selectors.register.confirmPassword, userData.password);
+        },
+        expectedErrorSelector: selectors.register.errorEmail
+      },
+      {
+        fieldToOmit: 'password',
+        fillAction: async () => {
+          await base.fill(selectors.register.firstName, userData.firstName);
+          await base.fill(selectors.register.lastName, userData.lastName);
+          await base.fill(selectors.register.email, userData.email);
+        },
+        expectedErrorSelector: selectors.register.errorPassword
+      }
+    ];
+
+    // Pick one scenario randomly to test per execution 
+    // (If you want to test ALL of them, we could loop over testCases instead of picking randomly)
+    const scenario = testCases[Math.floor(Math.random() * testCases.length)];
 
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
 
-    if (missingField !== 'firstName') await base.fill(selectors.register.firstName, faker.person.firstName());
-    if (missingField !== 'lastName') await base.fill(selectors.register.lastName, faker.person.lastName());
-    if (missingField !== 'email') await base.fill(selectors.register.email, faker.internet.email());
-    if (missingField !== 'password') {
-      const pwd = faker.internet.password({ length: 10 }) + 'Aa1@';
-      await base.fill(selectors.register.password, pwd);
-      await base.fill(selectors.register.confirmPassword, pwd);
-    }
-
+    // Fill all data EXCEPT the selected field
+    await scenario.fillAction();
+    
     await base.click(selectors.register.next);
 
-    // Garante que o step 0 permanece visível (não avançou para step 1)
+    // Ensure step 0 is still visible (did not advance to step 1)
     await expect(page.locator(selectors.register.next)).toBeVisible();
 
-    // Verifica o erro do campo específico que está vazio
-    const errorSelectors: Record<string, string> = {
-      firstName: selectors.register.errorFirstName,
-      lastName: selectors.register.errorLastName,
-      email: selectors.register.errorEmail,
-      password: selectors.register.errorPassword,
-    };
-    await expect(page.locator(errorSelectors[missingField])).toBeVisible();
+    // Verify the specific empty field shows an error message
+    await expect(page.locator(scenario.expectedErrorSelector)).toBeVisible();
   });
 
   /**
@@ -176,9 +177,9 @@ test.describe('Register', () => {
    *        exibido via toast de erro.
    */
   test('TS06 - rejeita email duplicado com dados aleatórios', async ({ page, setupDuplicateEmailMock, setupViacepMock }) => {
-    const userData = generateUserData();
-    const registerPage = new RegisterPage(page);
     const base = new PageBase(page);
+    const userData = base.generateUserData();
+    const registerPage = new RegisterPage(page);
     const cpf = registerPage.generateValidCPF();
 
     await setupDuplicateEmailMock(page);
@@ -187,7 +188,6 @@ test.describe('Register', () => {
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
 
-    // ── Step 0 ────────────────────────────────────────────────────────────────
     await base.fill(selectors.register.firstName, userData.firstName);
     await base.fill(selectors.register.lastName, userData.lastName);
     await base.fill(selectors.register.cpf, cpf);
@@ -198,7 +198,6 @@ test.describe('Register', () => {
 
     await base.click(selectors.register.next);
 
-    // ── Step 1 ────────────────────────────────────────────────────────────────
     await base.fill(selectors.register.addressZip, REGISTER_VALIDATION.testData.validZipCode);
     await expect(page.locator(selectors.register.addressStreet)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(selectors.register.addressNumber, REGISTER_VALIDATION.testData.addressNumber);
