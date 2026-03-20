@@ -443,5 +443,4 @@ tester.com/
 
 ## 🔐 Nota de Segurança
 
-> ⚠️ As senhas são armazenadas em **texto plano** — adequado somente para fins de demonstração e desenvolvimento.
-> Em produção, utilize `bcrypt` ou `argon2` para hashing antes de persistir.
+> ✅ As senhas são processadas e armazenadas de forma segura no banco de dados utilizando hashing com o **bcrypt** (salt rounds = 12), em aderência às boas práticas de segurança do mercado de software (OWASP).

@@ -10,8 +10,9 @@
     "seed": "node scripts/seed.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.4.5",
     "next": "^14.2.0",
-    "pg": "^8.11.3",
-    "dotenv": "^16.4.5"
+    "pg": "^8.11.3"
   }
 }

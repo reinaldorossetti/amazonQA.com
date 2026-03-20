@@ -7,6 +7,7 @@
  */
 import { NextResponse } from 'next/server';
 import { query } from '../../../../lib/db.js';
+import bcrypt from 'bcrypt';
 
 export async function POST(request) {
     try {
@@ -25,7 +26,12 @@ export async function POST(request) {
         );
 
         const user = rows[0];
-        if (!user || user.password !== password) {
+        if (!user) {
+            return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });
         }
 

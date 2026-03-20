@@ -1,4 +1,1 @@
-{
-  "/api/products/route": "app/api/products/route.js",
-  "/api/users/register/route": "app/api/users/register/route.js"
-}
+{}

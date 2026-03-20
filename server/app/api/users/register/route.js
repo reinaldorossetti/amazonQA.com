@@ -4,11 +4,10 @@
  *
  * Body: { person_type, first_name, last_name, email, phone?, password,
  *         cpf?, cnpj?, company_name?, address_* }
- *
- * @security Passwords are stored plain-text — demo only. Hash in production!
  */
 import { NextResponse } from 'next/server';
 import { query } from '../../../../lib/db.js';
+import bcrypt from 'bcrypt';
 
 export async function POST(request) {
     try {
@@ -51,6 +50,9 @@ export async function POST(request) {
             }
         }
 
+        const saltRounds = 12;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const { rows } = await query(
             `INSERT INTO users (
                 person_type, first_name, last_name, email, phone, password,
@@ -62,7 +64,7 @@ export async function POST(request) {
             RETURNING id, person_type, first_name, last_name, email, created_at`,
             [
                 person_type, first_name, last_name, email,
-                phone ?? null, password,
+                phone ?? null, hashedPassword,
                 cpf  ? cpf.replace(/\D/g, '')  : null,
                 cnpj ? cnpj.replace(/\D/g, '') : null,
                 company_name ?? null,
