@@ -105,6 +105,7 @@ export class PageBase {
    * Clica em um elemento
    */
   async click(selector: string) {
+    await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
     await this.page.click(selector);
   }
 
@@ -122,7 +123,7 @@ export class PageBase {
 
     const selector = selectors[context];
     if (selector) {
-      await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: 15_000 });
+      await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
     }
   }
 }
