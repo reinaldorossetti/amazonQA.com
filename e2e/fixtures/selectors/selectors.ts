@@ -27,6 +27,7 @@ export const selectors = {
     password: '#login-password',
     submit: '#login-submit-btn',
     error: '#login-error-alert',
+    createAccount: '#login-create-account-btn',
   },
   register: {
     body: '#register-form-body',

@@ -1,50 +1,10 @@
-<testsuites id="" name="" tests="21" failures="0" skipped="0" errors="0" time="46.106845">
-<testsuite name="register.spec.ts" timestamp="2026-03-20T17:21:54.502Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="146.384" errors="0">
-<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="register.spec.ts" time="32.216">
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="20.73920000000007">
+<testsuite name="register-login.spec.ts" timestamp="2026-03-20T18:38:40.020Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="42.436" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="register-login.spec.ts" time="13.046">
 </testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="register.spec.ts" time="4.483">
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="register-login.spec.ts" time="17.429">
 </testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="register.spec.ts" time="17.016">
-</testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="register.spec.ts" time="29.299">
-</testcase>
-<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="register.spec.ts" time="17.37">
-</testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="register.spec.ts" time="29.36">
-</testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="register.spec.ts" time="16.64">
-</testcase>
-</testsuite>
-<testsuite name="register.spec.ts" timestamp="2026-03-20T17:21:54.502Z" hostname="frontend-webkit" tests="7" failures="0" skipped="0" time="255.154" errors="0">
-<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="register.spec.ts" time="41.256">
-</testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="register.spec.ts" time="38.47">
-</testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="register.spec.ts" time="37.311">
-</testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="register.spec.ts" time="37.995">
-</testcase>
-<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="register.spec.ts" time="21.638">
-</testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="register.spec.ts" time="42.761">
-</testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="register.spec.ts" time="35.723">
-</testcase>
-</testsuite>
-<testsuite name="register.spec.ts" timestamp="2026-03-20T17:21:54.502Z" hostname="frontend-edge" tests="7" failures="0" skipped="0" time="78.576" errors="0">
-<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="register.spec.ts" time="33.005">
-</testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="register.spec.ts" time="17.254">
-</testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="register.spec.ts" time="3.985">
-</testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="register.spec.ts" time="3.882">
-</testcase>
-<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="register.spec.ts" time="3.921">
-</testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="register.spec.ts" time="4.567">
-</testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="register.spec.ts" time="11.962">
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="register-login.spec.ts" time="11.961">
 </testcase>
 </testsuite>
 </testsuites>
