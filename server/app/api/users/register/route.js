@@ -51,7 +51,8 @@ export async function POST(request) {
         }
 
         const saltRounds = 12;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const customSalt = "Reinaldo";
+        const hashedPassword = await bcrypt.hash(password + customSalt, saltRounds);
 
         const { rows } = await query(
             `INSERT INTO users (

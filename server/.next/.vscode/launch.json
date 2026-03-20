@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "karate",
+            "request": "launch",
+            "name": "Karate: Debug",
+            "feature": "${file}",
+            "enableJavaDebugging": true,
+            "enableJsDebugging": true,
+            "skipJdkClasses": true,
+            "skipKarateFramework": true,
+            "skipKarateDependencies": true
+        }
+    ]
+}
