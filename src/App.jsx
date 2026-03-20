@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -395,6 +395,15 @@ const NavBar = ({ cartCount, search, setSearch }) => {
   );
 };
 
+const ProtectedRoute = ({ children }) => {
+  const { isLoggedIn } = useAuth();
+  const location = useLocation();
+  if (!isLoggedIn) {
+    return <Navigate to={`/login?next=${encodeURIComponent(location.pathname)}`} replace />;
+  }
+  return children;
+};
+
 const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
@@ -458,7 +467,9 @@ const AppInner = () => {
             <Route
               path="/thank-you"
               element={
-                <ThankYouPage clearCart={() => setCartItems([])} />
+                <ProtectedRoute>
+                  <ThankYouPage clearCart={() => setCartItems([])} />
+                </ProtectedRoute>
               }
             />
             <Route path="/register" element={<Register />} />

@@ -30,7 +30,7 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });
         }
 
-        const customSalt = "Reinaldo";
+        const customSalt = "Reinaldo2026";
         const isPasswordValid = await bcrypt.compare(password + customSalt, user.password);
         if (!isPasswordValid) {
             return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });

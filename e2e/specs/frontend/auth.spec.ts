@@ -30,7 +30,11 @@ test.describe('Login', () => {
     });
   });
 
-  test('TS01 - login válido com redirect next e saudação', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates successful login when a `next` route is provided.
+   * Expected behavior: user is redirected to `/cart` and a greeting is displayed.
+   */
+  test('TS01 - should log in successfully with next redirect and greeting', async ({ page, waitForPageLoad }) => {
     await page.goto('/login?next=/cart');
     await waitForPageLoad(page, 'login');
 
@@ -43,7 +47,11 @@ test.describe('Login', () => {
     await expect(page.locator(selectors.nav.userGreeting)).toContainText('Valid');
   });
 
-  test('TS02 - deve exibir erro para credenciais inválidas', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates authentication failure for invalid credentials.
+   * Expected behavior: login page shows an "invalid credentials" error message.
+   */
+  test('TS02 - should display error for invalid credentials', async ({ page, waitForPageLoad }) => {
     await page.goto('/login');
     await waitForPageLoad(page, 'login');
 
@@ -54,7 +62,11 @@ test.describe('Login', () => {
     await expect(page.locator(selectors.login.error)).toContainText(/Credenciais inválidas/i);
   });
 
-  test('TS03 - deve validar campos obrigatórios', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates required field enforcement on login form submission.
+   * Expected behavior: submitting empty fields shows a required-fields validation message.
+   */
+  test('TS03 - should validate required fields', async ({ page, waitForPageLoad }) => {
     await page.goto('/login');
     await waitForPageLoad(page, 'login');
 
@@ -62,7 +74,11 @@ test.describe('Login', () => {
     await expect(page.locator(selectors.login.error)).toContainText(/Preencha e-mail e senha/i);
   });
 
-  test('TS04 - login com senha em branco', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates form behavior when password is left blank.
+   * Expected behavior: required-fields validation message is shown.
+   */
+  test('TS04 - should show validation when password is blank', async ({ page, waitForPageLoad }) => {
     await page.goto('/login');
     await waitForPageLoad(page, 'login');
 
@@ -73,7 +89,11 @@ test.describe('Login', () => {
     await expect(page.locator(selectors.login.error)).toContainText(/Preencha e-mail e senha/i);
   });
 
-  test('TS05 - login com usuário em branco', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates form behavior when email is left blank.
+   * Expected behavior: required-fields validation message is shown.
+   */
+  test('TS05 - should show validation when email is blank', async ({ page, waitForPageLoad }) => {
     await page.goto('/login');
     await waitForPageLoad(page, 'login');
 
@@ -84,7 +104,11 @@ test.describe('Login', () => {
     await expect(page.locator(selectors.login.error)).toContainText(/Preencha e-mail e senha/i);
   });
 
-  test('TS06 - deve manter estado autenticado após reload', async ({ page, waitForPageLoad }) => {
+  /**
+   * Validates session persistence after page reload.
+   * Expected behavior: authenticated user greeting remains visible after reload.
+   */
+  test('TS06 - should keep authenticated state after reload', async ({ page, waitForPageLoad }) => {
     await page.goto('/login');
     await waitForPageLoad(page, 'login');
 

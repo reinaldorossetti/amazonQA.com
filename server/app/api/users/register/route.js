@@ -51,7 +51,7 @@ export async function POST(request) {
         }
 
         const saltRounds = 12;
-        const customSalt = "Reinaldo";
+        const customSalt = "Reinaldo2026";
         const hashedPassword = await bcrypt.hash(password + customSalt, saltRounds);
 
         const { rows } = await query(
