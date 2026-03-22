@@ -2,61 +2,59 @@
 [1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/home/runner/work/tester.com/tester.com[39m
       [2mCoverage enabled with [22m[33mv8[39m
 
- [32m✓[39m src/__tests__/components/ProductDetails.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1815[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_PD_002: renderiza fallback de produto não encontrado e permite voltar [33m 337[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_PD_004: renderiza detalhes completos e chama addToCart com quantidade alterada [33m 1004[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Checkout.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 730[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_CHK_001: botão inicia desabilitado com carrinho vazio [33m 307[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Login.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 5804[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_001: renderiza campos, botão de submit e link de registro [33m 802[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_002: valida campos obrigatórios e exibe alerta de erro [33m 322[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_003: alterna visibilidade da senha [33m 358[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_004: realiza login com sucesso, normaliza email e navega para ?next [33m 834[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_005: usa fallback de rota "/" quando ?next não existe [33m 628[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_006: trata resposta sem token como erro de autenticação inválida [33m 592[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_007: usa mensagem fallback quando erro não possui message [33m 593[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_008: exibe estado de loading durante requisição e limpa no finally [33m 766[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_009: fecha alerta de erro pelo onClose do Alert [33m 323[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_010: aceita payload de login sem campo user (fallback para objeto raiz) [33m 582[2mms[22m[39m
- [32m✓[39m src/__tests__/db/api.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 21[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Cart.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 870[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_CART_001: renderiza estado vazio com CTA para catálogo [33m 420[2mms[22m[39m
- [32m✓[39m src/__tests__/App.test.jsx [2m([22m[2m5 tests[22m[2m)[22m[33m 803[2mms[22m[39m
-     [33m[2m✓[22m[39m renderiza navbar, rota inicial e atualiza search [33m 414[2mms[22m[39m
- [32m✓[39m src/__tests__/components/CartItem.test.jsx [2m([22m[2m8 tests[22m[2m)[22m[33m 719[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Product.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 683[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_PROD_001: Renderiza imagem produto [33m 378[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/AuthContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 75[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Catalog.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 856[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_CAT_007: Busca por termo (debounce mock) [32m 300[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/ProductDetails.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1729[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_PD_004: renderiza detalhes completos e chama addToCart com quantidade alterada [33m 1016[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Checkout.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 792[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_CHK_001: botão inicia desabilitado com carrinho vazio [33m 366[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Login.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 5725[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_001: renderiza campos, botão de submit e link de registro [33m 875[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_003: alterna visibilidade da senha [33m 381[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_004: realiza login com sucesso, normaliza email e navega para ?next [33m 756[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_005: usa fallback de rota "/" quando ?next não existe [33m 727[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_006: trata resposta sem token como erro de autenticação inválida [33m 617[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_007: usa mensagem fallback quando erro não possui message [33m 552[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_008: exibe estado de loading durante requisição e limpa no finally [33m 755[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_010: aceita payload de login sem campo user (fallback para objeto raiz) [33m 596[2mms[22m[39m
+ [32m✓[39m src/__tests__/db/api.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Cart.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 799[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_CART_001: renderiza estado vazio com CTA para catálogo [33m 415[2mms[22m[39m
+ [32m✓[39m src/__tests__/App.test.jsx [2m([22m[2m5 tests[22m[2m)[22m[33m 916[2mms[22m[39m
+     [33m[2m✓[22m[39m renderiza navbar, rota inicial e atualiza search [33m 468[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/CartItem.test.jsx [2m([22m[2m8 tests[22m[2m)[22m[33m 743[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Product.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 745[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_PROD_001: Renderiza imagem produto [33m 382[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/AuthContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 67[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Catalog.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 932[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_CAT_001: Lista todos produtos (mock API) [33m 309[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_CAT_007: Busca por termo (debounce mock) [33m 311[2mms[22m[39m
  [32m✓[39m src/__tests__/components/ThankYouPage.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[32m 283[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/LanguageContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 70[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/DatabaseContext.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 115[2mms[22m[39m
- [32m✓[39m src/__tests__/validation.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Register.test.jsx [2m([22m[2m19 tests[22m[2m)[22m[33m 38576[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_001: Renderiza step inicial com botão próximo e link de login [33m 1159[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_002: Mostra erros obrigatórios ao avançar sem preencher [33m 440[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_003: Alterna para PJ e exibe campos de Razão Social/CNPJ [33m 449[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_004: Avança para step 1 quando dados PF são válidos [33m 3644[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_005: Bloqueia avanço com CPF inválido [33m 3260[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_006: Exibe força da senha dinamicamente [33m 839[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_007: Auto-preenche endereço via CEP [33m 3953[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_008: Submete com sucesso e chama registerUser com payload normalizado [33m 4298[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_009: Mostra toast de erro quando registerUser falha [33m 2769[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_010: No step 1, voltar retorna para step 0 [33m 2073[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_011: Em PJ, bloqueia avanço sem Razão Social/CNPJ válidos [33m 2491[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_012: CEP não encontrado exibe erro específico [33m 2078[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_013: Falha de rede no CEP exibe erro genérico [33m 2063[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_014: Exige campos obrigatórios do step 1 no submit [33m 1963[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_015: Sucesso no cadastro navega para home após timeout [33m 2362[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_016: Erro de submit sem message usa fallback padrão [33m 2388[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_017: Upload de comprovante exibe nome do arquivo selecionado [33m 1933[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_019: Toggles de senha/confirmar alternam tipo do input [33m 304[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/LanguageContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/DatabaseContext.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 106[2mms[22m[39m
+ [32m✓[39m src/__tests__/validation.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Register.test.jsx [2m([22m[2m19 tests[22m[2m)[22m[33m 38652[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_001: Renderiza step inicial com botão próximo e link de login [33m 1231[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_002: Mostra erros obrigatórios ao avançar sem preencher [33m 466[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_003: Alterna para PJ e exibe campos de Razão Social/CNPJ [33m 481[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_004: Avança para step 1 quando dados PF são válidos [33m 3746[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_005: Bloqueia avanço com CPF inválido [33m 3255[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_006: Exibe força da senha dinamicamente [33m 813[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_007: Auto-preenche endereço via CEP [33m 3737[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_008: Submete com sucesso e chama registerUser com payload normalizado [33m 4278[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_009: Mostra toast de erro quando registerUser falha [33m 2698[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_010: No step 1, voltar retorna para step 0 [33m 2129[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_011: Em PJ, bloqueia avanço sem Razão Social/CNPJ válidos [33m 2386[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_012: CEP não encontrado exibe erro específico [33m 2064[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_013: Falha de rede no CEP exibe erro genérico [33m 2112[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_014: Exige campos obrigatórios do step 1 no submit [33m 2052[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_015: Sucesso no cadastro navega para home após timeout [33m 2394[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_016: Erro de submit sem message usa fallback padrão [33m 2396[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_017: Upload de comprovante exibe nome do arquivo selecionado [33m 1981[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_019: Toggles de senha/confirmar alternam tipo do input [33m 316[2mms[22m[39m
 
 [2m Test Files [22m [1m[32m15 passed[39m[22m[90m (15)[39m
 [2m      Tests [22m [1m[32m126 passed[39m[22m[90m (126)[39m
-[2m   Start at [22m 20:41:53
-[2m   Duration [22m 41.37s[2m (transform 711ms, setup 1.63s, import 10.51s, tests 51.42s, environment 15.42s)[22m
+[2m   Start at [22m 20:49:25
+[2m   Duration [22m 41.74s[2m (transform 770ms, setup 1.68s, import 10.51s, tests 51.57s, environment 15.87s)[22m
 
 JUNIT report written to /home/runner/work/tester.com/tester.com/unit-test-report/junit.xml
 [34m % [39m[2mCoverage report from [22m[33mv8[39m
