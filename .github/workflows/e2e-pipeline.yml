@@ -247,6 +247,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: playwright-report
-          destination_dir: playwright-reports
+          destination_dir: tests-reports
           keep_files: true
 

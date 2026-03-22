@@ -11,7 +11,7 @@ API Testes:
 https://reinaldorossetti.github.io/tester.com/api-tests/  
 
 E2E Testes:  
-https://reinaldorossetti.github.io/tester.com/playwright-reports/  
+https://reinaldorossetti.github.io/tester.com/tests-reports/  
 
 ---
 
