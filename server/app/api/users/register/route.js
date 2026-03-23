@@ -76,6 +76,13 @@ export async function POST(request) {
             ]
         );
 
+        await query(
+            `INSERT INTO user_roles (user_id, role)
+             VALUES ($1, 'user')
+             ON CONFLICT (user_id, role) DO NOTHING`,
+            [rows[0].id]
+        );
+
         return NextResponse.json(rows[0], { status: 201 });
     } catch (err) {
         console.error('[POST /api/users/register]', err.message);

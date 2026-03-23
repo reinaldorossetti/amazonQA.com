@@ -60,6 +60,19 @@ CREATE TABLE IF NOT EXISTS users (
     created_at               TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE users ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS account_closed_at TIMESTAMPTZ;
+
+-- ─── user_roles ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_roles (
+    id         SERIAL       PRIMARY KEY,
+    user_id    INT          NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role       TEXT         NOT NULL,
+    created_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+    UNIQUE (user_id, role)
+);
+
 -- ─── cart_items ───────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS cart_items (
     id         SERIAL      PRIMARY KEY,
@@ -76,7 +89,55 @@ async function seed() {
     try {
         console.log('📦 Criando tabelas...');
         await client.query(DDL);
-        console.log('✓ Tabelas criadas (products, users, cart_items)');
+        console.log('✓ Tabelas criadas (products, users, cart_items, user_roles)');
+
+        // Garantir papel padrão para usuários existentes
+        await client.query(
+            `INSERT INTO user_roles (user_id, role)
+             SELECT u.id, 'user'
+             FROM users u
+             WHERE NOT EXISTS (
+                 SELECT 1 FROM user_roles ur WHERE ur.user_id = u.id
+             )`
+        );
+
+        // Garantir perfil admin (promove o usuário definido por e-mail, ou o primeiro usuário cadastrado)
+        const preferredAdminEmail = (process.env.SEED_ADMIN_EMAIL || '').trim().toLowerCase();
+        let adminUserId = null;
+
+        if (preferredAdminEmail) {
+            const adminByEmail = await client.query(
+                'SELECT id FROM users WHERE LOWER(email) = $1 LIMIT 1',
+                [preferredAdminEmail]
+            );
+            adminUserId = adminByEmail.rows[0]?.id ?? null;
+        }
+
+        if (!adminUserId) {
+            const firstUser = await client.query('SELECT id FROM users ORDER BY id ASC LIMIT 1');
+            adminUserId = firstUser.rows[0]?.id ?? null;
+        }
+
+        if (adminUserId) {
+            await client.query(
+                `INSERT INTO user_roles (user_id, role)
+                 VALUES ($1, 'admin')
+                 ON CONFLICT (user_id, role) DO NOTHING`,
+                [adminUserId]
+            );
+
+            // Garante explicitamente também o perfil user para o mesmo usuário
+            await client.query(
+                `INSERT INTO user_roles (user_id, role)
+                 VALUES ($1, 'user')
+                 ON CONFLICT (user_id, role) DO NOTHING`,
+                [adminUserId]
+            );
+
+            console.log(`✓ Perfis garantidos: user/admin (admin user_id=${adminUserId})`);
+        } else {
+            console.log('⚠ Nenhum usuário encontrado para atribuir perfil admin.');
+        }
 
         // Load products from the frontend mock JSON
         const mockPath = resolve(__dirname, '../../src/data/products_mock.json');

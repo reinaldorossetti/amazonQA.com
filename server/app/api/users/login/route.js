@@ -31,6 +31,10 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });
         }
 
+        if (user.is_active === false || user.account_closed_at) {
+            return NextResponse.json({ error: 'Conta encerrada ou inativa.' }, { status: 403 });
+        }
+
         const customSalt = "Reinaldo2026";
         const isPasswordValid = await bcrypt.compare(password + customSalt, user.password);
         if (!isPasswordValid) {
@@ -40,6 +44,13 @@ export async function POST(request) {
         // Return user without the password field
         const safeUser = { ...user };
         delete safeUser.password;
+
+        const rolesResult = await query(
+            'SELECT role FROM user_roles WHERE user_id = $1 ORDER BY role ASC',
+            [user.id]
+        );
+        safeUser.roles = rolesResult.rows.map((row) => row.role);
+        safeUser.isAdmin = safeUser.roles.includes('admin');
 
         const { accessToken, expiresIn } = signAccessToken(safeUser);
 
