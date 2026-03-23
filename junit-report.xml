@@ -1,148 +1,46 @@
-<testsuites id="" name="" tests="6" failures="6" skipped="0" errors="0" time="7.652093000000001">
-<testsuite name="api\products.api.spec.ts" timestamp="2026-03-22T21:43:39.993Z" hostname="api" tests="6" failures="6" skipped="0" time="0.143" errors="0">
-<testcase name="API Products › deve listar produtos sem filtro de categoria" classname="api\products.api.spec.ts" time="0.024">
-<failure message="products.api.spec.ts:4:3 deve listar produtos sem filtro de categoria" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:4:3 › API Products › deve listar produtos sem filtro de categoria 
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="36.688872999999674">
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-23T14:15:53.866Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="33.037" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="33.037">
+<failure message="register-login.spec.ts:97:3 TS02 - Should allow the user to log out and log back in with the same credentials" type="FAILURE">
+<![CDATA[  [frontend-chromium] › frontend\register-login.spec.ts:97:3 › Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials 
 
-    Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:3001
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
     Call log:
-      - → GET http://127.0.0.1:3001/api/products
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
+      - waiting for locator('#login-form-body').first() to be visible
 
 
-      3 | test.describe('API Products', () => {
-      4 |   test('deve listar produtos sem filtro de categoria', async ({ request }) => {
-    > 5 |     const response = await request.get('products');
-        |                                    ^
-      6 |     expect(response.status()).toBe(200);
-      7 |
-      8 |     const payload = await response.json();
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:5:36
+       at ..\helpers\PageBase.ts:22
+
+      20 |   for (const selector of selectors) {
+      21 |     try {
+    > 22 |       await page.locator(selector).first().waitFor({ state: 'visible', timeout: 30_000 });
+         |                                            ^
+      23 |       return;
+      24 |     } catch (err) {
+      25 |       lastError = err;
+        at waitForPageLoad (D:\github-projects\tester.com\e2e\helpers\PageBase.ts:22:44)
+        at D:\github-projects\tester.com\e2e\specs\frontend\register-login.spec.ts:108:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\error-context.md
 ]]>
 </failure>
-</testcase>
-<testcase name="API Products › deve criar, buscar, filtrar, atualizar e remover produto" classname="api\products.api.spec.ts" time="0.025">
-<failure message="products.api.spec.ts:12:3 deve criar, buscar, filtrar, atualizar e remover produto" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:12:3 › API Products › deve criar, buscar, filtrar, atualizar e remover produto 
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\test-failed-1.png]]
 
-    Error: apiRequestContext.post: connect ECONNREFUSED 127.0.0.1:3001
-    Call log:
-      - → POST http://127.0.0.1:3001/api/products
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
-        - content-type: application/json
-        - content-length: 244
+[[ATTACHMENT|test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\video.webm]]
 
-
-      13 |     const suffix = Date.now();
-      14 |
-    > 15 |     const createRes = await request.post('products', {
-         |                                     ^
-      16 |       data: {
-      17 |         name: `Produto Playwright ${suffix}`,
-      18 |         price: 123.45,
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:15:37
+[[ATTACHMENT|test-results\frontend-register-login-Re-3c96d-n-with-the-same-credentials-frontend-chromium\error-context.md]]
 ]]>
-</failure>
-</testcase>
-<testcase name="API Products › deve retornar 400 ao criar produto sem campos obrigatórios" classname="api\products.api.spec.ts" time="0.023">
-<failure message="products.api.spec.ts:59:3 deve retornar 400 ao criar produto sem campos obrigatórios" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:59:3 › API Products › deve retornar 400 ao criar produto sem campos obrigatórios 
-
-    Error: apiRequestContext.post: connect ECONNREFUSED 127.0.0.1:3001
-    Call log:
-      - → POST http://127.0.0.1:3001/api/products
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
-        - content-type: application/json
-        - content-length: 42
-
-
-      58 |
-      59 |   test('deve retornar 400 ao criar produto sem campos obrigatórios', async ({ request }) => {
-    > 60 |     const response = await request.post('products', { data: { description: 'sem campos obrigatórios' } });
-         |                                    ^
-      61 |     expect(response.status()).toBe(400);
-      62 |   });
-      63 |
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:60:36
-]]>
-</failure>
-</testcase>
-<testcase name="API Products › deve retornar array vazio para categoria inexistente" classname="api\products.api.spec.ts" time="0.023">
-<failure message="products.api.spec.ts:64:3 deve retornar array vazio para categoria inexistente" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:64:3 › API Products › deve retornar array vazio para categoria inexistente 
-
-    Error: apiRequestContext.get: connect ECONNREFUSED 127.0.0.1:3001
-    Call log:
-      - → GET http://127.0.0.1:3001/api/products?category=__NO_MATCH__PLAYWRIGHT__
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
-
-
-      63 |
-      64 |   test('deve retornar array vazio para categoria inexistente', async ({ request }) => {
-    > 65 |     const response = await request.get('products?category=__NO_MATCH__PLAYWRIGHT__');
-         |                                    ^
-      66 |     expect(response.status()).toBe(200);
-      67 |
-      68 |     const payload = await response.json();
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:65:36
-]]>
-</failure>
-</testcase>
-<testcase name="API Products › deve retornar 404 ao atualizar produto inexistente" classname="api\products.api.spec.ts" time="0.024">
-<failure message="products.api.spec.ts:73:3 deve retornar 404 ao atualizar produto inexistente" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:73:3 › API Products › deve retornar 404 ao atualizar produto inexistente 
-
-    Error: apiRequestContext.put: connect ECONNREFUSED 127.0.0.1:3001
-    Call log:
-      - → PUT http://127.0.0.1:3001/api/products/999999999
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
-        - content-type: application/json
-        - content-length: 126
-
-
-      72 |
-      73 |   test('deve retornar 404 ao atualizar produto inexistente', async ({ request }) => {
-    > 74 |     const response = await request.put('products/999999999', {
-         |                                    ^
-      75 |       data: {
-      76 |         name: 'Inexistente',
-      77 |         price: 10,
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:74:36
-]]>
-</failure>
-</testcase>
-<testcase name="API Products › deve retornar 404 ao remover produto inexistente" classname="api\products.api.spec.ts" time="0.024">
-<failure message="products.api.spec.ts:90:3 deve retornar 404 ao remover produto inexistente" type="FAILURE">
-<![CDATA[  [api] › api\products.api.spec.ts:90:3 › API Products › deve retornar 404 ao remover produto inexistente 
-
-    Error: apiRequestContext.delete: connect ECONNREFUSED 127.0.0.1:3001
-    Call log:
-      - → DELETE http://127.0.0.1:3001/api/products/999999999
-        - user-agent: Playwright/1.58.2 (x64; windows 10.0) node/24.11
-        - accept: */*
-        - accept-encoding: gzip,deflate,br
-
-
-      89 |
-      90 |   test('deve retornar 404 ao remover produto inexistente', async ({ request }) => {
-    > 91 |     const response = await request.delete('products/999999999');
-         |                                          ^
-      92 |     expect(response.status()).toBe(404);
-      93 |   });
-      94 | });
-        at D:\github-projects\tester.com\e2e\specs\api\products.api.spec.ts:91:42
-]]>
-</failure>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>

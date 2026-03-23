@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import process from 'node:process';
+import { Buffer } from 'node:buffer';
 
 const DEFAULT_EXPIRES_IN = '1h';
 

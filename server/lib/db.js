@@ -3,7 +3,8 @@
  *
  * Reads DATABASE_URL from environment (set in .env.local for dev,
  * or via the container env in production).
-/* global process */
+ */
+import process from 'node:process';
 import { Pool, types } from 'pg';
 
 // Parse NUMERIC (OID 1700) as float instead of string
