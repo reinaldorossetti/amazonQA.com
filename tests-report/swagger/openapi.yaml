@@ -106,7 +106,7 @@ paths:
   /api/products:
     get:
       tags: [Products]
-      summary: Listar produtos (Acesso: público)
+      summary: "Listar produtos (Acesso: público)"
       parameters:
         - in: query
           name: category
@@ -130,7 +130,7 @@ paths:
 
     post:
       tags: [Products]
-      summary: Criar produto (Acesso: público)
+      summary: "Criar produto (Acesso: público)"
       requestBody:
         required: true
         content:
@@ -150,7 +150,7 @@ paths:
   /api/products/{id}:
     get:
       tags: [Products]
-      summary: Buscar produto por ID (Acesso: público)
+      summary: "Buscar produto por ID (Acesso: público)"
       parameters:
         - in: path
           name: id
@@ -169,7 +169,7 @@ paths:
 
     put:
       tags: [Products]
-      summary: Atualizar produto (Acesso: público)
+      summary: "Atualizar produto (Acesso: público)"
       parameters:
         - in: path
           name: id
@@ -190,7 +190,7 @@ paths:
 
     delete:
       tags: [Products]
-      summary: Excluir produto (Acesso: público)
+      summary: "Excluir produto (Acesso: público)"
       parameters:
         - in: path
           name: id
@@ -206,7 +206,7 @@ paths:
   /api/users/register:
     post:
       tags: [Users]
-      summary: Cadastro de usuário (Acesso: público)
+      summary: "Cadastro de usuário (Acesso: público)"
       requestBody:
         required: true
         content:
@@ -240,7 +240,7 @@ paths:
   /api/users/login:
     post:
       tags: [Users]
-      summary: Login de usuário (Acesso: público)
+      summary: "Login de usuário (Acesso: público)"
       requestBody:
         required: true
         content:
@@ -269,7 +269,7 @@ paths:
   /api/users:
     get:
       tags: [Users]
-      summary: Listar usuários cadastrados (Acesso: admin)
+      summary: "Listar usuários cadastrados (Acesso: admin)"
       security:
         - bearerAuth: []
       parameters:
@@ -296,7 +296,7 @@ paths:
 
     post:
       tags: [Users]
-      summary: Cadastrar novo usuário (Acesso: admin)
+      summary: "Cadastrar novo usuário (Acesso: admin)"
       security:
         - bearerAuth: []
       requestBody:
@@ -327,7 +327,7 @@ paths:
   /api/users/{id}:
     get:
       tags: [Users]
-      summary: Buscar usuário por ID (Acesso: admin ou próprio usuário)
+      summary: "Buscar usuário por ID (Acesso: admin ou próprio usuário)"
       security:
         - bearerAuth: []
       parameters:
@@ -344,7 +344,7 @@ paths:
 
     put:
       tags: [Users]
-      summary: Editar usuário existente (Acesso: admin ou próprio usuário)
+      summary: "Editar usuário existente (Acesso: admin ou próprio usuário)"
       security:
         - bearerAuth: []
       parameters:
@@ -367,7 +367,7 @@ paths:
 
     delete:
       tags: [Users]
-      summary: Excluir usuário por ID - hard delete (Acesso: admin)
+      summary: "Excluir usuário por ID - hard delete (Acesso: admin)"
       security:
         - bearerAuth: []
       parameters:
@@ -385,7 +385,7 @@ paths:
   /api/users/{id}/terminate:
     post:
       tags: [Users]
-      summary: Encerrar conta com ofuscação (Acesso: admin ou próprio usuário)
+      summary: "Encerrar conta com ofuscação (Acesso: admin ou próprio usuário)"
       security:
         - bearerAuth: []
       parameters:
@@ -403,7 +403,7 @@ paths:
   /api/cart:
     get:
       tags: [Cart]
-      summary: Listar itens do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      summary: "Listar itens do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)"
       security:
         - bearerAuth: []
       parameters:
@@ -423,7 +423,7 @@ paths:
 
     post:
       tags: [Cart]
-      summary: Adicionar item ao carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      summary: "Adicionar item ao carrinho (Acesso: usuário autenticado, apenas próprio carrinho)"
       security:
         - bearerAuth: []
       requestBody:
@@ -446,7 +446,7 @@ paths:
 
     delete:
       tags: [Cart]
-      summary: Remover item do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      summary: "Remover item do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)"
       security:
         - bearerAuth: []
       requestBody:
