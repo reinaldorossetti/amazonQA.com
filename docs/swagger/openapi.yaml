@@ -1,0 +1,464 @@
+openapi: 3.0.3
+info:
+  title: Tester.com API
+  version: 1.0.0
+  description: |
+    Documentação OpenAPI dos endpoints atuais da aplicação.
+servers:
+  - url: http://127.0.0.1:3001
+    description: Backend local (Next.js)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+        description:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        manufacturer:
+          type: string
+          nullable: true
+        line:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+
+    UserSafe:
+      type: object
+      properties:
+        id:
+          type: integer
+        person_type:
+          type: string
+          enum: [PF, PJ]
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+        user:
+          type: object
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        quantity:
+          type: integer
+        added_at:
+          type: string
+          format: date-time
+        product_id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+
+security: []
+
+paths:
+  /api/products:
+    get:
+      tags: [Products]
+      summary: Listar produtos (Acesso: público)
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de produtos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags: [Products]
+      summary: Criar produto (Acesso: público)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Produto criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Dados inválidos
+
+  /api/products/{id}:
+    get:
+      tags: [Products]
+      summary: Buscar produto por ID (Acesso: público)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Produto não encontrado
+
+    put:
+      tags: [Products]
+      summary: Atualizar produto (Acesso: público)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Produto atualizado
+        '404':
+          description: Produto não encontrado
+
+    delete:
+      tags: [Products]
+      summary: Excluir produto (Acesso: público)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produto removido
+        '404':
+          description: Produto não encontrado
+
+  /api/users/register:
+    post:
+      tags: [Users]
+      summary: Cadastro de usuário (Acesso: público)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [first_name, last_name, email, password]
+              properties:
+                person_type:
+                  type: string
+                  enum: [PF, PJ]
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuário criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSafe'
+        '409':
+          description: Conflito de e-mail/CPF/CNPJ
+
+  /api/users/login:
+    post:
+      tags: [Users]
+      summary: Login de usuário (Acesso: público)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciais inválidas
+        '403':
+          description: Conta inativa/encerrada
+
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Listar usuários cadastrados (Acesso: admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [all, active, closed]
+      responses:
+        '200':
+          description: Listagem paginada
+        '401':
+          description: Não autenticado
+        '403':
+          description: Requer admin
+
+    post:
+      tags: [Users]
+      summary: Cadastrar novo usuário (Acesso: admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [first_name, last_name, email, password]
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+                  enum: [user, admin]
+      responses:
+        '201':
+          description: Usuário criado
+        '403':
+          description: Requer admin
+
+  /api/users/{id}:
+    get:
+      tags: [Users]
+      summary: Buscar usuário por ID (Acesso: admin ou próprio usuário)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuário encontrado
+        '403':
+          description: Sem permissão
+
+    put:
+      tags: [Users]
+      summary: Editar usuário existente (Acesso: admin ou próprio usuário)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Usuário atualizado
+        '403':
+          description: Sem permissão
+
+    delete:
+      tags: [Users]
+      summary: Excluir usuário por ID - hard delete (Acesso: admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuário removido
+        '403':
+          description: Requer admin
+
+  /api/users/{id}/terminate:
+    post:
+      tags: [Users]
+      summary: Encerrar conta com ofuscação (Acesso: admin ou próprio usuário)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Conta encerrada
+        '403':
+          description: Sem permissão
+
+  /api/cart:
+    get:
+      tags: [Cart]
+      summary: Listar itens do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Itens do carrinho
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartItem'
+
+    post:
+      tags: [Cart]
+      summary: Adicionar item ao carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [productId]
+              properties:
+                userId:
+                  type: integer
+                productId:
+                  type: integer
+                quantity:
+                  type: integer
+      responses:
+        '201':
+          description: Item adicionado/incrementado
+
+    delete:
+      tags: [Cart]
+      summary: Remover item do carrinho (Acesso: usuário autenticado, apenas próprio carrinho)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [cartItemId]
+              properties:
+                cartItemId:
+                  type: integer
+      responses:
+        '200':
+          description: Item removido

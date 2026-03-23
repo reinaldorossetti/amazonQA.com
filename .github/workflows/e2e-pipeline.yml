@@ -206,6 +206,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download Playwright report artifact
         uses: actions/download-artifact@v4
         with:
@@ -218,6 +221,11 @@ jobs:
         with:
           name: unit-test-report
           path: tests-report/unit-tests
+
+      - name: Copy Swagger documentation
+        run: |
+          mkdir -p tests-report/swagger
+          cp -r docs/swagger/* tests-report/swagger/
 
       - name: Generate Index HTML
         run: |
@@ -234,6 +242,7 @@ jobs:
                 <li><a href="playwright-report-api/index.html">API</a></li>
                 <li><a href="unit-tests/coverage/index.html">Unit Tests Coverage (Vitest)</a></li>
                 <li><a href="unit-tests/junit.xml">Unit Tests JUnit XML</a></li>
+                <li><a href="swagger/index.html">Swagger API</a></li>
               </ul>
             </body>
           </html>
