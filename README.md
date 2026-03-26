@@ -40,6 +40,26 @@ Acompanhe os resultados diários, a cobertura e a documentação pública dispon
 - 🌐 [Relatório Frontend - Edge](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-edge/index.html)
 
 ---
+Passo a Passo para Rodar a Aplicação Localmente:
+````
+git clone https://github.com/reinaldorossetti/tester.com.git
+cd tester.com
+docker-compose -f docker-compose.yml up
+
+# Backend
+cd server
+npm install
+npm run seed
+npm run dev
+
+# Front-end, abra um outro terminal para não interromper o backend.
+cd ..
+npm install
+npm run build
+npm run preview
+
+````
+
 
 ## ⚛️ Frontend — React + Vite
 
