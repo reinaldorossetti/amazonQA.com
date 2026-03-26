@@ -58,8 +58,8 @@ export const loginUser = ({ email, password }) =>
 export const getCartItems = (userId) =>
     http('GET', `/cart?userId=${userId}`);
 
-export const upsertCartItem = (userId, productId, quantity = 1) =>
-    http('POST', '/cart', { userId, productId, quantity });
+export const upsertCartItem = (products) =>
+    http('POST', '/cart', { products });
 
 export const removeCartItem = (cartItemId) =>
     http('DELETE', '/cart', { cartItemId });

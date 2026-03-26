@@ -41,6 +41,16 @@ vi.mock('../components/Catalog', () => ({
       >
         add-product-a-again
       </button>
+      <button
+        onClick={() =>
+          onAddToCart(
+            { id: 2, name: 'Produto B', price: 20, image: '', category: 'cat', description: 'desc' },
+            1
+          )
+        }
+      >
+        add-product-b
+      </button>
     </div>
   ),
 }));
@@ -103,6 +113,17 @@ describe('App Component - Integration Behaviors', () => {
 
     expect(toast.info).toHaveBeenCalled();
     expect(document.querySelector('#nav-cart-count-badge')?.textContent).toBe('3');
+  });
+
+  it('suporta carrinho com vários produtos distintos', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'add-product-a' }));
+    await user.click(screen.getByRole('button', { name: 'add-product-b' }));
+
+    expect(document.querySelector('#nav-cart-count-badge')?.textContent).toBe('2');
+    expect(toast.success).toHaveBeenCalledTimes(2);
   });
 
   it('na rota /cart, atualiza e remove item via callbacks', async () => {

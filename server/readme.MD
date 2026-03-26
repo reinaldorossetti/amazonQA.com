@@ -101,15 +101,25 @@ O login retorna um token JWT (`tokenType: Bearer`).
 
 Endpoints protegidos (atualmente):
 
-- `GET /api/cart`
-- `POST /api/cart`
-- `DELETE /api/cart`
+| Endpoint | Acesso |
+|---|---|
+| `GET /api/cart` | Usuário autenticado (próprio carrinho) |
+| `POST /api/cart` | Usuário autenticado (próprio carrinho) |
+| `DELETE /api/cart` | Usuário autenticado (próprio carrinho) |
+| `GET /api/users` | Admin |
+| `POST /api/users` | Admin |
+| `GET /api/users/:id` | Admin ou próprio usuário |
+| `PUT /api/users/:id` | Admin ou próprio usuário |
+| `DELETE /api/users/:id` | Admin |
+| `POST /api/users/:id/terminate` | Admin ou próprio usuário |
 
 Envie o header:
 
 - `Authorization: Bearer <accessToken>`
 
 As regras de autorização validam se o `userId` da requisição corresponde ao usuário do token.
+
+No `POST /api/cart`, o usuário é sempre derivado do token (não é aceito `userId` no body).
 
 ---
 
@@ -188,6 +198,46 @@ Resposta de sucesso inclui:
 - `expiresIn`
 - `user` (sem `password`)
 
+#### `GET /users`
+Lista todos os usuários cadastrados. **Requer autenticação de admin.**
+
+Query params opcionais:
+
+- `?page=<número>` — página (paginação)
+- `?pageSize=<número>` — itens por página
+- `?status=<all|active|closed>` — filtro por status da conta
+
+#### `POST /users`
+Cadastra um novo usuário diretamente pelo painel admin. **Requer autenticação de admin.**
+
+Body:
+
+```json
+{
+	"first_name": "Maria",
+	"last_name": "Souza",
+	"email": "maria@email.com",
+	"password": "senha",
+	"role": "user"
+}
+```
+
+> `role` aceita `"user"` (padrão) ou `"admin"`.
+
+#### `GET /users/:id`
+Busca um usuário pelo ID. **Requer autenticação de admin ou próprio usuário.**
+
+#### `PUT /users/:id`
+Edita os dados de um usuário existente. **Requer autenticação de admin ou próprio usuário.**
+
+Body: qualquer campo editável do usuário (mesmos campos aceitos no registro).
+
+#### `DELETE /users/:id`
+Remove permanentemente um usuário do banco (hard delete). **Requer autenticação de admin.**
+
+#### `POST /users/:id/terminate`
+Encerra a conta do usuário com ofuscação de dados pessoais (soft delete/LGPD). **Requer autenticação de admin ou próprio usuário.**
+
 ---
 
 ### Carrinho (protegido por JWT)
@@ -198,20 +248,51 @@ Lista itens do carrinho do usuário autenticado.
 - Se `userId` não for enviado, usa o usuário do token.
 - Se `userId` for diferente do token, retorna `403`.
 
+#### `GET /cart/:id`
+Busca um item específico do carrinho pelo ID (`cart_items.id`) para o usuário autenticado.
+
+Se o ID não existir (ou não pertencer ao usuário autenticado), retorna:
+
+```json
+{
+	"message": "Carrinho não encontrado"
+}
+```
+
 #### `POST /cart`
-Adiciona item no carrinho (ou incrementa quantidade se já existir).
+Adiciona itens no carrinho em lote (ou incrementa quantidade se já existir).
 
 Body:
 
 ```json
 {
-	"userId": 1,
-	"productId": 10,
-	"quantity": 1
+	"products": [
+		{
+			"productId": 10,
+			"quantity": 1
+		},
+		{
+			"productId": 20,
+			"quantity": 3
+		}
+	]
 }
 ```
 
-> `userId` pode ser omitido; nesse caso é usado o usuário autenticado.
+Regras de validação:
+
+- `products` deve ser um array não vazio.
+- `productId` deve ser inteiro positivo.
+- `quantity` deve ser inteiro entre `1` e `99`.
+- `quantity` é opcional e assume `1` quando omitida.
+- Não é permitido repetir o mesmo `productId` no mesmo payload.
+
+Mensagens de erro relevantes:
+
+- `Não é permitido possuir produto duplicado`
+- `Produto não encontrado`
+- `Produto não possui quantidade suficiente`
+- `Token de acesso ausente, inválido, expirado ou usuário do token não existe mais`
 
 #### `DELETE /cart`
 Remove item do carrinho pelo `cartItemId`.
@@ -235,8 +316,12 @@ server/
 │   ├── products/route.js
 │   ├── products/[id]/route.js
 │   └── users/
+│       ├── route.js              ← GET (listar) e POST (criar) — admin
 │       ├── login/route.js
-│       └── register/route.js
+│       ├── register/route.js
+│       └── [id]/
+│           ├── route.js          ← GET, PUT, DELETE por ID
+│           └── terminate/route.js ← POST encerrar conta
 ├── lib/
 │   ├── auth.js
 │   └── db.js

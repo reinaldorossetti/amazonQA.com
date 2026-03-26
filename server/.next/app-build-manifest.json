@@ -5,6 +5,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/products/route.js"
     ],
+    "/api/users/login/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/users/login/route.js"
+    ],
     "/api/cart/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -15,15 +20,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/users/register/route.js"
     ],
-    "/api/users/login/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/login/route.js"
-    ],
     "/api/products/[id]/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/products/[id]/route.js"
+    ],
+    "/api/cart/[id]/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/cart/[id]/route.js"
     ]
   }
 }

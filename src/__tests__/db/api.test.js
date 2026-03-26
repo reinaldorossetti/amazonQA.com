@@ -112,11 +112,14 @@ describe('db/api.js', () => {
       .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ ok: true }) })
       .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ ok: true }) });
 
-    await upsertCartItem(1, 2, 3);
+    await upsertCartItem([{ productId: 2, quantity: 3 }]);
     await removeCartItem(55);
 
     expect(global.fetch.mock.calls[0][0]).toBe('/api/cart');
     expect(global.fetch.mock.calls[0][1].method).toBe('POST');
+    expect(global.fetch.mock.calls[0][1].body).toBe(
+      JSON.stringify({ products: [{ productId: 2, quantity: 3 }] })
+    );
     expect(global.fetch.mock.calls[1][0]).toBe('/api/cart');
     expect(global.fetch.mock.calls[1][1].method).toBe('DELETE');
   });
