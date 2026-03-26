@@ -16,6 +16,10 @@ Unitários/Unidade:
 API Testes:  
 [Playwright API](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-api/index.html)
 
+Contract Tests (Pact):  
+[Pact Contract Report](https://reinaldorossetti.github.io/tester.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+[Guia Completo de Testes de Pacto](docs/pact-tests-guide.md)
+
 Playwright Frontend:  
 [Browser Edge](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-edge/index.html)   
 
@@ -33,11 +37,24 @@ Acompanhe os resultados diários, a cobertura e a documentação pública dispon
 - 📘 **Documentação Swagger (API):** [Swagger UI](https://reinaldorossetti.github.io/tester.com/tests-report/swagger/index.html)
 - 🧪 **Cobertura de Unitários/Unidade (Vitest):** [Unit Tests Coverage](https://reinaldorossetti.github.io/tester.com/tests-report/unit-tests/coverage/index.html)
 - 🔌 **Relatório de Testes de API:** [Playwright API Report](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-api/index.html)
+- 🤝 **Relatório de Testes de Contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/tester.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- 📘 **Guia dos Testes de Pacto:** [pact-tests-guide.md](docs/pact-tests-guide.md)
 
 **📱 Relatórios UI E2E (Playwright por Browser):**
 - 🌐 [Relatório Frontend - Chromium](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-chromium/index.html)
 - 🌐 [Relatório Frontend - WebKit](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-webkit/index.html)
 - 🌐 [Relatório Frontend - Edge](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-edge/index.html)
+
+---
+
+## 🤝 Testes de Contrato (Pact)
+
+Os testes de contrato validam o acordo entre **frontend (consumer)** e **backend (provider)** sem depender de uma suíte E2E completa.
+
+- 📄 **Report do contrato publicado (GH Pages):** [Pact Contract Report](https://reinaldorossetti.github.io/tester.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- 📚 **Guia completo (implementação + execução):** [Guia de Testes de Pacto](docs/pact-tests-guide.md)
+
+Esse fluxo garante que mudanças na API não quebrem o consumo esperado no frontend e adiciona uma camada extra de segurança na esteira de CI.
 
 ---
 Passo a Passo para Rodar a Aplicação Localmente:

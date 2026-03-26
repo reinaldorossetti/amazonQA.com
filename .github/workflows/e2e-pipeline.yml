@@ -81,6 +81,73 @@ jobs:
           path: unit-test-report
           if-no-files-found: warn
 
+  contract-tests:
+    name: Contract tests (Pact)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            server/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm install
+
+      - name: Setup PostgreSQL
+        uses: tj-actions/install-postgresql@v3
+        with:
+          postgresql-version: 17
+
+      - name: Configure PostgreSQL database
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+
+      - name: Wait for PostgreSQL readiness
+        run: |
+          for i in {1..60}; do
+            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
+              echo "PostgreSQL pronto para conexões."
+              exit 0
+            fi
+            echo "Aguardando PostgreSQL ficar pronto..."
+            sleep 2
+          done
+          echo "PostgreSQL não ficou pronto no tempo esperado."
+          exit 1
+
+      - name: Seed backend database
+        working-directory: server
+        run: npm run seed
+
+      - name: Run contract tests (consumer + provider)
+        run: npm run test:pact
+
+      - name: Upload pact artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pact-artifacts
+          path: |
+            pacts
+          if-no-files-found: warn
+
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -198,7 +265,7 @@ jobs:
 
   deploy-playwright-report:
     name: Deploy Playwright report to GitHub Pages
-    needs: [unit-tests, e2e]
+    needs: [unit-tests, contract-tests, e2e]
     runs-on: ubuntu-latest
     if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
@@ -222,6 +289,13 @@ jobs:
           name: unit-test-report
           path: tests-report/unit-tests
 
+      - name: Download contract test artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: pact-artifacts
+          path: tests-report/contract-tests
+
       - name: Copy Swagger documentation
         run: |
           mkdir -p tests-report/swagger
@@ -242,6 +316,7 @@ jobs:
                 <li><a href="playwright-report-api/index.html">API Tests</a></li>
                 <li><a href="unit-tests/coverage/index.html">Unit Tests Coverage (Vitest)</a></li>
                 <li><a href="unit-tests/junit.xml">Unit Tests JUnit XML</a></li>
+                <li><a href="contract-tests/pacts/tester-web-frontend-tester-backend-api.json">Contract Tests (Pact)</a></li>
                 <li><a href="swagger/index.html">Swagger API</a></li>
               </ul>
             </body>
