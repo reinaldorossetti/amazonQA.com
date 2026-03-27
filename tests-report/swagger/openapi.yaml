@@ -100,6 +100,172 @@ components:
         price:
           type: number
 
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_id:
+          type: integer
+        product_id:
+          type: integer
+        product_name_snapshot:
+          type: string
+        unit_price_snapshot:
+          type: number
+          format: float
+        quantity:
+          type: integer
+        line_total:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+          example: ORD-20260327-000001
+        user_id:
+          type: integer
+        status:
+          type: string
+          enum: [created, paid, processing, shipped, delivered, cancelled]
+        subtotal:
+          type: number
+          format: float
+        shipping_total:
+          type: number
+          format: float
+        discount_total:
+          type: number
+          format: float
+        grand_total:
+          type: number
+          format: float
+        currency:
+          type: string
+          example: BRL
+        payment_method:
+          type: string
+          nullable: true
+        idempotency_key:
+          type: string
+          nullable: true
+        shipping_address:
+          type: object
+          nullable: true
+          additionalProperties: true
+        billing_info:
+          type: object
+          nullable: true
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    OrderSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+        user_id:
+          type: integer
+        status:
+          type: string
+        subtotal:
+          type: number
+          format: float
+        shipping_total:
+          type: number
+          format: float
+        discount_total:
+          type: number
+          format: float
+        grand_total:
+          type: number
+          format: float
+        currency:
+          type: string
+        payment_method:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    OrdersListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSummary'
+
+    CreateOrderRequest:
+      type: object
+      properties:
+        shippingTotal:
+          type: number
+          format: float
+          default: 0
+        discountTotal:
+          type: number
+          format: float
+          default: 0
+        paymentMethod:
+          type: string
+          nullable: true
+        shippingAddress:
+          type: object
+          nullable: true
+          additionalProperties: true
+        billingInfo:
+          type: object
+          nullable: true
+          additionalProperties: true
+
+    UpdateOrderRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [created, paid, processing, shipped, delivered, cancelled]
+        paymentMethod:
+          type: string
+          nullable: true
+
 security: []
 
 paths:
@@ -517,3 +683,176 @@ paths:
                   message:
                     type: string
                     example: Carrinho não encontrado
+
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: "Listar pedidos (Acesso: autenticado; usuário vê próprios pedidos, admin pode filtrar todos)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [created, paid, processing, shipped, delivered, cancelled]
+        - in: query
+          name: userId
+          description: "Somente para administradores"
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista paginada de pedidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersListResponse'
+        '401':
+          description: Não autenticado
+
+    post:
+      tags: [Orders]
+      summary: "Criar pedido a partir do carrinho autenticado"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+          description: "Chave para evitar criação duplicada em reenvios"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Pedido criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '200':
+          description: Pedido retornado por idempotência (já existente)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Carrinho vazio ou payload inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Não autenticado
+
+  /api/orders/{id}:
+    get:
+      tags: [Orders]
+      summary: "Buscar pedido por ID (Acesso: dono do pedido ou admin)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Pedido encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
+
+    put:
+      tags: [Orders]
+      summary: "Atualizar pedido (Acesso: dono do pedido ou admin, com regras de transição)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrderRequest'
+      responses:
+        '200':
+          description: Pedido atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Transição de status inválida ou payload inválido
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
+
+    delete:
+      tags: [Orders]
+      summary: "Cancelar pedido (cancelamento lógico)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Pedido cancelado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pedido cancelado
+                  order:
+                    $ref: '#/components/schemas/Order'
+        '400':
+          description: Pedido não elegível para cancelamento
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
