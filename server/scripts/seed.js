@@ -140,7 +140,7 @@ async function seed() {
     try {
         console.log('📦 Criando tabelas...');
         await client.query(DDL);
-        console.log('✓ Tabelas criadas (products, users, cart_items, user_roles, orders, order_items)');
+        console.log('✓ Tabelas criadas (products, users, cart_items, user_roles, orders, order_items, payments)');
 
         // Garantir papel padrão para usuários existentes
         await client.query(
