@@ -1,6 +1,6 @@
 # 🧩 Server API — tester.com
 
-Backend do projeto **tester.com**, implementado com **Next.js 14 (App Router)**, responsável pela API REST de produtos, usuários e carrinho, usando **PostgreSQL** como banco de dados.
+Backend do projeto **tester.com**, implementado com **Next.js 14 (App Router)**, responsável pela API REST de produtos, usuários, carrinho e pedidos (`orders`), usando **PostgreSQL** como banco de dados.
 
 ## 📌 Resumo global do projeto
 
@@ -82,6 +82,9 @@ O `seed` cria as tabelas:
 - `products`
 - `users`
 - `cart_items`
+- `user_roles`
+- `orders`
+- `order_items`
 
 e importa produtos a partir de `src/data/products_mock.json`.
 
@@ -112,6 +115,11 @@ Endpoints protegidos (atualmente):
 | `PUT /api/users/:id` | Admin ou próprio usuário |
 | `DELETE /api/users/:id` | Admin |
 | `POST /api/users/:id/terminate` | Admin ou próprio usuário |
+| `GET /api/orders` | Autenticado (escopo por usuário; admin pode filtrar todos) |
+| `POST /api/orders` | Usuário autenticado |
+| `GET /api/orders/:id` | Dono do pedido ou Admin |
+| `PUT /api/orders/:id` | Dono do pedido ou Admin (com regras de transição) |
+| `DELETE /api/orders/:id` | Dono do pedido ou Admin (cancelamento lógico) |
 
 Envie o header:
 
@@ -307,12 +315,146 @@ Body:
 
 ---
 
+### Orders / Pedidos (protegido por JWT)
+
+O endpoint de `orders` representa o fechamento do carrinho (checkout).
+
+#### Como funciona o fluxo de `POST /orders`
+
+1. Valida autenticação via Bearer token.
+2. Lê os itens do carrinho do usuário autenticado.
+3. Se carrinho estiver vazio, retorna `400`.
+4. Abre transação no banco e:
+   - cria o registro em `orders`;
+   - salva snapshot dos itens em `order_items`;
+   - calcula totais (`subtotal`, `shipping_total`, `discount_total`, `grand_total`);
+   - limpa o carrinho (`cart_items`) do usuário.
+5. Faz `COMMIT` e retorna o pedido completo.
+
+Se a requisição vier com `Idempotency-Key` já utilizado para o mesmo usuário, a API retorna o pedido já existente (status `200`) e evita duplicidade.
+
+#### `POST /orders`
+Cria pedido com base no carrinho do usuário autenticado.
+
+Headers recomendados:
+
+- `Authorization: Bearer <accessToken>`
+- `Idempotency-Key: <chave-unica-opcional>`
+
+Body (opcional):
+
+```json
+{
+	"shippingTotal": 10,
+	"discountTotal": 5,
+	"paymentMethod": "pix",
+	"shippingAddress": {
+		"zip": "01310-100",
+		"city": "São Paulo",
+		"state": "SP"
+	},
+	"billingInfo": {
+		"document": "123.456.789-00"
+	}
+}
+```
+
+Respostas principais:
+
+- `201` pedido criado
+- `200` idempotência (pedido já existente)
+- `400` carrinho vazio / payload inválido
+- `401` não autenticado
+
+#### `GET /orders`
+Lista pedidos com paginação.
+
+Query params opcionais:
+
+- `page` (default `1`)
+- `pageSize` (default `20`, máx `100`)
+- `status` (`created|paid|processing|shipped|delivered|cancelled`)
+- `userId` (somente admin)
+
+Exemplo de resposta:
+
+```json
+{
+	"page": 1,
+	"pageSize": 10,
+	"total": 2,
+	"items": [
+		{
+			"id": 1,
+			"order_number": "ORD-20260327-000001",
+			"user_id": 10,
+			"status": "created",
+			"subtotal": 150.99,
+			"shipping_total": 0,
+			"discount_total": 0,
+			"grand_total": 150.99,
+			"currency": "BRL",
+			"payment_method": "pix",
+			"created_at": "2026-03-27T20:00:00.000Z"
+		}
+	]
+}
+```
+
+#### `GET /orders/:id`
+Busca detalhes do pedido (inclui `items`).
+
+Respostas:
+
+- `200` pedido encontrado
+- `403` sem permissão
+- `404` pedido não encontrado
+
+#### `PUT /orders/:id`
+Atualiza pedido com regras de transição de status.
+
+Transições válidas:
+
+- `created -> paid|cancelled`
+- `paid -> processing|cancelled`
+- `processing -> shipped|cancelled`
+- `shipped -> delivered`
+
+Body exemplo:
+
+```json
+{
+	"status": "paid",
+	"paymentMethod": "credit_card"
+}
+```
+
+Respostas:
+
+- `200` atualizado
+- `400` transição inválida / payload inválido
+- `403` sem permissão
+
+#### `DELETE /orders/:id`
+Não remove fisicamente o pedido; faz cancelamento lógico.
+
+Respostas:
+
+- `200` pedido cancelado
+- `400` pedido não elegível para cancelamento
+- `403` sem permissão
+- `404` pedido não encontrado
+
+---
+
 ## 🗂️ Estrutura relevante do server
 
 ```text
 server/
 ├── app/api/
 │   ├── cart/route.js
+│   ├── orders/route.js
+│   ├── orders/[id]/route.js
 │   ├── products/route.js
 │   ├── products/[id]/route.js
 │   └── users/
@@ -339,5 +481,6 @@ server/
 - O backend usa SQL parametrizado (boa prática contra SQL Injection).
 - O parser do `pg` converte `NUMERIC` para `float` no retorno.
 - O carrinho possui restrição `UNIQUE (user_id, product_id)` com `ON CONFLICT` para upsert.
+- Orders usam idempotência opcional com `Idempotency-Key` para evitar duplicidade em reenvio.
 - Senhas são hasheadas com `bcrypt` antes de persistir.
 
