@@ -33,6 +33,24 @@ test.describe('Cart and Checkout', () => {
         body: JSON.stringify(item),
       });
     });
+
+    await page.route('**/api/orders', async (route) => {
+      const now = Date.now();
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: now,
+          order_number: `ORD-${now}`,
+          status: 'created',
+          subtotal: 50.99,
+          shipping_total: 0,
+          discount_total: 0,
+          grand_total: 50.99,
+          items: [],
+        }),
+      });
+    });
   });
 
   /**

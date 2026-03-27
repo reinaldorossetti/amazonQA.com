@@ -6,6 +6,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import LockIcon from "@mui/icons-material/Lock";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
+import { createOrder } from "../db/api";
 
 const CheckoutButton = ({ cartItems = [], setCartItems = () => {} }) => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const CheckoutButton = ({ cartItems = [], setCartItems = () => {} }) => {
   const isLoggedIn = auth?.isLoggedIn ?? auth?.isAuthenticated ?? false;
   const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (safeCartItems.length === 0) {
       toast.error(t("checkout.toast.empty"));
       return;
@@ -28,8 +29,24 @@ const CheckoutButton = ({ cartItems = [], setCartItems = () => {} }) => {
       return;
     }
 
-    toast.success(t("checkout.processing"));
-    navigate("/thank-you", { state: { cartItems: safeCartItems } });
+    try {
+      const idempotencyKey =
+        typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `idemp-${Date.now()}`;
+
+      const order = await createOrder({ idempotencyKey });
+      toast.success(t("checkout.processing"));
+      setCartItems([]);
+      navigate("/thank-you", {
+        state: {
+          cartItems: safeCartItems,
+          order,
+        },
+      });
+    } catch (err) {
+      toast.error(err?.message || "Erro ao processar checkout.");
+    }
   };
 
   return (

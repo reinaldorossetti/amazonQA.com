@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CheckoutButton from '../../components/CheckoutButton';
 import { toast } from 'react-toastify';
+import { createOrder } from '../../db/api';
 
 const navigateMock = vi.fn();
 let authState = { isLoggedIn: false, isAuthenticated: false };
@@ -26,6 +27,10 @@ vi.mock('../../contexts/AuthContext', () => ({
   useAuth: () => authState,
 }));
 
+vi.mock('../../db/api', () => ({
+  createOrder: vi.fn(),
+}));
+
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
@@ -40,6 +45,12 @@ describe('Checkout/CheckoutButton Component', () => {
     vi.clearAllMocks();
     authState = { isLoggedIn: false, isAuthenticated: false };
     locationState = { pathname: '/cart' };
+    createOrder.mockResolvedValue({
+      id: 1,
+      order_number: 'ORD-TEST-0001',
+      status: 'created',
+      items: [],
+    });
   });
 
   it('TC_CHK_001: botão inicia desabilitado com carrinho vazio', () => {
@@ -93,8 +104,14 @@ describe('Checkout/CheckoutButton Component', () => {
     render(<CheckoutButton cartItems={cartItems} />);
     await user.click(screen.getByRole('button', { name: /checkout.button/i }));
 
+    expect(createOrder).toHaveBeenCalledTimes(1);
     expect(toast.success).toHaveBeenCalledWith('checkout.processing');
-    expect(navigateMock).toHaveBeenCalledWith('/thank-you', { state: { cartItems } });
+    expect(navigateMock).toHaveBeenCalledWith('/thank-you', {
+      state: {
+        cartItems,
+        order: expect.objectContaining({ id: 1, order_number: 'ORD-TEST-0001' }),
+      },
+    });
   });
 
   it('TC_CHK_008: normaliza cartItems inválido e mantém desabilitado', () => {
@@ -112,7 +129,7 @@ describe('Checkout/CheckoutButton Component', () => {
     expect(navigateMock).toHaveBeenCalledWith('/login?next=%2Fcheckout%2Fresumo%20final');
   });
 
-  it('TC_CHK_010: não chama setCartItems no fluxo atual de checkout', async () => {
+  it('TC_CHK_010: limpa carrinho após checkout com sucesso', async () => {
     const user = userEvent.setup();
     const setCartItems = vi.fn();
     authState = { isLoggedIn: true };
@@ -120,6 +137,18 @@ describe('Checkout/CheckoutButton Component', () => {
     render(<CheckoutButton cartItems={[{ id: 9 }]} setCartItems={setCartItems} />);
     await user.click(screen.getByRole('button', { name: /checkout.button/i }));
 
-    expect(setCartItems).not.toHaveBeenCalled();
+    expect(setCartItems).toHaveBeenCalledWith([]);
+  });
+
+  it('TC_CHK_011: exibe erro e não navega quando API de orders falha', async () => {
+    const user = userEvent.setup();
+    authState = { isLoggedIn: true };
+    createOrder.mockRejectedValueOnce(new Error('Falha ao criar pedido'));
+
+    render(<CheckoutButton cartItems={[{ id: 1, quantity: 1 }]} />);
+    await user.click(screen.getByRole('button', { name: /checkout.button/i }));
+
+    expect(toast.error).toHaveBeenCalledWith('Falha ao criar pedido');
+    expect(navigateMock).not.toHaveBeenCalledWith('/thank-you', expect.anything());
   });
 });

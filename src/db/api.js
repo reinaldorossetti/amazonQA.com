@@ -7,7 +7,7 @@
 
 const BASE = '/api';
 
-async function http(method, path, body) {
+async function http(method, path, body, extraHeaders = {}) {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
     const isAuthEndpoint = path.startsWith('/users/login') || path.startsWith('/users/register');
 
@@ -16,6 +16,7 @@ async function http(method, path, body) {
         headers: {
             'Content-Type': 'application/json',
             ...(token && !isAuthEndpoint ? { Authorization: `Bearer ${token}` } : {}),
+            ...extraHeaders,
         },
     };
     if (body !== undefined) options.body = JSON.stringify(body);
@@ -63,3 +64,47 @@ export const upsertCartItem = (products) =>
 
 export const removeCartItem = (cartItemId) =>
     http('DELETE', '/cart', { cartItemId });
+
+// ── Orders ───────────────────────────────────────────────────────────────────
+
+export const createOrder = ({
+    shippingTotal = 0,
+    discountTotal = 0,
+    paymentMethod = null,
+    shippingAddress = null,
+    billingInfo = null,
+    idempotencyKey = null,
+} = {}) => {
+    const headers = {};
+    if (idempotencyKey) {
+        headers['Idempotency-Key'] = idempotencyKey;
+    }
+
+    return http(
+        'POST',
+        '/orders',
+        {
+            shippingTotal,
+            discountTotal,
+            paymentMethod,
+            shippingAddress,
+            billingInfo,
+        },
+        headers
+    );
+};
+
+export const getOrders = (params = {}) => {
+    const search = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+            search.set(key, String(value));
+        }
+    });
+
+    const query = search.toString();
+    return http('GET', `/orders${query ? `?${query}` : ''}`);
+};
+
+export const getOrderById = (id) =>
+    http('GET', `/orders/${id}`);

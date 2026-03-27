@@ -82,6 +82,42 @@ CREATE TABLE IF NOT EXISTS cart_items (
     added_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (user_id, product_id)
 );
+
+-- ─── orders ───────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS orders (
+    id               SERIAL        PRIMARY KEY,
+    order_number     TEXT          UNIQUE,
+    user_id          INT           NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status           TEXT          NOT NULL DEFAULT 'created',
+    subtotal         NUMERIC(10,2) NOT NULL,
+    shipping_total   NUMERIC(10,2) NOT NULL DEFAULT 0,
+    discount_total   NUMERIC(10,2) NOT NULL DEFAULT 0,
+    grand_total      NUMERIC(10,2) NOT NULL,
+    currency         TEXT          NOT NULL DEFAULT 'BRL',
+    payment_method   TEXT,
+    idempotency_key  TEXT,
+    shipping_address JSONB,
+    billing_info     JSONB,
+    created_at       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    updated_at       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    cancelled_at     TIMESTAMPTZ
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS ux_orders_user_idempotency
+    ON orders(user_id, idempotency_key)
+    WHERE idempotency_key IS NOT NULL;
+
+-- ─── order_items ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS order_items (
+    id                    SERIAL        PRIMARY KEY,
+    order_id              INT           NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id            INT           NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+    product_name_snapshot TEXT          NOT NULL,
+    unit_price_snapshot   NUMERIC(10,2) NOT NULL,
+    quantity              INT           NOT NULL,
+    line_total            NUMERIC(10,2) NOT NULL,
+    created_at            TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+);
 `;
 
 async function seed() {
@@ -89,7 +125,7 @@ async function seed() {
     try {
         console.log('📦 Criando tabelas...');
         await client.query(DDL);
-        console.log('✓ Tabelas criadas (products, users, cart_items, user_roles)');
+        console.log('✓ Tabelas criadas (products, users, cart_items, user_roles, orders, order_items)');
 
         // Garantir papel padrão para usuários existentes
         await client.query(
