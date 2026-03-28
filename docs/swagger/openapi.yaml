@@ -137,7 +137,7 @@ components:
           type: integer
         status:
           type: string
-          enum: [created, paid, processing, shipped, delivered, cancelled]
+          enum: [created, pending_payment, paid, processing, shipped, delivered, cancelled]
         subtotal:
           type: number
           format: float
@@ -257,16 +257,104 @@ components:
           type: object
           nullable: true
           additionalProperties: true
+        items:
+          type: array
+          description: "Opcional. Usado quando o carrinho está vazio; caso informado deve ser não vazio."
+          items:
+            $ref: '#/components/schemas/OrderInputItem'
+
+    OrderInputItem:
+      type: object
+      required: [productId, quantity]
+      properties:
+        productId:
+          type: integer
+          minimum: 1
+        quantity:
+          type: integer
+          minimum: 1
 
     UpdateOrderRequest:
       type: object
       properties:
         status:
           type: string
-          enum: [created, paid, processing, shipped, delivered, cancelled]
+          enum: [created, pending_payment, paid, processing, shipped, delivered, cancelled]
         paymentMethod:
           type: string
           nullable: true
+
+    CreateOrderPaymentRequest:
+      type: object
+      required: [method]
+      properties:
+        method:
+          type: string
+          enum: [credit, debit, pix, boleto]
+        amount:
+          type: number
+          format: float
+          description: "Opcional. Se omitido, usa o saldo remanescente do pedido."
+        holderName:
+          type: string
+          description: "Obrigatório para cartão no fluxo de frontend."
+        cardNumber:
+          type: string
+        expiry:
+          type: string
+          example: "12/30"
+        cvv:
+          type: string
+        installments:
+          type: integer
+          minimum: 1
+          maximum: 12
+        cardBrand:
+          type: string
+          nullable: true
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_id:
+          type: integer
+        user_id:
+          type: integer
+        method:
+          type: string
+          enum: [credit, debit, pix, boleto]
+        amount:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [authorized, pending, failed]
+        card_brand:
+          type: string
+          nullable: true
+        provider_reference:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    PaymentWithOrderOwner:
+      allOf:
+        - $ref: '#/components/schemas/Payment'
+        - type: object
+          properties:
+            order_owner_id:
+              type: integer
 
 security: []
 
@@ -708,7 +796,7 @@ paths:
           name: status
           schema:
             type: string
-            enum: [created, paid, processing, shipped, delivered, cancelled]
+            enum: [created, pending_payment, paid, processing, shipped, delivered, cancelled]
         - in: query
           name: userId
           description: "Somente para administradores"
@@ -790,6 +878,116 @@ paths:
           description: Sem permissão
         '404':
           description: Pedido não encontrado
+
+  /api/orders/{id}/payments:
+    post:
+      tags: [Payments]
+      summary: "Criar pagamento para pedido (Acesso: dono do pedido ou admin)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderPaymentRequest'
+      responses:
+        '201':
+          description: Pagamento criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: "ID inválido, método inválido, valor inválido ou maior que saldo"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
+
+  /api/orders/{id}/payments/{paymentId}:
+    get:
+      tags: [Payments]
+      summary: "Consultar pagamento por ID (Acesso: dono do pedido ou admin)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: path
+          name: paymentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Pagamento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentWithOrderOwner'
+        '400':
+          description: Parâmetros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pagamento não encontrado
+
+  /api/orders/{id}/boleto/{reference}:
+    get:
+      tags: [Payments]
+      summary: "Download do boleto em PDF (mock)"
+      description: "Gera um PDF de boleto simulado com base no último pagamento boleto do pedido."
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF do boleto gerado
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: ID de pedido inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     put:
       tags: [Orders]
