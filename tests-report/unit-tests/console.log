@@ -2,90 +2,98 @@
 [1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/home/runner/work/tester.com/tester.com[39m
       [2mCoverage enabled with [22m[33mv8[39m
 
- [32m✓[39m src/__tests__/components/Checkout.test.jsx [2m([22m[2m11 tests[22m[2m)[22m[33m 916[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_CHK_001: botão inicia desabilitado com carrinho vazio [33m 316[2mms[22m[39m
- [32m✓[39m src/__tests__/components/ProductDetails.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1680[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_PD_004: renderiza detalhes completos e chama addToCart com quantidade alterada [33m 966[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Login.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 5891[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_001: renderiza campos, botão de submit e link de registro [33m 893[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_003: alterna visibilidade da senha [33m 343[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_004: realiza login com sucesso, normaliza email e navega para ?next [33m 866[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_005: usa fallback de rota "/" quando ?next não existe [33m 664[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_006: trata resposta sem token como erro de autenticação inválida [33m 526[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_007: usa mensagem fallback quando erro não possui message [33m 698[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_008: exibe estado de loading durante requisição e limpa no finally [33m 740[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_LOGIN_010: aceita payload de login sem campo user (fallback para objeto raiz) [33m 621[2mms[22m[39m
- [32m✓[39m src/__tests__/db/api.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 26[2mms[22m[39m
- [32m✓[39m src/__tests__/App.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 990[2mms[22m[39m
-     [33m[2m✓[22m[39m renderiza navbar, rota inicial e atualiza search [33m 426[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Cart.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 825[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_CART_001: renderiza estado vazio com CTA para catálogo [33m 427[2mms[22m[39m
- [32m✓[39m src/__tests__/components/CartItem.test.jsx [2m([22m[2m8 tests[22m[2m)[22m[33m 764[2mms[22m[39m
-     [33m[2m✓[22m[39m TC_CI_001: renderiza nome, preço unitário e total da linha [33m 307[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/AuthContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 62[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Product.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 709[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_PROD_001: Renderiza imagem produto [33m 360[2mms[22m[39m
- [32m✓[39m src/__tests__/components/ThankYouPage.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[32m 263[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Catalog.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 979[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_CAT_001: Lista todos produtos (mock API) [33m 356[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_CAT_007: Busca por termo (debounce mock) [33m 352[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/LanguageContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 91[2mms[22m[39m
- [32m✓[39m src/__tests__/contexts/DatabaseContext.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 86[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Checkout.test.jsx [2m([22m[2m11 tests[22m[2m)[22m[33m 925[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_CHK_001: botão inicia desabilitado com carrinho vazio [33m 399[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/ProductDetails.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1474[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_PD_004: renderiza detalhes completos e chama addToCart com quantidade alterada [33m 811[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Login.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 5381[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_001: renderiza campos, botão de submit e link de registro [33m 845[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_003: alterna visibilidade da senha [33m 313[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_004: realiza login com sucesso, normaliza email e navega para ?next [33m 730[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_005: usa fallback de rota "/" quando ?next não existe [33m 653[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_006: trata resposta sem token como erro de autenticação inválida [33m 564[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_007: usa mensagem fallback quando erro não possui message [33m 590[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_008: exibe estado de loading durante requisição e limpa no finally [33m 682[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_LOGIN_010: aceita payload de login sem campo user (fallback para objeto raiz) [33m 529[2mms[22m[39m
+ [32m✓[39m src/__tests__/db/api.test.js [2m([22m[2m9 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/__tests__/App.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 962[2mms[22m[39m
+     [33m[2m✓[22m[39m renderiza navbar, rota inicial e atualiza search [33m 408[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Cart.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 687[2mms[22m[39m
+     [33m[2m✓[22m[39m TC_CART_001: renderiza estado vazio com CTA para catálogo [33m 331[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/CartItem.test.jsx [2m([22m[2m8 tests[22m[2m)[22m[33m 736[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/PaymentsPage.test.jsx [2m([22m[2m5 tests[22m[2m)[22m[33m 2228[2mms[22m[39m
+     [33m[2m✓[22m[39m renderiza tela de pagamentos com resumo e métodos [33m 419[2mms[22m[39m
+     [33m[2m✓[22m[39m habilita split payment e exibe campos adicionais [33m 530[2mms[22m[39m
+     [33m[2m✓[22m[39m envia pagamento simples e navega para thank-you [33m 422[2mms[22m[39m
+     [33m[2m✓[22m[39m mostra erro e não navega quando pagamento falha [33m 432[2mms[22m[39m
+     [33m[2m✓[22m[39m gera boleto mockado e navega com dados do boleto [33m 420[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/AuthContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Product.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 724[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_PROD_001: Renderiza imagem produto [33m 394[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Catalog.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[33m 937[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_CAT_001: Lista todos produtos (mock API) [33m 327[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_CAT_007: Busca por termo (debounce mock) [33m 331[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/ThankYouPage.test.jsx [2m([22m[2m10 tests[22m[2m)[22m[32m 280[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/LanguageContext.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m src/__tests__/contexts/DatabaseContext.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 99[2mms[22m[39m
  [32m✓[39m src/__tests__/validation.test.js [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
- [32m✓[39m src/__tests__/components/Register.test.jsx [2m([22m[2m19 tests[22m[2m)[22m[33m 38678[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_001: Renderiza step inicial com botão próximo e link de login [33m 1050[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_002: Mostra erros obrigatórios ao avançar sem preencher [33m 468[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_003: Alterna para PJ e exibe campos de Razão Social/CNPJ [33m 442[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_004: Avança para step 1 quando dados PF são válidos [33m 3533[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_005: Bloqueia avanço com CPF inválido [33m 3392[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_006: Exibe força da senha dinamicamente [33m 941[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_007: Auto-preenche endereço via CEP [33m 3782[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_008: Submete com sucesso e chama registerUser com payload normalizado [33m 4367[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_009: Mostra toast de erro quando registerUser falha [33m 2685[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_010: No step 1, voltar retorna para step 0 [33m 2116[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_011: Em PJ, bloqueia avanço sem Razão Social/CNPJ válidos [33m 2441[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_012: CEP não encontrado exibe erro específico [33m 2087[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_013: Falha de rede no CEP exibe erro genérico [33m 2178[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_014: Exige campos obrigatórios do step 1 no submit [33m 2007[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_015: Sucesso no cadastro navega para home após timeout [33m 2390[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_016: Erro de submit sem message usa fallback padrão [33m 2382[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_017: Upload de comprovante exibe nome do arquivo selecionado [33m 1991[2mms[22m[39m
-       [33m[2m✓[22m[39m TC_REG_019: Toggles de senha/confirmar alternam tipo do input [33m 309[2mms[22m[39m
+ [32m✓[39m src/__tests__/components/Register.test.jsx [2m([22m[2m19 tests[22m[2m)[22m[33m 36840[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_001: Renderiza step inicial com botão próximo e link de login [33m 1023[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_002: Mostra erros obrigatórios ao avançar sem preencher [33m 437[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_003: Alterna para PJ e exibe campos de Razão Social/CNPJ [33m 436[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_004: Avança para step 1 quando dados PF são válidos [33m 3340[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_005: Bloqueia avanço com CPF inválido [33m 3092[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_006: Exibe força da senha dinamicamente [33m 770[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_007: Auto-preenche endereço via CEP [33m 3430[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_008: Submete com sucesso e chama registerUser com payload normalizado [33m 4022[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_009: Mostra toast de erro quando registerUser falha [33m 3625[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_010: No step 1, voltar retorna para step 0 [33m 2018[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_011: Em PJ, bloqueia avanço sem Razão Social/CNPJ válidos [33m 2174[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_012: CEP não encontrado exibe erro específico [33m 1999[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_013: Falha de rede no CEP exibe erro genérico [33m 1928[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_014: Exige campos obrigatórios do step 1 no submit [33m 1852[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_015: Sucesso no cadastro navega para home após timeout [33m 2241[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_016: Erro de submit sem message usa fallback padrão [33m 2224[2mms[22m[39m
+       [33m[2m✓[22m[39m TC_REG_017: Upload de comprovante exibe nome do arquivo selecionado [33m 1829[2mms[22m[39m
 
-[2m Test Files [22m [1m[32m15 passed[39m[22m[90m (15)[39m
-[2m      Tests [22m [1m[32m128 passed[39m[22m[90m (128)[39m
-[2m   Start at [22m 21:44:29
-[2m   Duration [22m 41.61s[2m (transform 811ms, setup 1.68s, import 10.52s, tests 51.96s, environment 14.92s)[22m
+[2m Test Files [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+[2m      Tests [22m [1m[32m133 passed[39m[22m[90m (133)[39m
+[2m   Start at [22m 00:31:08
+[2m   Duration [22m 39.93s[2m (transform 799ms, setup 1.62s, import 10.35s, tests 51.41s, environment 16.64s)[22m
 
 JUNIT report written to /home/runner/work/tester.com/tester.com/unit-test-report/junit.xml
 [34m % [39m[2mCoverage report from [22m[33mv8[39m
 -------------------|---------|----------|---------|---------|-------------------
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
-All files          |   89.48 |    81.15 |    78.2 |    90.1 |                   
- src               |   88.09 |       50 |   76.47 |   89.74 |                   
-  App.jsx          |   88.09 |       50 |   76.47 |   89.74 | 213,404,435,471   
- src/components    |   89.47 |    84.92 |   76.63 |   89.96 |                   
+All files          |   85.71 |    75.38 |   76.63 |   87.34 |                   
+ src               |   86.04 |       50 |   72.22 |    87.5 |                   
+  App.jsx          |   86.04 |       50 |   72.22 |    87.5 | ...05,436,472-480 
+ src/components    |   84.59 |    77.35 |   75.59 |   86.43 |                   
   Cart.jsx         |     100 |       70 |   57.14 |     100 | 21-23             
   CartItem.jsx     |     100 |      100 |     100 |     100 |                   
   Catalog.jsx      |      75 |    66.66 |      50 |   77.77 | 37,48-51,86-103   
-  ...outButton.jsx |    91.3 |    80.95 |     100 |    91.3 | 21-22             
+  ...outButton.jsx |      92 |    85.71 |     100 |      92 | 21-22             
   Login.jsx        |     100 |      100 |     100 |     100 |                   
+  PaymentsPage.jsx |   71.71 |    59.45 |   76.47 |   78.16 | ...63,170,206,218 
   Product.jsx      |   72.72 |    64.28 |   57.14 |   72.72 | 48-91             
   ...ctDetails.jsx |     100 |      100 |     100 |     100 |                   
   Register.jsx     |   88.83 |    86.48 |   80.39 |   89.26 | ...23,751-788,818 
-  ThankYouPage.jsx |   76.92 |       80 |   57.14 |      75 | 29,80-110         
+  ThankYouPage.jsx |      60 |    39.13 |   44.44 |   63.63 | 35,45-50,135-165  
+ ...onents/payment |     100 |    77.77 |     100 |     100 |                   
+  ...randChips.jsx |     100 |       60 |     100 |     100 | 25-26             
+  ...dSelector.jsx |     100 |      100 |     100 |     100 |                   
  src/contexts      |     100 |      100 |     100 |     100 |                   
   AuthContext.jsx  |     100 |      100 |     100 |     100 |                   
   ...seContext.jsx |     100 |      100 |     100 |     100 |                   
   ...geContext.jsx |     100 |      100 |     100 |     100 |                   
- src/db            |   73.33 |       50 |   64.28 |   74.41 |                   
-  api.js           |   73.33 |       50 |   64.28 |   74.41 | 78-83,98-106,110  
+ src/db            |   71.42 |     47.5 |   56.25 |   72.34 |                   
+  api.js           |   71.42 |     47.5 |   56.25 |   72.34 | ...08,112,115,118 
 -------------------|---------|----------|---------|---------|-------------------
 
 =============================== Coverage summary ===============================
-Statements   : 89.48% ( 468/523 )
-Branches     : 81.15% ( 280/345 )
-Functions    : 78.2% ( 122/156 )
-Lines        : 90.1% ( 410/455 )
+Statements   : 85.71% ( 558/651 )
+Branches     : 75.38% ( 343/455 )
+Functions    : 76.63% ( 141/184 )
+Lines        : 87.34% ( 497/569 )
 ================================================================================
