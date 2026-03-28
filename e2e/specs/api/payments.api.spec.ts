@@ -31,12 +31,18 @@ async function createProduct(request: any) {
   const projectName = faker.commerce.productName();
   const categoryName = faker.commerce.department();
   const productDescription = faker.commerce.productDescription();
+  const productImage = faker.helpers.arrayElement([
+    `https://picsum.photos/seed/payments-${suffix}/640/480`,
+    `https://loremflickr.com/640/480/product?lock=${Math.floor(Math.random() * 100000)}`,
+    `https://dummyimage.com/640x480/0f1111/ffffff.png&text=Product+${encodeURIComponent(suffix)}`,
+  ]);
   const response = await request.post('products', {
     data: {
       name: `${projectName} - ${suffix}`,
       price: 89.9,
       category: `${categoryName}-${suffix}`,
       description: productDescription,
+      image: productImage,
     },
   });
 

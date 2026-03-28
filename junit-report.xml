@@ -1,10 +1,10 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="5.422362">
-<testsuite name="api\payments.api.spec.ts" timestamp="2026-03-28T00:29:55.136Z" hostname="api" tests="3" failures="0" skipped="0" time="9.346" errors="0">
-<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api\payments.api.spec.ts" time="3.299">
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="3.5701639999999997">
+<testsuite name="api\payments.api.spec.ts" timestamp="2026-03-28T00:32:19.480Z" hostname="api" tests="3" failures="0" skipped="0" time="4.517" errors="0">
+<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api\payments.api.spec.ts" time="1.544">
 </testcase>
-<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api\payments.api.spec.ts" time="3.42">
+<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api\payments.api.spec.ts" time="1.63">
 </testcase>
-<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api\payments.api.spec.ts" time="2.627">
+<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api\payments.api.spec.ts" time="1.343">
 </testcase>
 </testsuite>
 </testsuites>
