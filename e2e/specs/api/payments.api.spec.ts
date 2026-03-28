@@ -33,7 +33,7 @@ async function createProduct(request: any) {
   const productDescription = faker.commerce.productDescription();
   const response = await request.post('products', {
     data: {
-      name: `${projectName} Payment ${suffix}`,
+      name: `${projectName} - ${suffix}`,
       price: 89.9,
       category: `${categoryName}-${suffix}`,
       description: productDescription,
