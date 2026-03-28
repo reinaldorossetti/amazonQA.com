@@ -1,31 +1,42 @@
 # 🛒 AmazonQA — Loja Online
 
-Aplicação de e-commerce completa construída com **React + Vite** no frontend e **Next.js + PostgreSQL** no backend, com design visual inspirado na Amazon. Inclui catálogo de produtos, sistema de login/cadastro de usuários, gestão de carrinho e internacionalização PT/EN.
+Aplicação de e-commerce completa construída com **React + Vite** no frontend e **Next.js + PostgreSQL** no backend, com design visual inspirado na Amazon. Inclui catálogo de produtos, sistema de login/cadastro de usuários, gestão de carrinho, fluxo de pedidos (`orders`) com idempotência e tela de pagamentos (`payments`) com cartão, PIX, boleto e split payment, além de internacionalização PT/EN.
 
-Pirâmide de Testes do Projeto:  
+## 🎯 Visão Executiva
 
-Swagger da API: 
-https://reinaldorossetti.github.io/tester.com/tests-report/swagger/index.html  
+Projeto completo de e-commerce com foco em qualidade de software, cobrindo todo o ciclo da compra:
 
-Todos Testes:  
-https://reinaldorossetti.github.io/tester.com/tests-report/  
+- Navegação do catálogo, busca e detalhes de produtos.
+- Cadastro/login com autenticação e controle de sessão.
+- Carrinho persistido no backend com regras de integridade e Segurança com criptografia em hash adicionando um salt na aplicação.
+- Checkout com criação de pedido (`orders`) usando `Idempotency-Key`.
+- Tela de pagamentos (`payments`) com cartão de crédito, PIX, boleto e pode dividir o pagamento em duas formas de pagamentos distintas.
+- Página de confirmação com resumo do pedido, QR mock de PIX e boleto em PDF mock.
+- API documentada e validada por múltiplas camadas de teste automatizado, ou seja temos testes dentro do sistema e fora.
 
-Unitários/Unidade:  
-[Coverage](https://reinaldorossetti.github.io/tester.com/tests-report/unit-tests/coverage/index.html)
+## 🧪 Pirâmide de Testes
 
-API Testes:  
-[Playwright API](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-api/index.html)
+A estratégia de qualidade segue a pirâmide de testes: base ampla de testes unitários, camada intermediária para contratos/API e topo com E2E de interface.
 
-Contract Tests (Pact):  
-[Pact Contract Report](https://reinaldorossetti.github.io/tester.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
-[Guia Completo de Testes de Pacto](docs/pact-tests-guide.md)
+![Pirâmide de Testes - Estratégia Escalável](img/pyramid-scalable.png)
 
-Playwright Frontend:  
-[Browser Edge](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-edge/index.html)   
+```mermaid
+flowchart BT
+    A["E2E UI (Playwright)<br/>Fluxos críticos de ponta a ponta"] --> B["API e Contrato (Playwright API + Pact)<br/>Integração entre serviços e contratos"]
+    B --> C["Unitários (Vitest)<br/>Base ampla: regras e componentes isolados"]
+```
 
-[Browser Chromium](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-chromium/index.html)  
+**Relatórios públicos da pirâmide e da documentação:**
 
-[Browser WebKit](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-webkit/index.html)  
+- **Índice geral de testes:** https://reinaldorossetti.github.io/tester.com/tests-report/
+- **Cobertura unitária (Vitest):** [Coverage](https://reinaldorossetti.github.io/tester.com/tests-report/unit-tests/coverage/index.html)
+- **Testes de API (Playwright):** [Playwright API](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-api/index.html)
+- **Testes de contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/tester.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- **E2E Frontend (Playwright / Chromium):** [Browser Chromium](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-chromium/index.html)
+- **E2E Frontend (Playwright / WebKit):** [Browser WebKit](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-webkit/index.html)
+- **E2E Frontend (Playwright / Edge):** [Browser Edge](https://reinaldorossetti.github.io/tester.com/tests-report/playwright-report-frontend-edge/index.html)
+- **Swagger da API:** https://reinaldorossetti.github.io/tester.com/tests-report/swagger/index.html
+- **Guia completo de Pact:** [Guia de Testes de Pacto](docs/pact-tests-guide.md)
 
 ---
 
@@ -145,7 +156,14 @@ users (id SERIAL PK, person_type, first_name, last_name,
        cnpj UNIQUE, company_name, address_zip, address_street,
        address_number, address_complement, address_neighborhood,
        address_city, address_state, residence_proof_filename,
-       created_at TIMESTAMPTZ)
+       created_at TIMESTAMPTZ, updated_at TIMESTAMPTZ,
+       is_active BOOLEAN, account_closed_at TIMESTAMPTZ)
+
+-- Perfis de acesso por usuário
+user_roles (id SERIAL PK,
+            user_id -> users.id ON DELETE CASCADE,
+            role, created_at TIMESTAMPTZ,
+            UNIQUE (user_id, role))
 
 -- Carrinho (relaciona users ↔ products)
 cart_items (id SERIAL PK,
@@ -154,6 +172,31 @@ cart_items (id SERIAL PK,
             quantity DEFAULT 1,
             added_at TIMESTAMPTZ,
             UNIQUE (user_id, product_id))
+
+-- Pedidos
+orders (id SERIAL PK, order_number UNIQUE,
+        user_id -> users.id ON DELETE CASCADE,
+        status DEFAULT 'created',
+        subtotal, shipping_total, discount_total, grand_total NUMERIC(10,2),
+        currency DEFAULT 'BRL', payment_method, idempotency_key,
+        shipping_address JSONB, billing_info JSONB,
+        created_at, updated_at, cancelled_at TIMESTAMPTZ)
+
+-- Itens do pedido
+order_items (id SERIAL PK,
+             order_id -> orders.id ON DELETE CASCADE,
+             product_id -> products.id ON DELETE RESTRICT,
+             product_name_snapshot, unit_price_snapshot NUMERIC(10,2),
+             quantity, line_total NUMERIC(10,2),
+             created_at TIMESTAMPTZ)
+
+-- Pagamentos do pedido
+payments (id SERIAL PK,
+          order_id -> orders.id ON DELETE CASCADE,
+          user_id -> users.id ON DELETE CASCADE,
+          method, amount NUMERIC(10,2), status,
+          card_brand, provider_reference, metadata JSONB,
+          created_at, updated_at TIMESTAMPTZ)
 ```
 
 ### Arquivos de Infraestrutura
@@ -163,7 +206,7 @@ cart_items (id SERIAL PK,
 | `docker-compose.yml` | Container `postgres:16-alpine`, porta `5432`, volume `postgres_data`. |
 | `server/.env.local` | `DATABASE_URL=postgresql://ecommerce_user:ecommerce_pass@localhost:5432/ecommerce` |
 | `server/lib/db.js` | Singleton `pg.Pool` com *type parser* de `NUMERIC → float`. |
-| `server/scripts/seed.js` | DDL idempotente (`IF NOT EXISTS`) + seed de produtos. |
+| `server/scripts/seed.js` | DDL idempotente (`IF NOT EXISTS`) + seed de produtos + estruturas de `orders/payments`. |
 | `src/db/api.js` | Cliente Fetch no frontend com as mesmas assinaturas da camada de banco anterior. |
 
 ---
@@ -358,14 +401,15 @@ Adiciona um produto ao carrinho. Se já existir, **incrementa** a quantidade via
 **Body (JSON):**
 ```json
 {
-  "userId": 1,
-  "productId": 5,
-  "quantity": 1
+  "products": [
+    { "productId": 5, "quantity": 1 },
+    { "productId": 8, "quantity": 2 }
+  ]
 }
 ```
 
-**Resposta 201:** Objeto `cart_items` com o registro upsertado.
-**Resposta 400:** Se `userId` ou `productId` estiverem ausentes.
+**Resposta 201:** `{ "items": [...], "processed": 2 }`.
+**Resposta 400:** Se `products` estiver vazio, com `productId` inválido ou item duplicado.
 
 ---
 
@@ -384,6 +428,112 @@ Remove um item do carrinho pelo ID do item (não do produto).
 
 ---
 
+### 📦 Pedidos (`orders`)
+
+> Endpoints protegidos por autenticação (`Authorization: Bearer <token>`).
+
+#### `POST /api/orders`
+Cria pedido com os itens do carrinho autenticado. Se o carrinho estiver vazio, aceita `items` no body.
+
+- Header opcional: `Idempotency-Key` para evitar duplicidade.
+- Ao criar pedido com sucesso, o carrinho do usuário é limpo.
+
+**Body (JSON):**
+```json
+{
+  "shippingTotal": 0,
+  "discountTotal": 0,
+  "paymentMethod": null,
+  "shippingAddress": null,
+  "billingInfo": null,
+  "items": [
+    { "productId": 5, "quantity": 1 }
+  ]
+}
+```
+
+**Resposta 201:** Pedido completo com `items`.
+**Resposta 200:** Pedido existente, quando a mesma `Idempotency-Key` for reaproveitada.
+
+---
+
+#### `GET /api/orders?page=1&pageSize=20&status=created`
+Lista pedidos paginados do usuário autenticado. Para admin, aceita `userId` como filtro adicional.
+
+**Resposta 200:**
+```json
+{
+  "page": 1,
+  "pageSize": 20,
+  "total": 1,
+  "items": [
+    {
+      "id": 101,
+      "order_number": "ORD-20260328-000101",
+      "status": "created",
+      "grand_total": 499.9
+    }
+  ]
+}
+```
+
+---
+
+#### `GET /api/orders/:id`
+Retorna o pedido com os itens (`order_items`) e valida ownership (ou perfil admin).
+
+#### `PUT /api/orders/:id`
+Atualiza status do pedido respeitando transições válidas:
+
+- `created -> pending_payment | paid | cancelled`
+- `pending_payment -> paid | cancelled`
+- `paid -> processing | cancelled`
+- `processing -> shipped | cancelled`
+- `shipped -> delivered`
+
+`paymentMethod` só pode ser alterado por admin.
+
+#### `DELETE /api/orders/:id`
+Cancela o pedido (status `cancelled`), exceto se já estiver `delivered`.
+
+---
+
+### 💳 Pagamentos (`payments`)
+
+> Endpoints protegidos por autenticação (`Authorization: Bearer <token>`), exceto download de boleto.
+
+#### `POST /api/orders/:id/payments`
+Processa pagamento para o pedido com métodos: `credit`, `debit`, `pix`, `boleto`.
+
+- Aceita pagamento parcial (split em duas chamadas).
+- Cartão com final `0000` é simulado como `failed`.
+- PIX/Boleto retornam `pending` com metadados mock (QR code, linha digitável, etc).
+
+**Body (JSON):**
+```json
+{
+  "method": "credit",
+  "amount": 250.00,
+  "holderName": "João da Silva",
+  "cardNumber": "4111111111111111",
+  "expiry": "12/30",
+  "cvv": "123",
+  "installments": 2
+}
+```
+
+**Resposta 201:** Objeto de pagamento criado em `payments`.
+
+---
+
+#### `GET /api/orders/:id/payments/:paymentId`
+Consulta status e metadados de um pagamento específico.
+
+#### `GET /api/orders/:id/boleto/:reference`
+Gera/download de PDF mock do boleto (`application/pdf`).
+
+---
+
 ## 🧩 Componentes do Frontend
 
 | Componente | Descrição |
@@ -393,6 +543,11 @@ Remove um item do carrinho pelo ID do item (não do produto).
 | `Product` | Card de produto com preço, categoria, imagem e ação de adicionar ao carrinho. |
 | `ProductDetails` | Página de detalhes: imagem, descrição, fabricante/linha/modelo, seleção de quantidade. |
 | `Cart` | Carrinho com atualização de quantity via API e remoção de itens. |
+| `CheckoutButton` | Cria pedido em `/api/orders` com `Idempotency-Key` e encaminha para `/payments`. |
+| `PaymentsPage` | Tela de pagamentos: crédito, débito, PIX, boleto e split payment (2 métodos). |
+| `PaymentMethodSelector` | Seletor visual de método de pagamento (chips/radios). |
+| `CardBrandChips` | Detecção de bandeira do cartão (Visa, MasterCard, Amex, Elo etc). |
+| `ThankYouPage` | Confirmação do pedido, resumo de itens e dados mock de PIX/Boleto (copiar/download). |
 | `Login` | Formulário de autenticação com show/hide de senha. |
 | `Register` | Formulário multistep (Stepper MUI): dados pessoais → endereço. Com validação de CPF, CNPJ, CEP (ViaCEP API) e indicador de força de senha. |
 
@@ -401,7 +556,7 @@ Remove um item do carrinho pelo ID do item (não do produto).
 ## 🌐 Internacionalização (i18n)
 
 - Implementada via `LanguageContext` em `src/contexts/LanguageContext.jsx`.
-- Dicionários PT/EN cobrem todos os textos da UI: NavBar, Catálogo, Carrinho, Detalhes, Checkout e mensagens Toast.
+- Dicionários PT/EN cobrem todos os textos da UI: NavBar, Catálogo, Carrinho, Detalhes, Checkout, Payments, Thank You e mensagens Toast.
 - Preferência persistida no `localStorage`.
 
 ---
@@ -470,11 +625,19 @@ tester.com/
 │       ├── users/
 │       │   ├── register/route.js
 │       │   └── login/route.js
+│       ├── orders/
+│       │   ├── route.js                     # GET/POST /orders
+│       │   └── [id]/
+│       │       ├── route.js                 # GET/PUT/DELETE /orders/:id
+│       │       ├── payments/route.js        # POST /orders/:id/payments
+│       │       ├── payments/[paymentId]/route.js # GET /orders/:id/payments/:paymentId
+│       │       └── boleto/[reference]/route.js   # GET /orders/:id/boleto/:reference (PDF)
 │       └── cart/
 │           └── route.js       # GET/POST/DELETE /cart
 │
 └── src/                       # Frontend React
-    ├── components/            # Catalog, Product, Cart, Login, Register, ProductDetails
+    ├── components/            # Catalog, Cart, CheckoutButton, PaymentsPage, ThankYouPage etc.
+    │   └── payment/           # PaymentMethodSelector, CardBrandChips
     ├── contexts/
     │   ├── AuthContext.jsx
     │   ├── DatabaseContext.jsx

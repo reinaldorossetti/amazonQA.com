@@ -3,7 +3,9 @@ info:
   title: Tester.com API
   version: 1.0.0
   description: |
-    Documentação OpenAPI dos endpoints atuais da aplicação.
+    O amazonQA é uma Aplicação completa com API REST gratuita feita com next.js, que simula uma loja virtual com intuito de servir de material de estudos de testes de API e Web.
+    Não deixe de seguir o autor do projeto Reinaldo M R Junior no LinkedIn: https://www.linkedin.com/in/reinaldo-mateus-rossetti-a28a5423/
+    E deixar um star no repositório: https://github.com/reinaldorossetti/amazonQA.com
 servers:
   - url: http://127.0.0.1:3001
     description: Backend local (Next.js)
