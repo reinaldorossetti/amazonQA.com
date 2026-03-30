@@ -8,7 +8,7 @@ test.describe('Login', () => {
 
   /**
    * TS01 - Happy path: preenche e-mail e senha válidos e verifica redirecionamento
-   *        ao catálogo e saudação ao usuário na NavBar.
+    *        para área logada e saudação ao usuário na NavBar.
    */
   test('TS01 - Should successfully log in when providing valid credentials', async ({ page, setupLoginSuccessMock }) => {
     const base = new PageBase(page);
@@ -22,9 +22,9 @@ test.describe('Login', () => {
 
     await loginPage.login(userData.email, userData.password);
 
-    // After successful login, user is redirected to catalog
-    await waitForPageLoad(page, 'catalog');
-    await expect(page).toHaveURL('/');
+    // After successful login, user is redirected to account area
+    await expect(page).toHaveURL('/minha-conta');
+    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
 
     // The nav bar should greet the logged user
     await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });

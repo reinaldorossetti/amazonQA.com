@@ -116,7 +116,7 @@ describe('Login Component', () => {
     expect(navigateMock).toHaveBeenCalledWith('/cart');
   });
 
-  it('TC_LOGIN_005: usa fallback de rota "/" quando ?next não existe', async () => {
+  it('TC_LOGIN_005: usa fallback de rota "/minha-conta" quando ?next não existe', async () => {
     const user = userEvent.setup();
     loginUser.mockResolvedValue({
       accessToken: 'token-xyz',
@@ -136,7 +136,7 @@ describe('Login Component', () => {
     await user.click(screen.getByRole('button', { name: 'Entrar' }));
 
     await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith('/');
+      expect(navigateMock).toHaveBeenCalledWith('/minha-conta');
     });
   });
 

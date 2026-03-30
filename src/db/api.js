@@ -54,6 +54,12 @@ export const getUserByEmail = (email) =>
 export const loginUser = ({ email, password }) =>
     http('POST', '/users/login', { email, password });
 
+export const getMe = () =>
+    http('GET', '/users/me');
+
+export const updateMyAddress = (payload) =>
+    http('PUT', '/users/me/address', payload);
+
 // ── Cart ─────────────────────────────────────────────────────────────────────
 
 export const getCartItems = (userId) =>
@@ -116,3 +122,11 @@ export const createOrderPayment = (orderId, payload = {}) =>
 
 export const getOrderPaymentStatus = (orderId, paymentId) =>
     http('GET', `/orders/${orderId}/payments/${paymentId}`);
+
+// ── Account helpers ──────────────────────────────────────────────────────────
+
+export const getMyOrders = (params = {}) =>
+    getOrders(params);
+
+export const getMyOrderById = (id) =>
+    getOrderById(id);

@@ -30,7 +30,7 @@ const Login = () => {
 
   // Where to redirect after successful login (supports ?next=/some-path)
   const params = new URLSearchParams(location.search);
-  const nextPath = params.get("next") || "/";
+  const nextPath = params.get("next") || "/minha-conta";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

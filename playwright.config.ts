@@ -11,7 +11,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 1,
-  workers: isCI ? 3 : 7,
+  workers: isCI ? 3 : 6,
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
@@ -36,6 +36,9 @@ export default defineConfig({
         screenshot: 'only-on-failure',
       },
     },
+
+
+    
     {
       name: 'frontend-webkit',
       testMatch: /frontend\/.*\.spec\.ts/,

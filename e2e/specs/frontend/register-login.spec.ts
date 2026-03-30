@@ -4,13 +4,13 @@ import { REGISTER_VALIDATION } from '../../fixtures/register.fixture';
 import { RegisterPage } from '../../pages/RegisterPage';
 import { LoginPage } from '../../pages/LoginPage';
 import { NavComponent } from '../../pages/NavComponent';
-import { PageBase, waitForPageLoad } from '../../helpers/PageBase';
+import { PageBase } from '../../helpers/PageBase';
 
 test.describe('Register → Login — Fluxo Completo', () => {
 
   /**
    * TS01 - Fluxo E2E: cadastra um novo usuário e em seguida realiza login
-   *        com as mesmas credenciais, verificando redirecionamento ao catálogo
+    *        com as mesmas credenciais, verificando redirecionamento para área logada
    *        e a saudação ao usuário na NavBar.
    *
    * Mock strategy:
@@ -82,9 +82,9 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.login(userData.email, userData.password);
 
-    // ── Step 3: Verifica redirecionamento ao catálogo e saudação na NavBar ───
-    await waitForPageLoad(page, 'catalog');
-    await expect(page).toHaveURL('/');
+    // ── Step 3: Verifica redirecionamento para área logada e saudação na NavBar ───
+    await expect(page).toHaveURL('/minha-conta');
+    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
     await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });
     await expect(page.locator(navComponent.userGreeting)).toContainText(userData.firstName, { timeout: base.timeOut });
   });
@@ -109,7 +109,8 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.login(userData.email, userData.password);
 
-    await waitForPageLoad(page, 'catalog');
+    await expect(page).toHaveURL('/minha-conta');
+    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
     await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: 10_000 });
 
     await navComponent.clickLogout();
@@ -121,7 +122,8 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.login(userData.email, userData.password);
 
-    await waitForPageLoad(page, 'catalog');
+    await expect(page).toHaveURL('/minha-conta');
+    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
     await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });
   });
 

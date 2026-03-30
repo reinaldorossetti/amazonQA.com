@@ -26,6 +26,12 @@ import ThankYouPage from "./components/ThankYouPage";
 import ProductDetails from "./components/ProductDetails";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import AccountLayout from "./components/account/AccountLayout";
+import AccountHome from "./components/account/AccountHome";
+import UserProfilePage from "./components/account/UserProfilePage";
+import UserAddressPage from "./components/account/UserAddressPage";
+import OrdersPage from "./components/account/OrdersPage";
+import OrderDetailsPage from "./components/account/OrderDetailsPage";
 
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -265,15 +271,19 @@ const NavBar = ({ cartCount, search, setSearch }) => {
           <Box id="nav-user-area" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Box
               id="nav-user-greeting"
+              component={Link}
+              to="/minha-conta"
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 color: "#fff",
+                textDecoration: "none",
                 px: 1,
                 py: 1,
                 borderRadius: "2px",
                 border: "1px solid transparent",
+                "&:hover": { border: "1px solid #fff" },
               }}
             >
               <Typography sx={{ fontSize: "0.75rem", color: "#fff", lineHeight: 1 }}>{t("nav.hello")}</Typography>
@@ -483,6 +493,20 @@ const AppInner = () => {
             />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/minha-conta"
+              element={
+                <ProtectedRoute>
+                  <AccountLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<AccountHome />} />
+              <Route path="dados" element={<UserProfilePage />} />
+              <Route path="endereco" element={<UserAddressPage />} />
+              <Route path="pedidos" element={<OrdersPage />} />
+              <Route path="pedidos/:id" element={<OrderDetailsPage />} />
+            </Route>
           </Routes>
         </Box>
         <ToastContainer

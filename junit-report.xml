@@ -1,10 +1,62 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="4.901809">
-<testsuite name="api\payments.api.spec.ts" timestamp="2026-03-28T00:41:23.013Z" hostname="api" tests="3" failures="0" skipped="0" time="8.595" errors="0">
-<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api\payments.api.spec.ts" time="2.892">
+<testsuites id="" name="" tests="24" failures="0" skipped="0" errors="0" time="43.74115199999999">
+<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="68.263" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="13.7">
 </testcase>
-<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api\payments.api.spec.ts" time="2.964">
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="13.693">
 </testcase>
-<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api\payments.api.spec.ts" time="2.739">
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="13.548">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="13.432">
+</testcase>
+<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="13.89">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="25.012" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="15.325">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.634">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="2.053">
+</testcase>
+</testsuite>
+<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-webkit" tests="5" failures="0" skipped="0" time="27.142" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="7.162">
+</testcase>
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="6.313">
+</testcase>
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="4.294">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="4.901">
+</testcase>
+<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="4.472">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-webkit" tests="3" failures="0" skipped="0" time="37.676" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="14.962">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="17.483">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="5.231">
+</testcase>
+</testsuite>
+<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="11.704" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="2.513">
+</testcase>
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="2.476">
+</testcase>
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="2.355">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="2.079">
+</testcase>
+<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="2.281">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="13.042" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="3.782">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.33">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="1.93">
 </testcase>
 </testsuite>
 </testsuites>
