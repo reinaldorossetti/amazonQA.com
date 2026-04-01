@@ -1,62 +1,101 @@
-<testsuites id="" name="" tests="24" failures="0" skipped="0" errors="0" time="43.74115199999999">
-<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="68.263" errors="0">
-<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="13.7">
+<testsuites id="" name="" tests="12" failures="0" skipped="0" errors="0" time="51.787333">
+<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-01T14:55:16.427Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="35.885" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="7.811">
 </testcase>
-<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="13.693">
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="9.22">
 </testcase>
-<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="13.548">
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="8.066">
 </testcase>
-<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="13.432">
-</testcase>
-<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="13.89">
-</testcase>
-</testsuite>
-<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="25.012" errors="0">
-<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="15.325">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.634">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="2.053">
-</testcase>
-</testsuite>
-<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-webkit" tests="5" failures="0" skipped="0" time="27.142" errors="0">
-<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="7.162">
-</testcase>
-<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="6.313">
-</testcase>
-<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="4.294">
-</testcase>
-<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="4.901">
-</testcase>
-<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="4.472">
-</testcase>
-</testsuite>
-<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-webkit" tests="3" failures="0" skipped="0" time="37.676" errors="0">
-<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="14.962">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="17.483">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="5.231">
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="10.788">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-visa-8c8372d4293d67580dde1b17a28fe71e46679972.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-mastercard-5f3f3d4e8b562258aeb6cac78e977a9b2b8d724e.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-elo-ee99a7bf6e6a538c31173aa1c87ed75cc9c7fcba.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-amex-2f7d11ad05afe83b55380e6d16da3bf2302444bf.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hipercard-fd5fb7e67ea3f6dc14865ecc26f264333b94c6e2.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hiper-2e2478221c167b65ff0948dbfab0688e27be5164.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-cabal-6c6f70fb836bf9b13aea16ad2c1d4c929b033625.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-verdecard-b59be64269e68c67f7d7071a6858c791f473f3bc.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-unionpay-6d9b18c76aef9383f3d259349f492c733394f3b4.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-diners-6353476af64750c2d294a96b9913389148655e2e.png]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
-<testsuite name="frontend\login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="11.704" errors="0">
-<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="2.513">
+<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-01T14:55:16.427Z" hostname="frontend-webkit" tests="4" failures="0" skipped="0" time="95.128" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="15.195">
 </testcase>
-<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="2.476">
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="26.266">
 </testcase>
-<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="2.355">
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="15.065">
 </testcase>
-<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="2.079">
-</testcase>
-<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="2.281">
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="38.602">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-visa-d597cd2c410045c49f5277708c31368ed13d9fcd.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-mastercard-63b8c6931cd0c3bcde79f4532dc9bc2936cbf057.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-elo-1abca1ccdaf5c008c4165c6c4969ae8096e3339b.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-amex-20de5b1ae00fa3d08537ac9229c06e9996ca8778.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-hipercard-aa686a1d8c46adbb79abb5211624812da2194246.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-hiper-4cd5342843a18793a6fc72a60745e4e4069eff40.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-cabal-e971aa3e73dc6611c6703c5220da544bc141f8ec.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-verdecard-7d33bdf50b87ad6e4e75ba7fba37d9290e63c7b5.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-unionpay-800368d4875248cee37180fb7690b823fc8c518d.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-webkit\attachments\payments-card-data-before-confirmation-diners-e48eacdb4069196fe7f3eda8f5b1546cd7a80187.png]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
-<testsuite name="frontend\register-login.spec.ts" timestamp="2026-03-30T21:17:25.973Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="13.042" errors="0">
-<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="3.782">
+<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-01T14:55:16.427Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="31.474" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="7.22">
 </testcase>
-<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.33">
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="8.098">
 </testcase>
-<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="1.93">
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="7.033">
+</testcase>
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="9.123">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-visa-c0cf132f37508051dcfc0cc695103fd2d78275f3.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-mastercard-496244dc09ad3bb342d255ea6c2f059fef45ae0f.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-elo-c2af9b59ec30931d1b5081736a37d44e1db7bc18.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-amex-948a636633f19eae2646aa7c42bc079b5b721d2c.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-hipercard-4ba52db169ee7f01f14f1d9f498407db5967b70d.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-hiper-ed56282ae45c4ac693f4409b2befb04c7b18b3bd.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-cabal-4461d6982cb3fc514f3d4ef7d8a14002d53fb92a.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-verdecard-c09142a6ffd0e7f4e60df896e9b7533df15b4cff.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-unionpay-197ebbae3a100a4e5659de00d30d8143cc3e25eb.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge\attachments\payments-card-data-before-confirmation-diners-7081c94c53881e70b0d4d0ff8725407fd7cdc7fd.png]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>

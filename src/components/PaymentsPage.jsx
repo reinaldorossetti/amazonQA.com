@@ -31,11 +31,25 @@ function detectCardBrand(cardNumber = '') {
   if (/^4/.test(n)) return 'visa';
   if (/^(5[1-5]|2[2-7])/.test(n)) return 'mastercard';
   if (/^3[47]/.test(n)) return 'amex';
-  if (/^(4011|4312|4389|4514|4576|5041|5066|5090|6277|6362|6363|6500|6516|6550)/.test(n)) return 'elo';
-  if (/^(6062|6370|6375|38)/.test(n)) return 'hipercard';
-  if (/^6376/.test(n)) return 'cabal';
+  if (/^(636297|636368|438935|504175|451416|506699|6362|5066|5090|6500|6516|6550)/.test(n)) return 'elo';
+  if (/^637601/.test(n)) return 'cabal';
+  if (/^5899/.test(n)) return 'verdecard';
+  if (/^637095/.test(n)) return 'hiper';
+  if (/^(6062|3841|637568)/.test(n)) return 'hipercard';
   if (/^62/.test(n)) return 'unionpay';
+  if (/^(30[0-5]|36|38|39)/.test(n)) return 'diners';
   return null;
+}
+
+function formatCardNumber(value = '') {
+  const digits = String(value).replace(/\D/g, '').slice(0, 19);
+  return digits.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExpiry(value = '') {
+  const digits = String(value).replace(/\D/g, '').slice(0, 4);
+  if (digits.length <= 2) return digits;
+  return `${digits.slice(0, 2)}/${digits.slice(2)}`;
 }
 
 const defaultCardData = {
@@ -80,7 +94,21 @@ const PaymentsPage = ({ clearCart = () => {} }) => {
   }, [method, t]);
 
   const handleCardChange = (field) => (event) => {
-    setCardData((prev) => ({ ...prev, [field]: event.target.value }));
+    let nextValue = event.target.value;
+
+    if (field === 'cardNumber') {
+      nextValue = formatCardNumber(nextValue);
+    }
+
+    if (field === 'expiry') {
+      nextValue = formatExpiry(nextValue);
+    }
+
+    if (field === 'cvv') {
+      nextValue = String(nextValue).replace(/\D/g, '').slice(0, 4);
+    }
+
+    setCardData((prev) => ({ ...prev, [field]: nextValue }));
   };
 
   const buildPaymentPayload = (methodValue, amountValue) => {
@@ -227,32 +255,42 @@ const PaymentsPage = ({ clearCart = () => {} }) => {
           {(method === 'credit' || method === 'debit') && (
             <Stack spacing={1.5} sx={{ mt: 2 }}>
               <TextField
+                id="payments-card-holder-input"
                 label={t('payments.card.holder')}
                 size="small"
                 value={cardData.holderName}
                 onChange={handleCardChange('holderName')}
+                inputProps={{ autoComplete: 'cc-name' }}
               />
               <TextField
+                id="payments-card-number-input"
                 label={t('payments.card.number')}
                 size="small"
                 value={cardData.cardNumber}
                 onChange={handleCardChange('cardNumber')}
+                inputProps={{ inputMode: 'numeric', autoComplete: 'cc-number' }}
+                helperText={cardData.cardNumber ? 'A bandeira é detectada automaticamente.' : 'Digite os números do cartão para identificar a bandeira.'}
               />
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
                 <TextField
+                  id="payments-card-expiry-input"
                   label={t('payments.card.expiry')}
                   size="small"
                   value={cardData.expiry}
                   onChange={handleCardChange('expiry')}
+                  inputProps={{ inputMode: 'numeric', autoComplete: 'cc-exp', placeholder: 'MM/AA' }}
                 />
                 <TextField
+                  id="payments-card-cvv-input"
                   label={t('payments.card.cvv')}
                   size="small"
                   value={cardData.cvv}
                   onChange={handleCardChange('cvv')}
+                  inputProps={{ inputMode: 'numeric', autoComplete: 'cc-csc' }}
                 />
                 {method === 'credit' && (
                   <TextField
+                    id="payments-card-installments-input"
                     label={t('payments.card.installments')}
                     type="number"
                     size="small"
@@ -262,7 +300,10 @@ const PaymentsPage = ({ clearCart = () => {} }) => {
                   />
                 )}
               </Stack>
-              <CardBrandChips activeBrand={activeBrand} />
+              <CardBrandChips
+                activeBrand={activeBrand}
+                visible={Boolean(String(cardData.cardNumber).replace(/\D/g, '').length)}
+              />
             </Stack>
           )}
 

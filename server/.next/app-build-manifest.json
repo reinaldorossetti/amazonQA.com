@@ -14,51 +14,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/orders/route.js"
-    ],
-    "/api/orders/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/orders/[id]/route.js"
-    ],
-    "/api/users/me/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/me/route.js"
-    ],
-    "/api/users/me/address/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/me/address/route.js"
-    ],
-    "/api/users/register/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/register/route.js"
-    ],
-    "/api/cart/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/cart/route.js"
-    ],
-    "/api/products/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/products/[id]/route.js"
-    ],
-    "/api/cart/[id]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/cart/[id]/route.js"
-    ],
-    "/api/orders/[id]/payments/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/orders/[id]/payments/route.js"
-    ],
-    "/api/orders/[id]/payments/[paymentId]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/orders/[id]/payments/[paymentId]/route.js"
     ]
   }
 }

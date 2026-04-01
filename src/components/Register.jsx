@@ -885,17 +885,30 @@ const Register = () => {
 
             {/* Already have account */}
             <Divider sx={{ my: 2.5 }} />
-            <Typography variant="body2" align="center" color="text.secondary">
-              Já tem uma conta?{" "}
-              <Box
-                component="span"
-                id="register-signin-link"
-                sx={{ color: "#0066c0", cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
+            <Box sx={{ textAlign: "center" }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1.2 }}>
+                Já tem uma conta?
+              </Typography>
+              <Button
+                id="register-signin-btn"
+                variant="outlined"
+                size="small"
                 onClick={() => navigate("/login")}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 700,
+                  borderColor: "#0066c0",
+                  color: "#0066c0",
+                  px: 2.5,
+                  "&:hover": {
+                    borderColor: "#004a8f",
+                    backgroundColor: "#f0f7ff",
+                  },
+                }}
               >
                 Fazer login
-              </Box>
-            </Typography>
+              </Button>
+            </Box>
           </Box>
         </Paper>
       </Container>
