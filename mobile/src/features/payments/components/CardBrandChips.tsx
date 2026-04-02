@@ -13,9 +13,9 @@ function detectBrand(cardNumber: string): string {
 export function CardBrandChips({ cardNumber }: { cardNumber: string }) {
   const brand = detectBrand(cardNumber);
   return (
-    <View style={{ marginTop: 8 }}>
-      <Text variant="labelMedium">Bandeira detectada</Text>
-      <Chip style={{ marginTop: 4, alignSelf: 'flex-start' }}>{brand}</Chip>
+    <View testID="payments-card-brand-wrapper" style={{ marginTop: 8 }}>
+      <Text testID="payments-card-brand-label" variant="labelMedium">Bandeira detectada</Text>
+      <Chip testID="payments-card-brand-chip" style={{ marginTop: 4, alignSelf: 'flex-start' }}>{brand}</Chip>
     </View>
   );
 }

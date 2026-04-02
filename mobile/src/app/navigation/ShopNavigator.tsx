@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '@/features/catalog/screens/HomeScreen';
 import { CartScreen } from '@/features/cart/screens/CartScreen';
@@ -33,6 +33,7 @@ function CartIcon({ color }: { color: string }) {
       <Ionicons name="bag-handle-outline" size={30} color={color} />
       {quantity > 0 && (
         <Text
+          testID="tab-cart-badge"
           style={{
             position: 'absolute',
             top: -5,
@@ -93,10 +94,34 @@ export function ShopNavigator() {
         },
       })}
     >
-      <Tabs.Screen name="Home" component={HomeScreen} />
-      <Tabs.Screen name="Orders" component={OrdersScreen} />
-      <Tabs.Screen name="Cart" component={CartScreen} />
-      <Tabs.Screen name="Account" component={AccountScreen} />
+      <Tabs.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props} testID="tab-home-button" />,
+        }}
+      />
+      <Tabs.Screen
+        name="Orders"
+        component={OrdersScreen}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props} testID="tab-orders-button" />,
+        }}
+      />
+      <Tabs.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props} testID="tab-cart-button" />,
+        }}
+      />
+      <Tabs.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          tabBarButton: (props) => <TouchableOpacity {...props} testID="tab-account-button" />,
+        }}
+      />
     </Tabs.Navigator>
   );
 }

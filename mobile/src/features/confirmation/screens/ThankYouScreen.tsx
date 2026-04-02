@@ -8,9 +8,9 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ThankYou'>;
 export function ThankYouScreen({ route, navigation }: Props) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 16, gap: 12 }}>
-      <Text variant="headlineMedium">Obrigado pela compra!</Text>
-      <Text>Pedido #{route.params.orderId} confirmado com sucesso.</Text>
-      <Button mode="contained" onPress={() => navigation.navigate('Shop')}>
+      <Text testID="thank-you-title" variant="headlineMedium">Obrigado pela compra!</Text>
+      <Text testID="thank-you-order-message">Pedido #{route.params.orderId} confirmado com sucesso.</Text>
+      <Button testID="thank-you-back-to-shop-button" mode="contained" onPress={() => navigation.navigate('Shop')}>
         Voltar para a loja
       </Button>
     </View>

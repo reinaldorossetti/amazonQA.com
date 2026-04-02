@@ -1,4 +1,4 @@
-package com.anonymous.amazonqamobile;
+package com.amazonqa.app;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;

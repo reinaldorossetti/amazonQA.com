@@ -48,22 +48,22 @@ export function PaymentsScreen({ route, navigation }: Props) {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 12 }}>
-      <Text variant="headlineSmall">Pagamento do pedido #{orderId}</Text>
+      <Text testID="payments-title" variant="headlineSmall">Pagamento do pedido #{orderId}</Text>
       <Text variant="titleMedium">Saldo: R$ {remaining.toFixed(2)}</Text>
       <PaymentMethodSelector value={method} onChange={setMethod} />
 
       {isCardMethod ? (
         <>
-          <TextInput label="Nome no cartão" value={holderName} onChangeText={setHolderName} />
-          <TextInput label="Número do cartão" value={cardNumber} onChangeText={setCardNumber} keyboardType="number-pad" />
+          <TextInput testID="payments-card-holder-input" label="Nome no cartão" value={holderName} onChangeText={setHolderName} />
+          <TextInput testID="payments-card-number-input" label="Número do cartão" value={cardNumber} onChangeText={setCardNumber} keyboardType="number-pad" />
           <CardBrandChips cardNumber={cardNumber} />
-          <TextInput label="Validade" value={expiry} onChangeText={setExpiry} />
-          <TextInput label="CVV" value={cvv} onChangeText={setCvv} secureTextEntry keyboardType="number-pad" />
+          <TextInput testID="payments-card-expiry-input" label="Validade" value={expiry} onChangeText={setExpiry} />
+          <TextInput testID="payments-card-cvv-input" label="CVV" value={cvv} onChangeText={setCvv} secureTextEntry keyboardType="number-pad" />
         </>
       ) : null}
 
-      {error ? <HelperText type="error">{error}</HelperText> : null}
-      <Button mode="contained" onPress={() => paymentMutation.mutate()} loading={paymentMutation.isPending} disabled={!canSubmit}>
+      {error ? <HelperText testID="payments-error-message" type="error">{error}</HelperText> : null}
+      <Button testID="payments-confirm-button" mode="contained" onPress={() => paymentMutation.mutate()} loading={paymentMutation.isPending} disabled={!canSubmit}>
         Confirmar pagamento
       </Button>
     </ScrollView>

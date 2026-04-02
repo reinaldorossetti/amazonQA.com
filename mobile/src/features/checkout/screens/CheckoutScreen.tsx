@@ -44,7 +44,7 @@ export function CheckoutScreen({ navigation }: Props) {
         <Text style={styles.amazonHeaderText}>amazon.com.br</Text>
       </View>
 
-      <Text style={styles.pageTitle}>Concluir compra</Text>
+      <Text testID="checkout-title" style={styles.pageTitle}>Concluir compra</Text>
       
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Revise os itens do pedido</Text>
@@ -55,9 +55,10 @@ export function CheckoutScreen({ navigation }: Props) {
 
         <Divider style={{ marginVertical: 12 }} />
 
-        {error ? <HelperText type="error" visible={true} style={styles.errorText}>{error}</HelperText> : null}
+        {error ? <HelperText testID="checkout-error-message" type="error" visible={true} style={styles.errorText}>{error}</HelperText> : null}
         
         <Button
+          testID="checkout-submit-button"
           mode="contained"
           onPress={() => orderMutation.mutate()}
           loading={orderMutation.isPending}

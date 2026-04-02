@@ -1,4 +1,4 @@
-package com.anonymous.amazonqamobile
+package com.amazonqa.app
 
 import android.os.Build
 import android.os.Bundle

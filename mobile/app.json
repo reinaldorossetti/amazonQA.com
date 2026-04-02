@@ -19,7 +19,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#131921"
       },
-      "package": "com.anonymous.amazonqamobile"
+      "package": "com.amazonqa.app"
     },
     "web": {
       "bundler": "metro"

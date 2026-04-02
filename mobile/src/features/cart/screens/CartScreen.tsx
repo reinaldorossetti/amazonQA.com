@@ -43,9 +43,10 @@ export function CartScreen({}: CompositeScreenProps<
     <View style={styles.headerBox}>
       <Text style={styles.subtotalText}>
         Subtotal ({totalQuantity} {totalQuantity === 1 ? 'item' : 'itens'}):{' '}
-        <Text style={styles.totalPriceText}>{formatCurrency(total)}</Text>
+        <Text testID="cart-total-amount" style={styles.totalPriceText}>{formatCurrency(total)}</Text>
       </Text>
       <Button
+        testID="cart-checkout-button"
         mode="contained"
         disabled={total <= 0}
         onPress={() => navigation.navigate('Checkout')}
@@ -73,7 +74,7 @@ export function CartScreen({}: CompositeScreenProps<
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={cartItems.length > 0 ? renderHeader : null}
         renderItem={({ item }) => (
-          <View style={styles.cartItemCard}>
+          <View testID={`cart-item-${item.id}`} style={styles.cartItemCard}>
             <View style={styles.cartItemRow}>
               <View style={styles.itemImageContainer}>
                 {item.image ? (
@@ -94,11 +95,14 @@ export function CartScreen({}: CompositeScreenProps<
 
             <View style={styles.itemActionsRow}>
               <View style={styles.qtyContainer}>
-                <Text>Qtd: {item.quantity}</Text>
+                <Text testID={`cart-item-quantity-${item.id}`}>Qtd: {item.quantity}</Text>
               </View>
               
               <View style={styles.actionLinks}>
-                <TouchableOpacity onPress={() => deleteMutation.mutate(item.id)}>
+                <TouchableOpacity
+                  testID={`cart-item-delete-${item.id}`}
+                  onPress={() => deleteMutation.mutate(item.id)}
+                >
                   <Text style={styles.linkText}>Excluir</Text>
                 </TouchableOpacity>
                 <View style={styles.dividerPipe} />
@@ -111,9 +115,10 @@ export function CartScreen({}: CompositeScreenProps<
         )}
         ListEmptyComponent={
           !cartQuery.isLoading ? (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>O seu carrinho da Amazon está vazio.</Text>
+            <View testID="cart-empty-state" style={styles.emptyContainer}>
+              <Text testID="cart-empty-text" style={styles.emptyText}>O seu carrinho da Amazon está vazio.</Text>
               <Button
+                testID="cart-continue-shopping-button"
                 mode="text"
                 onPress={() => navigation.navigate('Home' as any)}
                 textColor="#007185"

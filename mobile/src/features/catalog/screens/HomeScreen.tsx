@@ -41,11 +41,12 @@ export function HomeScreen({}: CompositeScreenProps<
   }, [productsQuery.data, search]);
 
   return (
-    <View style={styles.container}>
+    <View testID="home-screen" style={styles.container}>
       {/* Amazon Header */}
       <View style={styles.headerContainer}>
         <View style={styles.searchRow}>
           <Searchbar
+            testID="home-search-input"
             placeholder="Buscar produtos na Amazon"
             value={search}
             onChangeText={setSearch}
@@ -89,7 +90,7 @@ export function HomeScreen({}: CompositeScreenProps<
         ListEmptyComponent={
           !productsQuery.isLoading ? (
             <View style={styles.emptyContainer}>
-              <Text style={{ marginTop: 24, fontSize: 16 }}>Nenhum produto encontrado.</Text>
+              <Text testID="home-empty-state-text" style={{ marginTop: 24, fontSize: 16 }}>Nenhum produto encontrado.</Text>
             </View>
           ) : null
         }

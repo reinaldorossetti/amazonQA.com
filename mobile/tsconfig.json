@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react-native",
     "lib": [
       "ES2020"
@@ -10,7 +10,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "5.0",
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,

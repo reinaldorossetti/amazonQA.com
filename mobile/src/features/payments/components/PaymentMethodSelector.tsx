@@ -19,6 +19,7 @@ export function PaymentMethodSelector({ value, onChange }: PaymentMethodSelector
       {METHODS.map((method) => (
         <Chip
           key={method.value}
+          testID={`payment-method-${method.value}`}
           selected={value === method.value}
           onPress={() => onChange(method.value)}
         >

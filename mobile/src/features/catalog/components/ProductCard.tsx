@@ -13,7 +13,12 @@ interface ProductCardProps {
 
 export const ProductCard = memo(function ProductCard({ product, onPress, onAddToCart }: ProductCardProps) {
   return (
-    <TouchableOpacity style={styles.cardContainer} onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity
+      testID={`product-card-${product.id}`}
+      style={styles.cardContainer}
+      onPress={onPress}
+      activeOpacity={0.9}
+    >
       <View style={styles.imageContainer}>
         {product.image ? (
           <Image source={{ uri: product.image }} style={styles.image} />
@@ -44,6 +49,7 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
         </View>
 
         <Button 
+          testID={`add-to-cart-button-${product.id}`}
           mode="contained" 
           buttonColor="#FFD814" 
           textColor="#0F1111" 
