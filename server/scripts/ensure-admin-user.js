@@ -3,12 +3,13 @@ import pg from 'pg';
 import bcrypt from 'bcrypt';
 
 config({ path: '.env.local' });
+config({ path: '.env', override: false }); // loads BCRYPT_PEPPER etc.
 
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 const email = process.env.SEED_ADMIN_EMAIL || 'admin.teste@tester.com';
-const customSalt = 'Reinaldo2026';
+const pepper = process.env.BCRYPT_PEPPER ?? '';
 
 async function ensureAdminUser() {
   const exists = await pool.query(
@@ -19,7 +20,7 @@ async function ensureAdminUser() {
   let userId = exists.rows[0]?.id;
 
   if (!userId) {
-    const hash = await bcrypt.hash(`Admin@123${customSalt}`, 12);
+    const hash = await bcrypt.hash(`Admin@123${pepper}`, 12);
     const created = await pool.query(
       `INSERT INTO users (
          person_type, first_name, last_name, email, password, is_active, updated_at

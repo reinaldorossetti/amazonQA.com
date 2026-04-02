@@ -35,8 +35,8 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Conta encerrada ou inativa.' }, { status: 403 });
         }
 
-        const customSalt = "Reinaldo2026";
-        const isPasswordValid = await bcrypt.compare(password + customSalt, user.password);
+        const pepper = process.env.BCRYPT_PEPPER ?? '';
+        const isPasswordValid = await bcrypt.compare(password + pepper, user.password);
         if (!isPasswordValid) {
             return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 });
         }

@@ -38,9 +38,9 @@ export async function POST(request, { params }) {
         }
 
         const saltRounds = 12;
-        const customSalt = 'Reinaldo2026';
+        const pepper = process.env.BCRYPT_PEPPER ?? '';
         const randomPassword = crypto.randomUUID();
-        const hashedPassword = await bcrypt.hash(randomPassword + customSalt, saltRounds);
+        const hashedPassword = await bcrypt.hash(randomPassword + pepper, saltRounds);
 
         const obscuredEmail = `closed-${targetUserId}-${Date.now()}@anon.local`;
 

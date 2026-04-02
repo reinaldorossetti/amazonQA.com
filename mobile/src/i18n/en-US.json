@@ -1,0 +1,20 @@
+{
+  "appName": "AmazonQA Mobile",
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "password": "Password",
+  "logout": "Logout",
+  "search": "Search products",
+  "addToCart": "Add to cart",
+  "goToCart": "Go to cart",
+  "checkout": "Checkout",
+  "pay": "Pay",
+  "orders": "Orders",
+  "cart": "Cart",
+  "home": "Home",
+  "account": "Account",
+  "emptyCart": "Your cart is empty",
+  "requiredField": "Required field",
+  "thankYou": "Thank you for your purchase"
+}
