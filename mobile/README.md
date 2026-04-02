@@ -244,6 +244,22 @@ EXPO_PUBLIC_API_BASE_URL=http://localhost:3001
 
 ---
 
+## 🏃 Como Rodar o Emulador Android
+
+1. Descubra os emuladores disponíveis:
+```bash
+emulator -list-avds
+```
+
+2. Inicie o emulador (substitua `Pixel_6_Pro` pelo nome do seu emulador):
+```bash
+emulator -avd Pixel_6_Pro &
+```
+
+> **Nota:** Certifique-se de que a pasta de ferramentas do Android SDK (`emulator`) está no seu PATH.
+
+---
+
 ## 📌 Backlog inicial (priorizado)
 
 1. Bootstrap Expo + TypeScript + Paper + Navigation
