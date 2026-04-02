@@ -17,6 +17,7 @@
     "e2e:test:android:headless": "detox test --configuration android.emu.debug --headless"
   },
   "dependencies": {
+    "@expo/vector-icons": "~14.0.4",
     "@react-native-async-storage/async-storage": "^2.1.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
@@ -36,6 +37,7 @@
     "react-native-paper": "^5.13.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
+    "react-native-svg": "15.8.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

@@ -255,6 +255,7 @@ emulator -list-avds
 ```bash
 emulator -avd Pixel_6_Pro &
 ```
+npm.cmd --prefix "d:\github-projects\tester.com\mobile" run start -- --clear
 
 > **Nota:** Certifique-se de que a pasta de ferramentas do Android SDK (`emulator`) está no seu PATH.
 
