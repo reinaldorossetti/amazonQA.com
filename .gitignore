@@ -23,7 +23,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
+.gradle-home/
+.gradle-user-home/
+.gradle-project-cache/
 # Playwright artifacts
 playwright-report/
 test-results/
