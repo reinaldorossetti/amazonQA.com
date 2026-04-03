@@ -5,5 +5,5 @@ module.exports = {
   reporters: ['detox/runners/jest/reporter'],
   testTimeout: 180000,
   maxWorkers: 1,
-  testMatch: ['**/*.e2e.js'],
+  testMatch: ['**/*.e2e.ts'],
 };

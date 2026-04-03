@@ -5,6 +5,8 @@
  */
 import { NextResponse } from 'next/server';
 import { query } from '../../../lib/db.js';
+import { authenticateRequest } from '../../../lib/auth.js';
+import { isUserAdmin } from '../../../lib/user-roles.js';
 
 export async function GET(request) {
     try {
@@ -29,6 +31,16 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
+        const authResult = authenticateRequest(request);
+        if (!authResult.ok) {
+            return NextResponse.json({ error: authResult.error }, { status: 401 });
+        }
+
+        const admin = await isUserAdmin(authResult.auth.userId);
+        if (!admin) {
+            return NextResponse.json({ error: 'Apenas admin pode criar produtos' }, { status: 403 });
+        }
+
         const body = await request.json();
         const { name, price, description, category, image, manufacturer, line, model } = body;
 

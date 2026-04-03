@@ -43,6 +43,9 @@ export const getProducts = (category) =>
 export const getProductById = (id) =>
     http('GET', `/products/${id}`);
 
+export const deleteProductByIdAdmin = (id) =>
+    http('DELETE', `/products/${id}`);
+
 // ── Users ────────────────────────────────────────────────────────────────────
 
 export const registerUser = (userData) =>
@@ -59,6 +62,21 @@ export const getMe = () =>
 
 export const updateMyAddress = (payload) =>
     http('PUT', '/users/me/address', payload);
+
+export const getUsersAdmin = (params = {}) => {
+    const search = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+            search.set(key, String(value));
+        }
+    });
+
+    const query = search.toString();
+    return http('GET', `/users${query ? `?${query}` : ''}`);
+};
+
+export const deleteUserByIdAdmin = (id) =>
+    http('DELETE', `/users/${id}`);
 
 // ── Cart ─────────────────────────────────────────────────────────────────────
 

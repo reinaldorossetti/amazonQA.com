@@ -32,6 +32,9 @@ import UserProfilePage from "./components/account/UserProfilePage";
 import UserAddressPage from "./components/account/UserAddressPage";
 import OrdersPage from "./components/account/OrdersPage";
 import OrderDetailsPage from "./components/account/OrderDetailsPage";
+import AdminHomePage from "./components/admin/AdminHomePage";
+import AdminProductsPage from "./components/admin/AdminProductsPage";
+import AdminUsersPage from "./components/admin/AdminUsersPage";
 
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -415,6 +418,14 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+const AdminOnlyRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user?.isAdmin) {
+    return <Navigate to="/minha-conta" replace />;
+  }
+  return children;
+};
+
 const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
@@ -506,6 +517,30 @@ const AppInner = () => {
               <Route path="endereco" element={<UserAddressPage />} />
               <Route path="pedidos" element={<OrdersPage />} />
               <Route path="pedidos/:id" element={<OrderDetailsPage />} />
+              <Route
+                path="admin"
+                element={
+                  <AdminOnlyRoute>
+                    <AdminHomePage />
+                  </AdminOnlyRoute>
+                }
+              />
+              <Route
+                path="admin/produtos"
+                element={
+                  <AdminOnlyRoute>
+                    <AdminProductsPage />
+                  </AdminOnlyRoute>
+                }
+              />
+              <Route
+                path="admin/usuarios"
+                element={
+                  <AdminOnlyRoute>
+                    <AdminUsersPage />
+                  </AdminOnlyRoute>
+                }
+              />
             </Route>
           </Routes>
         </Box>

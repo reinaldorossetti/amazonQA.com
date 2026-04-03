@@ -1,6 +1,18 @@
 {
-  "/api/users/login/route": "app/api/users/login/route.js",
-  "/api/products/route": "app/api/products/route.js",
+  "/api/cart/[id]/route": "app/api/cart/[id]/route.js",
+  "/api/orders/[id]/boleto/[reference]/route": "app/api/orders/[id]/boleto/[reference]/route.js",
   "/api/cart/route": "app/api/cart/route.js",
-  "/api/orders/route": "app/api/orders/route.js"
+  "/api/orders/[id]/payments/[paymentId]/route": "app/api/orders/[id]/payments/[paymentId]/route.js",
+  "/api/orders/[id]/payments/route": "app/api/orders/[id]/payments/route.js",
+  "/api/orders/[id]/route": "app/api/orders/[id]/route.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/products/[id]/route": "app/api/products/[id]/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/users/[id]/route": "app/api/users/[id]/route.js",
+  "/api/users/[id]/terminate/route": "app/api/users/[id]/terminate/route.js",
+  "/api/users/login/route": "app/api/users/login/route.js",
+  "/api/users/me/address/route": "app/api/users/me/address/route.js",
+  "/api/users/me/route": "app/api/users/me/route.js",
+  "/api/users/register/route": "app/api/users/register/route.js",
+  "/api/users/route": "app/api/users/route.js"
 }

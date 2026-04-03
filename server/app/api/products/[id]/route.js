@@ -6,10 +6,22 @@
  */
 import { NextResponse } from 'next/server';
 import { query } from '../../../../lib/db.js';
+import { authenticateRequest } from '../../../../lib/auth.js';
+import { isUserAdmin } from '../../../../lib/user-roles.js';
+
+function toProductId(params) {
+    const id = Number(params.id);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
 
 export async function GET(request, { params }) {
     try {
-        const { rows } = await query('SELECT * FROM products WHERE id = $1', [params.id]);
+        const productId = toProductId(params);
+        if (!productId) {
+            return NextResponse.json({ error: 'ID de produto inválido' }, { status: 400 });
+        }
+
+        const { rows } = await query('SELECT * FROM products WHERE id = $1', [productId]);
         if (!rows.length) {
             return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
         }
@@ -22,6 +34,21 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
     try {
+        const authResult = authenticateRequest(request);
+        if (!authResult.ok) {
+            return NextResponse.json({ error: authResult.error }, { status: 401 });
+        }
+
+        const admin = await isUserAdmin(authResult.auth.userId);
+        if (!admin) {
+            return NextResponse.json({ error: 'Apenas admin pode atualizar produtos' }, { status: 403 });
+        }
+
+        const productId = toProductId(params);
+        if (!productId) {
+            return NextResponse.json({ error: 'ID de produto inválido' }, { status: 400 });
+        }
+
         const body = await request.json();
         const { name, price, description, category, image, manufacturer, line, model } = body;
 
@@ -31,7 +58,7 @@ export async function PUT(request, { params }) {
                  manufacturer=$6, line=$7, model=$8
              WHERE id=$9
              RETURNING *`,
-            [name, price, description, category, image, manufacturer, line, model, params.id]
+            [name, price, description, category, image, manufacturer, line, model, productId]
         );
         if (!rows.length) {
             return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
@@ -45,7 +72,22 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
     try {
-        const { rowCount } = await query('DELETE FROM products WHERE id = $1', [params.id]);
+        const authResult = authenticateRequest(request);
+        if (!authResult.ok) {
+            return NextResponse.json({ error: authResult.error }, { status: 401 });
+        }
+
+        const admin = await isUserAdmin(authResult.auth.userId);
+        if (!admin) {
+            return NextResponse.json({ error: 'Apenas admin pode excluir produtos' }, { status: 403 });
+        }
+
+        const productId = toProductId(params);
+        if (!productId) {
+            return NextResponse.json({ error: 'ID de produto inválido' }, { status: 400 });
+        }
+
+        const { rowCount } = await query('DELETE FROM products WHERE id = $1', [productId]);
         if (!rowCount) {
             return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
         }

@@ -30,3 +30,5 @@ test-results/
 blob-report/
 e2e/results/
 e2e/.auth/
+Microsoft/
+node_modules/

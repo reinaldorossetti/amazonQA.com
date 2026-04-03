@@ -2,9 +2,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   getProducts,
   getProductById,
+  deleteProductByIdAdmin,
   registerUser,
   getUserByEmail,
   loginUser,
+  getUsersAdmin,
+  deleteUserByIdAdmin,
   getCartItems,
   upsertCartItem,
   removeCartItem,
@@ -122,6 +125,47 @@ describe('db/api.js', () => {
     );
     expect(global.fetch.mock.calls[1][0]).toBe('/api/cart');
     expect(global.fetch.mock.calls[1][1].method).toBe('DELETE');
+  });
+
+  it('deleteProductByIdAdmin chama DELETE /api/products/:id', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ message: 'Produto removido' }),
+    });
+
+    const response = await deleteProductByIdAdmin(123);
+
+    expect(response).toEqual({ message: 'Produto removido' });
+    expect(global.fetch).toHaveBeenCalledWith('/api/products/123', expect.objectContaining({ method: 'DELETE' }));
+  });
+
+  it('getUsersAdmin serializa query params válidos', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ items: [] }),
+    });
+
+    await getUsersAdmin({ page: 2, pageSize: 25, status: 'active', search: 'ana', empty: '' });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/users?page=2&pageSize=25&status=active&search=ana',
+      expect.objectContaining({ method: 'GET' })
+    );
+  });
+
+  it('deleteUserByIdAdmin chama DELETE /api/users/:id', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ message: 'Usuário removido' }),
+    });
+
+    const response = await deleteUserByIdAdmin(77);
+
+    expect(response).toEqual({ message: 'Usuário removido' });
+    expect(global.fetch).toHaveBeenCalledWith('/api/users/77', expect.objectContaining({ method: 'DELETE' }));
   });
 
   it('lança erro com mensagem de API quando res.ok = false', async () => {

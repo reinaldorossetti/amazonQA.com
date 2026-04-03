@@ -76,6 +76,8 @@ const Login = () => {
           lastName: dbUser.last_name,
           email: dbUser.email,
           personType: dbUser.person_type,
+          roles: dbUser.roles ?? [],
+          isAdmin: Boolean(dbUser.isAdmin),
         },
         accessToken,
       });

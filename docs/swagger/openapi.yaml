@@ -386,7 +386,9 @@ paths:
 
     post:
       tags: [Products]
-      summary: "Criar produto (Acesso: público)"
+      summary: "Criar produto (Acesso: admin)"
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -402,6 +404,10 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: Dados inválidos
+        '401':
+          description: Não autenticado
+        '403':
+          description: Requer admin
 
   /api/products/{id}:
     get:
@@ -425,7 +431,9 @@ paths:
 
     put:
       tags: [Products]
-      summary: "Atualizar produto (Acesso: público)"
+      summary: "Atualizar produto (Acesso: admin)"
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -441,12 +449,18 @@ paths:
       responses:
         '200':
           description: Produto atualizado
+        '401':
+          description: Não autenticado
+        '403':
+          description: Requer admin
         '404':
           description: Produto não encontrado
 
     delete:
       tags: [Products]
-      summary: "Excluir produto (Acesso: público)"
+      summary: "Excluir produto (Acesso: admin)"
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -456,6 +470,10 @@ paths:
       responses:
         '200':
           description: Produto removido
+        '401':
+          description: Não autenticado
+        '403':
+          description: Requer admin
         '404':
           description: Produto não encontrado
 

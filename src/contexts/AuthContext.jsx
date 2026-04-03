@@ -7,6 +7,8 @@ import React, { createContext, useState, useContext, useEffect } from "react";
  * @property {string}  lastName   - User's last name.
  * @property {string}  email      - User's email address.
  * @property {string}  personType - `'PF'` (individual) or `'PJ'` (company).
+ * @property {string[]} [roles]    - User roles (e.g. `['user']`, `['admin','user']`).
+ * @property {boolean} [isAdmin]   - `true` when user has admin privileges.
  */
 
 /**
@@ -36,6 +38,15 @@ export const AuthProvider = ({ children }) => {
   /** @type {[string|null, React.Dispatch<React.SetStateAction<string|null>>]} */
   const [accessToken, setAccessToken] = useState(null);
 
+  const normalizeUser = (rawUser) => {
+    if (!rawUser) return null;
+    return {
+      ...rawUser,
+      roles: Array.isArray(rawUser.roles) ? rawUser.roles : [],
+      isAdmin: Boolean(rawUser.isAdmin),
+    };
+  };
+
   // Restore session from localStorage on initial mount
   useEffect(() => {
     const savedUser = localStorage.getItem("auth_user");
@@ -43,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
     if (savedUser && savedToken) {
       try {
-        setUser(JSON.parse(savedUser));
+        setUser(normalizeUser(JSON.parse(savedUser)));
         setAccessToken(savedToken);
       } catch {
         // Corrupt data — ignore and start with no session
@@ -63,9 +74,10 @@ export const AuthProvider = ({ children }) => {
    * @returns {void}
    */
   const login = (authData) => {
-    setUser(authData.user);
+    const normalizedUser = normalizeUser(authData.user);
+    setUser(normalizedUser);
     setAccessToken(authData.accessToken);
-    localStorage.setItem("auth_user", JSON.stringify(authData.user));
+    localStorage.setItem("auth_user", JSON.stringify(normalizedUser));
     localStorage.setItem("auth_token", authData.accessToken);
   };
 

@@ -8,6 +8,9 @@ const links = [
   { to: '/minha-conta/dados', label: 'Meu perfil' },
   { to: '/minha-conta/endereco', label: 'Meu endereço' },
   { to: '/minha-conta/pedidos', label: 'Meus pedidos' },
+  { to: '/minha-conta/admin', label: 'Administração', adminOnly: true },
+  { to: '/minha-conta/admin/produtos', label: 'Admin • Produtos', adminOnly: true },
+  { to: '/minha-conta/admin/usuarios', label: 'Admin • Usuários', adminOnly: true },
   { to: '/cart', label: 'Carrinho' },
   { to: '/', label: 'Continuar comprando' },
 ];
@@ -41,7 +44,9 @@ const AccountLayout = () => {
           </Typography>
 
           <Stack spacing={1}>
-            {links.map((item) => (
+            {links
+              .filter((item) => !item.adminOnly || Boolean(user?.isAdmin))
+              .map((item) => (
               <Button
                 key={item.to}
                 id={`account-menu-${item.to.replaceAll('/', '-').replace(/^-+/, '')}`}

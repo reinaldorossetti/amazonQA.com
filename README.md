@@ -261,7 +261,7 @@ Retorna um produto específico pelo ID.
 ---
 
 #### `POST /api/products`
-Cria um novo produto.
+Cria um novo produto (**acesso admin**).
 
 **Body (JSON):**
 ```json
@@ -279,22 +279,38 @@ Cria um novo produto.
 
 **Resposta 201:** Objeto produto criado com o `id` gerado.
 **Resposta 400:** Se `name` ou `price` estiverem ausentes.
+**Resposta 401:** Requisição sem autenticação.
+**Resposta 403:** Perfil sem permissão de administrador.
 
 ---
 
 #### `PUT /api/products/:id`
-Atualiza um produto existente. Aceita os mesmos campos do `POST`.
+Atualiza um produto existente (**acesso admin**). Aceita os mesmos campos do `POST`.
 
 **Resposta 200:** Objeto produto atualizado.
+**Resposta 401:** Requisição sem autenticação.
+**Resposta 403:** Perfil sem permissão de administrador.
 **Resposta 404:** `{ "error": "Produto não encontrado" }`
 
 ---
 
 #### `DELETE /api/products/:id`
-Remove um produto pelo ID.
+Remove um produto pelo ID (**acesso admin**).
 
 **Resposta 200:** `{ "message": "Produto removido" }`
+**Resposta 401:** Requisição sem autenticação.
+**Resposta 403:** Perfil sem permissão de administrador.
 **Resposta 404:** `{ "error": "Produto não encontrado" }`
+
+---
+
+#### `DELETE /api/users/:id`
+Remove permanentemente um usuário pelo ID (**acesso admin**).
+
+**Resposta 200:** `{ "message": "Usuário removido permanentemente", "id": <number> }`
+**Resposta 401:** Requisição sem autenticação.
+**Resposta 403:** Perfil sem permissão de administrador.
+**Resposta 404:** `{ "error": "Usuário não encontrado" }`
 
 ---
 
@@ -550,6 +566,9 @@ Gera/download de PDF mock do boleto (`application/pdf`).
 | `ThankYouPage` | Confirmação do pedido, resumo de itens e dados mock de PIX/Boleto (copiar/download). |
 | `Login` | Formulário de autenticação com show/hide de senha. |
 | `Register` | Formulário multistep (Stepper MUI): dados pessoais → endereço. Com validação de CPF, CNPJ, CEP (ViaCEP API) e indicador de força de senha. |
+| `AdminHomePage` | Entrada administrativa dentro de `/minha-conta/admin` para operações sensíveis. |
+| `AdminProductsPage` | Gestão de produtos com exclusão permanente restrita a admin. |
+| `AdminUsersPage` | Gestão de usuários com exclusão permanente restrita a admin. |
 
 ---
 

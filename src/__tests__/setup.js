@@ -4,14 +4,22 @@ import { vi } from 'vitest';
 // Mock os contextos
 vi.mock('../contexts/AuthContext.jsx', () => ({
   AuthProvider: ({ children }) => children,
-  useAuth: () => ({
-    user: null,
-    token: null,
-    login: vi.fn(),
-    logout: vi.fn(),
-    isAuthenticated: false,
-    isLoading: false,
-  }),
+  useAuth: () => {
+    const override = globalThis.__TEST_AUTH_CONTEXT__;
+    if (override) {
+      return override;
+    }
+
+    return {
+      user: null,
+      token: null,
+      login: vi.fn(),
+      logout: vi.fn(),
+      isAuthenticated: false,
+      isLoggedIn: false,
+      isLoading: false,
+    };
+  },
   AuthContext: vi.fn(),
 }));
 

@@ -6,6 +6,8 @@ type AuthUser = {
   lastName: string;
   email: string;
   personType: 'PF' | 'PJ';
+  isAdmin?: boolean;
+  roles?: string[];
 };
 
 export async function setAuthenticatedUser(page: Page, user: AuthUser) {
