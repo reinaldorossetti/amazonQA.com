@@ -2,7 +2,6 @@ import { expect } from '../../fixtures/ui.fixture';
 import { test, LOGIN_VALIDATION } from '../../fixtures/login.fixture';
 import { LoginPage } from '../../pages/LoginPage';
 import { NavComponent } from '../../pages/NavComponent';
-import { PageBase, waitForPageLoad } from '../../helpers/PageBase';
 
 test.describe('Login', () => {
 
@@ -10,8 +9,8 @@ test.describe('Login', () => {
    * TS01 - Happy path: preenche e-mail e senha válidos e verifica redirecionamento
     *        para área logada e saudação ao usuário na NavBar.
    */
-  test('TS01 - Should successfully log in when providing valid credentials', async ({ page, setupLoginSuccessMock }) => {
-    const base = new PageBase(page);
+  test('TS01 - Should successfully log in when providing valid credentials', async ({ page, setupLoginSuccessMock, pageBase }) => {
+    const base = pageBase;
     const loginPage = new LoginPage(page);
     const navComponent = new NavComponent(page);
     const userData = base.generateUserData();
@@ -33,8 +32,8 @@ test.describe('Login', () => {
   /**
    * TS02 - Credenciais inválidas: a API retorna 401 e o alerta de erro deve ser exibido.
    */
-  test('TS02 - Should display an error alert when credentials are invalid', async ({ page, setupLoginFailureMock }) => {
-    const base = new PageBase(page);
+  test('TS02 - Should display an error alert when credentials are invalid', async ({ page, setupLoginFailureMock, pageBase }) => {
+    const base = pageBase;
     const loginPage = new LoginPage(page);
 
     await setupLoginFailureMock(page);
@@ -50,8 +49,8 @@ test.describe('Login', () => {
   /**
    * TS03 - Campos vazios: clicar em Entrar sem preencher nada exibe a mensagem de validação local.
    */
-  test('TS03 - Should display a validation message when submitting with empty fields', async ({ page }) => {
-    const base = new PageBase(page);
+  test('TS03 - Should display a validation message when submitting with empty fields', async ({ page, pageBase }) => {
+    const base = pageBase;
     const loginPage = new LoginPage(page);
 
     await loginPage.goToLogin();
@@ -65,8 +64,8 @@ test.describe('Login', () => {
   /**
    * TS04 - Apenas e-mail preenchido: clicar em Entrar sem senha exibe a mensagem de validação local.
    */
-  test('TS04 - Should display a validation message when password is empty', async ({ page }) => {
-    const base = new PageBase(page);
+  test('TS04 - Should display a validation message when password is empty', async ({ page, pageBase }) => {
+    const base = pageBase;
     const loginPage = new LoginPage(page);
 
     await loginPage.goToLogin();
@@ -81,7 +80,7 @@ test.describe('Login', () => {
   /**
    * TS05 - Navegação: o botão "Criar sua conta" na página de login deve redirecionar para /register.
    */
-  test('TS05 - Should navigate to the register page when clicking the create account button', async ({ page }) => {
+  test('TS05 - Should navigate to the register page when clicking the create account button', async ({ page, waitForPageLoad }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goToLogin();
 

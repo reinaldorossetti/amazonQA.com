@@ -12,6 +12,8 @@ const email = process.env.SEED_ADMIN_EMAIL || 'admin.teste@tester.com';
 const pepper = process.env.BCRYPT_PEPPER ?? '';
 
 async function ensureAdminUser() {
+  const hash = await bcrypt.hash(`Admin@123${pepper}`, 12);
+
   const exists = await pool.query(
     'SELECT id FROM users WHERE LOWER(email)=LOWER($1) LIMIT 1',
     [email]
@@ -20,7 +22,6 @@ async function ensureAdminUser() {
   let userId = exists.rows[0]?.id;
 
   if (!userId) {
-    const hash = await bcrypt.hash(`Admin@123${pepper}`, 12);
     const created = await pool.query(
       `INSERT INTO users (
          person_type, first_name, last_name, email, password, is_active, updated_at
@@ -31,6 +32,16 @@ async function ensureAdminUser() {
     );
     userId = created.rows[0].id;
   }
+
+  await pool.query(
+    `UPDATE users
+       SET password = $2,
+           is_active = true,
+           account_closed_at = NULL,
+           updated_at = NOW()
+     WHERE id = $1`,
+    [userId, hash]
+  );
 
   await pool.query(
     `INSERT INTO user_roles (user_id, role)

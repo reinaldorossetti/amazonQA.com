@@ -106,6 +106,8 @@ export class PageBase {
    */
   async click(selector: string) {
     await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
+    await this.page.locator(selector).scrollIntoViewIfNeeded();
+    await this.page.locator(selector).first().focus();
     await this.page.click(selector);
   }
 
@@ -126,4 +128,5 @@ export class PageBase {
       await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
     }
   }
+
 }

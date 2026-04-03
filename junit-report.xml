@@ -1,2 +1,165 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="0.8587879999999998">
+<testsuites id="" name="" tests="58" failures="0" skipped="0" errors="0" time="43.751875">
+<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="11.416" errors="0">
+<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts" time="5.412">
+</testcase>
+<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts" time="6.004">
+</testcase>
+</testsuite>
+<testsuite name="frontend\auth.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="16.141" errors="0">
+<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend\auth.spec.ts" time="2.626">
+</testcase>
+<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend\auth.spec.ts" time="2.838">
+</testcase>
+<testcase name="Login › TS03 - should validate required fields" classname="frontend\auth.spec.ts" time="2.653">
+</testcase>
+<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend\auth.spec.ts" time="2.808">
+</testcase>
+<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend\auth.spec.ts" time="2.895">
+</testcase>
+<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend\auth.spec.ts" time="2.321">
+</testcase>
+</testsuite>
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="12" failures="0" skipped="0" time="78.15" errors="0">
+<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend\cart-checkout.spec.ts" time="6.638">
+</testcase>
+<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend\cart-checkout.spec.ts" time="6.734">
+</testcase>
+<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend\cart-checkout.spec.ts" time="1.543">
+</testcase>
+<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend\cart-checkout.spec.ts" time="6.728">
+</testcase>
+<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend\cart-checkout.spec.ts" time="6.317">
+</testcase>
+<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend\cart-checkout.spec.ts" time="6.269">
+</testcase>
+<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend\cart-checkout.spec.ts" time="6.269">
+</testcase>
+<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend\cart-checkout.spec.ts" time="6.402">
+</testcase>
+<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend\cart-checkout.spec.ts" time="6.404">
+</testcase>
+<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend\cart-checkout.spec.ts" time="6.62">
+</testcase>
+<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend\cart-checkout.spec.ts" time="11.656">
+</testcase>
+<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend\cart-checkout.spec.ts" time="6.57">
+</testcase>
+</testsuite>
+<testsuite name="frontend\catalog.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="9.544" errors="0">
+<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend\catalog.spec.ts" time="1.236">
+</testcase>
+<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend\catalog.spec.ts" time="1.326">
+</testcase>
+<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend\catalog.spec.ts" time="1.551">
+</testcase>
+<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend\catalog.spec.ts" time="1.421">
+</testcase>
+<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend\catalog.spec.ts" time="2.073">
+</testcase>
+<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend\catalog.spec.ts" time="1.937">
+</testcase>
+</testsuite>
+<testsuite name="frontend\login.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="8.04" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="1.767">
+</testcase>
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="1.616">
+</testcase>
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="1.377">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="1.529">
+</testcase>
+<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="1.751">
+</testcase>
+</testsuite>
+<testsuite name="frontend\orders.checkout.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="13.423" errors="0">
+<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend\orders.checkout.spec.ts" time="6.926">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend\orders.checkout.spec.ts" time="6.497">
+</testcase>
+</testsuite>
+<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="30.458" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="6.522">
+</testcase>
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="7.724">
+</testcase>
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="6.516">
+</testcase>
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="9.696">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-visa-5479b99a1b285108d25ce614f44963174625daa0.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-mastercard-345dcee65ee624fbba133edf6430a0f86924e68b.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-elo-a0b1df8c44ddf181fc45ff4ba6a41db6446ed0ef.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-amex-2e15092f435f28f96b9c772044d0092ce539da0d.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hipercard-704d263c789328494ff1f4b01fdda1b3bbefe4c0.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hiper-5682006223c84a221ac008e1fde63fc94ee1d809.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-cabal-371d413a7702a1cdbe93914caf63f2879a642541.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-verdecard-7461c13fb0b9fc3c3b4d61b0c2b08945ea94e57c.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-unionpay-f881b41a2a504b8b33c7d6650154ac1324913f77.png]]
+
+[[ATTACHMENT|..\test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-diners-73d800e8d17337425e22e0bde9377b6dbaabf58c.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="frontend\product-details.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="6.381" errors="0">
+<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend\product-details.spec.ts" time="1.625">
+</testcase>
+<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend\product-details.spec.ts" time="2.084">
+</testcase>
+<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend\product-details.spec.ts" time="1.23">
+</testcase>
+<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend\product-details.spec.ts" time="1.442">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-language.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="11.299" errors="0">
+<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend\register-language.spec.ts" time="5.735">
+</testcase>
+<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend\register-language.spec.ts" time="1.466">
+</testcase>
+<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend\register-language.spec.ts" time="1.988">
+</testcase>
+<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend\register-language.spec.ts" time="2.11">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="12.944" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="3.671">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.552">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="1.721">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="15.356" errors="0">
+<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend\register.spec.ts" time="2.955">
+</testcase>
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend\register.spec.ts" time="2.071">
+</testcase>
+<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend\register.spec.ts" time="2.041">
+</testcase>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend\register.spec.ts" time="2.041">
+</testcase>
+<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend\register.spec.ts" time="1.908">
+</testcase>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend\register.spec.ts" time="2.793">
+</testcase>
+<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend\register.spec.ts" time="1.547">
+</testcase>
+</testsuite>
+<testsuite name="frontend\security.spec.ts" timestamp="2026-04-03T16:54:55.664Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="9.092" errors="0">
+<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend\security.spec.ts" time="6.223">
+</testcase>
+<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend\security.spec.ts" time="1.288">
+</testcase>
+<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend\security.spec.ts" time="1.581">
+</testcase>
+</testsuite>
 </testsuites>

@@ -1,4 +1,5 @@
-import { expect, test as base, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+import { expect, test as base } from './ui.fixture';
 import { faker } from '@faker-js/faker';
 
 /**

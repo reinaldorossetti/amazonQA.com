@@ -1,0 +1,85 @@
+﻿{
+  "config": {
+    "configFile": "D:\\github-projects\\tester.com\\playwright.config.ts",
+    "rootDir": "D:/github-projects/tester.com/e2e/specs",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "D:\\github-projects\\tester.com\\e2e\\setup\\global.setup.ts",
+    "globalTeardown": "D:\\github-projects\\tester.com\\e2e\\setup\\global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/github-projects/tester.com/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "frontend-chromium",
+        "name": "frontend-chromium",
+        "testDir": "D:/github-projects/tester.com/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "/frontend\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/github-projects/tester.com/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {},
+        "id": "api",
+        "name": "api",
+        "testDir": "D:/github-projects/tester.com/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "/api\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 7,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: Timeout aguardando servidor em http://127.0.0.1:4173",
+      "stack": "Error: Timeout aguardando servidor em http://127.0.0.1:4173\n    at waitForHttp (D:\\github-projects\\tester.com\\e2e\\setup\\global.setup.ts:31:9)\n    at globalSetup (D:\\github-projects\\tester.com\\e2e\\setup\\global.setup.ts:89:3)",
+      "location": {
+        "file": "D:\\github-projects\\tester.com\\e2e\\setup\\global.setup.ts",
+        "column": 9,
+        "line": 31
+      },
+      "snippet": "\u001b[90m   at \u001b[39m..\\setup\\global.setup.ts:31\n\n\u001b[0m \u001b[90m 29 |\u001b[39m   }\n \u001b[90m 30 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\u001b[32m`Timeout aguardando servidor em ${url}`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m }\n \u001b[90m 33 |\u001b[39m\n \u001b[90m 34 |\u001b[39m \u001b[36masync\u001b[39m \u001b[36mfunction\u001b[39m isHttpUp(url\u001b[33m:\u001b[39m string) {\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-03-18T21:30:55.647Z",
+    "duration": 120564.551,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

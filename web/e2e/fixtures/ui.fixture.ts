@@ -1,4 +1,5 @@
 import { expect, test as base, type Page } from '@playwright/test';
+import { PageBase } from '../helpers/PageBase';
 
 type PageName = 'catalog' | 'productDetails' | 'cart' | 'login' | 'register' | 'thankYou';
 
@@ -14,7 +15,7 @@ const readinessSelectorByPage: Record<PageName, string[]> = {
 };
 
 
-export const test = base.extend<{ waitForPageLoad: WaitForPageLoad }>({
+export const test = base.extend<{ waitForPageLoad: WaitForPageLoad; pageBase: PageBase }>({
   waitForPageLoad: async ({}, use) => {
     const fn: WaitForPageLoad = async (page, pageName) => {
       const selectors = readinessSelectorByPage[pageName];
@@ -33,6 +34,9 @@ export const test = base.extend<{ waitForPageLoad: WaitForPageLoad }>({
     };
 
     await use(fn);
+  },
+  pageBase: async ({ page }, use) => {
+    await use(new PageBase(page));
   },
 });
 

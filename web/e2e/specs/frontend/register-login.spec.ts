@@ -4,7 +4,6 @@ import { REGISTER_VALIDATION } from '../../fixtures/register.fixture';
 import { RegisterPage } from '../../pages/RegisterPage';
 import { LoginPage } from '../../pages/LoginPage';
 import { NavComponent } from '../../pages/NavComponent';
-import { PageBase } from '../../helpers/PageBase';
 
 test.describe('Register → Login — Fluxo Completo', () => {
 
@@ -21,8 +20,9 @@ test.describe('Register → Login — Fluxo Completo', () => {
   test('TS01 - Should register a new user and immediately login with the same credentials', async ({
     page,
     setupLoginSuccessMock,
+    pageBase,
   }) => {
-    const base = new PageBase(page);
+    const base = pageBase;
     const registerPage = new RegisterPage(page);
     const loginPage = new LoginPage(page);
     const navComponent = new NavComponent(page);
@@ -96,8 +96,9 @@ test.describe('Register → Login — Fluxo Completo', () => {
   test('TS02 - Should allow the user to log out and log back in with the same credentials', async ({
     page,
     setupLoginSuccessMock,
+    pageBase,
   }) => {
-    const base = new PageBase(page);
+    const base = pageBase;
     const loginPage = new LoginPage(page);
     const navComponent = new NavComponent(page);
     const userData = base.generateUserData();
@@ -134,8 +135,9 @@ test.describe('Register → Login — Fluxo Completo', () => {
   test('TS03 - Should show an error when logging in with wrong password after registration', async ({
     page,
     setupLoginFailureMock,
+    pageBase,
   }) => {
-    const base = new PageBase(page);
+    const base = pageBase;
     const loginPage = new LoginPage(page);
 
     await setupLoginFailureMock(page);

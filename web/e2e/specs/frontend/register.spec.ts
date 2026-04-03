@@ -1,19 +1,15 @@
 import { expect } from '../../fixtures/ui.fixture';
 import { test, REGISTER_VALIDATION } from '../../fixtures/register.fixture';
 import { RegisterPage } from '../../pages/RegisterPage';
-import { LoginPage } from '../../pages/LoginPage';
-import { NavComponent } from '../../pages/NavComponent';
-/* Removed import to helpers; Using local registerPage imported from pages/RegisterPage */
-import { waitForPageLoad, PageBase } from '../../helpers/PageBase';
 
 test.describe('Register', () => {
   
   /**
    * TS01 - Happy path: fills out both steps completely and verifies success via toast message
    */
-  test('TS01 - Should successfully register a new user when providing all valid requirements', async ({ page, setupViacepMock }) => {
+  test('TS01 - Should successfully register a new user when providing all valid requirements', async ({ page, setupViacepMock, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     const cpf = base.generateValidCPF();
 
@@ -35,7 +31,7 @@ test.describe('Register', () => {
 
     await expect(page.locator(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(registerPage.numberInput, REGISTER_VALIDATION.testData.addressNumber);
-    await page.click(registerPage.submitButton);
+    await base.click(registerPage.submitButton);
 
     await expect(page.locator('body')).toContainText(/Cadastro realizado com sucesso!/i, { timeout: 10_000 });
   });
@@ -43,9 +39,9 @@ test.describe('Register', () => {
   /**
    * TS02 - Email em formato inválido: erro aparece no helper text do campo email no step 0
    */
-  test('TS02 - rejeita email em formato inválido aleatório', async ({ page }) => {
+  test('TS02 - rejeita email em formato inválido aleatório', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     const invalidEmail = base.generateInvalidEmail();
 
@@ -65,9 +61,9 @@ test.describe('Register', () => {
   /**
    * TS03 - Senha curta (< 8 chars): falha na validação local do step 0
    */
-  test('TS03 - rejeita senha curta no step 0', async ({ page }) => {
+  test('TS03 - rejeita senha curta no step 0', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     const shortPassword = base.generateShortPassword();
 
@@ -88,9 +84,9 @@ test.describe('Register', () => {
   /**
    * TS04 - Senhas não correspondem: erro aparece no helper text do campo confirmar senha
    */
-  test('TS04 - rejeita senhas não-correspondentes com dados aleatórios', async ({ page }) => {
+  test('TS04 - rejeita senhas não-correspondentes com dados aleatórios', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     const differentPassword = base.generateDifferentPassword();
 
@@ -111,9 +107,9 @@ test.describe('Register', () => {
    * TS05 - Missing required field: clicking Next should not advance to step 1
    *        and the empty field should display its specific validation error message.
    */
-  test('TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty', async ({ page }) => {
+  test('TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     
     // We can define the test scenarios mapping each field to its selectors
@@ -182,9 +178,9 @@ test.describe('Register', () => {
    * TS06 - Email duplicado: o erro vem do servidor após o submit do step 1,
    *        exibido via toast de erro.
    */
-  test('TS06 - rejeita email duplicado com dados aleatórios', async ({ page, setupDuplicateEmailMock, setupViacepMock }) => {
+  test('TS06 - rejeita email duplicado com dados aleatórios', async ({ page, setupDuplicateEmailMock, setupViacepMock, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
-    const base = new PageBase(page);
+    const base = pageBase;
     const userData = base.generateUserData();
     const cpf = base.generateValidCPF();
 
@@ -208,22 +204,22 @@ test.describe('Register', () => {
     await expect(page.locator(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(registerPage.numberInput, REGISTER_VALIDATION.testData.addressNumber);
 
-    await page.click(registerPage.submitButton);
+    await base.click(registerPage.submitButton);
 
     // Erro exibido via toast
-    await expect(page.locator('.Toastify__toast-body')).toContainText(REGISTER_VALIDATION.errorMessages.emailDuplicate, { timeout: 10_000 });
+    await expect(page.locator('[data-testid="toast-body"]').last()).toContainText(REGISTER_VALIDATION.errorMessages.emailDuplicate, { timeout: 10_000 });
   });
 
   /**
    * TS07 - Todos os campos vazios: clicar em Next exibe todos os erros de validação do step 0
    */
-  test('TS07 - valida todos os campos vazios com mensagens de validação individuais', async ({ page }) => {
+  test('TS07 - valida todos os campos vazios com mensagens de validação individuais', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
 
     // Click "next" button with all fields empty
-    await page.click(registerPage.nextButton);
+    await pageBase.click(registerPage.nextButton);
 
     // Verify all validation error messages appear
     await expect(page.locator(registerPage.errorFirstName)).toBeVisible();

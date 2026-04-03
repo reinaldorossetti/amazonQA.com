@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -430,6 +430,27 @@ const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const applyToastBodyTestId = () => {
+      const toastBodies = document.querySelectorAll('.Toastify__toast-body');
+      toastBodies.forEach((element) => {
+        element.setAttribute('data-testid', 'toast-body');
+      });
+    };
+
+    applyToastBodyTestId();
+
+    const observer = new MutationObserver(() => {
+      applyToastBodyTestId();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
