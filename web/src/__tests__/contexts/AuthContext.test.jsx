@@ -34,7 +34,8 @@ describe('AuthContext', () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.user).toEqual(savedUser);
+      expect(result.current.user).toMatchObject(savedUser);
+      expect(result.current.user).toMatchObject({ roles: [], isAdmin: false });
       expect(result.current.accessToken).toBe('token-ok');
       expect(result.current.isLoggedIn).toBe(true);
     });
@@ -65,10 +66,15 @@ describe('AuthContext', () => {
       result.current.login(authData);
     });
 
-    expect(result.current.user).toEqual(authData.user);
+    expect(result.current.user).toMatchObject(authData.user);
+    expect(result.current.user).toMatchObject({ roles: [], isAdmin: false });
     expect(result.current.accessToken).toBe('abc123');
     expect(result.current.isLoggedIn).toBe(true);
-    expect(localStorage.getItem('auth_user')).toBe(JSON.stringify(authData.user));
+    expect(JSON.parse(localStorage.getItem('auth_user'))).toMatchObject({
+      ...authData.user,
+      roles: [],
+      isAdmin: false,
+    });
     expect(localStorage.getItem('auth_token')).toBe('abc123');
   });
 

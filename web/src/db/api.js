@@ -1,5 +1,5 @@
 /**
- * src/db/api.js — REST API client for the Next.js backend
+ * web/src/db/api.js — REST API client for the Next.js backend
  *
  * Todas as funções fazem fetch para /api/* (proxiado pelo Vite para o Next.js
  * em localhost:3001 em dev, e configurado no servidor em produção).

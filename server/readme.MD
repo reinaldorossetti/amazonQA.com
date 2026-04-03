@@ -6,7 +6,7 @@ Backend do projeto **tester.com**, implementado com **Next.js 14 (App Router)**,
 
 O repositório é dividido em três partes principais:
 
-- **Frontend (`/src`)**: React + Vite para interface da loja.
+- **Frontend (`/web/src`)**: React + Vite para interface da loja.
 - **Backend (`/server`)**: Next.js atuando como servidor de API.
 - **Banco de dados**: PostgreSQL (normalmente via Docker Compose na raiz do projeto).
 
@@ -86,7 +86,7 @@ O `seed` cria as tabelas:
 - `orders`
 - `order_items`
 
-e importa produtos a partir de `src/data/products_mock.json`.
+e importa produtos a partir de `web/src/data/products_mock.json`.
 
 ### 5) Rodar API em desenvolvimento
 

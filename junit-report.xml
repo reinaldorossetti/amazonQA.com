@@ -1,20 +1,2 @@
-<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="20.287637999999998">
-<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-03T14:46:33.602Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="26.689" errors="0">
-<testcase name="Admin management › ADM01 - admin deve excluir um produto no fluxo principal" classname="frontend\admin-management.spec.ts" time="13.434">
-</testcase>
-<testcase name="Admin management › ADM02 - admin deve excluir usuário comum (não-admin) no fluxo principal" classname="frontend\admin-management.spec.ts" time="13.255">
-</testcase>
-</testsuite>
-<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-03T14:46:33.602Z" hostname="frontend-webkit" tests="2" failures="0" skipped="0" time="35.868" errors="0">
-<testcase name="Admin management › ADM01 - admin deve excluir um produto no fluxo principal" classname="frontend\admin-management.spec.ts" time="17.879">
-</testcase>
-<testcase name="Admin management › ADM02 - admin deve excluir usuário comum (não-admin) no fluxo principal" classname="frontend\admin-management.spec.ts" time="17.989">
-</testcase>
-</testsuite>
-<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-03T14:46:33.602Z" hostname="frontend-edge" tests="2" failures="0" skipped="0" time="26.528" errors="0">
-<testcase name="Admin management › ADM01 - admin deve excluir um produto no fluxo principal" classname="frontend\admin-management.spec.ts" time="13.258">
-</testcase>
-<testcase name="Admin management › ADM02 - admin deve excluir usuário comum (não-admin) no fluxo principal" classname="frontend\admin-management.spec.ts" time="13.27">
-</testcase>
-</testsuite>
+<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="0.8587879999999998">
 </testsuites>

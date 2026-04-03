@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const isCI = !!(globalThis as { process?: { env?: { CI?: string } } }).process?.env?.CI;
 
 export default defineConfig({
-  testDir: './e2e/specs',
+  testDir: './web/e2e/specs',
   timeout: 45_000,
   expect: {
     timeout: 15_000,

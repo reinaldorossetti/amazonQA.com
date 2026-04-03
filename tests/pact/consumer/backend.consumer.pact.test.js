@@ -2,7 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { MatchersV3, PactV3 } from '@pact-foundation/pact';
-import { getCartItems, getProducts, upsertCartItem } from '../../../src/db/api.js';
+import { getCartItems, getProducts, upsertCartItem } from '../../../web/src/db/api.js';
 
 const { eachLike, integer, like, number, string } = MatchersV3;
 

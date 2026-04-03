@@ -102,16 +102,18 @@ describe('Login Component', () => {
     await waitFor(() => {
       expect(loginUser).toHaveBeenCalledWith({ email: 'rei@test.com', password: '123456' });
     });
-    expect(authLoginMock).toHaveBeenCalledWith({
-      user: {
+    expect(authLoginMock).toHaveBeenCalledWith(expect.objectContaining({
+      user: expect.objectContaining({
         id: 7,
         name: 'Reinaldo',
         lastName: 'Rossetti',
         email: 'rei@test.com',
         personType: 'PF',
-      },
+        roles: [],
+        isAdmin: false,
+      }),
       accessToken: 'token-123',
-    });
+    }));
     expect(toast.success).toHaveBeenCalled();
     expect(navigateMock).toHaveBeenCalledWith('/cart');
   });
@@ -241,16 +243,18 @@ describe('Login Component', () => {
     await user.click(screen.getByRole('button', { name: 'Entrar' }));
 
     await waitFor(() => {
-      expect(authLoginMock).toHaveBeenCalledWith({
-        user: {
+      expect(authLoginMock).toHaveBeenCalledWith(expect.objectContaining({
+        user: expect.objectContaining({
           id: 11,
           name: 'Root',
           lastName: 'Payload',
           email: 'root@test.com',
           personType: 'PF',
-        },
+          roles: [],
+          isAdmin: false,
+        }),
         accessToken: 'root-token',
-      });
+      }));
     });
   });
 });

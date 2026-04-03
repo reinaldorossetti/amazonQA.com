@@ -16,3 +16,13 @@ export async function setAuthenticatedUser(page: Page, user: AuthUser) {
     localStorage.setItem('auth_token', 'e2e.mock.token');
   }, user);
 }
+
+export async function setAuthenticatedSession(page: Page, user: AuthUser, accessToken: string) {
+  await page.addInitScript(
+    ({ payload, token }) => {
+      localStorage.setItem('auth_user', JSON.stringify(payload));
+      localStorage.setItem('auth_token', token);
+    },
+    { payload: user, token: accessToken }
+  );
+}

@@ -17,7 +17,7 @@ Este documento explica como funcionam os **testes de pacto** no projeto `tester.
 
 No nosso cenário:
 
-- **Consumer**: frontend (`src/db/api.js`) que consome endpoints REST.
+- **Consumer**: frontend (`web/src/db/api.js`) que consome endpoints REST.
 - **Provider**: backend Next.js (`server/app/api/**`).
 
 Em vez de testar tudo junto, o consumer define suas expectativas de request/response em um contrato (pact) e o provider prova que atende esse contrato.
@@ -134,7 +134,7 @@ Implementação atual cobre 3 contratos iniciais:
 
 - `PactV3` para criar o provider mock.
 - `MatchersV3` para validar por tipo/formato (não por valor fixo).
-- `provider.executeTest()` para executar client real (`src/db/api.js`) contra mock server.
+- `provider.executeTest()` para executar client real (`web/src/db/api.js`) contra mock server.
 
 ## 5.4 Gerar o contrato
 

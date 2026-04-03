@@ -94,6 +94,14 @@ export async function DELETE(request, { params }) {
         return NextResponse.json({ message: 'Produto removido' });
     } catch (err) {
         console.error('[DELETE /api/products/:id]', err.message);
+
+        if (err?.code === '23503') {
+            return NextResponse.json(
+                { error: 'Produto vinculado a pedidos e não pode ser removido' },
+                { status: 409 }
+            );
+        }
+
         return NextResponse.json({ error: 'Erro ao remover produto' }, { status: 500 });
     }
 }

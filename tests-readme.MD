@@ -65,7 +65,7 @@ As ferramentas foram escolhidas buscando sinergia com o frontend em Vite e paral
 O **Vitest** atua como nossa espinha dorsal para *Shift-Left Testing*.
 
 ### Como o Utilizamos
-O Vitest roda contra o diretório `src/__tests__/` ou em arquivos com sufixo `*.spec.jsx` diretamente ao lado da implementação.
+O Vitest roda contra o diretório `web/src/__tests__/` ou em arquivos com sufixo `*.spec.jsx` diretamente ao lado da implementação.
 
 **Comportamentos esperados:**
 - Subir de forma rápida e testar a renderização simulada de componentes.
@@ -162,9 +162,9 @@ Acompanhe os resultados diários, a cobertura e a documentação pública dispon
 ## 📂 Organização Prática das Pastas (Mapa)
 
 ```text
-📁 src/__tests__/          -> Suítes para lógicas de Frontend da Web em Vitest.
-📁 e2e/specs/frontend/     -> Cenários Playwright validando a tela e fluxo de UI E2E.
-📁 e2e/specs/api/          -> Cenários Playwright validando respostas JSON puras.
+📁 web/src/__tests__/      -> Suítes para lógicas de Frontend da Web em Vitest.
+📁 web/e2e/specs/frontend/ -> Cenários Playwright validando a tela e fluxo de UI E2E.
+📁 web/e2e/specs/api/      -> Cenários Playwright validando respostas JSON puras.
 📁 server/tests/api/       -> (Node backend) Testes nativos Unit e API do backend.
 📁 test-results/           -> [AUTO-GERADO] Repositório local dos relatórios da falha (video/image).
 📁 playwright-report/      -> [AUTO-GERADO] Dashboard html do sucesso das runs de E2E do Playwright.

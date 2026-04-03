@@ -191,7 +191,7 @@ async function seed() {
         }
 
         // Load products from the frontend mock JSON
-        const mockPath = resolve(__dirname, '../../src/data/products_mock.json');
+        const mockPath = resolve(__dirname, '../../web/src/data/products_mock.json');
         const products = JSON.parse(readFileSync(mockPath, 'utf8'));
 
         console.log(`🌱 Inserindo ${products.length} produtos...`);

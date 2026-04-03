@@ -9,7 +9,9 @@ const fs = require('fs');
 const path = require('path');
 
 const reportDir = 'playwright-report';
-const screenshotsDir = 'e2e/screenshots';
+const screenshotsDir = fs.existsSync(path.join('web', 'e2e', 'screenshots'))
+  ? path.join('web', 'e2e', 'screenshots')
+  : path.join('e2e', 'screenshots');
 let html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
