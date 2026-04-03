@@ -426,8 +426,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '400':
+          description: ID de produto inválido
         '404':
           description: Produto não encontrado
+        '500':
+          description: Erro interno
 
     put:
       tags: [Products]
@@ -470,12 +474,18 @@ paths:
       responses:
         '200':
           description: Produto removido
+        '400':
+          description: ID de produto inválido
         '401':
           description: Não autenticado
         '403':
           description: Requer admin
         '404':
           description: Produto não encontrado
+        '409':
+          description: Produto vinculado a pedidos e não pode ser removido
+        '500':
+          description: Erro interno
 
   /api/users/register:
     post:
@@ -652,9 +662,17 @@ paths:
             type: integer
       responses:
         '200':
-          description: Usuário removido
+          description: Usuário removido permanentemente
+        '400':
+          description: ID de usuário inválido
+        '401':
+          description: Não autenticado
         '403':
           description: Requer admin
+        '404':
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
 
   /api/users/{id}/terminate:
     post:
@@ -671,8 +689,73 @@ paths:
       responses:
         '200':
           description: Conta encerrada
+        '400':
+          description: ID de usuário inválido
+        '401':
+          description: Não autenticado
         '403':
           description: Sem permissão
+        '404':
+          description: Usuário não encontrado
+        '409':
+          description: Conta já está encerrada
+        '500':
+          description: Erro interno
+
+  /api/users/me:
+    get:
+      tags: [Users]
+      summary: "Buscar usuário autenticado (Acesso: autenticado)"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Usuário autenticado
+        '401':
+          description: Não autenticado
+        '404':
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
+
+  /api/users/me/address:
+    put:
+      tags: [Users]
+      summary: "Atualizar endereço do usuário autenticado"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address_zip:
+                  type: string
+                address_street:
+                  type: string
+                address_number:
+                  type: string
+                address_complement:
+                  type: string
+                address_neighborhood:
+                  type: string
+                address_city:
+                  type: string
+                address_state:
+                  type: string
+      responses:
+        '200':
+          description: Endereço atualizado
+        '400':
+          description: Nenhum campo de endereço para atualizar
+        '401':
+          description: Não autenticado
+        '404':
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
 
   /api/cart:
     get:
@@ -897,6 +980,78 @@ paths:
         '404':
           description: Pedido não encontrado
 
+    put:
+      tags: [Orders]
+      summary: "Atualizar pedido (Acesso: dono do pedido ou admin, com regras de transição)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrderRequest'
+      responses:
+        '200':
+          description: Pedido atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Transição de status inválida ou payload inválido
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
+        '500':
+          description: Erro interno
+
+    delete:
+      tags: [Orders]
+      summary: "Cancelar pedido (cancelamento lógico)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Pedido cancelado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pedido cancelado
+                  order:
+                    $ref: '#/components/schemas/Order'
+        '400':
+          description: Pedido não elegível para cancelamento
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão
+        '404':
+          description: Pedido não encontrado
+        '500':
+          description: Erro interno
+
   /api/orders/{id}/payments:
     post:
       tags: [Payments]
@@ -1006,71 +1161,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
-    put:
-      tags: [Orders]
-      summary: "Atualizar pedido (Acesso: dono do pedido ou admin, com regras de transição)"
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateOrderRequest'
-      responses:
-        '200':
-          description: Pedido atualizado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Transição de status inválida ou payload inválido
-        '401':
-          description: Não autenticado
-        '403':
-          description: Sem permissão
-        '404':
-          description: Pedido não encontrado
-
-    delete:
-      tags: [Orders]
-      summary: "Cancelar pedido (cancelamento lógico)"
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '200':
-          description: Pedido cancelado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pedido cancelado
-                  order:
-                    $ref: '#/components/schemas/Order'
-        '400':
-          description: Pedido não elegível para cancelamento
-        '401':
-          description: Não autenticado
-        '403':
-          description: Sem permissão
-        '404':
-          description: Pedido não encontrado

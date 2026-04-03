@@ -27,12 +27,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: web/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: web
         run: npm install
 
       - name: Run unit tests with coverage and JUnit
+        working-directory: web
         run: |
           mkdir -p unit-test-report
           # Use set +e to continue execution even if tests fail so we can collect reports
@@ -69,7 +71,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: Unit tests (Vitest)
-          path: unit-test-report/junit.xml
+          path: web/unit-test-report/junit.xml
           reporter: jest-junit
           fail-on-error: false
 
@@ -78,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unit-test-report
-          path: unit-test-report
+          path: web/unit-test-report
           if-no-files-found: warn
 
   contract-tests:
@@ -98,10 +100,11 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: |
-            package-lock.json
+            web/package-lock.json
             server/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: web
         run: npm install
 
       - name: Install backend dependencies
@@ -137,6 +140,7 @@ jobs:
         run: npm run seed
 
       - name: Run contract tests (consumer + provider)
+        working-directory: web
         run: npm run test:pact
 
       - name: Upload pact artifacts
@@ -146,6 +150,7 @@ jobs:
           name: pact-artifacts
           path: |
             pacts
+            web/pacts
           if-no-files-found: warn
 
   e2e:
@@ -168,10 +173,11 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: |
-            package-lock.json
+            web/package-lock.json
             server/package-lock.json
 
       - name: Install frontend dependencies
+        working-directory: web
         run: npm install
 
       - name: Install backend dependencies
@@ -179,6 +185,7 @@ jobs:
         run: npm install
 
       - name: Install Playwright browsers
+        working-directory: web
         run: npx playwright install --with-deps
 
       - name: Setup PostgreSQL
@@ -221,24 +228,28 @@ jobs:
         run: npx wait-on --timeout 180000 http://127.0.0.1:3001/api/products
 
       - name: Start frontend (Vite) in background
+        working-directory: web
         run: |
-          nohup npm run dev > frontend.log 2>&1 &
-          echo $! > frontend.pid
-          echo "Frontend PID: $(cat frontend.pid)"
+          nohup npm run dev > ../frontend.log 2>&1 &
+          echo $! > ../frontend.pid
+          echo "Frontend PID: $(cat ../frontend.pid)"
 
       - name: Wait for frontend readiness (timeout)
         continue-on-error: true
         run: npx wait-on --timeout 180000 http://127.0.0.1:5174
 
       - name: Run E2E tests
-        run: xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
+        working-directory: web
+        run: xvfb-run --auto-servernum npx playwright test --config ../playwright.config.ts --project=${{ matrix.project }}
 
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.project }}
-          path: playwright-report
+          path: |
+            playwright-report
+            web/playwright-report
           if-no-files-found: ignore
 
       - name: Upload test results and logs
@@ -248,7 +259,9 @@ jobs:
           name: test-results-and-logs-${{ matrix.project }}
           path: |
             test-results
+            web/test-results
             junit-report.xml
+            web/junit-report.xml
             backend.log
             frontend.log
           if-no-files-found: ignore
@@ -310,12 +323,12 @@ jobs:
             <body>
               <h1>Test Reports</h1>
               <ul>
-                <li><a href="playwright-report-frontend-chromium/index.html">Tests on browser - Chromium</a></li>
-                <li><a href="playwright-report-frontend-edge/index.html">Tests on browser - Edge</a></li>
-                <li><a href="playwright-report-frontend-webkit/index.html">Tests on browser - WebKit</a></li>
-                <li><a href="playwright-report-api/index.html">API Tests</a></li>
-                <li><a href="unit-tests/coverage/index.html">Unit Tests Coverage (Vitest)</a></li>
-                <li><a href="unit-tests/junit.xml">Unit Tests JUnit XML</a></li>
+                <li><a href="playwright-report-frontend-chromium/playwright-report/index.html">Tests on browser - Chromium</a></li>
+                <li><a href="playwright-report-frontend-edge/playwright-report/index.html">Tests on browser - Edge</a></li>
+                <li><a href="playwright-report-frontend-webkit/playwright-report/index.html">Tests on browser - WebKit</a></li>
+                <li><a href="playwright-report-api/playwright-report/index.html">API Tests</a></li>
+                <li><a href="unit-tests/unit-test-report/coverage/index.html">Unit Tests Coverage (Vitest)</a></li>
+                <li><a href="unit-tests/unit-test-report/junit.xml">Unit Tests JUnit XML</a></li>
                 <li><a href="contract-tests/pacts/tester-web-frontend-tester-backend-api.json">Contract Tests (Pact)</a></li>
                 <li><a href="swagger/index.html">Swagger API</a></li>
               </ul>
