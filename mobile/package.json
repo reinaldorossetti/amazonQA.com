@@ -24,7 +24,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "@tanstack/react-query": "^5.66.0",
     "axios": "^1.8.2",
-    "expo": "~52.0.37",
+    "expo": "~55.0.11",
     "expo-asset": "~11.0.5",
     "expo-font": "~13.0.4",
     "expo-localization": "~16.0.1",
