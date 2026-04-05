@@ -184,6 +184,9 @@ jobs:
         working-directory: server
         run: npm install
 
+      - name: Install Playwright test runner for root config
+        run: npm install --no-save @playwright/test
+
       - name: Install Playwright browsers
         working-directory: web
         run: npx playwright install --with-deps

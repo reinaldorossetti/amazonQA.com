@@ -14,11 +14,13 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import pg from 'pg';
+import bcrypt from 'bcrypt';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Load .env.local from the server/ directory
 config({ path: resolve(__dirname, '../.env.local') });
+config({ path: resolve(__dirname, '../.env'), override: false });
 
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -142,6 +144,84 @@ async function seed() {
         await client.query(DDL);
         console.log('✓ Tabelas criadas (products, users, cart_items, user_roles, orders, order_items, payments)');
 
+        const pepper = process.env.BCRYPT_PEPPER ?? '';
+        const seedUsers = [
+            {
+                firstName: 'Reinaldo',
+                lastName: 'Rossetti',
+                email: process.env.SEED_ADMIN_EMAIL ?? 'reiload@gmail.com',
+                password: process.env.SEED_ADMIN_PASSWORD ?? 'rei2026@QA',
+                roles: ['user', 'admin'],
+            },
+            {
+                firstName: 'Reinaldo',
+                lastName: 'Rossetti',
+                email: process.env.SEED_NORMAL_EMAIL ?? 'reinaldo.rossetti@outlook.com',
+                password: process.env.SEED_NORMAL_PASSWORD ?? 'qualidade2026@QA',
+                roles: ['user'],
+                removeRoles: ['admin'],
+            },
+        ];
+
+        for (const seedUser of seedUsers) {
+            const email = seedUser.email.trim().toLowerCase();
+            const plainPassword = seedUser.password;
+
+            if (!email || !plainPassword) {
+                throw new Error('Missing email/password for seeded users. Check SEED_* variables.');
+            }
+
+            const hash = await bcrypt.hash(`${plainPassword}${pepper}`, 12);
+            const existing = await client.query(
+                'SELECT id FROM users WHERE LOWER(email) = $1 LIMIT 1',
+                [email]
+            );
+
+            let userId = existing.rows[0]?.id ?? null;
+
+            if (!userId) {
+                const created = await client.query(
+                    `INSERT INTO users (
+                       person_type, first_name, last_name, email, password, is_active, updated_at
+                     ) VALUES (
+                       'PF', $1, $2, $3, $4, true, NOW()
+                     ) RETURNING id`,
+                    [seedUser.firstName, seedUser.lastName, email, hash]
+                );
+                userId = created.rows[0].id;
+            }
+
+            await client.query(
+                `UPDATE users
+                   SET first_name = $2,
+                       last_name = $3,
+                       password = $4,
+                       is_active = true,
+                       account_closed_at = NULL,
+                       updated_at = NOW()
+                 WHERE id = $1`,
+                [userId, seedUser.firstName, seedUser.lastName, hash]
+            );
+
+            for (const role of seedUser.roles) {
+                await client.query(
+                    `INSERT INTO user_roles (user_id, role)
+                     VALUES ($1, $2)
+                     ON CONFLICT (user_id, role) DO NOTHING`,
+                    [userId, role]
+                );
+            }
+
+            if (seedUser.removeRoles?.length) {
+                await client.query(
+                    'DELETE FROM user_roles WHERE user_id = $1 AND role = ANY($2::text[])',
+                    [userId, seedUser.removeRoles]
+                );
+            }
+
+            console.log(`✓ Usuário de seed garantido: ${email} (${seedUser.roles.join(', ')})`);
+        }
+
         // Garantir papel padrão para usuários existentes
         await client.query(
             `INSERT INTO user_roles (user_id, role)
@@ -151,44 +231,6 @@ async function seed() {
                  SELECT 1 FROM user_roles ur WHERE ur.user_id = u.id
              )`
         );
-
-        // Garantir perfil admin (promove o usuário definido por e-mail, ou o primeiro usuário cadastrado)
-        const preferredAdminEmail = (process.env.SEED_ADMIN_EMAIL || '').trim().toLowerCase();
-        let adminUserId = null;
-
-        if (preferredAdminEmail) {
-            const adminByEmail = await client.query(
-                'SELECT id FROM users WHERE LOWER(email) = $1 LIMIT 1',
-                [preferredAdminEmail]
-            );
-            adminUserId = adminByEmail.rows[0]?.id ?? null;
-        }
-
-        if (!adminUserId) {
-            const firstUser = await client.query('SELECT id FROM users ORDER BY id ASC LIMIT 1');
-            adminUserId = firstUser.rows[0]?.id ?? null;
-        }
-
-        if (adminUserId) {
-            await client.query(
-                `INSERT INTO user_roles (user_id, role)
-                 VALUES ($1, 'admin')
-                 ON CONFLICT (user_id, role) DO NOTHING`,
-                [adminUserId]
-            );
-
-            // Garante explicitamente também o perfil user para o mesmo usuário
-            await client.query(
-                `INSERT INTO user_roles (user_id, role)
-                 VALUES ($1, 'user')
-                 ON CONFLICT (user_id, role) DO NOTHING`,
-                [adminUserId]
-            );
-
-            console.log(`✓ Perfis garantidos: user/admin (admin user_id=${adminUserId})`);
-        } else {
-            console.log('⚠ Nenhum usuário encontrado para atribuir perfil admin.');
-        }
 
         // Load products from the frontend mock JSON
         const mockPath = resolve(__dirname, '../../web/src/data/products_mock.json');
