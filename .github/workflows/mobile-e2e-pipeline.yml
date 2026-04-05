@@ -1,0 +1,145 @@
+name: Mobile E2E Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'mobile/**'
+      - 'server-ts/**'
+      - '.github/workflows/mobile-e2e-pipeline.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'mobile/**'
+      - 'server-ts/**'
+      - '.github/workflows/mobile-e2e-pipeline.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-e2e-android:
+    name: Mobile E2E (Android + Detox)
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
+      EXPO_PUBLIC_API_BASE_URL: http://10.0.2.2:3001/api
+      E2E_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+      E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            mobile/package-lock.json
+            server-ts/package-lock.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm install
+
+      - name: Install backend dependencies
+        working-directory: server-ts
+        run: npm install
+
+      - name: Setup PostgreSQL
+        uses: tj-actions/install-postgresql@v3
+        with:
+          postgresql-version: 17
+
+      - name: Configure PostgreSQL database
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+
+      - name: Wait for PostgreSQL readiness
+        run: |
+          for i in {1..60}; do
+            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
+              echo "PostgreSQL pronto para conexões."
+              exit 0
+            fi
+            echo "Aguardando PostgreSQL ficar pronto..."
+            sleep 2
+          done
+          echo "PostgreSQL não ficou pronto no tempo esperado."
+          exit 1
+
+      - name: Seed backend database
+        working-directory: server-ts
+        run: npm run seed
+
+      - name: Start backend (Next.js) in background
+        working-directory: server-ts
+        run: |
+          nohup npm run dev > ../backend-mobile.log 2>&1 &
+          echo $! > ../backend-mobile.pid
+          echo "Backend PID: $(cat ../backend-mobile.pid)"
+
+      - name: Wait for backend readiness
+        run: |
+          for i in {1..90}; do
+            if curl -fsS http://127.0.0.1:3001/api/products >/dev/null; then
+              echo "Backend pronto para testes mobile."
+              exit 0
+            fi
+            echo "Aguardando backend ficar pronto..."
+            sleep 2
+          done
+          echo "Backend não ficou pronto no tempo esperado."
+          exit 1
+
+      - name: Enable KVM for Android emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Detox E2E on Android emulator
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            cd mobile
+            adb reverse tcp:3001 tcp:3001 || true
+            npm run e2e:build:android
+            npm run e2e:test:android:headless
+
+      - name: Upload mobile e2e artifacts and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-e2e-artifacts
+          path: |
+            backend-mobile.log
+            mobile/artifacts
+            mobile/android/app/build/reports
+            mobile/android/app/build/outputs/apk
+            mobile/android/app/build/outputs/androidTest-apk
+          if-no-files-found: warn
+
+      - name: Stop backend process
+        if: always()
+        run: |
+          if [ -f backend-mobile.pid ]; then
+            kill $(cat backend-mobile.pid) || true
+          fi
