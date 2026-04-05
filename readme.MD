@@ -1,10 +1,74 @@
-# tester.com — Resumo Consolidado dos Projetos
+# 🛍️ tester.com — Plataforma de E-commerce para Testes de Qualidade
 
-Este repositório reúne três aplicações integradas para o cenário de e-commerce:
+> Repositório de estudo e demonstração de **boas práticas de QA** sobre uma aplicação e-commerce real — cobrindo testes unitários, de contrato (Pact), API e E2E ponta a ponta com Playwright.
 
-- **Web (`/web`)**: interface React para clientes e fluxo administrativo.
-- **Server (`/server`)**: API REST em Next.js com autenticação/autorização e integração com PostgreSQL.
-- **Mobile (`/mobile`)**: app React Native (Expo) com paridade funcional da jornada principal.
+---
+
+## 🎯 O que é este projeto?
+
+O **tester.com** é uma plataforma de e-commerce completa, construída como ambiente de referência para engenharia de qualidade de software. Ele simula uma loja online com **jornada de compra real** — do cadastro ao pagamento — e serve de base para aplicar e demonstrar uma **pirâmide de testes escalável**.
+
+### Principais jornadas cobertas
+
+| Jornada | Descrição |
+|---|---|
+| 🔐 **Autenticação** | Cadastro de usuário, login, logout e proteção de rotas |
+| 🛒 **Catálogo & Busca** | Listagem de produtos, filtro por categoria e busca por texto |
+| 🛍️ **Carrinho** | Adicionar/remover produtos, atualizar quantidades, badge do carrinho |
+| 💳 **Checkout & Pagamento** | Fluxo completo: carrinho → pedido → pagamento → confirmação |
+| 👤 **Área do Cliente** | Perfil, histórico de pedidos e gerenciamento de conta |
+| 🔑 **Área Admin** | Gestão de produtos e usuários |
+
+---
+
+## 🏗️ Arquitetura — 3 aplicações integradas
+
+```
+tester.com/
+├── 📁 web/      → React + Vite  (frontend da loja + testes)
+├── 📁 server/   → Next.js API   (REST API + PostgreSQL)
+└── 📁 mobile/   → React Native + Expo (app Android/iOS)
+```
+
+Todas as três aplicações compartilham o **mesmo backend** (`/server`), garantindo paridade funcional entre web e mobile.
+
+---
+
+## 🎬 Demonstração — Fluxo Completo em Vídeo (compra REAL, sem mock)
+
+Os vídeos abaixo foram gerados automaticamente pelos **testes E2E do Playwright** rodando em Chromium, **sem nenhum mock de rede** — todos os produtos, pedidos e pagamentos foram processados pela API real em tempo de execução. Os produtos são selecionados aleatoriamente da API a cada execução.
+
+### 🛒 Compra Completa com Cartão de Crédito (produto aleatório da API)
+
+> **TS01** — Login real → produto aleatório sortido da API → carrinho → criação de pedido real → pagamento com cartão Visa → confirmação na página `/thank-you`. API retornou **HTTP 201 · status: authorized**.
+
+[🎥 Assistir vídeo TS01 (local no repositório)](img/demo-checkout-real.webm)
+
+### 🔍 Busca de Produto Real + Compra com Cartão
+
+> **TS02** — Login real → busca pelo nome do produto via campo de pesquisa (dados da API) → adiciona ao carrinho → checkout → pagamento com cartão Visa → confirmação.
+
+[🎥 Assistir vídeo TS02 (local no repositório)](img/demo-search-real.webm)
+
+### 🟢 Múltiplos Produtos Aleatórios + Pagamento com PIX
+
+> **TS03** — Login real → 3 produtos sortidos aleatoriamente da API adicionados ao carrinho → checkout → pagamento via **PIX** (QR Code gerado pela API) → confirmação.
+
+[🎥 Assistir vídeo TS03 (local no repositório)](img/demo-pix-real.webm)
+
+### 🔐 Login — Autenticando com credenciais válidas
+
+> Teste `TS01` — Login com sucesso, redirecionamento para área logada e saudação ao usuário na NavBar.
+
+https://github.com/reinaldorossetti/tester.com/raw/main/img/demo-login.webm
+
+### 📝 Cadastro + Login — Fluxo E2E completo de novo usuário
+
+> Teste `TS01` — Preenche formulário de cadastro em múltiplos passos (dados pessoais + endereço via ViaCEP), confirma cadastro e autentica com as mesmas credenciais.
+
+https://github.com/reinaldorossetti/tester.com/raw/main/img/demo-register.webm
+
+---
 
 ## 🧪 Pirâmide de Testes
 
@@ -17,6 +81,23 @@ flowchart BT
     A["E2E UI (Playwright)<br/>Fluxos críticos de ponta a ponta"] --> B["API e Contrato (Playwright API + Pact)<br/>Integração entre serviços e contratos"]
     B --> C["Unitários (Vitest)<br/>Base ampla: regras e componentes isolados"]
 ```
+
+### 📊 Suíte E2E Frontend — 12 specs / 60+ casos de teste
+
+| Spec | Cobertura |
+|---|---|
+| `login.spec.ts` | Login válido, credenciais inválidas, campos vazios, navegação |
+| `register.spec.ts` | Cadastro PF/PJ, validação de campos, CEP automático |
+| `register-login.spec.ts` | Fluxo Register → Login → Logout → Re-login |
+| `catalog.spec.ts` | Listagem, busca, filtro por categoria, detalhe do produto |
+| `cart-checkout.spec.ts` | Carrinho, quantidades, remoção, checkout, pagamento |
+| `orders.checkout.spec.ts` | Histórico e status de pedidos |
+| `payments-card-brands.spec.ts` | Bandeiras de cartão, Pix, boleto |
+| `product-details.spec.ts` | Página de detalhe, galeria, botão de compra |
+| `auth.spec.ts` | Proteção de rotas, logout, sessão |
+| `security.spec.ts` | Rotas protegidas sem autenticação |
+| `admin-management.spec.ts` | Painel admin, gestão de produtos |
+| `register-language.spec.ts` | Internacionalização do formulário de cadastro |
 
 **Relatórios públicos da pirâmide e da documentação:**
 
@@ -76,6 +157,7 @@ Responsável por:
 Também contém o script de preparação do banco:
 
 - `npm run seed` → cria estrutura e popula produtos iniciais.
+- `npm run db:reset` → **limpa todo o banco** e refaz o seed do zero.
 
 ### 2) Web (`/web`)
 
@@ -109,7 +191,7 @@ docker compose up -d
 ```bash
 cd server
 npm install
-npm run seed
+npm run seed       # apenas na primeira vez
 npm run dev
 ```
 
@@ -218,6 +300,15 @@ npm run test:pact
 npm run test:e2e
 ```
 
+#### Gravar vídeos dos testes E2E (demo)
+
+```bash
+# Na raiz do repositório — roda somente os testes real e grava os vídeos
+npx playwright test --config playwright.video.config.ts --project="purchase flow"
+
+# Os vídeos ficam em: img/demo-videos/
+```
+
 Comandos úteis adicionais:
 
 ```bash
@@ -238,7 +329,19 @@ npm run e2e:test:android
 
 ---
 
+## 🗃️ Reset do banco de dados
+
+Para limpar o banco e recriar do zero (útil antes de testes de integração):
+
+```bash
+cd server
+npm run db:reset    # drop all tables → recria schema → insere produtos mock
+```
+
+O comando `npm run build` executa `db:reset` automaticamente antes de compilar.
+
+---
+
 ## ℹ️ Observação para Windows PowerShell
 
 Se houver bloqueio por `ExecutionPolicy` ao usar `npm`, execute via `npm.cmd`.
-

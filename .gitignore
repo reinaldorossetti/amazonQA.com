@@ -34,3 +34,7 @@ e2e/results/
 e2e/.auth/
 Microsoft/
 node_modules/
+.next
+img/demo-videos/
+server-ts/.next/
+server/.next
