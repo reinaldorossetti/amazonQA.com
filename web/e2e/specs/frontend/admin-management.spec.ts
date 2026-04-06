@@ -1,6 +1,3 @@
-import { execFileSync } from 'node:child_process';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { expect, test } from '../../fixtures/ui.fixture';
 import { setAuthenticatedSession } from '../../helpers/auth';
 import { AdminPage } from '../../pages/AdminPage';
@@ -19,27 +16,12 @@ type AdminLoginPayload = {
 };
 
 const API_BASE_URL = 'http://127.0.0.1:3001/api';
-const THIS_FILE = fileURLToPath(import.meta.url);
-const THIS_DIR = path.dirname(THIS_FILE);
-const REPO_ROOT = path.resolve(THIS_DIR, '../../../../');
-const SERVER_DIR = path.join(REPO_ROOT, 'server');
-
-function ensureAdminUserAndGetEmail() {
-  const commandOutput = execFileSync(process.execPath, ['scripts/ensure-admin-user.js'], {
-    cwd: SERVER_DIR,
-    encoding: 'utf-8',
-  });
-
-  const emailMatch = commandOutput.match(/"email"\s*:\s*"([^"]+)"/);
-  return emailMatch?.[1] ?? 'admin.teste@tester.com';
-}
 
 async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
-  const adminEmail = ensureAdminUserAndGetEmail();
 
   const response = await request.post(`${API_BASE_URL}/users/login`, {
     data: {
-      email: adminEmail,
+      email: 'admin.teste@tester.com',
       password: 'Admin@123',
     },
   });
