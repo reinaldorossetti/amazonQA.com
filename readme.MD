@@ -129,6 +129,30 @@ Acompanhe os resultados diários, a cobertura e a documentação pública dispon
 - 🌐 [Relatório Frontend - WebKit](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-webkit/index.html)
 - 🌐 [Relatório Frontend - Edge](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/index.html)
 
+
+### E2E tests commands:
+
+
+```
+npx playwright test
+# Runs the end-to-end tests.
+
+npx playwright test --ui
+# Starts the interactive UI mode.
+
+npx playwright test --project=chromium
+# Runs the tests only on Desktop Chrome.
+
+npx playwright test example
+# Runs the tests in a specific file.
+
+npx playwright test --debug
+# Runs the tests in debug mode.
+
+npx playwright codegen
+# Auto generate tests with Codegen.
+```
+
 ---
 
 ## 🤝 Testes de Contrato (Pact)

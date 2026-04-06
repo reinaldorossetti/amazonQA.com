@@ -272,9 +272,10 @@ jobs:
 
       - name: Run E2E tests
         working-directory: web
-        run: xvfb-run --auto-servernum npx playwright test --config ../playwright.config.ts --project=${{ matrix.project }}
+        run: xvfb-run --auto-servernum npx playwright test --config playwright.config.ts --project=${{ matrix.project }}
 
       - name: Upload Playwright report
+        working-directory: web
         if: always()
         uses: actions/upload-artifact@v4
         with:
