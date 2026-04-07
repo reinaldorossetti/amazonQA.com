@@ -1,5 +1,20 @@
 import { expect, test } from '@playwright/test';
 
+async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
+  const response = await request.post('users/login', {
+    data: {
+      email: 'admin@tester.com',
+      password: 'Admin@123',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload.accessToken as string;
+}
+
 test.describe('API Products', () => {
   test('deve listar produtos sem filtro de categoria', async ({ request }) => {
     const response = await request.get('products');
@@ -10,9 +25,11 @@ test.describe('API Products', () => {
   });
 
   test('deve criar, buscar, filtrar, atualizar e remover produto', async ({ request }) => {
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
     const suffix = Date.now();
 
     const createRes = await request.post('products', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
       data: {
         name: `Produto Playwright ${suffix}`,
         price: 123.45,
@@ -41,6 +58,7 @@ test.describe('API Products', () => {
     expect(filtered.some((p: { id: number }) => p.id === productId)).toBeTruthy();
 
     const updateRes = await request.put(`products/${productId}`, {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
       data: {
         ...created,
         name: `Produto Atualizado ${suffix}`,
@@ -49,7 +67,9 @@ test.describe('API Products', () => {
     });
     expect(updateRes.status()).toBe(200);
 
-    const removeRes = await request.delete(`products/${productId}`);
+    const removeRes = await request.delete(`products/${productId}`, {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
+    });
     expect(removeRes.status()).toBe(200);
 
     const afterDelete = await request.get(`products/${productId}`);
@@ -57,7 +77,11 @@ test.describe('API Products', () => {
   });
 
   test('deve retornar 400 ao criar produto sem campos obrigatórios', async ({ request }) => {
-    const response = await request.post('products', { data: { description: 'sem campos obrigatórios' } });
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const response = await request.post('products', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
+      data: { description: 'sem campos obrigatórios' },
+    });
     expect(response.status()).toBe(400);
   });
 
@@ -71,7 +95,9 @@ test.describe('API Products', () => {
   });
 
   test('deve retornar 404 ao atualizar produto inexistente', async ({ request }) => {
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
     const response = await request.put('products/999999999', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
       data: {
         name: 'Inexistente',
         price: 10,
@@ -88,7 +114,10 @@ test.describe('API Products', () => {
   });
 
   test('deve retornar 404 ao remover produto inexistente', async ({ request }) => {
-    const response = await request.delete('products/999999999');
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const response = await request.delete('products/999999999', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
+    });
     expect(response.status()).toBe(404);
   });
 });

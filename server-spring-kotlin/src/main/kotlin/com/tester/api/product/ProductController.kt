@@ -30,10 +30,10 @@ class ProductController(
     fun getById(@PathVariable @Min(1) id: Int): Map<String, Any?> = productService.getById(id)
 
     @PostMapping
-    fun create(@Valid @RequestBody body: ProductBody): Map<String, Any?> {
+    fun create(@Valid @RequestBody body: ProductBody): org.springframework.http.ResponseEntity<Map<String, Any?>> {
         val authUser = authFacade.requireAuthenticatedUser()
         authFacade.requireAdmin(authUser.userId)
-        return productService.create(body)
+        return org.springframework.http.ResponseEntity.status(org.springframework.http.HttpStatus.CREATED).body(productService.create(body))
     }
 
     @PutMapping("/{id}")

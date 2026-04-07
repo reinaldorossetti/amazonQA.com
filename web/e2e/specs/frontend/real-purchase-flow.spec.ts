@@ -94,7 +94,7 @@ async function createRealFlowUser(request: any): Promise<RealFlowUser> {
 async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
   const response = await request.post(`${API_BASE}/users/login`, {
     data: {
-      email: 'admin.teste@tester.com',
+      email: 'admin@tester.com',
       password: 'Admin@123',
     },
   });

@@ -1,248 +1,86 @@
-<testsuites id="" name="" tests="58" failures="1" skipped="1" errors="0" time="53.439689">
-<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="2" failures="1" skipped="1" time="2.683" errors="0">
-<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts" time="2.683">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\trace.zip]]
-]]>
-</system-out>
-<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
-<![CDATA[  [frontend-chromium] › frontend\admin-management.spec.ts:99:3 › Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado 
-
-    Error: expect(received).toBe(expected) // Object.is equality
-
-    Expected: 200
-    Received: 401
-
-      27 |   });
-      28 |
-    > 29 |   expect(response.status()).toBe(200);
-         |                             ^
-      30 |   const payload = await response.json();
-      31 |   expect(payload.accessToken).toBeTruthy();
-      32 |   expect(payload.user?.isAdmin).toBeTruthy();
-        at loginAsAdmin (D:\github-projects\tester.com\web\e2e\specs\frontend\admin-management.spec.ts:29:29)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\admin-management.spec.ts:101:26
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium\error-context.md
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(received).toBe(expected) // Object.is equality
-
-    Expected: 200
-    Received: 401
-
-      27 |   });
-      28 |
-    > 29 |   expect(response.status()).toBe(200);
-         |                             ^
-      30 |   const payload = await response.json();
-      31 |   expect(payload.accessToken).toBeTruthy();
-      32 |   expect(payload.user?.isAdmin).toBeTruthy();
-        at loginAsAdmin (D:\github-projects\tester.com\web\e2e\specs\frontend\admin-management.spec.ts:29:29)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\admin-management.spec.ts:101:26
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\error-context.md
-
-    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\test-results\frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</failure>
+<testsuites id="" name="" tests="37" failures="0" skipped="0" errors="0" time="5.491427">
+<testsuite name="api\cart.api.spec.ts" timestamp="2026-04-07T15:15:35.127Z" hostname="api" tests="14" failures="0" skipped="0" time="10.138" errors="0">
+<testcase name="API Cart › deve adicionar, incrementar, listar e remover item do carrinho" classname="api\cart.api.spec.ts" time="1.041">
 </testcase>
-<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts">
-<skipped>
-</skipped>
+<testcase name="API Cart › deve validar erros de payload do carrinho" classname="api\cart.api.spec.ts" time="0.05">
+</testcase>
+<testcase name="API Cart › deve retornar 401 com mensagem padronizada para token ausente no POST" classname="api\cart.api.spec.ts" time="0.039">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para cartItemId ausente quando autenticado" classname="api\cart.api.spec.ts" time="0.652">
+</testcase>
+<testcase name="API Cart › deve retornar 404 ao remover item inexistente para usuário autenticado" classname="api\cart.api.spec.ts" time="0.703">
+</testcase>
+<testcase name="API Cart › deve buscar item do carrinho por ID quando existir" classname="api\cart.api.spec.ts" time="1.055">
+</testcase>
+<testcase name="API Cart › deve retornar 404 com mensagem &quot;Carrinho não encontrado&quot; para ID inexistente" classname="api\cart.api.spec.ts" time="0.677">
+</testcase>
+<testcase name="API Cart › deve retornar 403 ao tentar acessar carrinho de outro usuário" classname="api\cart.api.spec.ts" time="1.01">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para userId inválido no GET do carrinho" classname="api\cart.api.spec.ts" time="0.671">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para payload inválido no POST do carrinho autenticado" classname="api\cart.api.spec.ts" time="0.657">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para produto duplicado no mesmo payload" classname="api\cart.api.spec.ts" time="0.978">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para produto inexistente" classname="api\cart.api.spec.ts" time="0.639">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para quantidade acima do limite" classname="api\cart.api.spec.ts" time="0.963">
+</testcase>
+<testcase name="API Cart › deve aceitar lote com múltiplos produtos diferentes" classname="api\cart.api.spec.ts" time="1.003">
 </testcase>
 </testsuite>
-<testsuite name="frontend\auth.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="16.123" errors="0">
-<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend\auth.spec.ts" time="2.872">
+<testsuite name="api\orders.api.spec.ts" timestamp="2026-04-07T15:15:35.127Z" hostname="api" tests="6" failures="0" skipped="0" time="5.115" errors="0">
+<testcase name="API Orders › deve criar pedido a partir do carrinho e limpar carrinho" classname="api\orders.api.spec.ts" time="0.979">
 </testcase>
-<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend\auth.spec.ts" time="2.949">
+<testcase name="API Orders › deve respeitar idempotência no POST /orders" classname="api\orders.api.spec.ts" time="0.954">
 </testcase>
-<testcase name="Login › TS03 - should validate required fields" classname="frontend\auth.spec.ts" time="2.84">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com carrinho vazio" classname="api\orders.api.spec.ts" time="0.607">
 </testcase>
-<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend\auth.spec.ts" time="2.635">
+<testcase name="API Orders › deve retornar 401 sem token no POST /orders" classname="api\orders.api.spec.ts" time="0.008">
 </testcase>
-<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend\auth.spec.ts" time="2.555">
+<testcase name="API Orders › deve listar pedidos do usuário autenticado" classname="api\orders.api.spec.ts" time="0.974">
 </testcase>
-<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend\auth.spec.ts" time="2.272">
-</testcase>
-</testsuite>
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="12" failures="0" skipped="0" time="87.169" errors="0">
-<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend\cart-checkout.spec.ts" time="6.738">
-</testcase>
-<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend\cart-checkout.spec.ts" time="6.693">
-</testcase>
-<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend\cart-checkout.spec.ts" time="1.479">
-</testcase>
-<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend\cart-checkout.spec.ts" time="6.754">
-</testcase>
-<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend\cart-checkout.spec.ts" time="6.348">
-</testcase>
-<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend\cart-checkout.spec.ts" time="6.239">
-</testcase>
-<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend\cart-checkout.spec.ts" time="6.848">
-</testcase>
-<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend\cart-checkout.spec.ts" time="6.325">
-</testcase>
-<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend\cart-checkout.spec.ts" time="6.389">
-</testcase>
-<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend\cart-checkout.spec.ts" time="6.679">
-</testcase>
-<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend\cart-checkout.spec.ts" time="20.157">
-</testcase>
-<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend\cart-checkout.spec.ts" time="6.52">
+<testcase name="API Orders › deve bloquear acesso a pedido de outro usuário (403)" classname="api\orders.api.spec.ts" time="1.593">
 </testcase>
 </testsuite>
-<testsuite name="frontend\catalog.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="57.23" errors="0">
-<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend\catalog.spec.ts" time="1.266">
+<testsuite name="api\payments.api.spec.ts" timestamp="2026-04-07T15:15:35.127Z" hostname="api" tests="3" failures="0" skipped="0" time="2.933" errors="0">
+<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api\payments.api.spec.ts" time="0.976">
 </testcase>
-<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend\catalog.spec.ts" time="12.115">
+<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api\payments.api.spec.ts" time="0.992">
 </testcase>
-<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend\catalog.spec.ts" time="11.79">
-</testcase>
-<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend\catalog.spec.ts" time="11.422">
-</testcase>
-<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend\catalog.spec.ts" time="10.959">
-</testcase>
-<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend\catalog.spec.ts" time="9.678">
+<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api\payments.api.spec.ts" time="0.965">
 </testcase>
 </testsuite>
-<testsuite name="frontend\login.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="8.252" errors="0">
-<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="1.722">
+<testsuite name="api\products.api.spec.ts" timestamp="2026-04-07T15:15:35.127Z" hostname="api" tests="6" failures="0" skipped="0" time="1.283" errors="0">
+<testcase name="API Products › deve listar produtos sem filtro de categoria" classname="api\products.api.spec.ts" time="0.012">
 </testcase>
-<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="1.656">
+<testcase name="API Products › deve criar, buscar, filtrar, atualizar e remover produto" classname="api\products.api.spec.ts" time="0.336">
 </testcase>
-<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="1.583">
+<testcase name="API Products › deve retornar 400 ao criar produto sem campos obrigatórios" classname="api\products.api.spec.ts" time="0.306">
 </testcase>
-<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="1.612">
+<testcase name="API Products › deve retornar array vazio para categoria inexistente" classname="api\products.api.spec.ts" time="0.011">
 </testcase>
-<testcase name="Login › TS05 - Should navigate to the register page when clicking the create account button" classname="frontend\login.spec.ts" time="1.679">
+<testcase name="API Products › deve retornar 404 ao atualizar produto inexistente" classname="api\products.api.spec.ts" time="0.302">
 </testcase>
-</testsuite>
-<testsuite name="frontend\orders.checkout.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="13.316" errors="0">
-<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend\orders.checkout.spec.ts" time="6.729">
-</testcase>
-<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend\orders.checkout.spec.ts" time="6.587">
+<testcase name="API Products › deve retornar 404 ao remover produto inexistente" classname="api\products.api.spec.ts" time="0.316">
 </testcase>
 </testsuite>
-<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="32.706" errors="0">
-<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="6.928">
+<testsuite name="api\users.api.spec.ts" timestamp="2026-04-07T15:15:35.127Z" hostname="api" tests="8" failures="0" skipped="0" time="2.181" errors="0">
+<testcase name="API Users › deve registrar e autenticar usuário válido" classname="api\users.api.spec.ts" time="0.615">
 </testcase>
-<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="8.549">
+<testcase name="API Users › deve retornar 409 para e-mail duplicado" classname="api\users.api.spec.ts" time="0.317">
 </testcase>
-<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="6.944">
+<testcase name="API Users › deve retornar 401 para credenciais inválidas" classname="api\users.api.spec.ts" time="0.008">
 </testcase>
-<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="10.285">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-visa-22e0622cd58ff84a94f650dfdf388bdb7b787c99.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-mastercard-b0fadf974ed3347bcbac38c48bfb7258884db4ac.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-elo-30fad35fbd44b4dee0bf189b077e4e7ccef8d32a.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-amex-f7e43778a4c950b1109c86a38d5e34751cd5f921.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hipercard-50c149bfa7bf265511e179eb60656e478c91dd1b.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hiper-80c84dc4220b38175e58a4f29ceda3c14b7fcf15.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-cabal-dd8c1ac1a711b4925d60c3d3b10abdbfa12325fb.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-verdecard-c909aeea91c5ce2d5d28f618b91880c0e9f5bbec.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-unionpay-983edebb4e50c3531e7c5ae13ff1face429c95b8.png]]
-
-[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-diners-730259300cb2c3f47bbce7238dbd70deb053c133.png]]
-]]>
-</system-out>
+<testcase name="API Users › deve retornar 401 para senha incorreta de usuário existente" classname="api\users.api.spec.ts" time="0.587">
 </testcase>
-</testsuite>
-<testsuite name="frontend\product-details.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="7.481" errors="0">
-<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend\product-details.spec.ts" time="2.046">
+<testcase name="API Users › deve retornar 400 para login sem email/senha" classname="api\users.api.spec.ts" time="0.008">
 </testcase>
-<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend\product-details.spec.ts" time="2.494">
+<testcase name="API Users › deve retornar 400 para payload incompleto" classname="api\users.api.spec.ts" time="0.015">
 </testcase>
-<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend\product-details.spec.ts" time="1.224">
+<testcase name="API Users › deve retornar 409 para CPF duplicado" classname="api\users.api.spec.ts" time="0.313">
 </testcase>
-<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend\product-details.spec.ts" time="1.717">
-</testcase>
-</testsuite>
-<testsuite name="frontend\register-language.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="12.008" errors="0">
-<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend\register-language.spec.ts" time="6.074">
-</testcase>
-<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend\register-language.spec.ts" time="1.764">
-</testcase>
-<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend\register-language.spec.ts" time="2.167">
-</testcase>
-<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend\register-language.spec.ts" time="2.003">
-</testcase>
-</testsuite>
-<testsuite name="frontend\register-login.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="13.086" errors="0">
-<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="4.021">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="7.252">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="1.813">
-</testcase>
-</testsuite>
-<testsuite name="frontend\register.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="15.709" errors="0">
-<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend\register.spec.ts" time="3.175">
-</testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend\register.spec.ts" time="2.081">
-</testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend\register.spec.ts" time="2.106">
-</testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend\register.spec.ts" time="2.02">
-</testcase>
-<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend\register.spec.ts" time="1.92">
-</testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend\register.spec.ts" time="2.717">
-</testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend\register.spec.ts" time="1.69">
-</testcase>
-</testsuite>
-<testsuite name="frontend\security.spec.ts" timestamp="2026-04-07T14:16:00.873Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="9.066" errors="0">
-<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend\security.spec.ts" time="6.23">
-</testcase>
-<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend\security.spec.ts" time="1.24">
-</testcase>
-<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend\security.spec.ts" time="1.596">
+<testcase name="API Users › deve retornar 409 para CNPJ duplicado" classname="api\users.api.spec.ts" time="0.318">
 </testcase>
 </testsuite>
 </testsuites>

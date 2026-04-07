@@ -21,7 +21,7 @@ async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
 
   const response = await request.post(`${API_BASE_URL}/users/login`, {
     data: {
-      email: 'admin.teste@tester.com',
+      email: 'admin@tester.com',
       password: 'Admin@123',
     },
   });
@@ -185,7 +185,7 @@ test.describe('Admin management', () => {
     });
     expect(deletedUserResponse.status()).toBe(404);
     const deletedUserPayload = await deletedUserResponse.json();
-    expect(deletedUserPayload?.error).toMatch(/Usuário não encontrado/i);
+    expect(deletedUserPayload?.error).toMatch(/User not found/i);
 
     await expect(page.locator('body')).not.toContainText(createdUser.email);
   });

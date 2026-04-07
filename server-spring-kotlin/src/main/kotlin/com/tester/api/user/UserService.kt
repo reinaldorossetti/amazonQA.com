@@ -3,6 +3,7 @@ package com.tester.api.user
 import com.tester.api.auth.JwtService
 import com.tester.api.common.ApiException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,41 +23,47 @@ class UserService(
         validateRequiredForCreate(body.first_name, body.last_name, body.email, body.password)
 
         val email = body.email!!.trim().lowercase()
+        val normalizedCpf = normalizeDigits(body.cpf)
+        val normalizedCnpj = normalizeDigits(body.cnpj)
         ensureUniqueEmail(email)
-        ensureUniqueCpf(body.cpf, null)
-        ensureUniqueCnpj(body.cnpj, null)
+        ensureUniqueCpf(normalizedCpf, null)
+        ensureUniqueCnpj(normalizedCnpj, null)
 
         val hashedPassword = BCrypt.hashpw(body.password + bcryptPepper, BCrypt.gensalt(saltRounds()))
 
-        val rows = jdbcTemplate.queryForList(
-            """
-            INSERT INTO users (
-              person_type, first_name, last_name, email, phone, password,
-              cpf, cnpj, company_name,
-              address_zip, address_street, address_number, address_complement,
-              address_neighborhood, address_city, address_state,
-              residence_proof_filename, updated_at, is_active
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), TRUE)
-            RETURNING id, person_type, first_name, last_name, email, created_at
-            """.trimIndent(),
-            body.person_type ?: "PF",
-            body.first_name,
-            body.last_name,
-            email,
-            body.phone,
-            hashedPassword,
-            normalizeDigits(body.cpf),
-            normalizeDigits(body.cnpj),
-            body.company_name,
-            body.address_zip,
-            body.address_street,
-            body.address_number,
-            body.address_complement,
-            body.address_neighborhood,
-            body.address_city,
-            body.address_state,
-            body.residence_proof_filename,
-        )
+        val rows = try {
+            jdbcTemplate.queryForList(
+                """
+                INSERT INTO users (
+                  person_type, first_name, last_name, email, phone, password,
+                  cpf, cnpj, company_name,
+                  address_zip, address_street, address_number, address_complement,
+                  address_neighborhood, address_city, address_state,
+                  residence_proof_filename, updated_at, is_active
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), TRUE)
+                RETURNING id, person_type, first_name, last_name, email, created_at
+                """.trimIndent(),
+                body.person_type ?: "PF",
+                body.first_name,
+                body.last_name,
+                email,
+                body.phone,
+                hashedPassword,
+                normalizedCpf,
+                normalizedCnpj,
+                body.company_name,
+                body.address_zip,
+                body.address_street,
+                body.address_number,
+                body.address_complement,
+                body.address_neighborhood,
+                body.address_city,
+                body.address_state,
+                body.residence_proof_filename,
+            )
+        } catch (ex: DataIntegrityViolationException) {
+            throw mapDuplicateUserConstraint(ex)
+        }
 
         val created = rows.firstOrNull() ?: throw ApiException(500, "Failed to register user")
         val createdId = (created["id"] as Number).toInt()
@@ -148,41 +155,47 @@ class UserService(
         validateRequiredForCreate(body.first_name, body.last_name, body.email, body.password)
 
         val email = body.email!!.trim().lowercase()
+        val normalizedCpf = normalizeDigits(body.cpf)
+        val normalizedCnpj = normalizeDigits(body.cnpj)
         ensureUniqueEmail(email)
-        ensureUniqueCpf(body.cpf, null)
-        ensureUniqueCnpj(body.cnpj, null)
+        ensureUniqueCpf(normalizedCpf, null)
+        ensureUniqueCnpj(normalizedCnpj, null)
 
         val hashedPassword = BCrypt.hashpw(body.password + bcryptPepper, BCrypt.gensalt(saltRounds()))
 
-        val rows = jdbcTemplate.queryForList(
-            """
-            INSERT INTO users (
-              person_type, first_name, last_name, email, phone, password,
-              cpf, cnpj, company_name,
-              address_zip, address_street, address_number, address_complement,
-              address_neighborhood, address_city, address_state,
-              residence_proof_filename, updated_at, is_active
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), TRUE)
-            RETURNING id, person_type, first_name, last_name, email, created_at, updated_at, is_active
-            """.trimIndent(),
-            body.person_type ?: "PF",
-            body.first_name,
-            body.last_name,
-            email,
-            body.phone,
-            hashedPassword,
-            normalizeDigits(body.cpf),
-            normalizeDigits(body.cnpj),
-            body.company_name,
-            body.address_zip,
-            body.address_street,
-            body.address_number,
-            body.address_complement,
-            body.address_neighborhood,
-            body.address_city,
-            body.address_state,
-            body.residence_proof_filename,
-        )
+        val rows = try {
+            jdbcTemplate.queryForList(
+                """
+                INSERT INTO users (
+                  person_type, first_name, last_name, email, phone, password,
+                  cpf, cnpj, company_name,
+                  address_zip, address_street, address_number, address_complement,
+                  address_neighborhood, address_city, address_state,
+                  residence_proof_filename, updated_at, is_active
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), TRUE)
+                RETURNING id, person_type, first_name, last_name, email, created_at, updated_at, is_active
+                """.trimIndent(),
+                body.person_type ?: "PF",
+                body.first_name,
+                body.last_name,
+                email,
+                body.phone,
+                hashedPassword,
+                normalizedCpf,
+                normalizedCnpj,
+                body.company_name,
+                body.address_zip,
+                body.address_street,
+                body.address_number,
+                body.address_complement,
+                body.address_neighborhood,
+                body.address_city,
+                body.address_state,
+                body.residence_proof_filename,
+            )
+        } catch (ex: DataIntegrityViolationException) {
+            throw mapDuplicateUserConstraint(ex)
+        }
 
         val created = rows.firstOrNull() ?: throw ApiException(500, "Failed to register user")
         val userId = (created["id"] as Number).toInt()
@@ -450,5 +463,16 @@ class UserService(
             throw ApiException(500, "Invalid BCRYPT_SALT_ROUNDS. Expected value between 4 and 31")
         }
         return bcryptSaltRounds
+    }
+
+    private fun mapDuplicateUserConstraint(ex: DataIntegrityViolationException): ApiException {
+        val message = ex.mostSpecificCause?.message?.lowercase() ?: ""
+
+        return when {
+            message.contains("users_email_key") -> ApiException(409, "This email is already registered.")
+            message.contains("users_cpf_key") -> ApiException(409, "This CPF is already registered.")
+            message.contains("users_cnpj_key") -> ApiException(409, "This CNPJ is already registered.")
+            else -> ApiException(409, "Duplicate user data")
+        }
     }
 }

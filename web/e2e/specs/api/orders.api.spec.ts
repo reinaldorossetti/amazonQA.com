@@ -25,9 +25,25 @@ async function loginAndGetAccessToken(request: any, email: string, password: str
   return payload.accessToken as string;
 }
 
-async function createProduct(request: any) {
+async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
+  const response = await request.post('users/login', {
+    data: {
+      email: 'admin@tester.com',
+      password: 'Admin@123',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload.accessToken as string;
+}
+
+async function createProduct(request: any, adminAccessToken: string) {
   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   const response = await request.post('products', {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
     data: {
       name: `Produto Pedido ${suffix}`,
       price: 79.9,
@@ -40,10 +56,17 @@ async function createProduct(request: any) {
   return response.json();
 }
 
+async function deleteProductAsAdmin(request: any, adminAccessToken: string, productId: number) {
+  await request.delete(`products/${productId}`, {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
+  });
+}
+
 test.describe('API Orders', () => {
   test('deve criar pedido a partir do carrinho e limpar carrinho', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
     const headers = { Authorization: `Bearer ${accessToken}` };
 
@@ -76,12 +99,13 @@ test.describe('API Orders', () => {
     const cartAfter = await cartAfterRes.json();
     expect(cartAfter).toHaveLength(0);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve respeitar idempotência no POST /orders', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
     const headers = { Authorization: `Bearer ${accessToken}` };
 
@@ -110,7 +134,7 @@ test.describe('API Orders', () => {
     expect(secondPayload.id).toBe(firstPayload.id);
     expect(secondPayload.order_number).toBe(firstPayload.order_number);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve retornar 400 ao criar pedido com carrinho vazio', async ({ request }) => {
@@ -124,7 +148,7 @@ test.describe('API Orders', () => {
 
     expect(response.status()).toBe(400);
     const payload = await response.json();
-    expect(payload.error).toBe('Carrinho vazio');
+    expect(payload.error).toBe('Empty cart');
   });
 
   test('deve retornar 401 sem token no POST /orders', async ({ request }) => {
@@ -137,7 +161,8 @@ test.describe('API Orders', () => {
 
   test('deve listar pedidos do usuário autenticado', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
     const headers = { Authorization: `Bearer ${accessToken}` };
 
@@ -159,13 +184,14 @@ test.describe('API Orders', () => {
     expect(Array.isArray(listPayload.items)).toBeTruthy();
     expect(listPayload.total).toBeGreaterThan(0);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve bloquear acesso a pedido de outro usuário (403)', async ({ request }) => {
     const userA = await createUser(request);
     const userB = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
 
     const tokenA = await loginAndGetAccessToken(request, userA.email, 'Senha@1234');
     const tokenB = await loginAndGetAccessToken(request, userB.email, 'Senha@1234');
@@ -190,6 +216,6 @@ test.describe('API Orders', () => {
 
     expect(getOtherOrder.status()).toBe(403);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 });

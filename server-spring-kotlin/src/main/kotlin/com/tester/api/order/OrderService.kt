@@ -210,7 +210,7 @@ class OrderService(
             orderId,
         )
 
-        val order = rows.firstOrNull() ?: throw ApiException(404, "Order not found")
+        val order = flattenRow(rows.firstOrNull()) ?: throw ApiException(404, "Order not found")
 
         val items = jdbcTemplate.queryForList(
             """
@@ -367,7 +367,7 @@ class OrderService(
             )
         }
 
-        return inserted
+        return flattenRow(inserted)!!
     }
 
     fun getPayment(orderId: Int, paymentId: Int): Map<String, Any?> {
@@ -384,7 +384,7 @@ class OrderService(
             paymentId,
         )
 
-        return rows.firstOrNull() ?: throw ApiException(404, "Payment not found")
+        return flattenRow(rows.firstOrNull()) ?: throw ApiException(404, "Payment not found")
     }
 
     fun getBoletoData(orderId: Int): Map<String, Any?> {
@@ -423,6 +423,17 @@ class OrderService(
         pg.type = "jsonb"
         pg.value = objectMapper.writeValueAsString(value)
         return pg
+    }
+
+    private fun flattenRow(row: Map<String, Any?>?): Map<String, Any?>? {
+        if (row == null) return null
+        return row.mapValues {
+            val v = it.value
+            if (v is org.postgresql.util.PGobject && v.type == "jsonb") {
+                val value = v.value
+                if (value != null) objectMapper.readValue(value, Any::class.java) else null
+            } else v
+        }
     }
 
     private fun detectCardBrand(cardNumber: String?): String? {

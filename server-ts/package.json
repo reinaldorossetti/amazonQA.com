@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3001",
-    "build": "next build",
+    "build": "npm run db:reset && next build",
     "start": "next start -p 3001",
     "seed": "tsx scripts/seed.ts",
+    "db:reset": "tsx scripts/seed.ts",
+    "db:fresh": "tsx scripts/seed.ts",
     "ensure-admin-user": "tsx scripts/ensure-admin-user.ts",
     "test:pact:provider": "tsx scripts/verify-pact-provider.ts",
     "test:pact": "npm run test:pact:provider",

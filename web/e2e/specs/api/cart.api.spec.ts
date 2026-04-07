@@ -28,9 +28,25 @@ async function loginAndGetAccessToken(request: any, email: string, password: str
   return loginPayload.accessToken as string;
 }
 
-async function createProduct(request: any) {
+async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
+  const response = await request.post('users/login', {
+    data: {
+      email: 'admin@tester.com',
+      password: 'Admin@123',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload.accessToken as string;
+}
+
+async function createProduct(request: any, adminAccessToken: string) {
   const suffix = Date.now();
   const response = await request.post('products', {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
     data: {
       name: `Produto Carrinho ${suffix}`,
       price: 49.9,
@@ -43,10 +59,17 @@ async function createProduct(request: any) {
   return response.json();
 }
 
+async function deleteProductAsAdmin(request: any, adminAccessToken: string, productId: number) {
+  await request.delete(`products/${productId}`, {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
+  });
+}
+
 test.describe('API Cart', () => {
   test('deve adicionar, incrementar, listar e remover item do carrinho', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
 
     const authHeaders = { Authorization: `Bearer ${accessToken}` };
@@ -84,7 +107,7 @@ test.describe('API Cart', () => {
     const afterItems = await listAfterDelete.json();
     expect(afterItems.length).toBe(0);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve validar erros de payload do carrinho', async ({ request }) => {
@@ -105,7 +128,7 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(401);
     const payload = await response.json();
-    expect(payload.error).toBe('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais');
+    expect(payload.error).toBe('Missing bearer token');
   });
 
   test('deve retornar 400 para cartItemId ausente quando autenticado', async ({ request }) => {
@@ -134,7 +157,8 @@ test.describe('API Cart', () => {
 
   test('deve buscar item do carrinho por ID quando existir', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
 
     const authHeaders = { Authorization: `Bearer ${accessToken}` };
@@ -164,7 +188,7 @@ test.describe('API Cart', () => {
     expect(cartItem.product_id).toBe(product.id);
     expect(cartItem.quantity).toBe(2);
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve retornar 404 com mensagem "Carrinho não encontrado" para ID inexistente', async ({ request }) => {
@@ -177,7 +201,7 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(404);
     const payload = await response.json();
-    expect(payload).toEqual({ message: 'Carrinho não encontrado' });
+    expect(payload.error).toBe('Cart item not found');
   });
 
   test('deve retornar 403 ao tentar acessar carrinho de outro usuário', async ({ request }) => {
@@ -217,7 +241,8 @@ test.describe('API Cart', () => {
 
   test('deve retornar 400 para produto duplicado no mesmo payload', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
 
     const response = await request.post('cart', {
@@ -232,9 +257,9 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(400);
     const payload = await response.json();
-    expect(payload.error).toBe('Não é permitido possuir produto duplicado');
+    expect(payload.error).toBe('Duplicate products are not allowed');
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve retornar 400 para produto inexistente', async ({ request }) => {
@@ -248,12 +273,13 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(400);
     const payload = await response.json();
-    expect(payload.error).toBe('Produto não encontrado');
+    expect(payload.error).toBe('Product not found');
   });
 
   test('deve retornar 400 para quantidade acima do limite', async ({ request }) => {
     const user = await createUser(request);
-    const product = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
 
     const response = await request.post('cart', {
@@ -263,15 +289,16 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(400);
     const payload = await response.json();
-    expect(payload.error).toBe('Produto não possui quantidade suficiente');
+    expect(payload.error).toBe('Product does not have enough quantity');
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve aceitar lote com múltiplos produtos diferentes', async ({ request }) => {
     const user = await createUser(request);
-    const productA = await createProduct(request);
-    const productB = await createProduct(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const productA = await createProduct(request, adminAccessToken);
+    const productB = await createProduct(request, adminAccessToken);
     const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
 
     const addResponse = await request.post('cart', {
@@ -321,7 +348,7 @@ test.describe('API Cart', () => {
     expect(stillHasProductB).toBeTruthy();
     expect(stillHasProductB.quantity).toBe(3);
 
-    await request.delete(`products/${productA.id}`);
-    await request.delete(`products/${productB.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, productA.id);
+    await deleteProductAsAdmin(request, adminAccessToken, productB.id);
   });
 });

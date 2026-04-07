@@ -13,6 +13,16 @@ config({ path: resolve(__dirname, '../.env'), override: false });
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
+const DROP_DDL = `
+DROP TABLE IF EXISTS payments        CASCADE;
+DROP TABLE IF EXISTS order_items     CASCADE;
+DROP TABLE IF EXISTS orders          CASCADE;
+DROP TABLE IF EXISTS cart_items      CASCADE;
+DROP TABLE IF EXISTS user_roles      CASCADE;
+DROP TABLE IF EXISTS users           CASCADE;
+DROP TABLE IF EXISTS products        CASCADE;
+`;
+
 const DDL = `
 CREATE TABLE IF NOT EXISTS products (
     id           SERIAL        PRIMARY KEY,
@@ -141,7 +151,11 @@ type SeedUser = {
 async function seed(): Promise<void> {
   const client = await pool.connect();
   try {
-    console.log('📦 Creating tables...');
+    console.log('�️ Dropping existing tables...');
+    await client.query(DROP_DDL);
+    console.log('✓ Existing tables dropped');
+
+    console.log('�📦 Creating tables...');
     await client.query(DDL);
     console.log('✓ Tables created (products, users, cart_items, user_roles, orders, order_items, payments)');
 

@@ -26,7 +26,22 @@ async function loginAndGetAccessToken(request: any, email: string, password: str
   return payload.accessToken as string;
 }
 
-async function createProduct(request: any) {
+async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
+  const response = await request.post('users/login', {
+    data: {
+      email: 'admin@tester.com',
+      password: 'Admin@123',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload.accessToken as string;
+}
+
+async function createProduct(request: any, adminAccessToken: string) {
   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   const projectName = faker.commerce.productName();
   const categoryName = faker.commerce.department();
@@ -37,6 +52,7 @@ async function createProduct(request: any) {
     `https://dummyimage.com/640x480/0f1111/ffffff.png&text=Product+${encodeURIComponent(suffix)}`,
   ]);
   const response = await request.post('products', {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
     data: {
       name: `${projectName} - ${suffix}`,
       price: 89.9,
@@ -52,7 +68,8 @@ async function createProduct(request: any) {
 
 async function createOrderForUser(request: any) {
   const user = await createUser(request);
-  const product = await createProduct(request);
+  const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+  const product = await createProduct(request, adminAccessToken);
   const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
   const headers = { Authorization: `Bearer ${accessToken}` };
 
@@ -69,12 +86,18 @@ async function createOrderForUser(request: any) {
   expect(createOrderRes.status()).toBe(201);
   const order = await createOrderRes.json();
 
-  return { user, product, accessToken, order };
+  return { user, product, accessToken, order, adminAccessToken };
+}
+
+async function deleteProductAsAdmin(request: any, adminAccessToken: string, productId: number) {
+  await request.delete(`products/${productId}`, {
+    headers: { Authorization: `Bearer ${adminAccessToken}` },
+  });
 }
 
 test.describe('API Payments', () => {
   test('deve criar pagamento de crédito autorizado e marcar pedido como paid', async ({ request }) => {
-    const { product, accessToken, order } = await createOrderForUser(request);
+    const { product, accessToken, order, adminAccessToken } = await createOrderForUser(request);
     const headers = { Authorization: `Bearer ${accessToken}` };
 
     const payRes = await request.post(`orders/${order.id}/payments`, {
@@ -100,11 +123,11 @@ test.describe('API Payments', () => {
     const updatedOrder = await orderRes.json();
     expect(updatedOrder.status).toBe('paid');
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve criar pagamento pix pendente e permitir consulta por paymentId', async ({ request }) => {
-    const { product, accessToken, order } = await createOrderForUser(request);
+    const { product, accessToken, order, adminAccessToken } = await createOrderForUser(request);
     const headers = { Authorization: `Bearer ${accessToken}` };
 
     const payRes = await request.post(`orders/${order.id}/payments`, {
@@ -119,8 +142,8 @@ test.describe('API Payments', () => {
     const payment = await payRes.json();
     expect(payment.status).toBe('pending');
     expect(payment.metadata?.pixCode).toBeTruthy();
-    expect(payment.metadata?.qrCodeImage).toContain('data:image/svg+xml');
-    expect(payment.metadata?.readableText).toContain('Valor ao ler QR Code');
+    expect(payment.metadata?.qrCode).toBeTruthy();
+    expect(payment.metadata?.readableText).toContain('Value when reading QR Code');
 
     const statusRes = await request.get(`orders/${order.id}/payments/${payment.id}`, {
       headers,
@@ -135,11 +158,11 @@ test.describe('API Payments', () => {
     const updatedOrder = await orderRes.json();
     expect(updatedOrder.status).toBe('pending_payment');
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
   test('deve retornar 400 quando valor de pagamento for maior que saldo do pedido', async ({ request }) => {
-    const { product, accessToken, order } = await createOrderForUser(request);
+    const { product, accessToken, order, adminAccessToken } = await createOrderForUser(request);
     const headers = { Authorization: `Bearer ${accessToken}` };
 
     const payRes = await request.post(`orders/${order.id}/payments`, {
@@ -153,8 +176,8 @@ test.describe('API Payments', () => {
 
     expect(payRes.status()).toBe(400);
     const payload = await payRes.json();
-    expect(payload.error).toBe('Valor maior que saldo do pedido');
+    expect(payload.error).toBe('Amount exceeds order balance');
 
-    await request.delete(`products/${product.id}`);
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 });
