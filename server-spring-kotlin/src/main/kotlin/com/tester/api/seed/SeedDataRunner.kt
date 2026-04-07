@@ -73,7 +73,7 @@ class SeedDataRunner(
                 INSERT INTO users (
                     person_type, first_name, last_name, email, password,
                     is_active, updated_at
-                ) VALUES ('PF', 'Seed', 'User', ?, ?, TRUE, NOW())
+                ) VALUES ('PF', 'Reinaldo', 'Rossetti', ?, ?, TRUE, NOW())
                 RETURNING id
                 """.trimIndent(),
                 email,
@@ -85,8 +85,8 @@ class SeedDataRunner(
             jdbcTemplate.update(
                 """
                 UPDATE users
-                SET first_name = 'Seed',
-                    last_name = 'User',
+                SET first_name = 'Reinaldo',
+                    last_name = 'Rossetti',
                     password = ?,
                     is_active = TRUE,
                     account_closed_at = NULL,
