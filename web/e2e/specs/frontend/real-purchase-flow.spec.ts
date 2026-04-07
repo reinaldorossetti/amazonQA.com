@@ -11,6 +11,8 @@
  *   TS02 — Busca produto por nome (via API) + compra com cartão de crédito.
  *
  *   TS03 — Múltiplos produtos aleatórios + compra com PIX.
+ *
+ *   TS04 — Admin cria usuário + produto via API e remove ambos na sequência.
  */
 
 import { test, expect } from '../../fixtures/ui.fixture';
@@ -20,10 +22,20 @@ import { CartPage } from '../../pages/CartPage';
 import { NavComponent } from '../../pages/NavComponent';
 import { ThankYouPage } from '../../pages/ThankYouPage';
 
-// ─── Credenciais do usuário real de demonstração ──────────────────────────────
-const DEMO_USER = {
-  email: 'demo.tester@tester.com',
-  password: 'Senha@123',
+type RealFlowUser = {
+  email: string;
+  password: string;
+};
+
+type AdminLoginPayload = {
+  accessToken: string;
+  user: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    isAdmin?: boolean;
+  };
 };
 
 // ─── URL base da API real ─────────────────────────────────────────────────────
@@ -57,11 +69,80 @@ async function fetchShuffledProducts(): Promise<Array<{ id: number; name: string
   return [...products].sort(() => Math.random() - 0.5);
 }
 
+/** Cria um usuário real exclusivo para o cenário e retorna as credenciais */
+async function createRealFlowUser(request: any): Promise<RealFlowUser> {
+  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const credentials: RealFlowUser = {
+    email: `e2e.real.flow.${suffix}@example.com`,
+    password: 'Senha@1234',
+  };
+
+  const response = await request.post(`${API_BASE}/users/register`, {
+    data: {
+      first_name: 'Real',
+      last_name: `Flow-${suffix}`,
+      email: credentials.email,
+      password: credentials.password,
+      person_type: 'PF',
+    },
+  });
+
+  expect(response.status()).toBe(201);
+  return credentials;
+}
+
+async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
+  const response = await request.post(`${API_BASE}/users/login`, {
+    data: {
+      email: 'admin.teste@tester.com',
+      password: 'Admin@123',
+    },
+  });
+
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload as AdminLoginPayload;
+}
+
+async function createUserForDeletion(request: any) {
+  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const response = await request.post(`${API_BASE}/users/register`, {
+    data: {
+      first_name: 'Delete',
+      last_name: `User-${suffix}`,
+      email: `e2e.delete.user.${suffix}@example.com`,
+      password: 'Senha@1234',
+      person_type: 'PF',
+    },
+  });
+
+  expect(response.status()).toBe(201);
+  return response.json() as Promise<{ id: number; email: string }>;
+}
+
+async function createProductForDeletion(request: any, accessToken: string) {
+  const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  const response = await request.post(`${API_BASE}/products`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    data: {
+      name: `Produto Delete API ${suffix}`,
+      price: 129.9,
+      category: `Delete-E2E-${suffix}`,
+      description: 'Produto criado no fluxo real para validar exclusão por API',
+    },
+  });
+
+  expect(response.status()).toBe(201);
+  return response.json() as Promise<{ id: number; name: string }>;
+}
+
 /** Helper: login real no app e aguarda redirecionamento para /minha-conta */
-async function doRealLogin(page: any, waitForPageLoad: any) {
+async function doRealLogin(page: any, credentials: RealFlowUser) {
   const loginPage = new LoginPage(page);
   await loginPage.goToLogin();
-  await loginPage.login(DEMO_USER.email, DEMO_USER.password);
+  await loginPage.login(credentials.email, credentials.password);
   await expect(page).toHaveURL('/minha-conta', { timeout: 20_000 });
   const nav = new NavComponent(page);
   await expect(page.locator(nav.userGreeting)).toBeVisible({ timeout: 15_000 });
@@ -121,7 +202,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
    * TS01 — Compra com cartão de crédito:
    *   Login real → produto aleatório da API → carrinho → checkout → cartão → confirmação
    */
-  test('TS01 — Login real + produto aleatório + checkout + pagamento com cartão', async ({ page, waitForPageLoad }) => {
+  test('TS01 — Login real + produto aleatório + checkout + pagamento com cartão', async ({ page, waitForPageLoad, request }) => {
 
     // 1. Sorteia produto real via API antes de abrir o browser
     const product = await fetchRandomProduct();
@@ -131,8 +212,9 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     const cartPage     = new CartPage(page);
     const thankYouPage = new ThankYouPage(page);
 
-    // 2. Login real
-    await doRealLogin(page, waitForPageLoad);
+    // 2. Cria usuário real e faz login
+    const credentials = await createRealFlowUser(request);
+    await doRealLogin(page, credentials);
 
     // 3. Catálogo real — adiciona 1 produto
     const { toAdd } = await addProductsToCart(page, waitForPageLoad, 1);
@@ -182,7 +264,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
    * TS02 — Busca de produto real + compra com cartão:
    *   Login → busca por nome da API → adiciona → checkout → cartão → confirmação
    */
-  test('TS02 — Busca de produto real + compra com cartão de crédito', async ({ page, waitForPageLoad }) => {
+  test('TS02 — Busca de produto real + compra com cartão de crédito', async ({ page, waitForPageLoad, request }) => {
 
     // 1. Sorteia produto para usar como termo de busca
     const product = await fetchRandomProduct();
@@ -195,8 +277,9 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     const catalogPage   = new CatalogPage(page);
     const thankYouPage  = new ThankYouPage(page);
 
-    // 2. Login real
-    await doRealLogin(page, waitForPageLoad);
+    // 2. Cria usuário real e faz login
+    const credentials = await createRealFlowUser(request);
+    await doRealLogin(page, credentials);
 
     // 3. Vai ao catálogo e aguarda produtos reais carregarem
     await catalogPage.goToCatalog();
@@ -250,7 +333,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
    * TS03 — Múltiplos produtos aleatórios + compra com PIX:
    *   Login → sorteia 3 produtos da API → adiciona ao carrinho → checkout → PIX → confirmação
    */
-  test('TS03 — Múltiplos produtos aleatórios + checkout com PIX', async ({ page, waitForPageLoad }) => {
+  test('TS03 — Múltiplos produtos aleatórios + checkout com PIX', async ({ page, waitForPageLoad, request }) => {
 
     // 1. Consulta API real e embaralha produtos
     const products = await fetchShuffledProducts();
@@ -262,8 +345,9 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     const cartPage     = new CartPage(page);
     const thankYouPage = new ThankYouPage(page);
 
-    // 2. Login real
-    await doRealLogin(page, waitForPageLoad);
+    // 2. Cria usuário real e faz login
+    const credentials = await createRealFlowUser(request);
+    await doRealLogin(page, credentials);
 
     // 3. Catálogo real — adiciona N produtos
     const { toAdd } = await addProductsToCart(page, waitForPageLoad, howMany);
@@ -299,6 +383,43 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     await expect(page.locator(thankYouPage.summaryWrapper)).toBeVisible({ timeout: 15_000 });
 
     console.log(`\n✅ Compra com PIX concluída! ${toAdd} produto(s).`);
+  });
+
+  /**
+   * TS04 — Cria usuário e produto via API e depois remove os mesmos
+   * usando token admin (sem mock, com backend real).
+   */
+  test('TS04 — Criar usuário + produto via API e deletar ambos', async ({ page, request }) => {
+    await page.goto('/');
+    await expect(page).toHaveURL('/');
+
+    const adminSession = await loginAsAdmin(request);
+
+    const createdUser = await createUserForDeletion(request);
+    expect(createdUser.id).toBeTruthy();
+
+    const createdProduct = await createProductForDeletion(request, adminSession.accessToken);
+    expect(createdProduct.id).toBeTruthy();
+
+    const deleteUserResponse = await request.delete(`${API_BASE}/users/${createdUser.id}`, {
+      headers: { Authorization: `Bearer ${adminSession.accessToken}` },
+    });
+    expect(deleteUserResponse.status()).toBe(200);
+
+    const deletedUserLookup = await request.get(`${API_BASE}/users/${createdUser.id}`, {
+      headers: { Authorization: `Bearer ${adminSession.accessToken}` },
+    });
+    expect(deletedUserLookup.status()).toBe(404);
+
+    const deleteProductResponse = await request.delete(`${API_BASE}/products/${createdProduct.id}`, {
+      headers: { Authorization: `Bearer ${adminSession.accessToken}` },
+    });
+    expect(deleteProductResponse.status()).toBe(200);
+
+    const deletedProductLookup = await request.get(`${API_BASE}/products/${createdProduct.id}`);
+    expect(deletedProductLookup.status()).toBe(404);
+
+    console.log(`\n✅ TS04 concluído! Usuário ${createdUser.email} e produto ${createdProduct.name} removidos com sucesso.`);
   });
 
 });

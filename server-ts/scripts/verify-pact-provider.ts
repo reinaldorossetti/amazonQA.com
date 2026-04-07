@@ -45,13 +45,13 @@ async function waitForProvider(url: string, timeoutMs = 90_000): Promise<true> {
         return true;
       }
     } catch {
-      // provider ainda não subiu
+      // provider not ready yet
     }
 
     await sleep(1_000);
   }
 
-  throw new Error(`Provider não ficou disponível em ${url} dentro de ${timeoutMs}ms`);
+  throw new Error(`Provider did not become available at ${url} within ${timeoutMs}ms`);
 }
 
 async function ensureProduct(productId: number, name: string): Promise<void> {
@@ -110,10 +110,10 @@ async function setupCartAddState(): Promise<void> {
 async function startProviderIfNeeded(): Promise<void> {
   try {
     await waitForProvider(providerBaseUrl, 3_000);
-    console.log(`[PACT/server-ts] Provider já estava disponível em ${providerBaseUrl}`);
+    console.log(`[PACT/server-ts] Provider was already available at ${providerBaseUrl}`);
     return;
   } catch {
-    // iniciar localmente
+    // start locally
   }
 
   providerProcess = spawn(npmCommand(), ['run', 'dev'], {
@@ -157,7 +157,7 @@ async function verifyProvider(): Promise<string> {
         await setupCartAddState();
       },
     },
-    requestFilter: (req: any, _res: any, next: () => void) => {
+    requestFilter: (req: { path?: string; headers: Record<string, string> }, _res: unknown, next: () => void) => {
       if (req.path?.startsWith('/api/cart')) {
         req.headers.authorization = `Bearer ${cartAuthToken}`;
       }
@@ -172,7 +172,7 @@ async function verifyProvider(): Promise<string> {
   const providerVersion = process.env.PACT_PROVIDER_VERSION;
 
   if (brokerUrl && providerVersion) {
-    const brokerOptions = verifierOptions as any;
+    const brokerOptions = verifierOptions as Record<string, unknown>;
     brokerOptions.pactBroker = brokerUrl;
     brokerOptions.enablePending = true;
 
@@ -184,16 +184,16 @@ async function verifyProvider(): Promise<string> {
     brokerOptions.publishVerificationResult = true;
   }
 
-  return new Verifier(verifierOptions as any).verifyProvider();
+  return new Verifier(verifierOptions as import('@pact-foundation/pact').VerifierOptions).verifyProvider();
 }
 
 verifyProvider()
   .then(() => {
-    console.log('[PACT/server-ts] Provider verification concluída com sucesso.');
+    console.log('[PACT/server-ts] Provider verification completed successfully.');
   })
   .catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
-    console.error('[PACT/server-ts] Falha na provider verification:', message);
+    console.error('[PACT/server-ts] Provider verification failed:', message);
     process.exitCode = 1;
   })
   .finally(async () => {

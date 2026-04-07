@@ -38,3 +38,5 @@ node_modules/
 img/demo-videos/
 server-ts/.next/
 server/.next
+server-spring-kotlin/build/
+server-spring-kotlin/.gradle/
