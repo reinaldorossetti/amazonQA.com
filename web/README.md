@@ -14,6 +14,101 @@ Projeto completo de e-commerce com foco em qualidade de software, cobrindo todo 
 - Página de confirmação com resumo do pedido, QR mock de PIX e boleto em PDF mock.
 - API documentada e validada por múltiplas camadas de teste automatizado, ou seja temos testes dentro do sistema e fora.
 
+# Users
+SEED_ADMIN_EMAIL=reiload@gmail.co
+SEED_ADMIN_PASSWORD=rei2026@QA
+SEED_NORMAL_EMAIL=reinaldo.rossetti@outlook.co
+SEED_NORMAL_PASSWORD=qualidade2026@QA
+
+## 📘 Regras Funcionais do Sistema Web (estado atual)
+
+As regras abaixo refletem o comportamento **atual implementado no frontend web**.
+
+### 1) Navegação, busca e filtros do catálogo
+
+- A subnav principal (`Todos`, `Venda na Amazon`, `Chega em 15 min`, `Ofertas do Dia`, `Mais Vendidos`, `Games`, `Livros`) funciona como filtro real de catálogo.
+- Ao clicar em qualquer item da subnav, a aplicação volta para a rota `/` e aplica o filtro selecionado.
+- A busca textual filtra por **nome do produto**.
+- O resultado final do catálogo usa interseção de critérios: **busca + categoria (chips) + subnav**.
+- Chips de categoria e subnav são sincronizados para as categorias mapeadas (`Games`, `Livros`, `Mais Vendidos`).
+
+### 2) Regra promocional de “Ofertas do Dia”
+
+- Quando `Ofertas do Dia` está ativo, os produtos filtrados recebem **10% de desconto no frontend**.
+- O desconto é calculado em tempo de renderização (não altera o preço persistido no backend).
+- O card do produto exibe:
+  - preço original riscado;
+  - badge de desconto (`-10%`);
+  - preço final já reduzido.
+
+### 3) Carrinho e checkout
+
+- Adição ao carrinho soma quantidades quando o item já existe.
+- Quantidade permitida por item: `1..10`.
+- Subtotal é calculado por: `Σ(preço * quantidade)`.
+- Não é possível finalizar checkout com carrinho vazio.
+- Se o usuário não estiver autenticado, o checkout redireciona para login com `?next=` para retorno ao fluxo.
+
+### 4) Autenticação, sessão e autorização
+
+- Login usa email/senha e persiste sessão em `localStorage` (`auth_user`, `auth_token`).
+- Em respostas `401` da API, a sessão local é limpa automaticamente.
+- Rotas protegidas por autenticação:
+  - `/payments`
+  - `/thank-you`
+  - `/minha-conta/*`
+- Rotas administrativas exigem perfil admin (`user.isAdmin`):
+  - `/minha-conta/admin`
+  - `/minha-conta/admin/produtos`
+  - `/minha-conta/admin/usuarios`
+
+### 5) Cadastro de usuário (PF/PJ)
+
+- Fluxo em 2 etapas: **Dados Pessoais** → **Endereço & Documentos**.
+- Regras de validação implementadas:
+  - email válido;
+  - telefone com máscara;
+  - senha mínima (8+) e confirmação obrigatória;
+  - CPF válido para PF;
+  - CNPJ + razão social para PJ.
+- CEP consulta ViaCEP para autopreenchimento de endereço.
+- Comprovante de residência é opcional (nome do arquivo enviado junto ao payload).
+
+### 6) Área logada e administração
+
+- A área `/minha-conta` oferece: resumo, perfil, endereço e pedidos.
+- Links administrativos só aparecem para usuários admin.
+- Exclusões em administração exigem confirmação explícita.
+- Admin não pode excluir o próprio usuário logado.
+
+### 7) Pedidos e idempotência
+
+- O checkout cria pedido via `POST /api/orders` com `Idempotency-Key`.
+- Itens enviados no pedido são normalizados para `{ productId, quantity }`.
+- Após fluxo de pagamento concluído, o carrinho é limpo e o usuário segue para confirmação.
+
+### 8) Pagamentos
+
+- Métodos suportados: `credit`, `debit`, `pix`, `boleto`.
+- Split payment opcional com **até 2 métodos diferentes** na mesma compra.
+- Regras do split:
+  - primeiro valor > 0;
+  - saldo remanescente > 0;
+  - segundo método diferente do primeiro.
+- Para cartão, a bandeira é detectada automaticamente (Visa, MasterCard, Amex, Elo, etc.).
+- Pagamentos podem retornar `pending` (ex.: PIX/Boleto mock) ou sucesso imediato.
+
+### 9) Confirmação de compra (`/thank-you`)
+
+- Exibe resumo de itens e total do pedido.
+- Quando houver pagamento PIX, exibe QR code e código copiável (mock).
+- Quando houver boleto, exibe linha digitável e link de download (mock).
+
+### 10) Idioma (PT/EN)
+
+- O sistema permite alternância de idioma em tempo real.
+- Preferência de idioma é persistida em `localStorage` (`app_language`).
+
 ## 🧪 Pirâmide de Testes
 
 A estratégia de qualidade segue a pirâmide de testes: base ampla de testes unitários, camada intermediária para contratos/API e topo com E2E de interface.
@@ -555,8 +650,8 @@ Gera/download de PDF mock do boleto (`application/pdf`).
 | Componente | Descrição |
 |---|---|
 | `NavBar` | Logo, busca ao vivo, toggle idioma PT/EN, botão de carrinho com contador e acesso ao perfil. |
-| `Catalog` | Grade de produtos com filtro em tempo real por busca e categoria. |
-| `Product` | Card de produto com preço, categoria, imagem e ação de adicionar ao carrinho. |
+| `Catalog` | Grade de produtos com filtro combinado por busca + categoria + subnav; aplica desconto visual quando “Ofertas do Dia” está ativo. |
+| `Product` | Card de produto com preço e, quando aplicável, preço original riscado + badge de desconto. |
 | `ProductDetails` | Página de detalhes: imagem, descrição, fabricante/linha/modelo, seleção de quantidade. |
 | `Cart` | Carrinho com atualização de quantity via API e remoção de itens. |
 | `CheckoutButton` | Cria pedido em `/api/orders` com `Idempotency-Key` e encaminha para `/payments`. |
