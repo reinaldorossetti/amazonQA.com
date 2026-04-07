@@ -60,7 +60,7 @@
     "price": 233.44,
     "description": "Um guia prático sobre arquitetura de software, design patterns e boas práticas de desenvolvimento.",
     "category": "Livros",
-    "image": "https://m.media-amazon.com/images/I/71stxGw9JgL._SY522_.jpg",
+    "image": "https://m.media-amazon.com/images/I/813gpdkhd0L._SL1500_.jpg",
     "manufacturer": "Robert C. Martin",
     "line": "Software Architecture",
     "model": "Clean Architecture"
@@ -71,7 +71,7 @@
     "price": 284.99,
     "description": "Mochila resistente para o dia a dia com compartimento para notebook.",
     "category": "Acessórios",
-    "image": "https://m.media-amazon.com/images/I/719xnEvLS7L._AC_SX679_.jpg",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop",
     "manufacturer": "Gshield",
     "line": "Armor",
     "model": "Mala de Mão Executiva"
@@ -108,5 +108,137 @@
     "manufacturer": "O'Reilly Books",
     "line": "Humor Tecnológico",
     "model": "In Action"
+  },
+  {
+    "id": 11,
+    "name": "GameSir G7 SE Controle com Fio para Xbox e PC",
+    "price": 279.30,
+    "description": "Controle licenciado para Xbox Series X|S, Xbox One e PC. Joysticks Hall Effect anti-drift, gatilhos texturizados e layout familiar. Plugue e jogue, sem driver.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400&h=300&fit=crop",
+    "manufacturer": "GameSir",
+    "line": "G Series",
+    "model": "G7 SE"
+  },
+  {
+    "id": 12,
+    "name": "Headset Gamer HyperX Cloud II – 7.1 Surround",
+    "price": 449.00,
+    "description": "Headset gamer com som surround virtual 7.1, drivers de 53mm, almofadas de couro de memória e microfone destacável com cancelamento de ruído. Compatível com PC, PS4, Xbox.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&h=300&fit=crop",
+    "manufacturer": "HyperX",
+    "line": "Cloud",
+    "model": "Cloud II"
+  },
+  {
+    "id": 13,
+    "name": "Suporte Vertical para PS5 com 2 Controles e Carregador",
+    "price": 189.90,
+    "description": "Base vertical oficial para PlayStation 5, acompanha carregador duplo para controles DualSense e hub com 3 portas USB. Design elegante que combina com o console.",
+    "category": "Games",
+    "image": "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=300&fit=crop",
+    "manufacturer": "Sony",
+    "line": "PlayStation 5",
+    "model": "PS5 Stand"
+  },
+  {
+    "id": 14,
+    "name": "O Massacre da Família Hope",
+    "price": 30.49,
+    "description": "Best-seller do autor Riley Sager. Um thriller psicológico perturbador que mistura suspense e mistério. 34% off — de R$46,90.",
+    "category": "Livros",
+    "image": "https://images.unsplash.com/photo-1587876931567-564ce588bfbd?w=400&h=300&fit=crop",
+    "manufacturer": "Riley Sager",
+    "line": "Suspense",
+    "model": "Thriller"
+  },
+  {
+    "id": 15,
+    "name": "Devoradores de Estrelas: O Livro que Deu Origem ao Filme",
+    "price": 24.90,
+    "description": "Ficção científica aclamada de Andy Weir, mesmo autor de Perdido em Marte. 75% off — de R$99,90. Obra que deu origem ao filme de sucesso.",
+    "category": "Livros",
+    "image": "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=300&fit=crop",
+    "manufacturer": "Andy Weir",
+    "line": "Ficção Científica",
+    "model": "Devoradores"
+  },
+  {
+    "id": 17,
+    "name": "Em Busca do Tempo Perdido – Box Completo (7 volumes)",
+    "price": 246.11,
+    "description": "Coleção completa em box da monumental obra de Marcel Proust. 36% off — de R$384,90. Considerada pela crítica um dos maiores romances da história.",
+    "category": "Livros",
+    "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop",
+    "manufacturer": "Marcel Proust",
+    "line": "Clássicos Premium",
+    "model": "Box Completo"
+  },
+  {
+    "id": 18,
+    "name": "Sem Juízo (Chestnut Springs – Livro 4)",
+    "price": 48.90,
+    "description": "Romance contemporâneo da série Chestnut Springs de Elsie Silver. 30% off — de R$69,90. O quarto livro da série best-seller.",
+    "category": "Livros",
+    "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop",
+    "manufacturer": "Elsie Silver",
+    "line": "Romance",
+    "model": "Chestnut Springs 4"
+  },
+  {
+    "id": 19,
+    "name": "Óculos VR Realidade Virtual 3D com Fone de Ouvido",
+    "price": 157.36,
+    "description": "Óculos para experiência imersiva em realidade virtual com áudio integrado. 20% off. Compatível com smartphones de 4.7 a 6.5 polegadas. Ideal para gaming e entretenimento.",
+    "category": "Eletrônicos",
+    "image": "https://images.unsplash.com/photo-1622979135240-caa6648190b6?w=400&h=300&fit=crop",
+    "manufacturer": "VDRBG",
+    "line": "VR Series",
+    "model": "VR-3D Pro"
+  },
+  {
+    "id": 20,
+    "name": "Fone de Ouvido Bluetooth Anker Soundcore Life P3",
+    "price": 219.00,
+    "description": "Fones TWS com cancelamento ativo de ruído (ANC), 35h de bateria, resistência à água IPX5 e equalização personalizada pelo app Soundcore. 43% off.",
+    "category": "Eletrônicos",
+    "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop",
+    "manufacturer": "Anker",
+    "line": "Soundcore",
+    "model": "Life P3"
+  },
+  {
+    "id": 21,
+    "name": "Webcam Ultra HD Logitech Brio 4K PRO com Microfone Embutido para Chamadas e Gravações em Video - Compatível com Logitech Capture",
+    "price": 489.90,
+    "description": "Webcam Full HD 1080p com microfone estéreo, autofoco e tampa de privacidade. Ideal para home office, lives e videoconferências. Compatível com Zoom, Teams e Meet.",
+    "category": "Eletrônicos",
+    "image": "https://m.media-amazon.com/images/I/61Dqi6rzJEL._AC_SL1500_.jpg",
+    "manufacturer": "Logitech",
+    "line": "C Series",
+    "model": "C920s"
+  },
+  {
+    "id": 22,
+    "name": "NIVEA Facial Cellular Luminous ANTIMARCAS – Sérum + Hidratante",
+    "price": 27.50,
+    "description": "Kit cuidado facial com sérum avançado para redução de marcas escuras e uniformização do tom da pele. 78% off — menor preço em 365 dias.",
+    "category": "Mais Vendidos",
+    "image": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=300&fit=crop",
+    "manufacturer": "NIVEA",
+    "line": "Cellular Luminous",
+    "model": "ANTIMARCAS Kit"
+  },
+  {
+    "id": 23,
+    "name": "L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico",
+    "price": 18.89,
+    "description": "Creme leave-in com ácido hialurônico para hidratação profunda. 38% off — de R$30,69. Para todos os tipos de cabelo, mantém hidratação por até 72h.",
+    "category": "Mais Vendidos",
+    "image": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=300&fit=crop",
+    "manufacturer": "L'Oréal Paris",
+    "line": "Elseve",
+    "model": "Hidra-Hialurônico"
   }
 ]

@@ -1,7 +1,7 @@
 {
   "name": "projeto_ecommerce",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.4",
   "type": "module",
   "author": "Reinaldo M R Junior",
   "scripts": {

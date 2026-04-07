@@ -17,9 +17,10 @@ vi.mock('react-toastify', async () => {
 });
 
 vi.mock('../components/Catalog', () => ({
-  default: ({ onAddToCart, search, setSearch }) => (
+  default: ({ onAddToCart, search, setSearch, selectedSubnavFilter }) => (
     <div>
       <div data-testid="catalog-mock">Catalog Mock: {search}</div>
+      <div data-testid="catalog-filter-mock">Filter Mock: {selectedSubnavFilter}</div>
       <button onClick={() => setSearch('notebook')}>set-search</button>
       <button
         onClick={() =>
@@ -102,6 +103,19 @@ describe('App Component - Integration Behaviors', () => {
     await user.click(screen.getByRole('button', { name: 'add-product-a' }));
     expect(toast.success).toHaveBeenCalled();
     expect(document.querySelector('#nav-cart-count-badge')?.textContent).toBe('1');
+  });
+
+  it('aplica filtro da subnav ao catálogo', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    expect(screen.getByTestId('catalog-filter-mock')).toHaveTextContent('all');
+
+    await user.click(screen.getByRole('link', { name: 'Games' }));
+    expect(screen.getByTestId('catalog-filter-mock')).toHaveTextContent('games');
+
+    await user.click(screen.getByRole('link', { name: 'Todos' }));
+    expect(screen.getByTestId('catalog-filter-mock')).toHaveTextContent('all');
   });
 
   it('adiciona item existente e dispara toast de atualização de quantidade', async () => {

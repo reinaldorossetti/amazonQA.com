@@ -13,7 +13,7 @@ O **tester.com** é uma plataforma de e-commerce completa, construída como ambi
 | Jornada | Descrição |
 |---|---|
 | 🔐 **Autenticação** | Cadastro de usuário, login, logout e proteção de rotas |
-| 🛒 **Catálogo & Busca** | Listagem de produtos, filtro por categoria e busca por texto |
+| 🛒 **Catálogo & Busca** | Listagem de produtos, filtro por categoria e busca por texto. Ao selecionar **Ofertas do Dia**, os produtos exibidos recebem **10% de desconto automático** no preço. |
 | 🛍️ **Carrinho** | Adicionar/remover produtos, atualizar quantidades, badge do carrinho |
 | 💳 **Checkout & Pagamento** | Fluxo completo: carrinho → pedido → pagamento → confirmação |
 | 👤 **Área do Cliente** | Perfil, histórico de pedidos e gerenciamento de conta |

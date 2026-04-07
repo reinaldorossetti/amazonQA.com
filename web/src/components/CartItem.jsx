@@ -29,77 +29,66 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart, onChange, onRemove }) 
       alignItems="flex-start"
       sx={{
         py: 2,
+        px: 0,
         flexDirection: { xs: "column", sm: "row" },
-        gap: { xs: 2, sm: 0 },
+        gap: { xs: 2, sm: 3 },
       }}
     >
-      <Box id="cart-item-details-wrapper" sx={{ display: "flex", width: "100%", alignItems: "center" }}>
-        <ListItemAvatar>
-          <Avatar
-            variant="rounded"
-            src={safeItem.image}
-            alt={safeItem.name}
-            sx={{ width: 80, height: 80, mr: 2 }}
-          />
-        </ListItemAvatar>
-        <ListItemText
-          primary={
-            <Typography variant="subtitle1" fontWeight={600} sx={{ pr: 3 }}>
-              {safeItem.name}
-            </Typography>
-          }
-          secondary={
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              R$ {safeItem.price.toFixed(2)}
-            </Typography>
-          }
+      {/* Product Image */}
+      <Box sx={{ minWidth: { xs: "100%", sm: "180px" }, display: "flex", justifyContent: "center" }}>
+        <Box
+          component="img"
+          src={safeItem.image}
+          alt={safeItem.name}
+          sx={{ width: 150, height: 150, objectFit: "contain", cursor: "pointer" }}
         />
       </Box>
 
-      <Box id="cart-item-actions-wrapper"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: { xs: "100%", sm: "auto" },
-          pl: { xs: 0, sm: 2 },
-        }}
-      >
-        <Box id="cart-item-quantity-wrapper" sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <TextField
-            type="number"
-            size="small"
-            label={t("cart_item.qty")}
-            value={safeItem.quantity}
-            onChange={(e) => {
-              const val = parseInt(e.target.value);
-              if (val > 0) handleUpdateCart(safeItem, val);
-            }}
-            inputProps={{ min: 1, style: { textAlign: "center", width: 40 } }}
-            sx={{ width: 80 }}
-          />
-
-          <Typography
-            variant="subtitle1"
-            fontWeight={700}
-            color="primary"
-            sx={{ minWidth: 90, textAlign: "right" }}
-          >
-            R$ {(safeItem.price * safeItem.quantity).toFixed(2)}
+      {/* Product Details & Actions */}
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, pr: { xs: 0, sm: 2 } }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <Typography variant="h6" fontWeight={700} sx={{ fontSize: "1.1rem", lineHeight: 1.3, cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }}>
+            {safeItem.name}
+          </Typography>
+          <Typography variant="h6" fontWeight={700} sx={{ textAlign: "right", ml: 2 }}>
+             R$ {safeItem.price.toFixed(2)}
           </Typography>
         </Box>
 
-        <Tooltip title={t("cart_item.delete")}>
-          <IconButton
-            edge="end"
-            aria-label="delete"
-            color="error"
-            onClick={() => handleRemoveFromCart(safeItem)}
-            sx={{ ml: 2 }}
-          >
-            <DeleteOutlineIcon />
-          </IconButton>
-        </Tooltip>
+        <Typography variant="body2" sx={{ color: "#007600", fontWeight: 600, mt: 0.5, mb: 1 }}>
+          In Stock
+        </Typography>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", mt: 1 }}>
+          <Box sx={{ display: "inline-flex", alignItems: "center", backgroundColor: "#F0F2F2", borderRadius: 2, border: "1px solid #D5D9D9", px: 1, py: 0.5, mr: 1, boxShadow: "0 2px 5px 0 rgba(213,217,217,.5)" }}>
+            <Typography variant="body2" sx={{ mr: 1 }}>Qty:</Typography>
+            <Box
+              component="select"
+              value={safeItem.quantity}
+              onChange={(e) => {
+                const val = parseInt(e.target.value);
+                if (val > 0) handleUpdateCart(safeItem, val);
+              }}
+              style={{ background: "transparent", border: "none", outline: "none", cursor: "pointer", fontWeight: 600 }}
+            >
+              {[...Array(10).keys()].map(x => (
+                 <option key={x+1} value={x+1}>{x+1}</option>
+              ))}
+            </Box>
+          </Box>
+          <Typography variant="body2" color="divider">|</Typography>
+          <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }} onClick={() => handleRemoveFromCart(safeItem)}>
+            Delete
+          </Typography>
+          <Typography variant="body2" color="divider">|</Typography>
+          <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }}>
+            Save for later
+          </Typography>
+          <Typography variant="body2" color="divider">|</Typography>
+          <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }}>
+             Compare with similar items
+          </Typography>
+        </Box>
       </Box>
     </ListItem>
   );

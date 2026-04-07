@@ -158,6 +158,8 @@ $env:SEED_RESET_DB='true'
 
 # Step 2: Compile and run
 gradle bootRun
+
+$env:JAVA_HOME='C:\Program Files\Java\jdk-23'; $env:SERVER_PORT='3001'; $env:DATABASE_URL='jdbc:postgresql://localhost:5432/ecommerce?user=postgres&password=postgres'; $env:JWT_SECRET='1234567890123456'; $env:JWT_EXPIRES_IN='1h'; $env:JWT_ISSUER='tester.com'; $env:JWT_AUDIENCE='tester.com-web'; $env:BCRYPT_PEPPER='pepper'; $env:BCRYPT_SALT_ROUNDS='12'; $env:SEED_RESET_DB='true'; Set-Location 'd:\github-projects\tester.com\server-spring-kotlin'; gradle bootRun
 ```
 
 ### Troubleshooting

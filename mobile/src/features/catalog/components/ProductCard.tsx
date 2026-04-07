@@ -30,7 +30,7 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
         <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
           {product.name}
         </Text>
-        
+
         {/* Amazon usually shows rating stars here */}
         <View style={styles.ratingRow}>
           {Array.from({ length: 4 }).map((_, i) => (
@@ -41,18 +41,18 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
         </View>
 
         <Text style={styles.price}>{formatCurrency(product.price)}</Text>
-        
+
         {/* Prime mockup */}
         <View style={styles.primeRow}>
           <Text style={styles.primeText}>prime</Text>
           <Text style={styles.deliveryText}>Receba amanhã</Text>
         </View>
 
-        <Button 
+        <Button
           testID={`add-to-cart-button-${product.id}`}
-          mode="contained" 
-          buttonColor="#FFD814" 
-          textColor="#0F1111" 
+          mode="contained"
+          buttonColor="#FFD814"
+          textColor="#0F1111"
           onPress={onAddToCart}
           style={styles.addButton}
           labelStyle={styles.addButtonLabel}
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   deliveryText: {
     fontSize: 12,
-    color: '#565959',
+    color: '#fff',
   },
   addButton: {
     marginTop: 12,

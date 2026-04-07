@@ -36,6 +36,9 @@ import AdminHomePage from "./components/admin/AdminHomePage";
 import AdminProductsPage from "./components/admin/AdminProductsPage";
 import AdminUsersPage from "./components/admin/AdminUsersPage";
 
+import Footer from "./components/Footer";
+import Subnav from "./components/Subnav";
+
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
@@ -57,7 +60,7 @@ const theme = createTheme({
       main: "#067D62", // Amazon Green (e.g. In Stock)
     },
     background: {
-      default: "#eaeded", // Amazon Light Gray background
+      default: "#FFFFFF", // Brancão padrão e-commerce para fundo principal
       paper: "#ffffff",
     },
     text: {
@@ -71,7 +74,7 @@ const theme = createTheme({
     h6: { fontWeight: 600, color: "#0F1111" },
     subtitle1: { fontWeight: 600 },
     body1: { color: "#0F1111" },
-    body2: { color: "#565959" }, // Amazon light gray text
+    body2: { color: "#fff" }, // Amazon light gray text
   },
   shape: {
     borderRadius: 8, // Amazon is slightly more square
@@ -157,7 +160,7 @@ const NavBar = ({ cartCount, search, setSearch }) => {
         >
           <Box id="nav-logo-img"
             component="img"
-            src="/logo.PNG"
+            src="/Logo2.png"
             alt="Logo"
             sx={{
               height: { xs: "30px", sm: "40px" },
@@ -429,6 +432,7 @@ const AdminOnlyRoute = ({ children }) => {
 const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedSubnavFilter, setSelectedSubnavFilter] = useState("all");
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -492,9 +496,10 @@ const AppInner = () => {
       <CssBaseline />
       <BrowserRouter>
         <NavBar cartCount={cartCount} search={search} setSearch={setSearch} />
-        <Box id="main-content-wrapper" sx={{ minHeight: "calc(100vh - 64px)", py: 3 }}>
+        <Subnav selectedFilter={selectedSubnavFilter} onFilterChange={setSelectedSubnavFilter} />
+        <Box id="main-content-wrapper" sx={{ minHeight: "calc(1vh - 1px)", pb: 1, pt: 0, display: "auto", flexDirection: "column" }}>
           <Routes>
-            <Route path="/" element={<Catalog onAddToCart={handleAddToCart} search={search} setSearch={setSearch} />} />
+            <Route path="/" element={<Catalog onAddToCart={handleAddToCart} search={search} setSearch={setSearch} selectedSubnavFilter={selectedSubnavFilter} onSubnavFilterChange={setSelectedSubnavFilter} />} />
             <Route path="/product/:id" element={<ProductDetails onAddToCart={handleAddToCart} />} />
             <Route
               path="/cart"
@@ -565,6 +570,7 @@ const AppInner = () => {
             </Route>
           </Routes>
         </Box>
+        <Footer />
         <ToastContainer
           position="top-right"
           autoClose={3000}
