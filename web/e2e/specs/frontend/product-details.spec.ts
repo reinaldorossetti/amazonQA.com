@@ -43,7 +43,7 @@ test.describe('Product Details', () => {
     // Verify product heading
     await expect(page.getByRole('heading', { name: /Relógio Elegante/i })).toBeVisible();
     // Verify product image is rendered
-    await expect(page.locator(productDetailsPage.image)).toBeVisible();
+    await expect(page.getByTestId(productDetailsPage.image)).toBeVisible();
     // Verify price is displayed
     await expect(page.getByText('R$ 50.99')).toBeVisible();
   });
@@ -63,7 +63,7 @@ test.describe('Product Details', () => {
     await productDetailsPage.clickAddToCart();
 
     // Verify cart badge shows correct quantity
-    await expect(page.locator(navComponent.cartBadge)).toContainText('2');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('2');
   });
 
   test('TS04 deve tratar ID inválido', async ({ page }) => {

@@ -51,8 +51,8 @@ test.describe('Login', () => {
     await loginPage.submit();
 
     await expect(page).toHaveURL('/cart');
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible();
-    await expect(page.locator(navComponent.userGreeting)).toContainText('Valid');
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible();
+    await expect(navComponent.getUserGreetingLocator()).toContainText('Valid');
   });
 
   /**
@@ -68,7 +68,7 @@ test.describe('Login', () => {
     await loginPage.fillPassword('senhaErrada');
     await loginPage.submit();
 
-    await expect(page.locator(loginPage.errorAlert)).toContainText(/Credenciais inválidas/i);
+    await expect(loginPage.getErrorAlertLocator()).toContainText(/Credenciais inválidas/i);
   });
 
   /**
@@ -81,7 +81,7 @@ test.describe('Login', () => {
     await waitForPageLoad(page, 'login');
 
     await loginPage.submit();
-    await expect(page.locator(loginPage.errorAlert)).toContainText(/Preencha e-mail e senha/i);
+    await expect(loginPage.getErrorAlertLocator()).toContainText(/Preencha e-mail e senha/i);
   });
 
   /**
@@ -97,7 +97,7 @@ test.describe('Login', () => {
     await loginPage.fillPassword('');
     await loginPage.submit();
 
-    await expect(page.locator(loginPage.errorAlert)).toContainText(/Preencha e-mail e senha/i);
+    await expect(loginPage.getErrorAlertLocator()).toContainText(/Preencha e-mail e senha/i);
   });
 
   /**
@@ -113,7 +113,7 @@ test.describe('Login', () => {
     await loginPage.fillPassword('Senha@1234');
     await loginPage.submit();
 
-    await expect(page.locator(loginPage.errorAlert)).toContainText(/Preencha e-mail e senha/i);
+    await expect(loginPage.getErrorAlertLocator()).toContainText(/Preencha e-mail e senha/i);
   });
 
   /**
@@ -131,6 +131,6 @@ test.describe('Login', () => {
     await loginPage.submit();
 
     await page.reload();
-    await expect(page.locator(navComponent.userGreeting)).toContainText('Valid');
+    await expect(navComponent.getUserGreetingLocator()).toContainText('Valid');
   });
 });

@@ -48,10 +48,17 @@ const Cart = ({
           <ShoppingCartOutlinedIcon
             sx={{ fontSize: 80, color: "text.disabled", mb: 2 }}
           />
-          <Typography variant="h5" color="text.primary" gutterBottom fontWeight={700}>
-            Your Amazon Cart is empty.
+          <Typography data-element-id="cart-title" variant="h5" color="text.primary" gutterBottom fontWeight={700}>
+            {t("cart.title")}
+          </Typography>
+          <Typography data-element-id="cart-empty-title" variant="h4" color="textSecondary">
+            {t("cart.empty_title")}
+          </Typography>
+          <Typography data-element-id="cart-empty-description" variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 400, mx: "auto" }}>
+            {t("cart.empty_desc")}
           </Typography>
           <Button
+            data-element-id="cart-go-to-catalog-btn"
             component={Link}
             to="/"
             variant="contained"
@@ -62,13 +69,13 @@ const Cart = ({
           </Button>
         </Paper>
       ) : (
-        <Box id="cart-content-wrapper" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 3 }}>
+        <Box id="cart-content-wrapper" data-element-id="cart-content-wrapper" sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 3 }}>
           {/* Lista de itens (75%) */}
           <Box id="cart-item-list-wrapper" sx={{ flexGrow: 1, width: { xs: "100%", md: "75%" } }}>
             <Paper elevation={0} sx={{ p: 3, borderRadius: 0, border: "1px solid #D5D9D9", backgroundColor: "#fff" }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 1 }}>
-                <Typography variant="h4" component="h1" fontWeight={400} sx={{ fontSize: "28px" }}>
-                  Shopping Cart
+                <Typography data-element-id="cart-title" variant="h4" component="h1" fontWeight={400} sx={{ fontSize: "28px" }}>
+                  {t("cart.title")}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Price
@@ -90,7 +97,7 @@ const Cart = ({
               </List>
               <Divider sx={{ mt: 2, mb: 2, borderColor: "#D5D9D9" }} />
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Typography variant="h6" fontWeight={400} sx={{ fontSize: "18px" }}>
+                <Typography id="cart-order-total" data-element-id="cart-order-total" variant="h6" fontWeight={400} sx={{ fontSize: "18px" }}>
                    Subtotal ({totalItems} items): <Box component="span" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Box>
                 </Typography>
               </Box>
@@ -129,23 +136,7 @@ const Cart = ({
               </Typography>
 
               <Box sx={{ mb: 2 }}>
-                <Button
-                  component={Link}
-                  to="/payments"
-                  fullWidth
-                  variant="contained"
-                  sx={{ 
-                    backgroundColor: "#FFD814", 
-                    color: "#0F1111", 
-                    borderRadius: 8, 
-                    textTransform: "none",
-                    fontWeight: 600,
-                    boxShadow: "0 2px 5px 0 rgba(213,217,217,.5)",
-                    "&:hover": { backgroundColor: "#F7CA00" } 
-                  }}
-                >
-                  Proceed to Checkout
-                </Button>
+                <CheckoutButton cartItems={safeCartItems} />
               </Box>
             </Paper>
           </Box>

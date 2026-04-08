@@ -2,20 +2,24 @@ import { Page } from '@playwright/test';
 import { PageBase } from '../helpers/PageBase';
 
 export class PaymentsPage extends PageBase {
-  readonly cardNumberInput = '#payments-card-number-input';
-  readonly holderNameInput = '#payments-card-holder-input';
-  readonly expiryInput = '#payments-card-expiry-input';
-  readonly cvvInput = '#payments-card-cvv-input';
-  readonly installmentsInput = '#payments-card-installments-input';
+  readonly cardNumberInput = 'payments-card-number-input';
+  readonly holderNameInput = 'payments-card-holder-input';
+  readonly expiryInput = 'payments-card-expiry-input';
+  readonly cvvInput = 'payments-card-cvv-input';
+  readonly installmentsInput = 'payments-card-installments-input';
   readonly payNowButton = 'button:has-text("Pagar agora"), button:has-text("Pay now")';
-  readonly brandsStrip = '#payments-card-brands-strip';
+  readonly brandsStrip = 'payments-card-brands-strip';
 
   constructor(page: Page) {
     super(page);
   }
 
   getBrandCardLocator(brandId: string) {
-    return this.page.locator(`#payments-card-brand-${brandId}`);
+    return this.page.getByTestId(`payments-card-brand-${brandId}`);
+  }
+
+  getBrandsStripLocator() {
+    return this.page.getByTestId(this.brandsStrip);
   }
 
   async fillCardNumber(cardNumber: string) {
@@ -43,6 +47,6 @@ export class PaymentsPage extends PageBase {
   }
 
   async clearCardNumber() {
-    await this.page.locator(this.cardNumberInput).clear();
+    await this.page.getByTestId(this.cardNumberInput).clear();
   }
 }

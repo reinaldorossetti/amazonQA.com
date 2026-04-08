@@ -70,7 +70,7 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     // Preenche endereço (step 2) — espera o ViaCEP preencher o logradouro
     await base.fill(registerPage.zipCodeInput, REGISTER_VALIDATION.testData.validZipCode);
-    await expect(page.locator(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
+    await expect(page.getByTestId(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(registerPage.numberInput, REGISTER_VALIDATION.testData.addressNumber);
     await registerPage.clickSubmit();
 
@@ -84,9 +84,9 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     // ── Step 3: Verifica redirecionamento para área logada e saudação na NavBar ───
     await expect(page).toHaveURL('/minha-conta');
-    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(navComponent.userGreeting)).toContainText(userData.firstName, { timeout: base.timeOut });
+    await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).toContainText(userData.firstName, { timeout: base.timeOut });
   });
 
   /**
@@ -111,21 +111,21 @@ test.describe('Register → Login — Fluxo Completo', () => {
     await loginPage.login(userData.email, userData.password);
 
     await expect(page).toHaveURL('/minha-conta');
-    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible({ timeout: 10_000 });
 
     await navComponent.clickLogout();
 
     // Após logout a saudação não deve mais estar visível
-    await expect(page.locator(navComponent.userGreeting)).not.toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).not.toBeVisible({ timeout: base.timeOut });
 
     await loginPage.goToLogin();
 
     await loginPage.login(userData.email, userData.password);
 
     await expect(page).toHaveURL('/minha-conta');
-    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });
+    await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible({ timeout: base.timeOut });
   });
 
   /**
@@ -146,8 +146,8 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.login(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
 
-    await expect(page.locator(loginPage.errorAlert)).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(loginPage.errorAlert)).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);
+    await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
+    await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);
 
     // Usuário permanece na página de login
     await expect(page).toHaveURL('/login');

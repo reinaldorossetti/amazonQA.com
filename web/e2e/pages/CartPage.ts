@@ -4,12 +4,24 @@ import { NavComponent } from './NavComponent';
 import { CatalogPage } from './CatalogPage';
 
 export class CartPage extends PageBase {
-  readonly contentWrapper = '#cart-content-wrapper';
-  readonly totalAmount = '#cart-order-total';
-  readonly quantityInputProxy = '#cart-item-quantity-wrapper input[type="number"]';
+  readonly contentWrapper = 'cart-content-wrapper';
+  readonly totalAmount = 'cart-order-total';
+  readonly quantityInputWrapper = 'cart-item-quantity-wrapper';
   
   constructor(page: Page) {
     super(page);
+  }
+
+  getContentWrapperLocator() {
+    return this.page.getByTestId(this.contentWrapper);
+  }
+
+  getTotalAmountLocator() {
+    return this.page.getByTestId(this.totalAmount);
+  }
+
+  getQuantityInputLocator() {
+    return this.page.getByTestId(this.quantityInputWrapper).locator('input[type="number"]');
   }
 
   async goToCart() {

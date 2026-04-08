@@ -1,15 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
 
 async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
-  const response = await request.post('users/login', {
-    data: {
-      email: 'admin@tester.com',
-      password: 'Admin@123',
-    },
-  });
-
-  expect(response.status()).toBe(200);
-  const payload = await response.json();
+  const payload = await loginAsAdminWithFallback(request, 'users/login');
   expect(payload.accessToken).toBeTruthy();
   expect(payload.user?.isAdmin).toBeTruthy();
   return payload.accessToken as string;

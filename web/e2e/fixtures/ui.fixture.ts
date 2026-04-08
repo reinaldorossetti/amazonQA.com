@@ -6,12 +6,12 @@ type PageName = 'catalog' | 'productDetails' | 'cart' | 'login' | 'register' | '
 type WaitForPageLoad = (page: Page, pageName: PageName) => Promise<void>;
 
 const readinessSelectorByPage: Record<PageName, string[]> = {
-  catalog: ['#catalog-header-wrapper'],
-  productDetails: ['#product-details-actions-wrapper'],
-  cart: ['#cart-content-wrapper', 'text=Seu carrinho está vazio', 'text=Your cart is empty'],
-  login: ['#login-form-body'],
-  register: ['#register-form-body'],
-  thankYou: ['#thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
+  catalog: ['catalog-header-wrapper'],
+  productDetails: ['product-details-actions-wrapper'],
+  cart: ['cart-content-wrapper', 'text=Seu carrinho está vazio', 'text=Your cart is empty'],
+  login: ['login-form-body'],
+  register: ['register-form-body'],
+  thankYou: ['thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
 };
 
 
@@ -23,7 +23,10 @@ export const test = base.extend<{ waitForPageLoad: WaitForPageLoad; pageBase: Pa
       let lastError: unknown;
       for (const selector of selectors) {
         try {
-          await page.locator(selector).first().waitFor({ state: 'visible', timeout: 30_000 });
+          const locator = selector.startsWith('text=')
+            ? page.locator(selector).first()
+            : page.getByTestId(selector).first();
+          await locator.waitFor({ state: 'visible', timeout: 30_000 });
           return;
         } catch (err) {
           lastError = err;

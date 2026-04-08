@@ -23,10 +23,10 @@ test.describe('Login', () => {
 
     // After successful login, user is redirected to account area
     await expect(page).toHaveURL('/minha-conta');
-    await expect(page.locator('#account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
+    await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
 
     // The nav bar should greet the logged user
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible({ timeout: base.timeOut });
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible({ timeout: base.timeOut });
   });
 
   /**
@@ -42,8 +42,8 @@ test.describe('Login', () => {
 
     await loginPage.login(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
 
-    await expect(page.locator(loginPage.errorAlert)).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(loginPage.errorAlert)).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);
+    await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
+    await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);
   });
 
   /**
@@ -57,8 +57,8 @@ test.describe('Login', () => {
 
     await loginPage.submit();
 
-    await expect(page.locator(loginPage.errorAlert)).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(loginPage.errorAlert)).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
+    await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
+    await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
   });
 
   /**
@@ -73,8 +73,8 @@ test.describe('Login', () => {
     await loginPage.fillEmail(LOGIN_VALIDATION.testData.validEmail);
     await loginPage.submit();
 
-    await expect(page.locator(loginPage.errorAlert)).toBeVisible({ timeout: base.timeOut });
-    await expect(page.locator(loginPage.errorAlert)).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
+    await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
+    await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.emptyFields);
   });
 
   /**

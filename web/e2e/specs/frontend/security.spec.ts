@@ -25,7 +25,7 @@ test.describe('Security / Access Control', () => {
     await page.getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first().click();
     
     // Go to cart
-    await page.locator(navComponent.cartButton).click();
+    await navComponent.getCartButtonLocator().click();
     await expect(page).toHaveURL('/cart');
 
     // Try to checkout
@@ -62,10 +62,10 @@ test.describe('Security / Access Control', () => {
 
     await page.goto('/');
     await waitForPageLoad(page, 'catalog');
-    await expect(page.locator(navComponent.userGreeting)).toBeVisible();
+    await expect(navComponent.getUserGreetingLocator()).toBeVisible();
 
-    await page.locator(navComponent.logoutButton).click();
-    await expect(page.locator(navComponent.userGreeting)).not.toBeVisible();
+    await navComponent.getLogoutLocator().click();
+    await expect(navComponent.getUserGreetingLocator()).not.toBeVisible();
 
     await page.goto('/thank-you');
     await expect(page).toHaveURL(/\/login\?next=(%2Fthank-you|\/thank-you)/);

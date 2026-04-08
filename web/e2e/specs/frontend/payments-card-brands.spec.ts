@@ -91,10 +91,10 @@ test.describe('Payments - Card Brands', () => {
 
     await goToPayments(page, waitForPageLoad);
 
-    await expect(page.locator(paymentsPage.brandsStrip)).toHaveCount(0);
+    await expect(paymentsPage.getBrandsStripLocator()).toHaveCount(0);
 
     await paymentsPage.fillCardNumber('4111111111111111');
-    await expect(page.locator(paymentsPage.brandsStrip)).toBeVisible();
+    await expect(paymentsPage.getBrandsStripLocator()).toBeVisible();
   });
 
   /**
@@ -109,7 +109,7 @@ test.describe('Payments - Card Brands', () => {
     for (const brand of CARD_NUMBERS_BY_BRAND) {
       await paymentsPage.clearCardNumber();
       await paymentsPage.fillCardNumber(brand.number);
-      await expect(page.locator(paymentsPage.brandsStrip)).toBeVisible();
+      await expect(paymentsPage.getBrandsStripLocator()).toBeVisible();
       await expect(paymentsPage.getBrandCardLocator(brand.id)).toBeVisible();
 
       await expect(paymentsPage.getBrandCardLocator(brand.id)).toHaveAttribute('data-active', 'true');
@@ -147,13 +147,13 @@ test.describe('Payments - Card Brands', () => {
     await paymentsPage.fillCvv('123');
     await paymentsPage.fillInstallments('2');
 
-    await expect(page.locator(paymentsPage.payNowButton)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Pagar agora|Pay now/i })).toBeVisible();
 
     for (const brand of CARD_NUMBERS_BY_BRAND) {
       await paymentsPage.clearCardNumber();
       await paymentsPage.fillCardNumber(brand.number);
 
-      await expect(page.locator(paymentsPage.brandsStrip)).toBeVisible();
+      await expect(paymentsPage.getBrandsStripLocator()).toBeVisible();
       await expect(paymentsPage.getBrandCardLocator(brand.id)).toBeVisible();
       await expect(paymentsPage.getBrandCardLocator(brand.id)).toHaveAttribute('data-active', 'true');
 

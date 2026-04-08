@@ -185,6 +185,18 @@ const Catalog = ({
              </Stack>
            </Box>
 
+           <Typography
+             id="catalog-products-found-text"
+             variant="body2"
+             color="text.secondary"
+             sx={{ mb: 2 }}
+           >
+             {t("catalog.products_found", {
+               count: productsToRender.length,
+               plural: productsToRender.length === 1 ? "" : "s",
+             })}
+           </Typography>
+
            <Box sx={{ 
              display: 'grid', 
              gridTemplateColumns: { 

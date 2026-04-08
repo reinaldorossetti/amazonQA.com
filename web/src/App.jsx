@@ -436,16 +436,28 @@ const AppInner = () => {
   const { t } = useLanguage();
 
   useEffect(() => {
+    const syncDataElementIds = () => {
+      const elementsWithId = document.querySelectorAll('[id]');
+      elementsWithId.forEach((element) => {
+        if (!element.getAttribute('data-element-id')) {
+          element.setAttribute('data-element-id', element.id);
+        }
+      });
+    };
+
     const applyToastBodyTestId = () => {
       const toastBodies = document.querySelectorAll('.Toastify__toast-body');
       toastBodies.forEach((element) => {
         element.setAttribute('data-testid', 'toast-body');
+        element.setAttribute('data-element-id', 'toast-body');
       });
     };
 
+    syncDataElementIds();
     applyToastBodyTestId();
 
     const observer = new MutationObserver(() => {
+      syncDataElementIds();
       applyToastBodyTestId();
     });
 

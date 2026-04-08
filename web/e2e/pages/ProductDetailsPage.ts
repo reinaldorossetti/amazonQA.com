@@ -2,8 +2,8 @@ import { Page } from '@playwright/test';
 import { PageBase, waitForPageLoad } from '../helpers/PageBase';
 
 export class ProductDetailsPage extends PageBase {
-  readonly image = '#product-details-image';
-  readonly actionsWrapper = '#product-details-actions-wrapper';
+  readonly image = 'product-details-image';
+  readonly actionsWrapper = 'product-details-actions-wrapper';
   
   constructor(page: Page) {
     super(page);

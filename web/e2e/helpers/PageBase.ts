@@ -5,12 +5,12 @@ type PageName = 'catalog' | 'productDetails' | 'cart' | 'login' | 'register' | '
 
 
 const readinessSelectorByPage: Record<PageName, string[]> = {
-  catalog: ['#catalog-header-wrapper'],
-  productDetails: ['#product-details-actions-wrapper'],
-  cart: ['#cart-content-wrapper', 'text=Seu carrinho está vazio', 'text=Your cart is empty'],
-  login: ['#login-form-body'],
-  register: ['#register-form-body'],
-  thankYou: ['#thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
+  catalog: ['catalog-header-wrapper'],
+  productDetails: ['product-details-actions-wrapper'],
+  cart: ['cart-content-wrapper', 'text=Seu carrinho está vazio', 'text=Your cart is empty'],
+  login: ['login-form-body'],
+  register: ['register-form-body'],
+  thankYou: ['thank-you-summary-wrapper', 'text=Obrigado pela sua compra!', 'text=Thank you for your purchase!'],
 };
 
 export async function waitForPageLoad(page: Page, pageName: PageName): Promise<void> {
@@ -19,7 +19,10 @@ export async function waitForPageLoad(page: Page, pageName: PageName): Promise<v
   let lastError: unknown;
   for (const selector of selectors) {
     try {
-      await page.locator(selector).first().waitFor({ state: 'visible', timeout: 30_000 });
+      const locator = selector.startsWith('text=')
+        ? page.locator(selector).first()
+        : page.getByTestId(selector).first();
+      await locator.waitFor({ state: 'visible', timeout: 30_000 });
       return;
     } catch (err) {
       lastError = err;
@@ -96,19 +99,25 @@ export class PageBase {
    * Preenche um campo de texto
    */
   async fill(selector: string, text: string) {
-    await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
-    await this.page.click(selector);
-    await this.page.fill(selector, text);
+    const locator = selector.startsWith('#') || selector.startsWith('.') || selector.startsWith('[') || selector.startsWith('text=') || selector.includes(':') || selector.includes('>')
+      ? this.page.locator(selector).first()
+      : this.page.getByTestId(selector).first();
+    await locator.waitFor({ state: 'visible', timeout: this.timeOut });
+    await locator.click();
+    await locator.fill(text);
   }
 
   /**
    * Clica em um elemento
    */
   async click(selector: string) {
-    await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
-    await this.page.locator(selector).scrollIntoViewIfNeeded();
-    await this.page.locator(selector).first().focus();
-    await this.page.click(selector);
+    const locator = selector.startsWith('#') || selector.startsWith('.') || selector.startsWith('[') || selector.startsWith('text=') || selector.includes(':') || selector.includes('>')
+      ? this.page.locator(selector).first()
+      : this.page.getByTestId(selector).first();
+    await locator.waitFor({ state: 'visible', timeout: this.timeOut });
+    await locator.scrollIntoViewIfNeeded();
+    await locator.focus();
+    await locator.click();
   }
 
   /**
@@ -117,7 +126,7 @@ export class PageBase {
   async waitForLoad(context: string) {
     // Aguarda elementos específicos de contexto
     const selectors: { [key: string]: string } = {
-      register: '#register-first-name',
+      register: 'register-first-name',
       catalog: '.product-card',
       cart: '.cart-item',
       checkout: '#checkout-button',
@@ -125,7 +134,10 @@ export class PageBase {
 
     const selector = selectors[context];
     if (selector) {
-      await this.page.locator(selector).first().waitFor({ state: 'visible', timeout: this.timeOut });
+      const locator = selector.startsWith('#') || selector.startsWith('.') || selector.startsWith('text=')
+        ? this.page.locator(selector).first()
+        : this.page.getByTestId(selector).first();
+      await locator.waitFor({ state: 'visible', timeout: this.timeOut });
     }
   }
 

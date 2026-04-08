@@ -59,7 +59,7 @@ test.describe('Register and Language', () => {
     await page.goto('/register');
     await waitForPageLoad(page, 'register');
 
-    await page.click(registerPage.nextButton);
+    await page.getByTestId(registerPage.nextButton).click();
     await expect(page.locator('body')).toHaveText(/Nome é obrigatório./i);
   });
 
@@ -70,7 +70,7 @@ test.describe('Register and Language', () => {
 
     await expect(page.getByRole('heading', { name: 'Catálogo de Produtos' })).toBeVisible();
 
-    await page.locator(navComponent.languageToggle).click();
+    await navComponent.getLanguageToggleLocator().click();
     await expect(page.getByRole('heading', { name: 'Product Catalog' })).toBeVisible();
 
     await page.reload();
@@ -87,12 +87,12 @@ test.describe('Register and Language', () => {
     await page.goto('/');
     await waitForPageLoad(page, 'catalog');
 
-    await page.locator(navComponent.languageToggle).click();
+    await navComponent.getLanguageToggleLocator().click();
     await expect(page.getByRole('heading', { name: 'Product Catalog' })).toBeVisible();
 
     await page.goto('/cart');
     await expect(page.getByRole('heading', { name: 'Shopping Cart' })).toBeVisible();
-    await expect(page.locator('body')).toContainText('Your cart is empty');
-    await expect(page.locator('body')).toContainText('Add products from the catalog to get started.');
+    await expect(page.getByTestId('cart-empty-title')).toContainText('Your cart is empty');
+    await expect(page.getByTestId('cart-empty-description')).toContainText('Add products from the catalog to get started.');
   });
 });

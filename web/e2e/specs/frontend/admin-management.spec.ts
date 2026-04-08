@@ -1,5 +1,6 @@
 import { expect, test } from '../../fixtures/ui.fixture';
 import { setAuthenticatedSession } from '../../helpers/auth';
+import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
 import { AdminPage } from '../../pages/AdminPage';
 
 type AdminLoginPayload = {
@@ -18,19 +19,7 @@ type AdminLoginPayload = {
 const API_BASE_URL = 'http://127.0.0.1:3001/api';
 
 async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
-
-  const response = await request.post(`${API_BASE_URL}/users/login`, {
-    data: {
-      email: 'admin@tester.com',
-      password: 'Admin@123',
-    },
-  });
-
-  expect(response.status()).toBe(200);
-  const payload = await response.json();
-  expect(payload.accessToken).toBeTruthy();
-  expect(payload.user?.isAdmin).toBeTruthy();
-
+  const payload = await loginAsAdminWithFallback(request, `${API_BASE_URL}/users/login`);
   return payload as AdminLoginPayload;
 }
 
@@ -185,7 +174,7 @@ test.describe('Admin management', () => {
     });
     expect(deletedUserResponse.status()).toBe(404);
     const deletedUserPayload = await deletedUserResponse.json();
-    expect(deletedUserPayload?.error).toMatch(/User not found/i);
+    expect(deletedUserPayload?.error).toMatch(/User not found|Usuário não encontrado/i);
 
     await expect(page.locator('body')).not.toContainText(createdUser.email);
   });

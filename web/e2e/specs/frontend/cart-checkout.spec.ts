@@ -91,14 +91,14 @@ test.describe('Cart and Checkout', () => {
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart');
 
-    await expect(page.locator(cartPage.totalAmount)).toBeVisible();
+    await expect(cartPage.getTotalAmountLocator()).toBeVisible();
     await cartPage.clickProceedToCheckout();
 
     await expect(page).toHaveURL('/payments');
     await page.getByRole('button', { name: /Pagar agora|Pay now/i }).click();
 
     await expect(page).toHaveURL('/thank-you');
-    await expect(page.locator(thankYouPage.summaryWrapper)).toBeVisible();
+    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible();
   });
 
   /**
@@ -129,10 +129,10 @@ test.describe('Cart and Checkout', () => {
   test('TS03 empty cart should keep checkout unavailable', async ({ page }) => {
     const cartPage = new CartPage(page);
     await cartPage.goToCart();
-    await expect(page.locator('body')).toContainText('Meu Carrinho');
-    await expect(page.locator('body')).toContainText('Seu carrinho está vazio');
-    await expect(page.locator('body')).toContainText('Adicione produtos do catálogo para começar.');
-    await expect(page.locator('body')).toContainText('Ir ao Catálogo');
+    await expect(page.getByTestId('cart-title')).toContainText(/Meu Carrinho|Shopping Cart/i);
+    await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+    await expect(page.getByTestId('cart-empty-description')).toContainText(/Adicione produtos do catálogo para começar\.|Add products from the catalog to get started\./i);
+    await expect(page.getByTestId('cart-go-to-catalog-btn')).toBeVisible();
   });
 
   /**
@@ -144,13 +144,13 @@ test.describe('Cart and Checkout', () => {
     const navComponent = new NavComponent(page);
     await cartPage.openCartWithOneItem(waitForPageLoad);
 
-    const quantityInput = page.locator(cartPage.quantityInputProxy).first();
+    const quantityInput = cartPage.getQuantityInputLocator().first();
     await expect(quantityInput).toHaveValue('1');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 50.99');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 50.99');
     await quantityInput.fill('3');
     await expect(quantityInput).toHaveValue('3');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 152.97');
-    await expect(page.locator(navComponent.cartBadge)).toContainText('3');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 152.97');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('3');
   });
 
   /**
@@ -162,13 +162,13 @@ test.describe('Cart and Checkout', () => {
     const navComponent = new NavComponent(page);
     await cartPage.openCartWithOneItem(waitForPageLoad);
 
-    const quantityInput = page.locator(cartPage.quantityInputProxy).first();
+    const quantityInput = cartPage.getQuantityInputLocator().first();
     await expect(quantityInput).toHaveValue('1');
 
     await quantityInput.fill('0');
     await expect(quantityInput).toHaveValue('1');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 50.99');
-    await expect(page.locator(navComponent.cartBadge)).toContainText('1');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 50.99');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('1');
   });
 
   /**
@@ -180,14 +180,14 @@ test.describe('Cart and Checkout', () => {
     const navComponent = new NavComponent(page);
     await cartPage.openCartWithOneItem(waitForPageLoad);
 
-    const quantityInput = page.locator(cartPage.quantityInputProxy).first();
+    const quantityInput = cartPage.getQuantityInputLocator().first();
     await expect(quantityInput).toHaveValue('1');
 
     await quantityInput.fill('-2');
 
     await expect(quantityInput).toHaveValue('1');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 50.99');
-    await expect(page.locator(navComponent.cartBadge)).toContainText('1');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 50.99');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('1');
   });
 
   /**
@@ -199,12 +199,12 @@ test.describe('Cart and Checkout', () => {
     const navComponent = new NavComponent(page);
     await cartPage.openCartWithOneItem(waitForPageLoad);
 
-    const quantityInput = page.locator(cartPage.quantityInputProxy).first();
+    const quantityInput = cartPage.getQuantityInputLocator().first();
     await quantityInput.fill('25');
 
     await expect(quantityInput).toHaveValue('25');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 1274.75');
-    await expect(page.locator(navComponent.cartBadge)).toContainText('25');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 1274.75');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('25');
   });
 
   /**
@@ -216,12 +216,12 @@ test.describe('Cart and Checkout', () => {
     const navComponent = new NavComponent(page);
     await cartPage.openCartWithOneItem(waitForPageLoad);
 
-    const quantityInput = page.locator(cartPage.quantityInputProxy).first();
+    const quantityInput = cartPage.getQuantityInputLocator().first();
     await quantityInput.fill('2.9');
 
     await expect(quantityInput).toHaveValue('2');
-    await expect(page.locator(cartPage.totalAmount)).toContainText('R$ 101.98');
-    await expect(page.locator(navComponent.cartBadge)).toContainText('2');
+    await expect(cartPage.getTotalAmountLocator()).toContainText('R$ 101.98');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('2');
   });
 
   /**
@@ -235,8 +235,8 @@ test.describe('Cart and Checkout', () => {
     await cartPage.getDeleteButtonLocator().first().click();
 
     await expect(cartPage.getDeleteButtonLocator()).toHaveCount(0);
-    await expect(page.locator('body')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
-    await expect(page.locator('body')).toContainText(/Adicione produtos do catálogo para começar\.|Add products from catalog to get started\./i);
+    await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+    await expect(page.getByTestId('cart-empty-description')).toContainText(/Adicione produtos do catálogo para começar\.|Add products from the catalog to get started\./i);
   });
 
   /**
@@ -254,7 +254,7 @@ test.describe('Cart and Checkout', () => {
     await addButtons.nth(1).click();
     await addButtons.nth(2).click();
 
-    await expect(page.locator(navComponent.cartBadge)).toContainText('3');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('3');
 
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart');
@@ -270,9 +270,9 @@ test.describe('Cart and Checkout', () => {
     await cartPage.getDeleteButtonLocator().first().click();
     await expect(cartPage.getDeleteButtonLocator()).toHaveCount(0);
 
-    await expect(page.locator('body')).toContainText(/Meu Carrinho|My Cart/i);
-    await expect(page.locator('body')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
-    await expect(page.locator('body')).toContainText(/Ir ao Catálogo|Go to Catalog/i);
+    await expect(page.getByTestId('cart-title')).toContainText(/Meu Carrinho|Shopping Cart/i);
+    await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+    await expect(page.getByTestId('cart-go-to-catalog-btn')).toBeVisible();
   });
 
   /**
@@ -292,7 +292,7 @@ test.describe('Cart and Checkout', () => {
     });
 
     await cartPage.openCartWithOneItem(waitForPageLoad);
-    await expect(page.locator(navComponent.cartBadge)).toContainText('1');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('1');
 
     await cartPage.clickProceedToCheckout();
     await expect(page).toHaveURL('/payments');
@@ -305,8 +305,8 @@ test.describe('Cart and Checkout', () => {
 
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart');
-    await expect(page.locator('body')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
-    await expect(page.locator(navComponent.cartBadge)).toContainText('0');
+    await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+    await expect(navComponent.getCartBadgeLocator()).toContainText('0');
   });
 
   /**
@@ -323,19 +323,19 @@ test.describe('Cart and Checkout', () => {
     await addButtons.nth(0).click();
     await addButtons.nth(1).click();
     await addButtons.nth(2).click();
-    await expect(page.locator(navComponent.cartBadge)).toContainText('3');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('3');
 
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart');
 
     await cartPage.getDeleteButtonLocator().first().click();
-    await expect(page.locator(navComponent.cartBadge)).toContainText('2');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('2');
 
     await cartPage.getDeleteButtonLocator().first().click();
-    await expect(page.locator(navComponent.cartBadge)).toContainText('1');
+    await expect(navComponent.getCartBadgeLocator()).toContainText('1');
 
     await cartPage.getDeleteButtonLocator().first().click();
-    await expect(page.locator(navComponent.cartBadge)).toContainText('0');
-    await expect(page.locator('body')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+    await expect(navComponent.getCartBadgeLocator()).toContainText('0');
+    await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
   });
 });

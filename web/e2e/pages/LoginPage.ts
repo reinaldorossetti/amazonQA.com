@@ -2,11 +2,11 @@ import { Page } from '@playwright/test';
 import { PageBase, waitForPageLoad } from '../helpers/PageBase';
 
 export class LoginPage extends PageBase {
-  readonly emailInput = '#login-email';
-  readonly passwordInput = '#login-password';
-  readonly submitButton = '#login-submit-btn';
-  readonly errorAlert = '#login-error-alert';
-  readonly createAccountButton = '#login-create-account-btn';
+  readonly emailInput = 'login-email';
+  readonly passwordInput = 'login-password';
+  readonly submitButton = 'login-submit-btn';
+  readonly errorAlert = 'login-error-alert';
+  readonly createAccountButton = 'login-create-account-btn';
   
   constructor(page: Page) {
     super(page);
@@ -15,6 +15,10 @@ export class LoginPage extends PageBase {
   async goToLogin() {
     await this.goto('/login');
     await waitForPageLoad(this.page, 'login');
+  }
+
+  getErrorAlertLocator() {
+    return this.page.getByTestId(this.errorAlert);
   }
 
   async fillEmail(email: string) {

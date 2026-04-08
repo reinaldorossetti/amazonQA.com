@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 import { PageBase, waitForPageLoad } from '../helpers/PageBase';
 
 export class ThankYouPage extends PageBase {
-  readonly summaryWrapper = '#thank-you-summary-wrapper';
+  readonly summaryWrapper = 'thank-you-summary-wrapper';
   
   constructor(page: Page) {
     super(page);
@@ -10,6 +10,10 @@ export class ThankYouPage extends PageBase {
 
   async waitForLoad() {
     await waitForPageLoad(this.page, 'thankYou');
+  }
+
+  getSummaryWrapperLocator() {
+    return this.page.getByTestId(this.summaryWrapper);
   }
 
   getContinueShoppingButtonLocator() {

@@ -60,24 +60,22 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart, onChange, onRemove }) 
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", mt: 1 }}>
-          <Box sx={{ display: "inline-flex", alignItems: "center", backgroundColor: "#F0F2F2", borderRadius: 2, border: "1px solid #D5D9D9", px: 1, py: 0.5, mr: 1, boxShadow: "0 2px 5px 0 rgba(213,217,217,.5)" }}>
-            <Typography variant="body2" sx={{ mr: 1 }}>Qty:</Typography>
-            <Box
-              component="select"
+          <Box id="cart-item-quantity-wrapper" data-element-id="cart-item-quantity-wrapper" sx={{ display: "inline-flex", alignItems: "center", backgroundColor: "#F0F2F2", borderRadius: 2, border: "1px solid #D5D9D9", px: 1, py: 0.5, mr: 1, boxShadow: "0 2px 5px 0 rgba(213,217,217,.5)" }}>
+            <Typography variant="body2" sx={{ mr: 1 }}>Qty:</Typography>        
+            <input
+              type="number"
+              min="1"
+              step="1"
               value={safeItem.quantity}
               onChange={(e) => {
                 const val = parseInt(e.target.value);
-                if (val > 0) handleUpdateCart(safeItem, val);
+                if (!isNaN(val) && val > 0) handleUpdateCart(safeItem, val);
               }}
-              style={{ background: "transparent", border: "none", outline: "none", cursor: "pointer", fontWeight: 600 }}
-            >
-              {[...Array(10).keys()].map(x => (
-                 <option key={x+1} value={x+1}>{x+1}</option>
-              ))}
-            </Box>
+              style={{ width: "50px", background: "transparent", border: "none", outline: "none", cursor: "pointer", fontWeight: 600 }}
+            />
           </Box>
           <Typography variant="body2" color="divider">|</Typography>
-          <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }} onClick={() => handleRemoveFromCart(safeItem)}>
+          <Typography role="button" aria-label="delete" variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }} onClick={() => handleRemoveFromCart(safeItem)}>
             Delete
           </Typography>
           <Typography variant="body2" color="divider">|</Typography>

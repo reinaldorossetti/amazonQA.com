@@ -47,18 +47,18 @@ test.describe('Catalog Page', () => {
   test('TS01 deve listar produtos ao carregar página', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     await waitForPageLoad(page, 'catalog');
-    await expect(page.locator(catalogPage.getProductImageSelector(1))).toBeVisible();
-    await expect(page.locator(catalogPage.getProductImageSelector(2))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
   });
 
   test('TS02 deve permitir busca por texto e atualizar contagem', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
     await waitForPageLoad(page, 'catalog');
-    await page.fill(navComponent.searchInput, 'Smartphone');
+    await navComponent.getSearchInputLocator().fill('Smartphone');
 
-    await expect(page.locator(catalogPage.getProductImageSelector(2))).toBeVisible();
-    await expect(page.locator(catalogPage.getProductImageSelector(1))).toHaveCount(0);
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toHaveCount(0);
     await expect(page.getByText(/1 produto encontrado|1 product found/i)).toBeVisible();
   });
 
@@ -67,17 +67,17 @@ test.describe('Catalog Page', () => {
     await waitForPageLoad(page, 'catalog');
     await page.getByRole('button', { name: 'Acessórios' }).click();
 
-    await expect(page.locator(catalogPage.getProductImageSelector(1))).toBeVisible();
-    await expect(page.locator(catalogPage.getProductImageSelector(2))).toHaveCount(0);
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toHaveCount(0);
   });
 
   test('TS04 deve mostrar estado vazio quando busca não retorna itens', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
     await waitForPageLoad(page, 'catalog');
-    await page.fill(navComponent.searchInput, 'PRODUTO_INEXISTENTE_123');
+    await navComponent.getSearchInputLocator().fill('PRODUTO_INEXISTENTE_123');
 
-    await expect(page.locator(catalogPage.emptyState)).toBeVisible();
+    await expect(page.getByTestId(catalogPage.emptyState)).toBeVisible();
   });
 
   test('TS05 deve navegar para detalhes ao clicar no produto', async ({ page, waitForPageLoad }) => {
@@ -87,7 +87,7 @@ test.describe('Catalog Page', () => {
     await catalogPage.clickProductImage(1);
 
     await expect(page).toHaveURL(/\/product\/1$/);
-    await expect(page.locator(productDetailsPage.image)).toBeVisible();
+    await expect(page.getByTestId(productDetailsPage.image)).toBeVisible();
   });
 
   /**
@@ -101,10 +101,10 @@ test.describe('Catalog Page', () => {
     const navComponent = new NavComponent(page);
     
     await waitForPageLoad(page, 'catalog');
-    await page.fill(navComponent.searchInput, 'Smartphone');
+    await navComponent.getSearchInputLocator().fill('Smartphone');
 
-    await expect(page.locator(catalogPage.getProductImageSelector(2))).toBeVisible();
-    await expect(page.locator(catalogPage.getProductImageSelector(1))).toHaveCount(0);
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toHaveCount(0);
 
     await catalogPage.clickProductImage(2);
     await expect(page).toHaveURL(/\/product\/2$/);
@@ -114,8 +114,8 @@ test.describe('Catalog Page', () => {
     await expect(page).toHaveURL('/');
     await waitForPageLoad(page, 'catalog');
 
-    await expect(page.locator(navComponent.searchInput)).toHaveValue('Smartphone');
-    await expect(page.locator(catalogPage.getProductImageSelector(2))).toBeVisible();
-    await expect(page.locator(catalogPage.getProductImageSelector(1))).toHaveCount(0);
+    await expect(navComponent.getSearchInputLocator()).toHaveValue('Smartphone');
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
+    await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toHaveCount(0);
   });
 });

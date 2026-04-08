@@ -2,10 +2,10 @@ import { Page } from '@playwright/test';
 import { PageBase, waitForPageLoad } from '../helpers/PageBase';
 
 export class CatalogPage extends PageBase {
-  readonly header = '#catalog-header-wrapper';
-  readonly filters = '#catalog-search-filters-wrapper';
-  readonly emptyState = '#catalog-empty-wrapper';
-  readonly loading = '#catalog-loading-wrapper';
+  readonly header = 'catalog-header-wrapper';
+  readonly filters = 'catalog-search-filters-wrapper';
+  readonly emptyState = 'catalog-empty-wrapper';
+  readonly loading = 'catalog-loading-wrapper';
   
   constructor(page: Page) {
     super(page);
@@ -17,7 +17,7 @@ export class CatalogPage extends PageBase {
   }
 
   getProductImageSelector(id: number) {
-    return `#product-card-image-wrapper-${id}`;
+    return `product-card-image-wrapper-${id}`;
   }
 
   async clickProductImage(id: number) {

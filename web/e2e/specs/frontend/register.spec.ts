@@ -29,7 +29,7 @@ test.describe('Register', () => {
     await base.click(registerPage.nextButton);
     await base.fill(registerPage.zipCodeInput, REGISTER_VALIDATION.testData.validZipCode);
 
-    await expect(page.locator(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
+    await expect(page.getByTestId(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(registerPage.numberInput, REGISTER_VALIDATION.testData.addressNumber);
     await base.click(registerPage.submitButton);
 
@@ -55,7 +55,7 @@ test.describe('Register', () => {
     await base.fill(registerPage.confirmPasswordInput, userData.password);
     await base.click(registerPage.nextButton);
 
-    await expect(page.locator(registerPage.errorEmail)).toContainText(REGISTER_VALIDATION.errorMessages.emailInvalid);
+    await expect(page.getByTestId(registerPage.errorEmail)).toContainText(REGISTER_VALIDATION.errorMessages.emailInvalid);
   });
 
   /**
@@ -78,7 +78,7 @@ test.describe('Register', () => {
 
     await base.click(registerPage.nextButton);
 
-    await expect(page.locator(registerPage.errorPassword)).toContainText(REGISTER_VALIDATION.errorMessages.passwordMinLength);
+    await expect(page.getByTestId(registerPage.errorPassword)).toContainText(REGISTER_VALIDATION.errorMessages.passwordMinLength);
   });
 
   /**
@@ -100,7 +100,7 @@ test.describe('Register', () => {
     await base.fill(registerPage.confirmPasswordInput, differentPassword);
     await base.click(registerPage.nextButton);
 
-    await expect(page.locator(registerPage.errorConfirmPassword)).toContainText(/As senhas não coincidem/i);
+    await expect(page.getByTestId(registerPage.errorConfirmPassword)).toContainText(/As senhas não coincidem/i);
   });
 
   /**
@@ -168,10 +168,10 @@ test.describe('Register', () => {
     await base.click(registerPage.nextButton);
 
     // Ensure step 0 is still visible (did not advance to step 1)
-    await expect(page.locator(registerPage.nextButton)).toBeVisible();
+    await expect(page.getByTestId(registerPage.nextButton)).toBeVisible();
 
     // Verify the specific empty field shows an error message
-    await expect(page.locator(scenario.expectedErrorSelector)).toBeVisible();
+    await expect(page.getByTestId(scenario.expectedErrorSelector)).toBeVisible();
   });
 
   /**
@@ -201,7 +201,7 @@ test.describe('Register', () => {
     await base.click(registerPage.nextButton);
 
     await base.fill(registerPage.zipCodeInput, REGISTER_VALIDATION.testData.validZipCode);
-    await expect(page.locator(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
+    await expect(page.getByTestId(registerPage.streetInput)).not.toHaveValue('', { timeout: 10_000 });
     await base.fill(registerPage.numberInput, REGISTER_VALIDATION.testData.addressNumber);
 
     await base.click(registerPage.submitButton);
@@ -222,22 +222,22 @@ test.describe('Register', () => {
     await pageBase.click(registerPage.nextButton);
 
     // Verify all validation error messages appear
-    await expect(page.locator(registerPage.errorFirstName)).toBeVisible();
-    await expect(page.locator(registerPage.errorFirstName)).toContainText(REGISTER_VALIDATION.errorMessages.firstNameRequired);
+    await expect(page.getByTestId(registerPage.errorFirstName)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorFirstName)).toContainText(REGISTER_VALIDATION.errorMessages.firstNameRequired);
 
-    await expect(page.locator(registerPage.errorLastName)).toBeVisible();
-    await expect(page.locator(registerPage.errorLastName)).toContainText(REGISTER_VALIDATION.errorMessages.lastNameRequired);
+    await expect(page.getByTestId(registerPage.errorLastName)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorLastName)).toContainText(REGISTER_VALIDATION.errorMessages.lastNameRequired);
 
-    await expect(page.locator(registerPage.errorCpf)).toBeVisible();
-    await expect(page.locator(registerPage.errorCpf)).toContainText(REGISTER_VALIDATION.errorMessages.cpfInvalid);
+    await expect(page.getByTestId(registerPage.errorCpf)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorCpf)).toContainText(REGISTER_VALIDATION.errorMessages.cpfInvalid);
 
-    await expect(page.locator(registerPage.errorEmail)).toBeVisible();
-    await expect(page.locator(registerPage.errorEmail)).toContainText(REGISTER_VALIDATION.errorMessages.emailInvalid);
+    await expect(page.getByTestId(registerPage.errorEmail)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorEmail)).toContainText(REGISTER_VALIDATION.errorMessages.emailInvalid);
 
-    await expect(page.locator(registerPage.errorPhone)).toBeVisible();
-    await expect(page.locator(registerPage.errorPhone)).toContainText(REGISTER_VALIDATION.errorMessages.phoneInvalid);
+    await expect(page.getByTestId(registerPage.errorPhone)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorPhone)).toContainText(REGISTER_VALIDATION.errorMessages.phoneInvalid);
 
-    await expect(page.locator(registerPage.errorPassword)).toBeVisible();
-    await expect(page.locator(registerPage.errorPassword)).toContainText(REGISTER_VALIDATION.errorMessages.passwordMinLength);
+    await expect(page.getByTestId(registerPage.errorPassword)).toBeVisible();
+    await expect(page.getByTestId(registerPage.errorPassword)).toContainText(REGISTER_VALIDATION.errorMessages.passwordMinLength);
   });
 });

@@ -3,27 +3,27 @@ import { Page } from '@playwright/test';
 import { PageBase } from '../helpers/PageBase';
 
 export class RegisterPage extends PageBase {
-  readonly body = '#register-form-body';
-  readonly firstNameInput = '#register-first-name';
-  readonly lastNameInput = '#register-last-name';
-  readonly cpfInput = '#register-cpf';
-  readonly emailInput = '#register-email';
-  readonly phoneInput = '#register-phone';
-  readonly passwordInput = '#register-password';
-  readonly confirmPasswordInput = '#register-confirm-password';
-  readonly nextButton = '#register-next-btn';
-  readonly submitButton = '#register-submit-btn';
-  readonly errorAlert = '#register-error-alert';
-  readonly errorFirstName = '#register-first-name-helper-text';
-  readonly errorLastName = '#register-last-name-helper-text';
-  readonly errorCpf = '#register-cpf-helper-text';
-  readonly errorEmail = '#register-email-helper-text';
-  readonly errorPhone = '#register-phone-helper-text';
-  readonly errorPassword = '#register-password-helper-text';
-  readonly errorConfirmPassword = '#register-confirm-password-helper-text';
-  readonly zipCodeInput = '#register-address-zip';
-  readonly streetInput = '#register-address-street';
-  readonly numberInput = '#register-address-number';
+  readonly body = 'register-form-body';
+  readonly firstNameInput = 'register-first-name';
+  readonly lastNameInput = 'register-last-name';
+  readonly cpfInput = 'register-cpf';
+  readonly emailInput = 'register-email';
+  readonly phoneInput = 'register-phone';
+  readonly passwordInput = 'register-password';
+  readonly confirmPasswordInput = 'register-confirm-password';
+  readonly nextButton = 'register-next-btn';
+  readonly submitButton = 'register-submit-btn';
+  readonly errorAlert = 'register-error-alert';
+  readonly errorFirstName = 'register-first-name-helper-text';
+  readonly errorLastName = 'register-last-name-helper-text';
+  readonly errorCpf = 'register-cpf-helper-text';
+  readonly errorEmail = 'register-email-helper-text';
+  readonly errorPhone = 'register-phone-helper-text';
+  readonly errorPassword = 'register-password-helper-text';
+  readonly errorConfirmPassword = 'register-confirm-password-helper-text';
+  readonly zipCodeInput = 'register-address-zip';
+  readonly streetInput = 'register-address-street';
+  readonly numberInput = 'register-address-number';
   readonly successMessageLocator = 'text=/sucesso|bem-vindo|cadastro realizado/i';
 
   constructor(page: Page) {
