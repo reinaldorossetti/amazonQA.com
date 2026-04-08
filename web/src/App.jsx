@@ -160,7 +160,7 @@ const NavBar = ({ cartCount, search, setSearch }) => {
         >
           <Box id="nav-logo-img"
             component="img"
-            src="/Logo2.png"
+            src="/logo.png"
             alt="Logo"
             sx={{
               height: { xs: "30px", sm: "40px" },
