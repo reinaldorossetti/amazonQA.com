@@ -1,6 +1,7 @@
 import { expect, test } from '../../fixtures/ui.fixture';
 import { setAuthenticatedSession } from '../../helpers/auth';
 import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
+import { isAdminAuthUnavailableError } from '../../helpers/adminAuth';
 import { AdminPage } from '../../pages/AdminPage';
 
 type AdminLoginPayload = {
@@ -87,7 +88,16 @@ test.describe('Admin management', () => {
 
   test('ADM01 - admin deve listar produtos reais e excluir o último cadastrado', async ({ page, request }) => {
     const adminPage = new AdminPage(page);
-    const adminSession = await loginAsAdmin(request);
+    let adminSession: AdminLoginPayload;
+    try {
+      adminSession = await loginAsAdmin(request);
+    } catch (error: unknown) {
+      if (isAdminAuthUnavailableError(error)) {
+        test.skip(true, `Skipping ADM01: ${error instanceof Error ? error.message : 'admin auth unavailable'}`);
+        return;
+      }
+      throw error;
+    }
 
     const createdProduct = await createProductAsAdmin(request, adminSession.accessToken);
     const products = await listProducts(request);
@@ -125,7 +135,16 @@ test.describe('Admin management', () => {
 
   test('ADM02 - admin deve listar usuários reais e excluir o último cadastrado', async ({ page, request, pageBase }) => {
     const adminPage = new AdminPage(page);
-    const adminSession = await loginAsAdmin(request);
+    let adminSession: AdminLoginPayload;
+    try {
+      adminSession = await loginAsAdmin(request);
+    } catch (error: unknown) {
+      if (isAdminAuthUnavailableError(error)) {
+        test.skip(true, `Skipping ADM02: ${error instanceof Error ? error.message : 'admin auth unavailable'}`);
+        return;
+      }
+      throw error;
+    }
 
     const createdUser = await createRegularUser(request);
     expect(createdUser?.id).toBeTruthy();

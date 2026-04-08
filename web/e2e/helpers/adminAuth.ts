@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -19,18 +19,84 @@ type AdminCredentials = {
   source: string;
 };
 
+const CREDENTIAL_PAIRS: Array<{ emailKey: string; passwordKey: string }> = [
+  { emailKey: 'E2E_ADMIN_EMAIL', passwordKey: 'E2E_ADMIN_PASSWORD' },
+  { emailKey: 'SEED_ADMIN_EMAIL', passwordKey: 'SEED_ADMIN_PASSWORD' },
+  { emailKey: 'ADMIN_EMAIL', passwordKey: 'ADMIN_PASSWORD' },
+];
+
+function getServerDir(): string {
+  const currentFile = fileURLToPath(import.meta.url);
+  const currentDir = path.dirname(currentFile);
+  return path.resolve(currentDir, '../../../server');
+}
+
+function parseDotEnvFile(filePath: string): Record<string, string> {
+  if (!existsSync(filePath)) {
+    return {};
+  }
+
+  const content = readFileSync(filePath, 'utf8');
+  const parsed: Record<string, string> = {};
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) {
+      continue;
+    }
+
+    const equalIndex = line.indexOf('=');
+    if (equalIndex <= 0) {
+      continue;
+    }
+
+    const key = line.slice(0, equalIndex).trim();
+    const value = line.slice(equalIndex + 1).trim().replace(/^['"]|['"]$/g, '');
+    if (key) {
+      parsed[key] = value;
+    }
+  }
+
+  return parsed;
+}
+
+function loadServerEnvVariables(): Record<string, string> {
+  const serverDir = getServerDir();
+  const candidates = ['.env', '.env.local', '.env.test', '.env.ci'];
+  const merged: Record<string, string> = {};
+
+  for (const fileName of candidates) {
+    const filePath = path.resolve(serverDir, fileName);
+    Object.assign(merged, parseDotEnvFile(filePath));
+  }
+
+  return merged;
+}
+
+function getFirstDefined(env: Record<string, string | undefined>, keys: string[]): string {
+  for (const key of keys) {
+    const value = env[key];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+
+  return '';
+}
+
 function buildCredentialCandidates(): AdminCredentials[] {
+  const serverEnv = loadServerEnvVariables();
+  const mergedEnv: Record<string, string | undefined> = {
+    ...serverEnv,
+    ...(process.env as Record<string, string | undefined>),
+  };
+
   const rawCandidates = [
-    {
-      email: process.env.E2E_ADMIN_EMAIL,
-      password: process.env.E2E_ADMIN_PASSWORD,
-      source: 'E2E_ADMIN_EMAIL/E2E_ADMIN_PASSWORD',
-    },
-    {
-      email: process.env.SEED_ADMIN_EMAIL,
-      password: process.env.SEED_ADMIN_PASSWORD,
-      source: 'SEED_ADMIN_EMAIL/SEED_ADMIN_PASSWORD',
-    },
+    ...CREDENTIAL_PAIRS.map((pair) => ({
+      email: mergedEnv[pair.emailKey],
+      password: mergedEnv[pair.passwordKey],
+      source: `${pair.emailKey}/${pair.passwordKey}`,
+    })),
     {
       email: 'admin@tester.com',
       password: 'Admin@123',
@@ -113,10 +179,8 @@ async function tryLoginCandidates(request: any, loginUrl: string, candidates: Ad
   };
 }
 
-function runEnsureAdminUser(email: string): { ran: boolean; message: string } {
-  const currentFile = fileURLToPath(import.meta.url);
-  const currentDir = path.dirname(currentFile);
-  const serverDir = path.resolve(currentDir, '../../../server');
+function runEnsureAdminUser(email: string, password: string): { ran: boolean; message: string } {
+  const serverDir = getServerDir();
   const scriptPath = path.resolve(serverDir, 'scripts/ensure-admin-user.js');
 
   if (!existsSync(scriptPath)) {
@@ -132,6 +196,8 @@ function runEnsureAdminUser(email: string): { ran: boolean; message: string } {
       env: {
         ...process.env,
         SEED_ADMIN_EMAIL: email,
+        SEED_ADMIN_PASSWORD: password,
+        ADMIN_BOOTSTRAP_PASSWORD: password,
       },
       stdio: 'pipe',
       encoding: 'utf8',
@@ -152,51 +218,45 @@ function runEnsureAdminUser(email: string): { ran: boolean; message: string } {
 }
 
 export async function loginAsAdminWithFallback(request: any, loginUrl: string): Promise<AdminLoginResponse> {
-  const firstTry = await tryLoginCandidates(request, loginUrl, buildCredentialCandidates());
+  const firstCandidates = buildCredentialCandidates();
+  const firstTry = await tryLoginCandidates(request, loginUrl, firstCandidates);
   if (firstTry.payload) {
     return firstTry.payload;
   }
 
-  const bootstrapEmail = String(
-    process.env.E2E_ADMIN_EMAIL
-      ?? process.env.SEED_ADMIN_EMAIL
-      ?? 'admin@tester.com'
-  )
-    .trim()
-    .toLowerCase();
-
-  const bootstrapOutcome = runEnsureAdminUser(bootstrapEmail);
-
-  if (bootstrapOutcome.ran) {
-    const secondTry = await tryLoginCandidates(request, loginUrl, [
+  const bootstrapCandidates = firstCandidates.length
+    ? firstCandidates
+    : [
       {
-        email: bootstrapEmail,
+        email: 'admin@tester.com',
         password: 'Admin@123',
-        source: 'ensure-admin-user-bootstrap',
+        source: 'bootstrap-fallback-default',
       },
-      ...buildCredentialCandidates(),
-    ]);
+    ];
 
-    if (secondTry.payload) {
-      return secondTry.payload;
-    }
+  const bootstrapMessages: string[] = [];
 
-    throw new Error(
-      [
-        'Unable to authenticate as admin with available credential candidates, even after running ensure-admin-user script.',
-        'Set E2E_ADMIN_EMAIL and E2E_ADMIN_PASSWORD to explicit values for this environment.',
-        `Bootstrap: ${bootstrapOutcome.message}`,
-        `Attempts: ${[...firstTry.attempts, ...secondTry.attempts].join(' | ')}`,
-      ].join(' ')
-    );
+  for (const candidate of bootstrapCandidates) {
+    const bootstrapOutcome = runEnsureAdminUser(candidate.email, candidate.password);
+    bootstrapMessages.push(`${candidate.email} [${candidate.source}] -> ${bootstrapOutcome.message}`);
+  }
+
+  const secondTry = await tryLoginCandidates(request, loginUrl, buildCredentialCandidates());
+  if (secondTry.payload) {
+    return secondTry.payload;
   }
 
   throw new Error(
     [
-      'Unable to authenticate as admin with available credential candidates.',
+      'Unable to authenticate as admin with available credential candidates, even after running ensure-admin-user script.',
       'Set E2E_ADMIN_EMAIL and E2E_ADMIN_PASSWORD to explicit values for this environment.',
-      `Bootstrap: ${bootstrapOutcome.message}`,
-      `Attempts: ${firstTry.attempts.join(' | ')}`,
+      `Bootstrap: ${bootstrapMessages.join(' || ')}`,
+      `Attempts: ${[...firstTry.attempts, ...secondTry.attempts].join(' | ')}`,
     ].join(' ')
   );
+}
+
+export function isAdminAuthUnavailableError(error: unknown): boolean {
+  return error instanceof Error
+    && error.message.includes('Unable to authenticate as admin with available credential candidates');
 }

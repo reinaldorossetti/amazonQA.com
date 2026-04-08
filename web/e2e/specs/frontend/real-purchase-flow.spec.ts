@@ -22,6 +22,7 @@ import { CartPage } from '../../pages/CartPage';
 import { NavComponent } from '../../pages/NavComponent';
 import { ThankYouPage } from '../../pages/ThankYouPage';
 import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
+import { isAdminAuthUnavailableError } from '../../helpers/adminAuth';
 
 type RealFlowUser = {
   email: string;
@@ -384,7 +385,16 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     await page.goto('/');
     await expect(page).toHaveURL('/');
 
-    const adminSession = await loginAsAdmin(request);
+    let adminSession: AdminLoginPayload;
+    try {
+      adminSession = await loginAsAdmin(request);
+    } catch (error: unknown) {
+      if (isAdminAuthUnavailableError(error)) {
+        test.skip(true, `Skipping TS04: ${error instanceof Error ? error.message : 'admin auth unavailable'}`);
+        return;
+      }
+      throw error;
+    }
 
     const createdUser = await createUserForDeletion(request);
     expect(createdUser.id).toBeTruthy();

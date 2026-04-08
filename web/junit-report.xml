@@ -1,2 +1,11 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="0.01198700000000008">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="3.897182">
+<testsuite name="frontend\real-purchase-flow.spec.ts" timestamp="2026-04-08T22:33:46.453Z" hostname="frontend-chromium" tests="1" failures="0" skipped="0" time="2.069" errors="0">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend\real-purchase-flow.spec.ts" time="2.069">
+<system-out>
+<![CDATA[
+✅ TS04 concluído! Usuário e2e.delete.user.1775687628434-2079@example.com e produto Produto Delete API 1775687628681-4997 removidos com sucesso.
+]]>
+</system-out>
+</testcase>
+</testsuite>
 </testsuites>
