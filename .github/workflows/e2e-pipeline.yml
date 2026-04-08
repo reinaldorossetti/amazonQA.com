@@ -257,7 +257,7 @@ jobs:
 
       - name: Wait for backend readiness (timeout)
         continue-on-error: true
-        run: npx wait-on --timeout 180000 http://127.0.0.1:3001/api/products
+        run: npx wait-on --timeout 120000 http://127.0.0.1:3001/api/products
 
       - name: Start frontend (Vite) in background
         working-directory: web
@@ -268,7 +268,7 @@ jobs:
 
       - name: Wait for frontend readiness (timeout)
         continue-on-error: true
-        run: npx wait-on --timeout 180000 http://127.0.0.1:5174
+        run: npx wait-on --timeout 120000 http://127.0.0.1:5174
 
       - name: Run E2E tests
         working-directory: web
