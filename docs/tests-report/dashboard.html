@@ -278,54 +278,56 @@
     </main>
 
     <script>
+      const reportsBaseUrl = "https://reinaldorossetti.github.io/amazonQA.com/tests-report/";
+
       const reports = [
         {
           title: "E2E - Frontend Chromium",
           type: "E2E",
           description: "Fluxos ponta a ponta no Chromium.",
-          href: "playwright-report-frontend-chromium/playwright-report/index.html"
+          href: `${reportsBaseUrl}playwright-report-frontend-chromium/web/playwright-report/`
         },
         {
           title: "E2E - Frontend Edge",
           type: "E2E",
           description: "Fluxos ponta a ponta no Edge.",
-          href: "playwright-report-frontend-edge/playwright-report/index.html"
+          href: `${reportsBaseUrl}playwright-report-frontend-edge/web/playwright-report/`
         },
         {
           title: "E2E - Frontend WebKit",
           type: "E2E",
           description: "Fluxos ponta a ponta no WebKit.",
-          href: "playwright-report-frontend-webkit/playwright-report/index.html"
+          href: `${reportsBaseUrl}playwright-report-frontend-webkit/web/playwright-report/`
         },
         {
           title: "E2E - API",
           type: "E2E",
           description: "Cenários E2E da API.",
-          href: "playwright-report-api/playwright-report/index.html"
+          href: `${reportsBaseUrl}playwright-report-api/web/playwright-report/`
         },
         {
           title: "Contrato - Pact",
           type: "Integração/Contrato",
           description: "Validação de contrato consumidor/provedor.",
-          href: "contract-tests/pacts/tester-web-frontend-tester-backend-api.json"
+          href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json`
         },
         {
           title: "Unit - Coverage",
           type: "Unidade",
           description: "Cobertura e status dos testes unitários (Vitest).",
-          href: "unit-tests/unit-test-report/coverage/index.html"
+          href: `${reportsBaseUrl}unit-tests/coverage/index.html`
         },
         {
           title: "Unit - JUnit XML",
           type: "Unidade",
           description: "Saída bruta de execução dos testes unitários.",
-          href: "unit-tests/unit-test-report/junit.xml"
+          href: `${reportsBaseUrl}unit-tests/junit.xml`
         },
         {
           title: "Swagger API",
           type: "Documentação",
           description: "Documentação interativa dos endpoints.",
-          href: "swagger/index.html"
+          href: `${reportsBaseUrl}swagger/index.html`
         }
       ];
 

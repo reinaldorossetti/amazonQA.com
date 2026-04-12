@@ -8,6 +8,7 @@
     "build": "npm run db:reset && next build",
     "start": "next start -p 3001",
     "seed": "node scripts/seed.js",
+    "ensure-admin-user": "node scripts/ensure-admin-user.js",
     "test:pact:provider": "node scripts/verify-pact-provider.js",
     "test:pact": "npm run test:pact:provider",
     "db:reset": "node scripts/reset.js",

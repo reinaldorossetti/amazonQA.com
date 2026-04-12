@@ -8,11 +8,12 @@ config({ path: '.env', override: false });
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-const email = process.env.SEED_ADMIN_EMAIL || 'admin.teste@tester.com';
+const email = process.env.SEED_ADMIN_EMAIL || 'reiload@gmail.com';
+const password = process.env.SEED_ADMIN_PASSWORD || process.env.ADMIN_BOOTSTRAP_PASSWORD || 'rei2026@QA';
 const pepper = process.env.BCRYPT_PEPPER ?? '';
 
 async function ensureAdminUser(): Promise<void> {
-  const hash = await bcrypt.hash(`Admin@123${pepper}`, 12);
+  const hash = await bcrypt.hash(`${password}${pepper}`, 12);
 
   const exists = await pool.query('SELECT id FROM users WHERE LOWER(email)=LOWER($1) LIMIT 1', [email]);
 
@@ -62,6 +63,11 @@ async function ensureAdminUser(): Promise<void> {
         ok: true,
         userId,
         email,
+        passwordSource: process.env.SEED_ADMIN_PASSWORD
+          ? 'SEED_ADMIN_PASSWORD'
+          : process.env.ADMIN_BOOTSTRAP_PASSWORD
+            ? 'ADMIN_BOOTSTRAP_PASSWORD'
+            : 'default',
         roles: roles.rows.map((row: { role: string }) => row.role),
       },
       null,

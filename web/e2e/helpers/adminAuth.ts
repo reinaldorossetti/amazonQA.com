@@ -25,10 +25,14 @@ const CREDENTIAL_PAIRS: Array<{ emailKey: string; passwordKey: string }> = [
   { emailKey: 'ADMIN_EMAIL', passwordKey: 'ADMIN_PASSWORD' },
 ];
 
-function getServerDir(): string {
+function getServerDirs(): string[] {
   const currentFile = fileURLToPath(import.meta.url);
   const currentDir = path.dirname(currentFile);
-  return path.resolve(currentDir, '../../../server');
+
+  const preferred = path.resolve(currentDir, '../../../server-ts');
+  const legacy = path.resolve(currentDir, '../../../server');
+
+  return [preferred, legacy].filter((dir, index, array) => array.indexOf(dir) === index);
 }
 
 function parseDotEnvFile(filePath: string): Record<string, string> {
@@ -61,13 +65,14 @@ function parseDotEnvFile(filePath: string): Record<string, string> {
 }
 
 function loadServerEnvVariables(): Record<string, string> {
-  const serverDir = getServerDir();
   const candidates = ['.env', '.env.local', '.env.test', '.env.ci'];
   const merged: Record<string, string> = {};
 
-  for (const fileName of candidates) {
-    const filePath = path.resolve(serverDir, fileName);
-    Object.assign(merged, parseDotEnvFile(filePath));
+  for (const serverDir of getServerDirs()) {
+    for (const fileName of candidates) {
+      const filePath = path.resolve(serverDir, fileName);
+      Object.assign(merged, parseDotEnvFile(filePath));
+    }
   }
 
   return merged;
@@ -111,6 +116,11 @@ function buildCredentialCandidates(): AdminCredentials[] {
       email: 'reiload@gmail.com',
       password: 'rei2026@QA',
       source: 'seed-default',
+    },
+    {
+      email: 'reiload@gmail.co',
+      password: 'rei2026@QA',
+      source: 'seed-default-server-ts-env',
     },
   ];
 
@@ -180,41 +190,61 @@ async function tryLoginCandidates(request: any, loginUrl: string, candidates: Ad
 }
 
 function runEnsureAdminUser(email: string, password: string): { ran: boolean; message: string } {
-  const serverDir = getServerDir();
-  const scriptPath = path.resolve(serverDir, 'scripts/ensure-admin-user.js');
+  const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
-  if (!existsSync(scriptPath)) {
-    return {
-      ran: false,
-      message: `script not found at ${scriptPath}`,
+  for (const serverDir of getServerDirs()) {
+    const jsScriptPath = path.resolve(serverDir, 'scripts/ensure-admin-user.js');
+    const tsScriptPath = path.resolve(serverDir, 'scripts/ensure-admin-user.ts');
+    const commonEnv = {
+      ...process.env,
+      SEED_ADMIN_EMAIL: email,
+      SEED_ADMIN_PASSWORD: password,
+      ADMIN_BOOTSTRAP_PASSWORD: password,
     };
+
+    try {
+      if (existsSync(jsScriptPath)) {
+        const output = execFileSync(process.execPath, [jsScriptPath], {
+          cwd: serverDir,
+          env: commonEnv,
+          stdio: 'pipe',
+          encoding: 'utf8',
+        });
+
+        const sanitizedOutput = String(output ?? '').replace(/\s+/g, ' ').trim();
+        return {
+          ran: true,
+          message: sanitizedOutput || `ensure-admin-user executed successfully in ${serverDir}`,
+        };
+      }
+
+      if (existsSync(tsScriptPath)) {
+        const output = execFileSync(npmCommand, ['run', 'ensure-admin-user'], {
+          cwd: serverDir,
+          env: commonEnv,
+          stdio: 'pipe',
+          encoding: 'utf8',
+        });
+
+        const sanitizedOutput = String(output ?? '').replace(/\s+/g, ' ').trim();
+        return {
+          ran: true,
+          message: sanitizedOutput || `ensure-admin-user executed successfully in ${serverDir}`,
+        };
+      }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'unknown error while running ensure-admin-user';
+      return {
+        ran: true,
+        message,
+      };
+    }
   }
 
-  try {
-    const output = execFileSync(process.execPath, [scriptPath], {
-      cwd: serverDir,
-      env: {
-        ...process.env,
-        SEED_ADMIN_EMAIL: email,
-        SEED_ADMIN_PASSWORD: password,
-        ADMIN_BOOTSTRAP_PASSWORD: password,
-      },
-      stdio: 'pipe',
-      encoding: 'utf8',
-    });
-
-    const sanitizedOutput = String(output ?? '').replace(/\s+/g, ' ').trim();
-    return {
-      ran: true,
-      message: sanitizedOutput || 'ensure-admin-user executed successfully',
-    };
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'unknown error while running ensure-admin-user';
-    return {
-      ran: true,
-      message,
-    };
-  }
+  return {
+    ran: false,
+    message: 'ensure-admin-user script not found in server-ts or server directories',
+  };
 }
 
 export async function loginAsAdminWithFallback(request: any, loginUrl: string): Promise<AdminLoginResponse> {
