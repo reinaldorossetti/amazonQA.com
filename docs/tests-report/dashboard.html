@@ -399,9 +399,9 @@
           href: `${reportsBaseUrl}playwright-report-frontend-edge/web/playwright-report/`
         },
         {
-          title: "E2E - API",
-          type: "E2E",
-          description: "Cenários E2E da API.",
+          title: "Integração - API",
+          type: "Integração/Contrato",
+          description: "Cenários de integração da API.",
           href: `${reportsBaseUrl}playwright-report-api/web/playwright-report/`
         },
         {
@@ -432,8 +432,8 @@
 
       const testSummaryItems = [
         "Unidade (Vitest): valida componentes e regras com execução rápida e cobertura detalhada.",
-        "Integração/Contrato (Pact): garante compatibilidade entre frontend e backend através de contratos.",
-        "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores e API.",
+        "Integração/Contrato (Pact e API): garante compatibilidade ponta a ponta na API e contratos consumidor/provedor.",
+        "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores no frontend.",
         "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints.",
         "Cobertura (Statements): percentual total de instruções e blocos de código executados durante os testes.",
         "Cobertura (Lines): percentual de linhas físicas de código fonte abrangidas pela execução dos testes."
@@ -498,9 +498,9 @@
       generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")}`;
 
       const projectLabels = {
-        "frontend-chromium": "Frontend Chromium",
-        "frontend-edge": "Frontend Edge",
-        api: "API"
+        "frontend-chromium": "E2E Frontend Chromium",
+        "frontend-edge": "E2E Frontend Edge",
+        api: "Integração API"
       };
 
       const formatPercent = (value) => {
@@ -573,6 +573,13 @@
         const e2eTotals = data?.e2e?.totals ?? {};
         const e2eProjects = data?.e2e?.byProject ?? {};
 
+        const apiStats = e2eProjects["api"] || { tests: 0, passed: 0, failures: 0, errors: 0, skipped: 0 };
+        const apiTests = safeNumber(apiStats.tests);
+        const apiFailures = safeNumber(apiStats.failures) + safeNumber(apiStats.errors);
+
+        const totalE2ETests = Math.max(0, safeNumber(e2eTotals.tests) - apiTests);
+        const totalE2EFailures = Math.max(0, safeNumber(e2eTotals.failures) + safeNumber(e2eTotals.errors) - apiFailures);
+
         dynamicStatus.textContent = "Métricas carregadas com sucesso.";
 
         metricsGrid.innerHTML = `
@@ -585,12 +592,20 @@
             <strong>${safeNumber(unit.failures) + safeNumber(unit.errors)}</strong>
           </div>
           <div class="metric">
+            <small>Int. API executados</small>
+            <strong>${apiTests}</strong>
+          </div>
+          <div class="metric">
+            <small>Falhas Int. API</small>
+            <strong>${apiFailures}</strong>
+          </div>
+          <div class="metric">
             <small>E2E executados</small>
-            <strong>${safeNumber(e2eTotals.tests)}</strong>
+            <strong>${totalE2ETests}</strong>
           </div>
           <div class="metric">
             <small>Falhas E2E</small>
-            <strong>${safeNumber(e2eTotals.failures) + safeNumber(e2eTotals.errors)}</strong>
+            <strong>${totalE2EFailures}</strong>
           </div>
           <div class="metric">
             <small>Cobertura (Statements)</small>
@@ -602,7 +617,7 @@
           </div>
         `;
 
-        const orderedProjects = ["frontend-chromium", "frontend-edge", "api"];
+        const orderedProjects = ["api", "frontend-chromium", "frontend-edge"];
         e2eBars.innerHTML = orderedProjects
           .map((projectKey) => {
             const project = e2eProjects[projectKey];
