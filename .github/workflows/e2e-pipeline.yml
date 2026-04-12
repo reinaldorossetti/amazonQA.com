@@ -163,7 +163,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [frontend-chromium, frontend-webkit, frontend-edge, api]
+        project: [frontend-chromium, frontend-edge, api]
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
 

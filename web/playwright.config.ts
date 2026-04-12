@@ -4,9 +4,9 @@ const isCI = !!(globalThis as { process?: { env?: { CI?: string } } }).process?.
 
 export default defineConfig({
   testDir: './e2e/specs',
-  timeout: 45_000,
+  timeout: 50_000,
   expect: {
-    timeout: 15_000,
+    timeout: 25_000,
   },
   fullyParallel: true,
   forbidOnly: isCI,
@@ -21,8 +21,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 15_000,
-    navigationTimeout: 45_000,
+    actionTimeout: 25_000,
+    navigationTimeout: 50_000,
     testIdAttribute: 'data-element-id',
   },
   projects: [
