@@ -289,6 +289,14 @@ jobs:
             web/playwright-report
           if-no-files-found: ignore
 
+      - name: Upload E2E JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-junit-${{ matrix.project }}
+          path: web/junit-report.xml
+          if-no-files-found: warn
+
       - name: Upload test results and logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -339,6 +347,13 @@ jobs:
           name: unit-test-report
           path: tests-report/unit-tests
 
+      - name: Download E2E JUnit report artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: e2e-junit-*
+          path: tests-report/e2e-junit
+
       - name: Download contract test artifacts
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -355,6 +370,14 @@ jobs:
         run: |
           mkdir -p tests-report
           cp docs/tests-report/dashboard.html tests-report/index.html
+
+      - name: Setup Node.js for dashboard metrics
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate dashboard metrics JSON
+        run: node scripts/generate-dashboard-metrics.js
 
       - name: Deploy Test reports to gh-pages
         if: always() && github.event_name == 'push'

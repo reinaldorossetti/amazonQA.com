@@ -1,1 +1,567 @@
-<!DOCTYPE html><html lang='pt-BR'><head><meta charset='UTF-8'><title>QA Dash LIVE</title><script src='https://cdn.jsdelivr.net/npm/chart.js'></script><style>body{background:#0b0e14;color:#e2e8f0;font-family:sans-serif;padding:3rem} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem} .card{background:#151921;padding:2rem;border-radius:1rem;border:1px solid #ffffff08;text-align:center} .stat{font-size:3rem;font-weight:800;margin:0.5rem 0} .label{color:#94a3b8;font-size:0.75rem;text-transform:uppercase} .success{color:#10b981} .live-badge{background:#6366f122;color:#6366f1;padding:0.4rem 0.8rem;border:1px solid #6366f144;border-radius:4px;font-size:0.7rem} canvas{max-height:160px}</style></head><body><div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem'><h1>QA LIVE ANALYTICS</h1><span class='live-badge'>LIVE FROM GITHUB PAGES</span></div><div class='grid'><div class='card'><div class='label'>Unit Coverage</div><div id='u-cov' class='stat success'>94.5%</div><div id='u-tests' class='label'>171 Unit Tests Passed</div></div><div class='card'><div class='label'>Chromium</div><canvas id='c1'></canvas></div><div class='card'><div class='label'>Edge</div><canvas id='c2'></canvas></div><div class='card'><div class='label'>API Integration</div><canvas id='c3'></canvas></div></div><script>const opt={plugins:{legend:{display:false}},maintainAspectRatio:false}; new Chart('c1',{type:'doughnut',data:{labels:['OK','FAIL'],datasets:[{data:[45,0],backgroundColor:['#10b981','#1e293b'],borderWidth:0}]},options:opt}); new Chart('c2',{type:'doughnut',data:{labels:['OK','FAIL'],datasets:[{data:[45,0],backgroundColor:['#6366f1','#1e293b'],borderWidth:0}]},options:opt}); new Chart('c3',{type:'doughnut',data:{labels:['OK','FAIL'],datasets:[{data:[120,0],backgroundColor:['#f59e0b','#1e293b'],borderWidth:0}]},options:opt});</script></body></html> 
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Dashboard | Relatórios de Testes</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #121a33;
+        --panel-soft: #1a2444;
+        --text: #e9eefc;
+        --muted: #aeb8d9;
+        --ok: #22c55e;
+        --mid: #f59e0b;
+        --top: #ef4444;
+        --accent: #60a5fa;
+        --border: #27345f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 90% -10%, #1e3a8a44 0%, transparent 60%),
+          radial-gradient(1000px 500px at -10% -20%, #7c3aed33 0%, transparent 60%),
+          var(--bg);
+      }
+
+      .container {
+        width: min(1120px, 92%);
+        margin: 36px auto 60px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .meta {
+        color: #c9d5ff;
+        font-size: 0.9rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      @media (min-width: 980px) {
+        .grid {
+          grid-template-columns: 320px 1fr;
+        }
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--panel-soft), var(--panel));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 26px #00000033;
+      }
+
+      .card h2,
+      .card h3 {
+        margin: 0 0 10px;
+      }
+
+      .muted {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .stat {
+        background: #0b1229;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .stat small {
+        color: var(--muted);
+        display: block;
+      }
+
+      .stat strong {
+        font-size: 1.3rem;
+      }
+
+      .pyramid {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .layer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.92rem;
+        letter-spacing: 0.2px;
+      }
+
+      .layer.top {
+        width: 90px;
+        background: var(--top);
+      }
+
+      .layer.mid {
+        width: 180px;
+        background: var(--mid);
+      }
+
+      .layer.base {
+        width: 270px;
+        background: var(--ok);
+      }
+
+      .legend {
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
+
+      .legend div {
+        margin: 6px 0;
+      }
+
+      .dot {
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
+      .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 12px;
+      }
+
+      .report {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        background: #0b1229;
+        display: grid;
+        gap: 10px;
+      }
+
+      .report-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .tag {
+        font-size: 0.76rem;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #3b4a80;
+        color: #d6e1ff;
+        background: #1a2550;
+      }
+
+      .btn {
+        text-decoration: none;
+        color: #08112d;
+        background: linear-gradient(180deg, #93c5fd, var(--accent));
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 700;
+        padding: 10px 12px;
+      }
+
+      .btn:hover {
+        filter: brightness(1.07);
+      }
+
+      .summary-list {
+        margin: 10px 0 0;
+        padding-left: 18px;
+      }
+
+      .summary-list li {
+        margin-bottom: 8px;
+        color: var(--muted);
+      }
+
+      .metrics-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+      }
+
+      .metric {
+        background: #0b1229;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .metric small {
+        color: var(--muted);
+        display: block;
+      }
+
+      .metric strong {
+        font-size: 1.1rem;
+      }
+
+      .bars {
+        margin-top: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .bar-row {
+        display: grid;
+        gap: 4px;
+      }
+
+      .bar-row span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .bar-track {
+        width: 100%;
+        height: 10px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: #1b2748;
+        display: flex;
+      }
+
+      .bar-pass {
+        background: var(--ok);
+      }
+
+      .bar-fail {
+        background: var(--top);
+      }
+
+      .bar-skip {
+        background: #64748b;
+      }
+
+      footer {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>Dashboard de Qualidade de Testes</h1>
+        <p>
+          Página central para navegação de relatórios de testes e visão da pirâmide de testes do projeto.
+        </p>
+        <div class="meta" id="generatedAt"></div>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Resumo da Pirâmide de Testes</h2>
+          <p class="muted">
+            A estratégia prioriza muitos testes de <strong>unidade</strong> na base (rápidos e baratos),
+            uma camada intermediária de <strong>integração/contrato</strong> para validação de comunicação,
+            e menos testes <strong>E2E</strong> no topo para cobrir fluxos críticos ponta a ponta.
+          </p>
+
+          <div class="pyramid" aria-label="Pirâmide de testes">
+            <div class="layer top">E2E</div>
+            <div class="layer mid">Integração / Contrato</div>
+            <div class="layer base">Unidade</div>
+          </div>
+
+          <div class="legend">
+            <div><span class="dot" style="background: var(--ok)"></span> Base: maior volume, feedback rápido.</div>
+            <div><span class="dot" style="background: var(--mid)"></span> Meio: valida integrações e contratos.</div>
+            <div><span class="dot" style="background: var(--top)"></span> Topo: valida jornada real do usuário.</div>
+          </div>
+
+          <div class="stats" id="stats"></div>
+        </article>
+
+        <article class="card">
+          <h2>Redirecionamento para Relatórios</h2>
+          <p class="muted">
+            Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.
+          </p>
+
+          <div class="reports-grid" id="reportsGrid"></div>
+
+          <h3 style="margin-top: 16px">Resumo dos testes</h3>
+          <ul class="summary-list" id="testSummary"></ul>
+
+          <h3 style="margin-top: 18px">Métricas dinâmicas (CI)</h3>
+          <p class="muted">Esses números vêm da última execução publicada pela pipeline.</p>
+          <div class="muted" id="dynamicStatus">Carregando métricas...</div>
+          <div class="metrics-grid" id="metricsGrid"></div>
+          <div class="bars" id="e2eBars"></div>
+        </article>
+      </section>
+
+      <footer>
+        Este dashboard é publicado no GitHub Pages pela pipeline de CI e funciona como ponto único de acesso aos resultados de qualidade.
+      </footer>
+    </main>
+
+    <script>
+      const reportsBaseUrl = new URL("./", window.location.href).href;
+
+      const reports = [
+        {
+          title: "E2E - Frontend Chromium",
+          type: "E2E",
+          description: "Fluxos ponta a ponta no Chromium.",
+          href: `${reportsBaseUrl}playwright-report-frontend-chromium/web/playwright-report/`
+        },
+        {
+          title: "E2E - Frontend Edge",
+          type: "E2E",
+          description: "Fluxos ponta a ponta no Edge.",
+          href: `${reportsBaseUrl}playwright-report-frontend-edge/web/playwright-report/`
+        },
+        {
+          title: "E2E - API",
+          type: "E2E",
+          description: "Cenários E2E da API.",
+          href: `${reportsBaseUrl}playwright-report-api/web/playwright-report/`
+        },
+        {
+          title: "Contrato - Pact",
+          type: "Integração/Contrato",
+          description: "Validação de contrato consumidor/provedor.",
+          href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json`
+        },
+        {
+          title: "Unit - Coverage",
+          type: "Unidade",
+          description: "Cobertura e status dos testes unitários (Vitest).",
+          href: `${reportsBaseUrl}unit-tests/coverage/index.html`
+        },
+        {
+          title: "Unit - JUnit XML",
+          type: "Unidade",
+          description: "Saída bruta de execução dos testes unitários.",
+          href: `${reportsBaseUrl}unit-tests/junit.xml`
+        },
+        {
+          title: "Swagger API",
+          type: "Documentação",
+          description: "Documentação interativa dos endpoints.",
+          href: `${reportsBaseUrl}swagger/index.html`
+        }
+      ];
+
+      const testSummaryItems = [
+        "Unidade (Vitest): valida componentes e regras com execução rápida e cobertura detalhada.",
+        "Integração/Contrato (Pact): garante compatibilidade entre frontend e backend através de contratos.",
+        "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores e API.",
+        "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints."
+      ];
+
+      const reportsGrid = document.getElementById("reportsGrid");
+      const stats = document.getElementById("stats");
+      const testSummary = document.getElementById("testSummary");
+      const generatedAt = document.getElementById("generatedAt");
+      const dynamicStatus = document.getElementById("dynamicStatus");
+      const metricsGrid = document.getElementById("metricsGrid");
+      const e2eBars = document.getElementById("e2eBars");
+
+      const counts = reports.reduce(
+        (acc, report) => {
+          if (report.type === "Unidade") acc.unit += 1;
+          if (report.type === "Integração/Contrato") acc.integration += 1;
+          if (report.type === "E2E") acc.e2e += 1;
+          return acc;
+        },
+        { unit: 0, integration: 0, e2e: 0 }
+      );
+
+      const cardsHtml = reports
+        .map(
+          (report) => `
+          <section class="report">
+            <div class="report-title">
+              <strong>${report.title}</strong>
+              <span class="tag">${report.type}</span>
+            </div>
+            <div class="muted">${report.description}</div>
+            <a class="btn" href="${report.href}">Abrir relatório</a>
+          </section>
+        `
+        )
+        .join("");
+
+      reportsGrid.innerHTML = cardsHtml;
+
+      stats.innerHTML = `
+        <div class="stat">
+          <small>Relatórios E2E</small>
+          <strong>${counts.e2e}</strong>
+        </div>
+        <div class="stat">
+          <small>Relatórios de Integração/Contrato</small>
+          <strong>${counts.integration}</strong>
+        </div>
+        <div class="stat">
+          <small>Relatórios Unitários</small>
+          <strong>${counts.unit}</strong>
+        </div>
+        <div class="stat">
+          <small>Total de atalhos</small>
+          <strong>${reports.length}</strong>
+        </div>
+      `;
+
+      testSummary.innerHTML = testSummaryItems.map((item) => `<li>${item}</li>`).join("");
+
+      generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")}`;
+
+      const projectLabels = {
+        "frontend-chromium": "Frontend Chromium",
+        "frontend-edge": "Frontend Edge",
+        api: "API"
+      };
+
+      const formatPercent = (value) => {
+        if (typeof value !== "number" || Number.isNaN(value)) return "N/D";
+        return `${value.toFixed(1)}%`;
+      };
+
+      const safeNumber = (value) => {
+        const num = Number(value);
+        return Number.isFinite(num) ? num : 0;
+      };
+
+      function renderBarRow(label, passed, failed, skipped, total) {
+        if (total <= 0) return "";
+        const passWidth = (passed / total) * 100;
+        const failWidth = (failed / total) * 100;
+        const skipWidth = (skipped / total) * 100;
+
+        return `
+          <div class="bar-row">
+            <span>${label}: ${passed} ✅ / ${failed} ❌ / ${skipped} ⏭️ (Total: ${total})</span>
+            <div class="bar-track" role="img" aria-label="${label} aprovado ${passed}, falhou ${failed}, ignorado ${skipped}">
+              <div class="bar-pass" style="width:${passWidth}%"></div>
+              <div class="bar-fail" style="width:${failWidth}%"></div>
+              <div class="bar-skip" style="width:${skipWidth}%"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderDynamicMetrics(data) {
+        const unit = data?.unit ?? {};
+        const e2eTotals = data?.e2e?.totals ?? {};
+        const e2eProjects = data?.e2e?.byProject ?? {};
+
+        dynamicStatus.textContent = "Métricas carregadas com sucesso.";
+
+        metricsGrid.innerHTML = `
+          <div class="metric">
+            <small>Unitários executados</small>
+            <strong>${safeNumber(unit.tests)}</strong>
+          </div>
+          <div class="metric">
+            <small>Falhas unitárias</small>
+            <strong>${safeNumber(unit.failures) + safeNumber(unit.errors)}</strong>
+          </div>
+          <div class="metric">
+            <small>E2E executados</small>
+            <strong>${safeNumber(e2eTotals.tests)}</strong>
+          </div>
+          <div class="metric">
+            <small>Falhas E2E</small>
+            <strong>${safeNumber(e2eTotals.failures) + safeNumber(e2eTotals.errors)}</strong>
+          </div>
+          <div class="metric">
+            <small>Cobertura (Statements)</small>
+            <strong>${formatPercent(unit?.coverage?.statements?.percent)}</strong>
+          </div>
+          <div class="metric">
+            <small>Cobertura (Lines)</small>
+            <strong>${formatPercent(unit?.coverage?.lines?.percent)}</strong>
+          </div>
+        `;
+
+        const orderedProjects = ["frontend-chromium", "frontend-edge", "api"];
+        e2eBars.innerHTML = orderedProjects
+          .map((projectKey) => {
+            const project = e2eProjects[projectKey];
+            if (!project) return "";
+            const passed = safeNumber(project.passed);
+            const failed = safeNumber(project.failures) + safeNumber(project.errors);
+            const skipped = safeNumber(project.skipped);
+            const total = safeNumber(project.tests);
+            return renderBarRow(projectLabels[projectKey] ?? projectKey, passed, failed, skipped, total);
+          })
+          .join("");
+
+        if (data?.generatedAt) {
+          const ciDate = new Date(data.generatedAt);
+          if (!Number.isNaN(ciDate.getTime())) {
+            generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")} · Dados CI: ${ciDate.toLocaleString("pt-BR")}`;
+          }
+        }
+      }
+
+      async function loadDynamicMetrics() {
+        try {
+          const response = await fetch(`${reportsBaseUrl}dashboard-metrics.json`, { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const data = await response.json();
+          renderDynamicMetrics(data);
+        } catch (error) {
+          dynamicStatus.textContent = "Métricas dinâmicas indisponíveis nesta publicação.";
+          metricsGrid.innerHTML = "";
+          e2eBars.innerHTML = "";
+        }
+      }
+
+      loadDynamicMetrics();
+    </script>
+  </body>
+</html>
