@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Dashboard | Relatórios de Testes</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #121a33;
+        --panel-soft: #1a2444;
+        --text: #e9eefc;
+        --muted: #aeb8d9;
+        --ok: #22c55e;
+        --mid: #f59e0b;
+        --top: #ef4444;
+        --accent: #60a5fa;
+        --border: #27345f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 90% -10%, #1e3a8a44 0%, transparent 60%),
+          radial-gradient(1000px 500px at -10% -20%, #7c3aed33 0%, transparent 60%),
+          var(--bg);
+      }
+
+      .container {
+        width: min(1120px, 92%);
+        margin: 36px auto 60px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .meta {
+        color: #c9d5ff;
+        font-size: 0.9rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      @media (min-width: 980px) {
+        .grid {
+          grid-template-columns: 320px 1fr;
+        }
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--panel-soft), var(--panel));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 26px #00000033;
+      }
+
+      .card h2,
+      .card h3 {
+        margin: 0 0 10px;
+      }
+
+      .muted {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .stat {
+        background: #0b1229;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .stat small {
+        color: var(--muted);
+        display: block;
+      }
+
+      .stat strong {
+        font-size: 1.3rem;
+      }
+
+      .pyramid {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .layer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 700;
+        font-size: 0.92rem;
+        letter-spacing: 0.2px;
+      }
+
+      .layer.top {
+        width: 90px;
+        background: var(--top);
+      }
+
+      .layer.mid {
+        width: 180px;
+        background: var(--mid);
+      }
+
+      .layer.base {
+        width: 270px;
+        background: var(--ok);
+      }
+
+      .legend {
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
+
+      .legend div {
+        margin: 6px 0;
+      }
+
+      .dot {
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+
+      .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 12px;
+      }
+
+      .report {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        background: #0b1229;
+        display: grid;
+        gap: 10px;
+      }
+
+      .report-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .tag {
+        font-size: 0.76rem;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #3b4a80;
+        color: #d6e1ff;
+        background: #1a2550;
+      }
+
+      .btn {
+        text-decoration: none;
+        color: #08112d;
+        background: linear-gradient(180deg, #93c5fd, var(--accent));
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 700;
+        padding: 10px 12px;
+      }
+
+      .btn:hover {
+        filter: brightness(1.07);
+      }
+
+      .summary-list {
+        margin: 10px 0 0;
+        padding-left: 18px;
+      }
+
+      .summary-list li {
+        margin-bottom: 8px;
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <h1>Dashboard de Qualidade de Testes</h1>
+        <p>
+          Página central para navegação de relatórios de testes e visão da pirâmide de testes do projeto.
+        </p>
+        <div class="meta" id="generatedAt"></div>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Resumo da Pirâmide de Testes</h2>
+          <p class="muted">
+            A estratégia prioriza muitos testes de <strong>unidade</strong> na base (rápidos e baratos),
+            uma camada intermediária de <strong>integração/contrato</strong> para validação de comunicação,
+            e menos testes <strong>E2E</strong> no topo para cobrir fluxos críticos ponta a ponta.
+          </p>
+
+          <div class="pyramid" aria-label="Pirâmide de testes">
+            <div class="layer top">E2E</div>
+            <div class="layer mid">Integração / Contrato</div>
+            <div class="layer base">Unidade</div>
+          </div>
+
+          <div class="legend">
+            <div><span class="dot" style="background: var(--ok)"></span> Base: maior volume, feedback rápido.</div>
+            <div><span class="dot" style="background: var(--mid)"></span> Meio: valida integrações e contratos.</div>
+            <div><span class="dot" style="background: var(--top)"></span> Topo: valida jornada real do usuário.</div>
+          </div>
+
+          <div class="stats" id="stats"></div>
+        </article>
+
+        <article class="card">
+          <h2>Redirecionamento para Relatórios</h2>
+          <p class="muted">
+            Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.
+          </p>
+
+          <div class="reports-grid" id="reportsGrid"></div>
+
+          <h3 style="margin-top: 16px">Resumo dos testes</h3>
+          <ul class="summary-list" id="testSummary"></ul>
+        </article>
+      </section>
+
+      <footer>
+        Este dashboard é publicado no GitHub Pages pela pipeline de CI e funciona como ponto único de acesso aos resultados de qualidade.
+      </footer>
+    </main>
+
+    <script>
+      const reports = [
+        {
+          title: "E2E - Frontend Chromium",
+          type: "E2E",
+          description: "Fluxos ponta a ponta no Chromium.",
+          href: "playwright-report-frontend-chromium/playwright-report/index.html"
+        },
+        {
+          title: "E2E - Frontend Edge",
+          type: "E2E",
+          description: "Fluxos ponta a ponta no Edge.",
+          href: "playwright-report-frontend-edge/playwright-report/index.html"
+        },
+        {
+          title: "E2E - Frontend WebKit",
+          type: "E2E",
+          description: "Fluxos ponta a ponta no WebKit.",
+          href: "playwright-report-frontend-webkit/playwright-report/index.html"
+        },
+        {
+          title: "E2E - API",
+          type: "E2E",
+          description: "Cenários E2E da API.",
+          href: "playwright-report-api/playwright-report/index.html"
+        },
+        {
+          title: "Contrato - Pact",
+          type: "Integração/Contrato",
+          description: "Validação de contrato consumidor/provedor.",
+          href: "contract-tests/pacts/tester-web-frontend-tester-backend-api.json"
+        },
+        {
+          title: "Unit - Coverage",
+          type: "Unidade",
+          description: "Cobertura e status dos testes unitários (Vitest).",
+          href: "unit-tests/unit-test-report/coverage/index.html"
+        },
+        {
+          title: "Unit - JUnit XML",
+          type: "Unidade",
+          description: "Saída bruta de execução dos testes unitários.",
+          href: "unit-tests/unit-test-report/junit.xml"
+        },
+        {
+          title: "Swagger API",
+          type: "Documentação",
+          description: "Documentação interativa dos endpoints.",
+          href: "swagger/index.html"
+        }
+      ];
+
+      const testSummaryItems = [
+        "Unidade (Vitest): valida componentes e regras com execução rápida e cobertura detalhada.",
+        "Integração/Contrato (Pact): garante compatibilidade entre frontend e backend através de contratos.",
+        "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores e API.",
+        "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints."
+      ];
+
+      const reportsGrid = document.getElementById("reportsGrid");
+      const stats = document.getElementById("stats");
+      const testSummary = document.getElementById("testSummary");
+      const generatedAt = document.getElementById("generatedAt");
+
+      const counts = reports.reduce(
+        (acc, report) => {
+          if (report.type === "Unidade") acc.unit += 1;
+          if (report.type === "Integração/Contrato") acc.integration += 1;
+          if (report.type === "E2E") acc.e2e += 1;
+          return acc;
+        },
+        { unit: 0, integration: 0, e2e: 0 }
+      );
+
+      const cardsHtml = reports
+        .map(
+          (report) => `
+          <section class="report">
+            <div class="report-title">
+              <strong>${report.title}</strong>
+              <span class="tag">${report.type}</span>
+            </div>
+            <div class="muted">${report.description}</div>
+            <a class="btn" href="${report.href}">Abrir relatório</a>
+          </section>
+        `
+        )
+        .join("");
+
+      reportsGrid.innerHTML = cardsHtml;
+
+      stats.innerHTML = `
+        <div class="stat">
+          <small>Relatórios E2E</small>
+          <strong>${counts.e2e}</strong>
+        </div>
+        <div class="stat">
+          <small>Relatórios de Integração/Contrato</small>
+          <strong>${counts.integration}</strong>
+        </div>
+        <div class="stat">
+          <small>Relatórios Unitários</small>
+          <strong>${counts.unit}</strong>
+        </div>
+        <div class="stat">
+          <small>Total de atalhos</small>
+          <strong>${reports.length}</strong>
+        </div>
+      `;
+
+      testSummary.innerHTML = testSummaryItems.map((item) => `<li>${item}</li>`).join("");
+
+      generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")}`;
+    </script>
+  </body>
+</html>

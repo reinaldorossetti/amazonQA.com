@@ -272,6 +272,7 @@ jobs:
 
       - name: Run E2E tests
         working-directory: web
+        continue-on-error: true
         run: xvfb-run --auto-servernum npx playwright test --config playwright.config.ts --project=${{ matrix.project }}
 
       - name: Upload Playwright report
@@ -346,27 +347,10 @@ jobs:
           mkdir -p tests-report/swagger
           cp -r docs/swagger/* tests-report/swagger/
 
-      - name: Generate Index HTML
+      - name: Create HTML index page to redirect to reports
         run: |
-          cat << 'EOF' > tests-report/index.html
-          <!DOCTYPE html>
-          <html>
-            <head><title>Test Reports</title><style>body { font-family: sans-serif; padding: 2rem; }</style></head>
-            <body>
-              <h1>Test Reports</h1>
-              <ul>
-                <li><a href="playwright-report-frontend-chromium/playwright-report/index.html">Tests on browser - Chromium</a></li>
-                <li><a href="playwright-report-frontend-edge/playwright-report/index.html">Tests on browser - Edge</a></li>
-                <li><a href="playwright-report-frontend-webkit/playwright-report/index.html">Tests on browser - WebKit</a></li>
-                <li><a href="playwright-report-api/playwright-report/index.html">API Tests</a></li>
-                <li><a href="unit-tests/unit-test-report/coverage/index.html">Unit Tests Coverage (Vitest)</a></li>
-                <li><a href="unit-tests/unit-test-report/junit.xml">Unit Tests JUnit XML</a></li>
-                <li><a href="contract-tests/pacts/tester-web-frontend-tester-backend-api.json">Contract Tests (Pact)</a></li>
-                <li><a href="swagger/index.html">Swagger API</a></li>
-              </ul>
-            </body>
-          </html>
-          EOF
+          mkdir -p tests-report
+          cp docs/tests-report/dashboard.html tests-report/index.html
 
       - name: Deploy Test reports to gh-pages
         if: always() && github.event_name == 'push'

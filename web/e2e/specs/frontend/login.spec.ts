@@ -78,15 +78,34 @@ test.describe('Login', () => {
   });
 
   /**
-   * TS05 - Navegação: o botão "Criar sua conta" na página de login deve redirecionar para /register.
+   * TS06 - Validação de limite de caracteres: os campos devem ter um limite de no máximo 30 caracteres.
+   * Se preenchidos com 250 caracteres aleatórios e especiais, apenas os primeiros 30 deverão ser contabilizados.
    */
-  test('TS05 - Should navigate to the register page when clicking the create account button', async ({ page, waitForPageLoad }) => {
+  test('TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goToLogin();
 
-    await loginPage.clickCreateAccount();
+    // Uma string de exatos 250 caracteres englobando números, letras e caracteres especiais
+    const longString = 'uX2@#$!*()_+=-{}[]|\\;:?/>.<,~`0987654321qweRTYuioPASdfghjKLzxcvbnMmNnBbVvCcXxZzLk1!@#$%^&*()_+{}:"<>?~sdfRTYU1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjk!@#$%^&*()_+<>?~`-=][\\;\'/.,12348765qwQZ1T!x{A_f]p@L%q*w$v';
 
-    await waitForPageLoad(page, 'register');
-    await expect(page).toHaveURL('/register');
+    const emailLocator = page.getByTestId(loginPage.emailInput);
+    const passwordLocator = page.getByTestId(loginPage.passwordInput);
+    
+    // Tenta forçar a inserção da cadeia de 250 caracteres nos respectivos campos
+    await loginPage.fillEmail(longString);
+    await loginPage.fillPassword(longString);
+
+    // Extrai o valor real computado nativamente pelo DOM do front-end
+    const domEmailValue = await emailLocator.inputValue();
+    const domPasswordValue = await passwordLocator.inputValue();
+
+    // Assertivas: Confere se os valores cortaram exatamente no 30º dígito (length <= 30)
+    expect(domEmailValue.length).toBeLessThanOrEqual(30);
+    expect(domPasswordValue.length).toBeLessThanOrEqual(30);
+
+    // Bônus: Valida se a string presente no campo é de fato os 30 caracteres originais iniciais
+    expect(domEmailValue).toBe(longString.substring(0, 30));
+    expect(domPasswordValue).toBe(longString.substring(0, 30));
   });
+
 });

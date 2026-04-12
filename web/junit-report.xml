@@ -1,11 +1,184 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="3.897182">
-<testsuite name="frontend\real-purchase-flow.spec.ts" timestamp="2026-04-08T22:33:46.453Z" hostname="frontend-chromium" tests="1" failures="0" skipped="0" time="2.069" errors="0">
-<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend\real-purchase-flow.spec.ts" time="2.069">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="2" time="9.742944999999999">
+<testsuite name="frontend\login.spec.ts" timestamp="2026-04-09T22:23:57.414Z" hostname="frontend-chromium" tests="1" failures="0" skipped="0" time="5.142" errors="1">
+<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="5.142">
 <system-out>
 <![CDATA[
-✅ TS04 concluído! Usuário e2e.delete.user.1775687628434-2079@example.com e produto Produto Delete API 1775687628681-4997 removidos com sucesso.
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login" type="Error">
+<![CDATA[  [frontend-chromium] › frontend\login.spec.ts:84:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login
+    Call log:
+      - navigating to "http://127.0.0.1:5174/login", waiting until "load"
+
+
+       at ..\helpers\PageBase.ts:95
+
+      93 |    */
+      94 |   async goto(url: string) {
+    > 95 |     await this.page.goto(url);
+         |                     ^
+      96 |   }
+      97 |
+      98 |   /**
+        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
+        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login
+    Call log:
+      - navigating to "http://127.0.0.1:5174/login", waiting until "load"
+
+
+       at ..\helpers\PageBase.ts:95
+
+      93 |    */
+      94 |   async goto(url: string) {
+    > 95 |     await this.page.goto(url);
+         |                     ^
+      96 |   }
+      97 |
+      98 |   /**
+        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
+        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="frontend\login.spec.ts" timestamp="2026-04-09T22:23:57.414Z" hostname="frontend-edge" tests="1" failures="0" skipped="0" time="5.758" errors="1">
+<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="5.758">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip]]
+]]>
+</system-out>
+<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login" type="Error">
+<![CDATA[  [frontend-edge] › frontend\login.spec.ts:84:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login
+    Call log:
+      - navigating to "http://localhost:5174/login", waiting until "load"
+
+
+       at ..\helpers\PageBase.ts:95
+
+      93 |    */
+      94 |   async goto(url: string) {
+    > 95 |     await this.page.goto(url);
+         |                     ^
+      96 |   }
+      97 |
+      98 |   /**
+        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
+        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login
+    Call log:
+      - navigating to "http://localhost:5174/login", waiting until "load"
+
+
+       at ..\helpers\PageBase.ts:95
+
+      93 |    */
+      94 |   async goto(url: string) {
+    > 95 |     await this.page.goto(url);
+         |                     ^
+      96 |   }
+      97 |
+      98 |   /**
+        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
+        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
 </testcase>
 </testsuite>
 </testsuites>
