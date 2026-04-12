@@ -158,7 +158,7 @@ describe('Payments API endpoints', () => {
           metadata: {
             pixCode: '00020126PIX123',
             qrCodeImage: 'data:image/svg+xml;utf8,%3Csvg%3E%3C%2Fsvg%3E',
-            readableText: 'Value when reading QR Code: R$ 100.00',
+            readableText: 'Valor ao ler QR Code: R$ 100.00',
           },
         }],
       })
@@ -178,7 +178,7 @@ describe('Payments API endpoints', () => {
     expect(payload.status).toBe('pending');
     expect(payload.method).toBe('pix');
     expect(payload.metadata.qrCodeImage).toContain('data:image/svg+xml');
-    expect(payload.metadata.readableText).toContain('Value when reading QR Code');
+    expect(payload.metadata.readableText).toContain('Valor ao ler QR Code');
   });
 
   it('GET /api/orders/:id/payments/:paymentId blocks access from another user', async () => {

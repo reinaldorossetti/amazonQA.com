@@ -1,184 +1,86 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="2" time="9.742944999999999">
-<testsuite name="frontend\login.spec.ts" timestamp="2026-04-09T22:23:57.414Z" hostname="frontend-chromium" tests="1" failures="0" skipped="0" time="5.142" errors="1">
-<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="5.142">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip]]
-]]>
-</system-out>
-<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login" type="Error">
-<![CDATA[  [frontend-chromium] › frontend\login.spec.ts:84:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
-
-    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login
-    Call log:
-      - navigating to "http://127.0.0.1:5174/login", waiting until "load"
-
-
-       at ..\helpers\PageBase.ts:95
-
-      93 |    */
-      94 |   async goto(url: string) {
-    > 95 |     await this.page.goto(url);
-         |                     ^
-      96 |   }
-      97 |
-      98 |   /**
-        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
-        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login
-    Call log:
-      - navigating to "http://127.0.0.1:5174/login", waiting until "load"
-
-
-       at ..\helpers\PageBase.ts:95
-
-      93 |    */
-      94 |   async goto(url: string) {
-    > 95 |     await this.page.goto(url);
-         |                     ^
-      96 |   }
-      97 |
-      98 |   /**
-        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
-        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md
-
-    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</error>
+<testsuites id="" name="" tests="37" failures="0" skipped="0" errors="0" time="7.479499999999999">
+<testsuite name="api\cart.api.spec.ts" timestamp="2026-04-12T20:56:46.469Z" hostname="api" tests="14" failures="0" skipped="0" time="13.81" errors="0">
+<testcase name="API Cart › deve adicionar, incrementar, listar e remover item do carrinho" classname="api\cart.api.spec.ts" time="2.062">
+</testcase>
+<testcase name="API Cart › deve validar erros de payload do carrinho" classname="api\cart.api.spec.ts" time="0.162">
+</testcase>
+<testcase name="API Cart › deve retornar 401 com mensagem padronizada para token ausente no POST" classname="api\cart.api.spec.ts" time="0.119">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para cartItemId ausente quando autenticado" classname="api\cart.api.spec.ts" time="0.784">
+</testcase>
+<testcase name="API Cart › deve retornar 404 ao remover item inexistente para usuário autenticado" classname="api\cart.api.spec.ts" time="0.878">
+</testcase>
+<testcase name="API Cart › deve buscar item do carrinho por ID quando existir" classname="api\cart.api.spec.ts" time="2.008">
+</testcase>
+<testcase name="API Cart › deve retornar 404 com mensagem &quot;Carrinho não encontrado&quot; para ID inexistente" classname="api\cart.api.spec.ts" time="1.563">
+</testcase>
+<testcase name="API Cart › deve retornar 403 ao tentar acessar carrinho de outro usuário" classname="api\cart.api.spec.ts" time="1.091">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para userId inválido no GET do carrinho" classname="api\cart.api.spec.ts" time="0.604">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para payload inválido no POST do carrinho autenticado" classname="api\cart.api.spec.ts" time="0.585">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para produto duplicado no mesmo payload" classname="api\cart.api.spec.ts" time="1.077">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para produto inexistente" classname="api\cart.api.spec.ts" time="0.526">
+</testcase>
+<testcase name="API Cart › deve retornar 400 para quantidade acima do limite" classname="api\cart.api.spec.ts" time="1.158">
+</testcase>
+<testcase name="API Cart › deve aceitar lote com múltiplos produtos diferentes" classname="api\cart.api.spec.ts" time="1.193">
 </testcase>
 </testsuite>
-<testsuite name="frontend\login.spec.ts" timestamp="2026-04-09T22:23:57.414Z" hostname="frontend-edge" tests="1" failures="0" skipped="0" time="5.758" errors="1">
-<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="5.758">
-<system-out>
-<![CDATA[
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\test-failed-1.png]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\video.webm]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\error-context.md]]
-
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip]]
-]]>
-</system-out>
-<error message="page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login" type="Error">
-<![CDATA[  [frontend-edge] › frontend\login.spec.ts:84:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
-
-    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login
-    Call log:
-      - navigating to "http://localhost:5174/login", waiting until "load"
-
-
-       at ..\helpers\PageBase.ts:95
-
-      93 |    */
-      94 |   async goto(url: string) {
-    > 95 |     await this.page.goto(url);
-         |                     ^
-      96 |   }
-      97 |
-      98 |   /**
-        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
-        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge\error-context.md
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5174/login
-    Call log:
-      - navigating to "http://localhost:5174/login", waiting until "load"
-
-
-       at ..\helpers\PageBase.ts:95
-
-      93 |    */
-      94 |   async goto(url: string) {
-    > 95 |     await this.page.goto(url);
-         |                     ^
-      96 |   }
-      97 |
-      98 |   /**
-        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
-        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:86:21
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\error-context.md
-
-    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-edge-retry1\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-]]>
-</error>
+<testsuite name="api\orders.api.spec.ts" timestamp="2026-04-12T20:56:46.469Z" hostname="api" tests="6" failures="0" skipped="0" time="6.627" errors="0">
+<testcase name="API Orders › deve criar pedido a partir do carrinho e limpar carrinho" classname="api\orders.api.spec.ts" time="1.114">
+</testcase>
+<testcase name="API Orders › deve respeitar idempotência no POST /orders" classname="api\orders.api.spec.ts" time="1.183">
+</testcase>
+<testcase name="API Orders › deve retornar 400 ao criar pedido com carrinho vazio" classname="api\orders.api.spec.ts" time="0.605">
+</testcase>
+<testcase name="API Orders › deve retornar 401 sem token no POST /orders" classname="api\orders.api.spec.ts" time="0.225">
+</testcase>
+<testcase name="API Orders › deve listar pedidos do usuário autenticado" classname="api\orders.api.spec.ts" time="1.097">
+</testcase>
+<testcase name="API Orders › deve bloquear acesso a pedido de outro usuário (403)" classname="api\orders.api.spec.ts" time="2.403">
+</testcase>
+</testsuite>
+<testsuite name="api\payments.api.spec.ts" timestamp="2026-04-12T20:56:46.469Z" hostname="api" tests="3" failures="0" skipped="0" time="6.324" errors="0">
+<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api\payments.api.spec.ts" time="2.16">
+</testcase>
+<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api\payments.api.spec.ts" time="2.7">
+</testcase>
+<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api\payments.api.spec.ts" time="1.464">
+</testcase>
+</testsuite>
+<testsuite name="api\products.api.spec.ts" timestamp="2026-04-12T20:56:46.469Z" hostname="api" tests="6" failures="0" skipped="0" time="1.642" errors="0">
+<testcase name="API Products › deve listar produtos sem filtro de categoria" classname="api\products.api.spec.ts" time="0.107">
+</testcase>
+<testcase name="API Products › deve criar, buscar, filtrar, atualizar e remover produto" classname="api\products.api.spec.ts" time="0.689">
+</testcase>
+<testcase name="API Products › deve retornar 400 ao criar produto sem campos obrigatórios" classname="api\products.api.spec.ts" time="0.297">
+</testcase>
+<testcase name="API Products › deve retornar array vazio para categoria inexistente" classname="api\products.api.spec.ts" time="0.015">
+</testcase>
+<testcase name="API Products › deve retornar 404 ao atualizar produto inexistente" classname="api\products.api.spec.ts" time="0.269">
+</testcase>
+<testcase name="API Products › deve retornar 404 ao remover produto inexistente" classname="api\products.api.spec.ts" time="0.265">
+</testcase>
+</testsuite>
+<testsuite name="api\users.api.spec.ts" timestamp="2026-04-12T20:56:46.469Z" hostname="api" tests="8" failures="0" skipped="0" time="2.202" errors="0">
+<testcase name="API Users › deve registrar e autenticar usuário válido" classname="api\users.api.spec.ts" time="0.501">
+</testcase>
+<testcase name="API Users › deve retornar 409 para e-mail duplicado" classname="api\users.api.spec.ts" time="0.26">
+</testcase>
+<testcase name="API Users › deve retornar 401 para credenciais inválidas" classname="api\users.api.spec.ts" time="0.019">
+</testcase>
+<testcase name="API Users › deve retornar 401 para senha incorreta de usuário existente" classname="api\users.api.spec.ts" time="0.572">
+</testcase>
+<testcase name="API Users › deve retornar 400 para login sem email/senha" classname="api\users.api.spec.ts" time="0.025">
+</testcase>
+<testcase name="API Users › deve retornar 400 para payload incompleto" classname="api\users.api.spec.ts" time="0.014">
+</testcase>
+<testcase name="API Users › deve retornar 409 para CPF duplicado" classname="api\users.api.spec.ts" time="0.434">
+</testcase>
+<testcase name="API Users › deve retornar 409 para CNPJ duplicado" classname="api\users.api.spec.ts" time="0.377">
 </testcase>
 </testsuite>
 </testsuites>

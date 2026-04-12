@@ -39,7 +39,7 @@ export async function GET(request: Request, { params }: RouteContext): Promise<R
     );
 
     if (!result.rows.length) {
-      return NextResponse.json({ message: 'Cart item not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Cart item not found' }, { status: 404 });
     }
 
     return NextResponse.json(result.rows[0]);

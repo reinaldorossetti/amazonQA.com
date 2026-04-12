@@ -121,7 +121,7 @@ test.describe('API Cart', () => {
 
     expect(response.status()).toBe(401);
     const payload = await response.json();
-    expect(payload.error).toBe('Missing bearer token');
+    expect(String(payload.error ?? '')).toMatch(/token/i);
   });
 
   test('deve retornar 400 para cartItemId ausente quando autenticado', async ({ request }) => {

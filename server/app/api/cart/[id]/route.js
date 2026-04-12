@@ -31,7 +31,7 @@ export async function GET(request, { params }) {
         );
 
         if (!rows.length) {
-            return NextResponse.json({ message: 'Carrinho não encontrado' }, { status: 404 });
+            return NextResponse.json({ error: 'Cart item not found' }, { status: 404 });
         }
 
         return NextResponse.json(rows[0]);

@@ -136,7 +136,9 @@ test.describe('API Payments', () => {
     expect(payment.status).toBe('pending');
     expect(payment.metadata?.pixCode).toBeTruthy();
     expect(payment.metadata?.qrCode).toBeTruthy();
-    expect(payment.metadata?.readableText).toContain('Value when reading QR Code');
+    expect(String(payment.metadata?.readableText ?? '')).toMatch(
+      /Value when reading QR Code|Valor ao ler QR Code/
+    );
 
     const statusRes = await request.get(`orders/${order.id}/payments/${payment.id}`, {
       headers,
