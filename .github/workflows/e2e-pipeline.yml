@@ -43,10 +43,14 @@ jobs:
             --coverage \
             --reporter=default \
             --reporter=junit \
-            --outputFile=unit-test-report/junit.xml \
-            | tee unit-test-report/console.log
+            --outputFile=unit-report.xml
           TEST_EXIT_CODE=$?
           set -e
+
+          # Move JUnit report into the artifact folder
+          if [ -f unit-report.xml ]; then
+            mv unit-report.xml unit-test-report/junit.xml
+          fi
 
           # Move coverage output into the artifact folder when available
           if [ -d coverage ]; then

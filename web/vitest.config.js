@@ -18,7 +18,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reportOnFailure: true,
-      reporter: ['text', 'json', 'html', 'lcov', 'text-summary'],
+      reporter: ['text', 'json', 'html', 'lcov', 'text-summary', 'clover'],
       lines: 80,
       functions: 80,
       branches: 80,
