@@ -6,11 +6,20 @@ import {
   registerUser,
   getUserByEmail,
   loginUser,
+  getMe,
+  updateMyAddress,
   getUsersAdmin,
   deleteUserByIdAdmin,
   getCartItems,
   upsertCartItem,
   removeCartItem,
+  createOrder,
+  getOrders,
+  getOrderById,
+  createOrderPayment,
+  getOrderPaymentStatus,
+  getMyOrders,
+  getMyOrderById,
 } from '../../db/api';
 
 describe('db/api.js', () => {
@@ -168,6 +177,105 @@ describe('db/api.js', () => {
     expect(global.fetch).toHaveBeenCalledWith('/api/users/77', expect.objectContaining({ method: 'DELETE' }));
   });
 
+  it('getUsersAdmin sem parâmetros não adiciona querystring', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ items: [] }),
+    });
+
+    await getUsersAdmin();
+
+    expect(global.fetch).toHaveBeenCalledWith('/api/users', expect.objectContaining({ method: 'GET' }));
+  });
+
+  it('getMe e updateMyAddress chamam endpoints de conta autenticados', async () => {
+    localStorage.setItem('auth_token', 'token-account');
+    global.fetch
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ id: 1, email: 'qa@test.com' }) })
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ ok: true }) });
+
+    const me = await getMe();
+    const updated = await updateMyAddress({ address_city: 'Campinas' });
+
+    expect(me).toEqual({ id: 1, email: 'qa@test.com' });
+    expect(updated).toEqual({ ok: true });
+
+    expect(global.fetch.mock.calls[0][0]).toBe('/api/users/me');
+    expect(global.fetch.mock.calls[1][0]).toBe('/api/users/me/address');
+    expect(global.fetch.mock.calls[1][1].method).toBe('PUT');
+  });
+
+  it('createOrder envia payload completo e idempotency key no header', async () => {
+    localStorage.setItem('auth_token', 'token-order');
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ id: 321, status: 'created' }),
+    });
+
+    await createOrder({
+      shippingTotal: 10,
+      discountTotal: 3,
+      paymentMethod: 'credit',
+      shippingAddress: { city: 'SP' },
+      billingInfo: { cpf: '000' },
+      items: [{ productId: 7, quantity: 2 }],
+      idempotencyKey: 'idem-123',
+    });
+
+    const [, options] = global.fetch.mock.calls[0];
+    expect(global.fetch.mock.calls[0][0]).toBe('/api/orders');
+    expect(options.headers['Idempotency-Key']).toBe('idem-123');
+    expect(JSON.parse(options.body)).toEqual(
+      expect.objectContaining({
+        shippingTotal: 10,
+        discountTotal: 3,
+        paymentMethod: 'credit',
+      })
+    );
+  });
+
+  it('getOrders e getOrderById serializam consulta e id corretamente', async () => {
+    global.fetch
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ items: [] }) })
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ id: 45 }) });
+
+    await getOrders({ page: 1, pageSize: 10, status: 'created', search: '', ignored: null });
+    await getOrderById(45);
+
+    expect(global.fetch.mock.calls[0][0]).toBe('/api/orders?page=1&pageSize=10&status=created');
+    expect(global.fetch.mock.calls[1][0]).toBe('/api/orders/45');
+  });
+
+  it('createOrderPayment e getOrderPaymentStatus usam rotas de pagamento', async () => {
+    global.fetch
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ id: 99, status: 'authorized' }) })
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ id: 99, status: 'pending' }) });
+
+    const created = await createOrderPayment(10, { method: 'pix', amount: 50 });
+    const status = await getOrderPaymentStatus(10, 99);
+
+    expect(created).toEqual({ id: 99, status: 'authorized' });
+    expect(status).toEqual({ id: 99, status: 'pending' });
+    expect(global.fetch.mock.calls[0][0]).toBe('/api/orders/10/payments');
+    expect(global.fetch.mock.calls[1][0]).toBe('/api/orders/10/payments/99');
+  });
+
+  it('helpers getMyOrders/getMyOrderById delegam para endpoints de orders', async () => {
+    global.fetch
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ items: [{ id: 1 }] }) })
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ id: 1 }) });
+
+    const list = await getMyOrders({ page: 2, pageSize: 5 });
+    const one = await getMyOrderById(1);
+
+    expect(list).toEqual({ items: [{ id: 1 }] });
+    expect(one).toEqual({ id: 1 });
+    expect(global.fetch.mock.calls[0][0]).toBe('/api/orders?page=2&pageSize=5');
+    expect(global.fetch.mock.calls[1][0]).toBe('/api/orders/1');
+  });
+
   it('lança erro com mensagem de API quando res.ok = false', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
@@ -176,6 +284,18 @@ describe('db/api.js', () => {
     });
 
     await expect(getProducts()).rejects.toThrow('Bad request');
+  });
+
+  it('quando JSON falha em erro de resposta, usa fallback HTTP status', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      json: async () => {
+        throw new Error('invalid json');
+      },
+    });
+
+    await expect(getProducts()).rejects.toThrow('HTTP 500');
   });
 
   it('em 401 remove auth_user/auth_token do localStorage', async () => {

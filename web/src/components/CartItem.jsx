@@ -24,6 +24,7 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart, onChange, onRemove }) 
     price: Number.isFinite(item?.price) ? item.price : 0,
     quantity: Number.isFinite(item?.quantity) && item.quantity > 0 ? item.quantity : 1,
   };
+  const lineTotal = safeItem.price * safeItem.quantity;
   return (
     <ListItem
       alignItems="flex-start"
@@ -59,11 +60,16 @@ const CartItem = ({ item, onUpdateCart, onRemoveFromCart, onChange, onRemove }) 
           In Stock
         </Typography>
 
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          Total do item: <strong>R$ {lineTotal.toFixed(2)}</strong>
+        </Typography>
+
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap", mt: 1 }}>
           <Box id="cart-item-quantity-wrapper" data-element-id="cart-item-quantity-wrapper" sx={{ display: "inline-flex", alignItems: "center", backgroundColor: "#F0F2F2", borderRadius: 2, border: "1px solid #D5D9D9", px: 1, py: 0.5, mr: 1, boxShadow: "0 2px 5px 0 rgba(213,217,217,.5)" }}>
             <Typography variant="body2" sx={{ mr: 1 }}>Qty:</Typography>        
             <input
               type="number"
+              aria-label={t("cart_item.qty")}
               min="1"
               step="1"
               value={safeItem.quantity}

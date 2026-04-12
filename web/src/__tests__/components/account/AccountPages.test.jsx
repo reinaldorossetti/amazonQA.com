@@ -16,6 +16,7 @@ import {
   getMyOrders,
   getMyOrderById,
 } from '../../../db/api';
+import { toast } from 'react-toastify';
 
 vi.mock('../../../db/api', () => ({
   getMe: vi.fn(),
@@ -100,6 +101,90 @@ describe('Account pages', () => {
     });
   });
 
+  it('exibe erro quando falha ao salvar endereço', async () => {
+    const user = userEvent.setup();
+
+    getMe.mockResolvedValueOnce({
+      address_zip: '01001000',
+      address_street: 'Rua Teste',
+      address_number: '10',
+      address_complement: '',
+      address_neighborhood: 'Centro',
+      address_city: 'São Paulo',
+      address_state: 'SP',
+    });
+    updateMyAddress.mockRejectedValueOnce(new Error('Falha ao salvar endereço'));
+
+    render(
+      <MemoryRouter>
+        <UserAddressPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Cidade')).toHaveValue('São Paulo');
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Salvar endereço' }));
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Falha ao salvar endereço');
+    });
+  });
+
+  it('aplica fallback para campos vazios quando dados de endereço não existem', async () => {
+    getMe.mockResolvedValueOnce({});
+
+    render(
+      <MemoryRouter>
+        <UserAddressPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Cidade')).toHaveValue('');
+      expect(screen.getByLabelText('CEP')).toHaveValue('');
+      expect(screen.getByLabelText('Rua')).toHaveValue('');
+    });
+  });
+
+  it('usa mensagem fallback ao falhar carregamento de endereço sem message', async () => {
+    getMe.mockRejectedValueOnce({});
+
+    render(
+      <MemoryRouter>
+        <UserAddressPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Erro ao carregar endereço')).toBeInTheDocument();
+    });
+  });
+
+  it('usa mensagem fallback ao falhar atualização sem message', async () => {
+    const user = userEvent.setup();
+
+    getMe.mockResolvedValueOnce({ address_city: 'São Paulo' });
+    updateMyAddress.mockRejectedValueOnce({});
+
+    render(
+      <MemoryRouter>
+        <UserAddressPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Cidade')).toHaveValue('São Paulo');
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Salvar endereço' }));
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Erro ao atualizar endereço');
+    });
+  });
+
   it('lista pedidos na tela de pedidos', async () => {
     getMyOrders.mockResolvedValueOnce({
       items: [
@@ -120,6 +205,34 @@ describe('Account pages', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/ORD-20260330-000101/)).toBeInTheDocument();
+    });
+  });
+
+  it('exibe estado vazio quando usuário não possui pedidos', async () => {
+    getMyOrders.mockResolvedValueOnce({ items: [] });
+
+    render(
+      <MemoryRouter>
+        <OrdersPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Você ainda não possui pedidos.')).toBeInTheDocument();
+    });
+  });
+
+  it('exibe erro ao falhar carregamento de pedidos', async () => {
+    getMyOrders.mockRejectedValueOnce(new Error('Falha ao buscar pedidos'));
+
+    render(
+      <MemoryRouter>
+        <OrdersPage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Falha ao buscar pedidos')).toBeInTheDocument();
     });
   });
 
@@ -144,6 +257,52 @@ describe('Account pages', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/Notebook/)).toBeInTheDocument();
+    });
+  });
+
+  it('exibe alerta quando detalhe do pedido retorna nulo', async () => {
+    getMyOrderById.mockResolvedValueOnce(null);
+
+    render(
+      <MemoryRouter initialEntries={['/minha-conta/pedidos/999']}>
+        <Routes>
+          <Route path="/minha-conta/pedidos/:id" element={<OrderDetailsPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Pedido não encontrado.')).toBeInTheDocument();
+    });
+  });
+
+  it('exibe erro ao falhar carregamento do detalhe do pedido', async () => {
+    getMyOrderById.mockRejectedValueOnce(new Error('Erro detalhe'));
+
+    render(
+      <MemoryRouter initialEntries={['/minha-conta/pedidos/555']}>
+        <Routes>
+          <Route path="/minha-conta/pedidos/:id" element={<OrderDetailsPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Erro detalhe')).toBeInTheDocument();
+    });
+  });
+
+  it('exibe erro quando falha ao carregar perfil do usuário', async () => {
+    getMe.mockRejectedValueOnce(new Error('Erro de perfil'));
+
+    render(
+      <MemoryRouter>
+        <UserProfilePage />
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Erro de perfil')).toBeInTheDocument();
     });
   });
 

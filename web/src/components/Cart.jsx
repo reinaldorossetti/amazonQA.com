@@ -81,6 +81,16 @@ const Cart = ({
                   Price
                 </Typography>
               </Box>
+              <Button
+                component={Link}
+                to="/"
+                variant="text"
+                color="secondary"
+                startIcon={<ArrowBackIcon />}
+                sx={{ mb: 1, px: 0 }}
+              >
+                {t("cart.continue_shopping")}
+              </Button>
               <Divider sx={{ mb: 2, borderColor: "#D5D9D9" }} />
 
               <List disablePadding>
@@ -124,6 +134,10 @@ const Cart = ({
           {/* Resumo do pedido (25%) */}
           <Box id="cart-order-summary-wrapper" sx={{ width: { xs: "100%", md: "25%" }, minWidth: "300px" }}>
             <Paper elevation={0} sx={{ p: 3, borderRadius: 0, border: "none", backgroundColor: "#fff" }}>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+                {t("cart.order_summary")}
+              </Typography>
+
               <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                 <Typography variant="body2" color="success.main" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
@@ -131,12 +145,27 @@ const Cart = ({
                 </Typography>
               </Box>
 
+              <Stack spacing={0.75} sx={{ mb: 2 }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="body2" color="text.secondary">{t("cart.items")}</Typography>
+                  <Typography variant="body2">{totalItems}</Typography>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="body2" color="text.secondary">{t("cart.shipping")}</Typography>
+                  <Typography variant="body2">{t("cart.free")}</Typography>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="body2" color="text.secondary">{t("cart.total")}</Typography>
+                  <Typography variant="body2" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Typography>
+                </Box>
+              </Stack>
+
               <Typography variant="h6" fontWeight={400} sx={{ fontSize: "18px", mb: 2 }}>
                 Subtotal ({totalItems} items): <Box component="span" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Box>
               </Typography>
 
               <Box sx={{ mb: 2 }}>
-                <CheckoutButton cartItems={safeCartItems} />
+                <CheckoutButton cartItems={safeCartItems} setCartItems={setCartItems} />
               </Box>
             </Paper>
           </Box>

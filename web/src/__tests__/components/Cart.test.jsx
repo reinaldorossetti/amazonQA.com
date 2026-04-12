@@ -12,6 +12,12 @@ vi.mock('../../components/CartItem', () => ({
   default: ({ item, onUpdateCart, onRemoveFromCart }) => {
     updateSpy(item, onUpdateCart);
     removeSpy(item, onRemoveFromCart);
+    if (typeof onUpdateCart === 'function') {
+      onUpdateCart(item, 2);
+    }
+    if (typeof onRemoveFromCart === 'function') {
+      onRemoveFromCart(item);
+    }
     return <li data-testid={`cart-item-${item.id}`}>{item.name}</li>;
   },
 }));

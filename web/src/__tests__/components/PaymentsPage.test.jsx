@@ -143,4 +143,63 @@ describe('PaymentsPage', () => {
       }),
     });
   });
+
+  it('redireciona para carrinho quando não há pedido na navegação', async () => {
+    locationState = { state: { cartItems: [] } };
+
+    render(<PaymentsPage />);
+
+    expect(screen.getByText('payments.error.no_order')).toBeInTheDocument();
+  });
+
+  it('valida split com valor inválido e bloqueia envio', async () => {
+    const user = userEvent.setup();
+    render(<PaymentsPage />);
+
+    await user.click(screen.getByLabelText('payments.split.enable'));
+    const firstAmountInput = screen.getByLabelText('payments.split.first_amount');
+    await user.clear(firstAmountInput);
+    await user.type(firstAmountInput, '0');
+    await user.click(screen.getByRole('button', { name: /payments.cta.pay_now/i }));
+
+    expect(toast.error).toHaveBeenCalledWith('payments.error.invalid_split');
+    expect(createOrderPayment).not.toHaveBeenCalled();
+  });
+
+  it('valida split com métodos iguais e bloqueia envio', async () => {
+    const user = userEvent.setup();
+    render(<PaymentsPage />);
+
+    await user.click(screen.getByLabelText('payments.split.enable'));
+    await user.click(screen.getByRole('button', { name: /pix aprovação rápida/i }));
+    await user.click(screen.getByRole('button', { name: /payments.cta.generate_pix/i }));
+
+    expect(toast.error).toHaveBeenCalledWith('payments.error.same_method');
+    expect(createOrderPayment).not.toHaveBeenCalled();
+  });
+
+  it('interrompe fluxo quando segundo pagamento do split falha', async () => {
+    const user = userEvent.setup();
+    createOrderPayment
+      .mockResolvedValueOnce({ id: 1, status: 'authorized', method: 'credit', amount: 100 })
+      .mockResolvedValueOnce({ id: 2, status: 'failed', method: 'pix', amount: 99.9 });
+
+    render(<PaymentsPage />);
+
+    await user.click(screen.getByLabelText('payments.split.enable'));
+    await user.click(screen.getByRole('button', { name: /payments.cta.pay_now/i }));
+
+    expect(toast.error).toHaveBeenCalledWith('Segundo pagamento negado. Ajuste os métodos e tente novamente.');
+    expect(navigateMock).not.toHaveBeenCalledWith('/thank-you', expect.anything());
+  });
+
+  it('captura exceção do backend e mostra fallback de erro', async () => {
+    const user = userEvent.setup();
+    createOrderPayment.mockRejectedValueOnce(new Error('Falha inesperada no gateway'));
+
+    render(<PaymentsPage />);
+    await user.click(screen.getByRole('button', { name: /payments.cta.pay_now/i }));
+
+    expect(toast.error).toHaveBeenCalledWith('Falha inesperada no gateway');
+  });
 });
