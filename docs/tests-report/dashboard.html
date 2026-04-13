@@ -632,6 +632,11 @@
         api: "Integração API"
       };
 
+      const frontendE2EReportSources = {
+        "frontend-chromium": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-chromium/web/playwright-report/",
+        "frontend-edge": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/web/playwright-report/"
+      };
+
       const formatPercent = (value) => {
         if (typeof value !== "number" || Number.isNaN(value)) return "N/D";
         return `${value.toFixed(1)}%`;
@@ -690,6 +695,170 @@
             </div>
           </div>
         `;
+      }
+
+      function readPlaywrightCounterFromAnchors(doc, label) {
+        const anchors = Array.from(doc.querySelectorAll("a"));
+        const pattern = new RegExp(`^${label}\\s*(\\d+)$`, "i");
+
+        for (const anchor of anchors) {
+          const text = (anchor.textContent || "").replace(/\s+/g, " ").trim();
+          const match = text.match(pattern);
+          if (match) {
+            return safeNumber(match[1]);
+          }
+        }
+
+        return null;
+      }
+
+      function parsePlaywrightSummaryFromDocument(doc) {
+        const all = readPlaywrightCounterFromAnchors(doc, "All");
+        const passed = readPlaywrightCounterFromAnchors(doc, "Passed");
+        const failed = readPlaywrightCounterFromAnchors(doc, "Failed");
+        const flaky = readPlaywrightCounterFromAnchors(doc, "Flaky");
+        const skipped = readPlaywrightCounterFromAnchors(doc, "Skipped");
+
+        if ([all, passed, failed, skipped].every((value) => typeof value === "number")) {
+          return {
+            tests: all,
+            passed,
+            failures: failed,
+            flaky: typeof flaky === "number" ? flaky : 0,
+            skipped
+          };
+        }
+
+        const text = (doc.body?.innerText || doc.documentElement?.innerText || "").replace(/\s+/g, " ");
+        const allMatch = text.match(/\bAll\s*(\d+)\b/i);
+        const passedMatch = text.match(/\bPassed\s*(\d+)\b/i);
+        const failedMatch = text.match(/\bFailed\s*(\d+)\b/i);
+        const flakyMatch = text.match(/\bFlaky\s*(\d+)\b/i);
+        const skippedMatch = text.match(/\bSkipped\s*(\d+)\b/i);
+
+        if (!allMatch || !passedMatch || !failedMatch || !skippedMatch) {
+          return null;
+        }
+
+        return {
+          tests: safeNumber(allMatch[1]),
+          passed: safeNumber(passedMatch[1]),
+          failures: safeNumber(failedMatch[1]),
+          flaky: flakyMatch ? safeNumber(flakyMatch[1]) : 0,
+          skipped: safeNumber(skippedMatch[1])
+        };
+      }
+
+      async function loadPlaywrightSummaryFromUrl(reportUrl) {
+        return new Promise((resolve, reject) => {
+          const iframe = document.createElement("iframe");
+          iframe.style.position = "absolute";
+          iframe.style.width = "1px";
+          iframe.style.height = "1px";
+          iframe.style.opacity = "0";
+          iframe.style.pointerEvents = "none";
+          iframe.style.left = "-9999px";
+          iframe.src = reportUrl;
+
+          let done = false;
+          let pollTimer = null;
+          let timeoutTimer = null;
+
+          const finalize = (result, error) => {
+            if (done) return;
+            done = true;
+            if (pollTimer) clearInterval(pollTimer);
+            if (timeoutTimer) clearTimeout(timeoutTimer);
+            iframe.remove();
+            if (error) reject(error);
+            else resolve(result);
+          };
+
+          iframe.addEventListener("load", () => {
+            pollTimer = window.setInterval(() => {
+              try {
+                const doc = iframe.contentDocument;
+                if (!doc) return;
+                const parsed = parsePlaywrightSummaryFromDocument(doc);
+                if (parsed && parsed.tests > 0) {
+                  finalize(parsed);
+                }
+              } catch {
+                finalize(null, new Error(`Não foi possível ler métricas do relatório: ${reportUrl}`));
+              }
+            }, 250);
+          });
+
+          iframe.addEventListener("error", () => {
+            finalize(null, new Error(`Falha ao carregar relatório: ${reportUrl}`));
+          });
+
+          timeoutTimer = window.setTimeout(() => {
+            finalize(null, new Error(`Tempo excedido ao ler relatório: ${reportUrl}`));
+          }, 12000);
+
+          document.body.appendChild(iframe);
+        });
+      }
+
+      async function enrichFrontendE2EFromPlaywrightReports(data) {
+        const nextData = JSON.parse(JSON.stringify(data || {}));
+        nextData.e2e = nextData.e2e || {};
+        nextData.e2e.byProject = nextData.e2e.byProject || {};
+
+        const entries = Object.entries(frontendE2EReportSources);
+        const updates = await Promise.all(
+          entries.map(async ([projectKey, reportUrl]) => {
+            try {
+              const reportStats = await loadPlaywrightSummaryFromUrl(reportUrl);
+              return { projectKey, reportUrl, reportStats };
+            } catch {
+              return null;
+            }
+          })
+        );
+
+        for (const item of updates) {
+          if (!item) continue;
+          const { projectKey, reportUrl, reportStats } = item;
+          const existing = nextData.e2e.byProject[projectKey] || {};
+          const failures = safeNumber(reportStats.failures) + safeNumber(reportStats.flaky);
+
+          nextData.e2e.byProject[projectKey] = {
+            ...existing,
+            tests: safeNumber(reportStats.tests),
+            passed: safeNumber(reportStats.passed),
+            failures,
+            errors: 0,
+            skipped: safeNumber(reportStats.skipped),
+            status: failures === 0 ? "passed" : "failed",
+            sourceFile: reportUrl
+          };
+        }
+
+        const recomputedTotals = Object.values(nextData.e2e.byProject).reduce(
+          (acc, current) => {
+            acc.tests += safeNumber(current.tests);
+            acc.failures += safeNumber(current.failures);
+            acc.errors += safeNumber(current.errors);
+            acc.skipped += safeNumber(current.skipped);
+            acc.passed += safeNumber(current.passed);
+            return acc;
+          },
+          { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 }
+        );
+
+        nextData.e2e.totals = {
+          ...recomputedTotals,
+          status:
+            recomputedTotals.tests > 0
+              ? recomputedTotals.failures === 0 && recomputedTotals.errors === 0
+                ? "passed"
+                : "failed"
+              : "unknown"
+        };
+
+        return nextData;
       }
 
       function renderCIStatus(data) {
@@ -785,11 +954,11 @@
             <strong>${unitBackendFails}</strong>
           </div>
           <div class="metric">
-            <small>Int. API executados</small>
+            <small>Testes de API executados</small>
             <strong>${apiTests}</strong>
           </div>
           <div class="metric">
-            <small>Falhas Int. API</small>
+            <small>Falhas Testes de API</small>
             <strong>${apiFailures}</strong>
           </div>
           <div class="metric">
@@ -860,8 +1029,9 @@
           }
 
           const data = await response.json();
-          renderDynamicMetrics(data);
-          renderCIStatus(data);
+          const enrichedData = await enrichFrontendE2EFromPlaywrightReports(data);
+          renderDynamicMetrics(enrichedData);
+          renderCIStatus(enrichedData);
         } catch (error) {
           dynamicStatus.className = "status-pill warning";
           dynamicStatus.textContent = "Métricas dinâmicas indisponíveis nesta publicação.";
