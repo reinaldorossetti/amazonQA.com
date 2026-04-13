@@ -225,6 +225,102 @@
         gap: 10px;
       }
 
+      .charts-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 10px;
+      }
+
+      .chart-card {
+        background: #0b1229;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .chart-card h4 {
+        margin: 0 0 10px;
+        font-size: 0.95rem;
+      }
+
+      .suite-donuts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+      }
+
+      .donut-wrap {
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+      }
+
+      .donut {
+        --pct: 0;
+        --tone: var(--accent);
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        position: relative;
+        background: conic-gradient(var(--tone) calc(var(--pct) * 1%), #24335c 0);
+        display: grid;
+        place-items: center;
+      }
+
+      .donut::after {
+        content: "";
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #0b1229;
+        border: 1px solid #2b3f73;
+      }
+
+      .donut-value {
+        position: relative;
+        z-index: 1;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .donut-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .coverage-bars {
+        display: grid;
+        gap: 8px;
+      }
+
+      .coverage-row {
+        display: grid;
+        gap: 4px;
+      }
+
+      .coverage-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .coverage-track {
+        width: 100%;
+        height: 10px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: #1b2748;
+      }
+
+      .coverage-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #34d399, #60a5fa);
+      }
+
       .metric {
         background: #0b1229;
         border: 1px solid var(--border);
@@ -309,6 +405,30 @@
         height: 18px;
       }
 
+      .status-pill {
+        margin-top: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.83rem;
+        border-radius: 999px;
+        padding: 6px 10px;
+        border: 1px solid #324777;
+        background: #101a36;
+      }
+
+      .status-pill.success {
+        color: #86efac;
+        border-color: #1f8f4c;
+        background: rgba(34, 197, 94, 0.12);
+      }
+
+      .status-pill.warning {
+        color: #fbbf24;
+        border-color: #8c6a11;
+        background: rgba(245, 158, 11, 0.12);
+      }
+
       footer {
         margin-top: 20px;
         color: var(--muted);
@@ -371,8 +491,9 @@
 
           <h3 style="margin-top: 18px">Métricas dinâmicas (CI)</h3>
           <p class="muted">Esses números vêm da última execução publicada pela pipeline.</p>
-          <div class="muted" id="dynamicStatus">Carregando métricas...</div>
+          <div class="status-pill" id="dynamicStatus">Carregando métricas...</div>
           <div class="metrics-grid" id="metricsGrid"></div>
+          <div class="charts-grid" id="chartsGrid"></div>
           <div class="bars" id="e2eBars"></div>
         </article>
       </section>
@@ -411,16 +532,22 @@
           href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json`
         },
         {
-          title: "Unit - Coverage",
+          title: "Unit Web - Coverage",
           type: "Unidade",
-          description: "Cobertura e status dos testes unitários (Vitest).",
-          href: `${reportsBaseUrl}unit-tests/coverage/index.html`
+          description: "Cobertura e status dos testes unitários do frontend web (Vitest).",
+          href: `${reportsBaseUrl}unit-tests-web/coverage/index.html`
         },
         {
-          title: "Unit - JUnit XML",
+          title: "Unit Web - JUnit XML",
           type: "Unidade",
-          description: "Saída bruta de execução dos testes unitários.",
-          href: `${reportsBaseUrl}unit-tests/junit.xml`
+          description: "Saída bruta de execução dos testes unitários do web.",
+          href: `${reportsBaseUrl}unit-tests-web/junit.xml`
+        },
+        {
+          title: "Unit Backend-ts - JUnit XML",
+          type: "Unidade",
+          description: "Saída bruta de execução dos testes unitários do backend-ts.",
+          href: `${reportsBaseUrl}unit-tests-backend/junit.xml`
         },
         {
           title: "Swagger API",
@@ -431,7 +558,8 @@
       ];
 
       const testSummaryItems = [
-        "Unidade (Vitest): valida componentes e regras com execução rápida e cobertura detalhada.",
+        "Unidade Web (Vitest): valida componentes e regras do frontend com execução rápida e cobertura detalhada.",
+        "Unidade Backend-ts (Vitest): valida regras e serviços do backend em isolamento.",
         "Integração/Contrato (Pact e API): garante compatibilidade ponta a ponta na API e contratos consumidor/provedor.",
         "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores no frontend.",
         "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints.",
@@ -445,6 +573,7 @@
       const generatedAt = document.getElementById("generatedAt");
       const dynamicStatus = document.getElementById("dynamicStatus");
       const metricsGrid = document.getElementById("metricsGrid");
+      const chartsGrid = document.getElementById("chartsGrid");
       const e2eBars = document.getElementById("e2eBars");
 
       const counts = reports.reduce(
@@ -513,6 +642,38 @@
         return Number.isFinite(num) ? num : 0;
       };
 
+      const safePercent = (passed, total) => {
+        if (total <= 0) return 0;
+        return Math.max(0, Math.min(100, (passed / total) * 100));
+      };
+
+      function renderDonut(title, passed, total, tone) {
+        const pct = safePercent(passed, total);
+        return `
+          <div class="donut-wrap">
+            <div class="donut" style="--pct:${pct}; --tone:${tone};">
+              <span class="donut-value">${pct.toFixed(1)}%</span>
+            </div>
+            <div class="donut-label">${title}<br>${passed}/${total} aprovados</div>
+          </div>
+        `;
+      }
+
+      function renderCoverageBar(label, percent) {
+        const pct = typeof percent === "number" && !Number.isNaN(percent) ? Math.max(0, Math.min(100, percent)) : 0;
+        return `
+          <div class="coverage-row">
+            <div class="coverage-head">
+              <span>${label}</span>
+              <span>${typeof percent === "number" && !Number.isNaN(percent) ? `${percent.toFixed(1)}%` : "N/D"}</span>
+            </div>
+            <div class="coverage-track">
+              <div class="coverage-fill" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }
+
       function renderBarRow(label, passed, failed, skipped, total) {
         if (total <= 0) return "";
         const passWidth = (passed / total) * 100;
@@ -543,9 +704,18 @@
           return;
         }
 
-        const unitFails = safeNumber(data?.unit?.failures) + safeNumber(data?.unit?.errors);
+        const unitWeb = data?.unit?.web ?? {};
+        const unitBackend = data?.unit?.backend ?? {};
+        const unitFails =
+          safeNumber(unitWeb?.failures) +
+          safeNumber(unitWeb?.errors) +
+          safeNumber(unitBackend?.failures) +
+          safeNumber(unitBackend?.errors);
         const e2eFails = safeNumber(data?.e2e?.totals?.failures) + safeNumber(data?.e2e?.totals?.errors);
-        const totalTests = safeNumber(data?.unit?.tests) + safeNumber(data?.e2e?.totals?.tests);
+        const totalTests =
+          safeNumber(unitWeb?.tests) +
+          safeNumber(unitBackend?.tests) +
+          safeNumber(data?.e2e?.totals?.tests);
         
         if (totalTests === 0) {
           badge.className = "ci-status fail";
@@ -569,7 +739,8 @@
       }
 
       function renderDynamicMetrics(data) {
-        const unit = data?.unit ?? {};
+        const unitWeb = data?.unit?.web ?? data?.unit ?? {};
+        const unitBackend = data?.unit?.backend ?? {};
         const e2eTotals = data?.e2e?.totals ?? {};
         const e2eProjects = data?.e2e?.byProject ?? {};
 
@@ -580,16 +751,38 @@
         const totalE2ETests = Math.max(0, safeNumber(e2eTotals.tests) - apiTests);
         const totalE2EFailures = Math.max(0, safeNumber(e2eTotals.failures) + safeNumber(e2eTotals.errors) - apiFailures);
 
-        dynamicStatus.textContent = "Métricas carregadas com sucesso.";
+        dynamicStatus.className = "status-pill success";
+        dynamicStatus.textContent = "Métricas carregadas com sucesso";
+
+        const unitWebTests = safeNumber(unitWeb.tests);
+        const unitWebFails = safeNumber(unitWeb.failures) + safeNumber(unitWeb.errors);
+        const unitWebSkipped = safeNumber(unitWeb.skipped);
+        const unitWebPassed = Math.max(safeNumber(unitWeb.passed) || unitWebTests - unitWebFails - unitWebSkipped, 0);
+
+        const unitBackendTests = safeNumber(unitBackend.tests);
+        const unitBackendFails = safeNumber(unitBackend.failures) + safeNumber(unitBackend.errors);
+        const unitBackendSkipped = safeNumber(unitBackend.skipped);
+        const unitBackendPassed = Math.max(safeNumber(unitBackend.passed) || unitBackendTests - unitBackendFails - unitBackendSkipped, 0);
+
+        const apiPassed = Math.max(safeNumber(apiStats.passed), 0);
+        const e2eFrontPassed = Math.max(safeNumber(e2eTotals.passed) - apiPassed, 0);
 
         metricsGrid.innerHTML = `
           <div class="metric">
-            <small>Unitários executados</small>
-            <strong>${safeNumber(unit.tests)}</strong>
+            <small>Unit Web executados</small>
+            <strong>${unitWebTests}</strong>
           </div>
           <div class="metric">
-            <small>Falhas unitárias</small>
-            <strong>${safeNumber(unit.failures) + safeNumber(unit.errors)}</strong>
+            <small>Falhas Unit Web</small>
+            <strong>${unitWebFails}</strong>
+          </div>
+          <div class="metric">
+            <small>Unit Backend executados</small>
+            <strong>${unitBackendTests}</strong>
+          </div>
+          <div class="metric">
+            <small>Falhas Unit Backend</small>
+            <strong>${unitBackendFails}</strong>
           </div>
           <div class="metric">
             <small>Int. API executados</small>
@@ -608,13 +801,34 @@
             <strong>${totalE2EFailures}</strong>
           </div>
           <div class="metric">
-            <small>Cobertura (Statements)</small>
-            <strong>${formatPercent(unit?.coverage?.statements?.percent)}</strong>
+            <small>Cobertura Web (Statements)</small>
+            <strong>${formatPercent(unitWeb?.coverage?.statements?.percent)}</strong>
           </div>
           <div class="metric">
-            <small>Cobertura (Lines)</small>
-            <strong>${formatPercent(unit?.coverage?.lines?.percent)}</strong>
+            <small>Cobertura Web (Lines)</small>
+            <strong>${formatPercent(unitWeb?.coverage?.lines?.percent)}</strong>
           </div>
+        `;
+
+        chartsGrid.innerHTML = `
+          <section class="chart-card">
+            <h4>Taxa de Sucesso por Suíte</h4>
+            <div class="suite-donuts">
+              ${renderDonut("Unit Web", unitWebPassed, unitWebTests, "#60a5fa")}
+              ${renderDonut("Unit Backend", unitBackendPassed, unitBackendTests, "#34d399")}
+              ${renderDonut("Integração API", Math.max(apiTests - apiFailures - safeNumber(apiStats.skipped), 0), apiTests, "#f59e0b")}
+              ${renderDonut("E2E Frontend", Math.max(e2eFrontPassed, 0), totalE2ETests, "#ef4444")}
+            </div>
+          </section>
+          <section class="chart-card">
+            <h4>Cobertura Web</h4>
+            <div class="coverage-bars">
+              ${renderCoverageBar("Statements", unitWeb?.coverage?.statements?.percent)}
+              ${renderCoverageBar("Lines", unitWeb?.coverage?.lines?.percent)}
+              ${renderCoverageBar("Functions", unitWeb?.coverage?.functions?.percent)}
+              ${renderCoverageBar("Branches", unitWeb?.coverage?.branches?.percent)}
+            </div>
+          </section>
         `;
 
         const orderedProjects = ["api", "frontend-chromium", "frontend-edge"];
@@ -649,8 +863,10 @@
           renderDynamicMetrics(data);
           renderCIStatus(data);
         } catch (error) {
+          dynamicStatus.className = "status-pill warning";
           dynamicStatus.textContent = "Métricas dinâmicas indisponíveis nesta publicação.";
           metricsGrid.innerHTML = "";
+          chartsGrid.innerHTML = "";
           e2eBars.innerHTML = "";
           renderCIStatus(null);
         }

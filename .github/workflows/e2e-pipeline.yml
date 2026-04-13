@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   unit-tests:
-    name: Unit tests (Vitest)
+    name: Unit tests Web (Vitest)
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -74,7 +74,7 @@ jobs:
         if: always()
         uses: dorny/test-reporter@v1
         with:
-          name: Unit tests (Vitest)
+          name: Unit tests Web (Vitest)
           path: web/unit-test-report/junit.xml
           reporter: jest-junit
           fail-on-error: false
@@ -83,8 +83,103 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: unit-test-report
+          name: unit-test-report-web
           path: web/unit-test-report
+          if-no-files-found: warn
+
+  unit-tests-backend:
+    name: Unit tests Backend-ts (Vitest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server-ts/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: server-ts
+        run: npm install
+
+      - name: Setup PostgreSQL
+        uses: tj-actions/install-postgresql@v3
+        with:
+          postgresql-version: 17
+
+      - name: Configure PostgreSQL database
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+
+      - name: Wait for PostgreSQL readiness
+        run: |
+          for i in {1..60}; do
+            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
+              echo "PostgreSQL pronto para conexões."
+              exit 0
+            fi
+            echo "Aguardando PostgreSQL ficar pronto..."
+            sleep 2
+          done
+          echo "PostgreSQL não ficou pronto no tempo esperado."
+          exit 1
+
+      - name: Seed backend database
+        working-directory: server-ts
+        run: npm run seed
+
+      - name: Run backend unit tests with JUnit
+        working-directory: server-ts
+        run: |
+          mkdir -p unit-test-report
+          set +e
+          npx vitest run \
+            --config vitest.server.config.ts \
+            --reporter=default \
+            --reporter=junit \
+            --outputFile=unit-report.xml
+          TEST_EXIT_CODE=$?
+          set -e
+
+          if [ -f unit-report.xml ]; then
+            mv unit-report.xml unit-test-report/junit.xml
+          fi
+
+          if [ ! -f unit-test-report/junit.xml ]; then
+            echo "JUnit report not found, creating dummy report"
+            cat << 'EOF' > unit-test-report/junit.xml
+          <testsuites>
+            <testsuite name="vitest-backend" tests="0" failures="0" errors="0" skipped="0" />
+          </testsuites>
+          EOF
+          fi
+
+          exit $TEST_EXIT_CODE
+
+      - name: Publish backend unit test report in GitHub Actions
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit tests Backend-ts (Vitest)
+          path: server-ts/unit-test-report/junit.xml
+          reporter: jest-junit
+          fail-on-error: false
+
+      - name: Upload backend unit test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report-backend
+          path: server-ts/unit-test-report
           if-no-files-found: warn
 
   contract-tests:
@@ -323,7 +418,7 @@ jobs:
 
   deploy-playwright-report:
     name: Deploy Playwright report to GitHub Pages
-    needs: [unit-tests, contract-tests, e2e]
+    needs: [unit-tests, unit-tests-backend, contract-tests, e2e]
     runs-on: ubuntu-latest
     if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
@@ -340,12 +435,19 @@ jobs:
           pattern: playwright-report-*
           path: tests-report
 
-      - name: Download unit test report artifact
+      - name: Download web unit test report artifact
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
-          name: unit-test-report
-          path: tests-report/unit-tests
+          name: unit-test-report-web
+          path: tests-report/unit-tests-web
+
+      - name: Download backend unit test report artifact
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-test-report-backend
+          path: tests-report/unit-tests-backend
 
       - name: Download E2E JUnit report artifacts
         continue-on-error: true

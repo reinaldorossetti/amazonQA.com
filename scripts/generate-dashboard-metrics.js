@@ -110,11 +110,23 @@ function readE2EJunitStats() {
 }
 
 function createMetrics() {
-  const unitJunitPath = path.join(REPORTS_DIR, 'unit-tests', 'junit.xml');
-  const unitCoveragePath = path.join(REPORTS_DIR, 'unit-tests', 'coverage', 'index.html');
+  const webUnitJunitPath = [
+    path.join(REPORTS_DIR, 'unit-tests-web', 'junit.xml'),
+    path.join(REPORTS_DIR, 'unit-tests', 'junit.xml'),
+  ].find((candidatePath) => fs.existsSync(candidatePath));
 
-  const unitJunit = parseJUnit(safeRead(unitJunitPath));
-  const coverageHtml = safeRead(unitCoveragePath);
+  const backendUnitJunitPath = [
+    path.join(REPORTS_DIR, 'unit-tests-backend', 'junit.xml'),
+  ].find((candidatePath) => fs.existsSync(candidatePath));
+
+  const webUnitCoveragePath = [
+    path.join(REPORTS_DIR, 'unit-tests-web', 'coverage', 'index.html'),
+    path.join(REPORTS_DIR, 'unit-tests', 'coverage', 'index.html'),
+  ].find((candidatePath) => fs.existsSync(candidatePath));
+
+  const webUnitJunit = parseJUnit(webUnitJunitPath ? safeRead(webUnitJunitPath) : null);
+  const backendUnitJunit = parseJUnit(backendUnitJunitPath ? safeRead(backendUnitJunitPath) : null);
+  const coverageHtml = webUnitCoveragePath ? safeRead(webUnitCoveragePath) : null;
 
   const coverage = {
     statements: parseCoverageMetric(coverageHtml, 'Statements'),
@@ -141,14 +153,35 @@ function createMetrics() {
     generatedAt: new Date().toISOString(),
     source: 'github-actions-artifacts',
     unit: {
-      ...unitJunit,
-      sourceFile: fs.existsSync(unitJunitPath)
-        ? path.relative(ROOT, unitJunitPath).replace(/\\/g, '/')
-        : null,
-      coverage,
-      coverageSourceFile: fs.existsSync(unitCoveragePath)
-        ? path.relative(ROOT, unitCoveragePath).replace(/\\/g, '/')
-        : null,
+      web: {
+        ...webUnitJunit,
+        sourceFile: webUnitJunitPath
+          ? path.relative(ROOT, webUnitJunitPath).replace(/\\/g, '/')
+          : null,
+        coverage,
+        coverageSourceFile: webUnitCoveragePath
+          ? path.relative(ROOT, webUnitCoveragePath).replace(/\\/g, '/')
+          : null,
+      },
+      backend: {
+        ...backendUnitJunit,
+        sourceFile: backendUnitJunitPath
+          ? path.relative(ROOT, backendUnitJunitPath).replace(/\\/g, '/')
+          : null,
+      },
+      totals: {
+        tests: webUnitJunit.tests + backendUnitJunit.tests,
+        failures: webUnitJunit.failures + backendUnitJunit.failures,
+        errors: webUnitJunit.errors + backendUnitJunit.errors,
+        skipped: webUnitJunit.skipped + backendUnitJunit.skipped,
+        passed: webUnitJunit.passed + backendUnitJunit.passed,
+        status:
+          webUnitJunit.tests + backendUnitJunit.tests > 0
+            ? webUnitJunit.failures + backendUnitJunit.failures + webUnitJunit.errors + backendUnitJunit.errors === 0
+              ? 'passed'
+              : 'failed'
+            : 'unknown',
+      },
     },
     e2e: {
       byProject: e2eByProject,
