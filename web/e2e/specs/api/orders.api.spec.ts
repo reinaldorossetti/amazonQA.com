@@ -211,4 +211,118 @@ test.describe('API Orders', () => {
 
     await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
+
+  test('deve retornar 401 ao tentar alterar pedido sem autenticação', async ({ request }) => {
+    const response = await request.put('orders/9999', { data: { status: 'paid' } });
+    expect(response.status()).toBe(401);
+    const payload = await response.json();
+    expect(typeof payload.error).toBe('string');
+  });
+
+  test('deve retornar 404 ao cancelar pedido inexistente com usuário autenticado', async ({ request }) => {
+    const auth = await createUser(request);
+    const token = await loginAndGetAccessToken(request, auth.email, 'Senha@1234');
+    const response = await request.delete('orders/999999999', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    expect(response.status()).toBe(404);
+    const payload = await response.json();
+    expect(payload.error).toBe('Order not found');
+  });
+
+  test('deve retornar 400 para id inválido no GET /orders/{id}', async ({ request }) => {
+    const auth = await createUser(request);
+    const token = await loginAndGetAccessToken(request, auth.email, 'Senha@1234');
+    const response = await request.get('orders/INVALID_ID', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    expect(response.status()).toBe(400);
+    const payload = await response.json();
+    expect(payload.error).toBe('Invalid order ID');
+  });
+
+  test('deve retornar 400 ao criar pedido com items vazio no payload', async ({ request }) => {
+    const auth = await createUser(request);
+    const token = await loginAndGetAccessToken(request, auth.email, 'Senha@1234');
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${token}` },
+      data: { items: [] },
+    });
+
+    expect(response.status()).toBe(400);
+    const payload = await response.json();
+    expect(payload.error).toBe('items must be a non-empty array when provided');
+  });
+
+  test('deve criar pedido com items no payload quando carrinho estiver vazio', async ({ request }) => {
+    const user = await createUser(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
+    const token = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        items: [{ productId: product.id, quantity: 1 }],
+        shippingTotal: 5,
+        discountTotal: 0,
+      },
+    });
+
+    expect(response.status()).toBe(201);
+    const payload = await response.json();
+    expect(payload.status).toBe('created');
+    expect(Array.isArray(payload.items)).toBeTruthy();
+    expect(payload.items[0].product_id).toBe(product.id);
+
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
+  });
+
+  test('deve listar pedidos paginados e validar campos de paginação', async ({ request }) => {
+    const user = await createUser(request);
+    const token = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+
+    const response = await request.get('orders?page=2&pageSize=10', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.page).toBe(2);
+    expect(payload.pageSize).toBe(10);
+    expect(Array.isArray(payload.items)).toBeTruthy();
+    expect(typeof payload.total).toBe('number');
+  });
+
+  test('deve retornar 400 para transição de status inválida', async ({ request }) => {
+    const user = await createUser(request);
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const product = await createProduct(request, adminAccessToken);
+    const token = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const addRes = await request.post('cart', {
+      headers,
+      data: { products: [{ productId: product.id, quantity: 1 }] },
+    });
+    expect(addRes.status()).toBe(201);
+
+    const createOrderRes = await request.post('orders', { headers, data: {} });
+    expect(createOrderRes.status()).toBe(201);
+    const order = await createOrderRes.json();
+
+    const invalidTransition = await request.put(`orders/${order.id}`, {
+      headers,
+      data: { status: 'delivered' },
+    });
+
+    expect(invalidTransition.status()).toBe(400);
+    const payload = await invalidTransition.json();
+    expect(payload.error).toBe('Invalid status transition');
+
+    await deleteProductAsAdmin(request, adminAccessToken, product.id);
+  });
+
 });

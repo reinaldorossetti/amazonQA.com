@@ -1,4 +1,5 @@
 import { expect, test, type APIRequestContext, type APIResponse } from '@playwright/test';
+import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
 
 function uniqueUser() {
   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
@@ -60,6 +61,40 @@ async function registerUntilCreated(
   }
 
   return response;
+}
+
+async function loginAndGetPayload(request: APIRequestContext, email: string, password: string) {
+  const response = await request.post('users/login', {
+    data: { email, password },
+  });
+  expect(response.status()).toBe(200);
+  const payload = await response.json();
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.tokenType).toBe('Bearer');
+  return payload as {
+    accessToken: string;
+    user: { id: number; email: string; isAdmin?: boolean; roles?: string[] };
+  };
+}
+
+async function createUserAndLogin(request: APIRequestContext) {
+  const user = uniqueUser();
+  const registerRes = await request.post('users/register', { data: user });
+  expect(registerRes.status()).toBe(201);
+  const loginPayload = await loginAndGetPayload(request, user.email, user.password);
+  return {
+    user,
+    token: loginPayload.accessToken,
+    id: loginPayload.user.id,
+    loginPayload,
+  };
+}
+
+async function loginAsAdminAndGetToken(request: APIRequestContext): Promise<string> {
+  const payload = await loginAsAdminWithFallback(request, 'users/login');
+  expect(payload.accessToken).toBeTruthy();
+  expect(payload.user?.isAdmin).toBeTruthy();
+  return payload.accessToken as string;
 }
 
 test.describe('API Users', () => {
@@ -188,5 +223,197 @@ test.describe('API Users', () => {
     });
 
     expect(second.status()).toBe(409);
+  });
+
+  test('deve retornar 401 ao listar usuários sem autenticação', async ({ request }) => {
+    const response = await request.get('users');
+    expect(response.status()).toBe(401);
+    const payload = await response.json();
+    expect(typeof payload.error).toBe('string');
+  });
+
+  test('deve retornar 403 ao listar usuários com token de usuário comum', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.get('users', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+    expect(response.status()).toBe(403);
+    const payload = await response.json();
+    expect(payload.error).toBe('Access restricted to administrators');
+  });
+
+  test('deve listar usuários com admin e validar formato da resposta', async ({ request }) => {
+    const adminToken = await loginAsAdminAndGetToken(request);
+    const response = await request.get('users?page=1&pageSize=5&status=all', {
+      headers: { Authorization: `Bearer ${adminToken}` },
+    });
+    expect(response.status()).toBe(200);
+
+    const payload = await response.json();
+    expect(payload.page).toBe(1);
+    expect(payload.pageSize).toBe(5);
+    expect(typeof payload.total).toBe('number');
+    expect(Array.isArray(payload.items)).toBeTruthy();
+  });
+
+  test('deve retornar 403 ao criar usuário via /users com usuário não-admin', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.post('users', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: {
+        first_name: 'Nao',
+        last_name: 'Admin',
+        email: `not.admin.${Date.now()}@example.com`,
+        password: 'Senha@1234',
+      },
+    });
+
+    expect(response.status()).toBe(403);
+    const payload = await response.json();
+    expect(payload.error).toBe('Access restricted to administrators');
+  });
+
+  test('deve criar usuário via /users quando autenticado como admin', async ({ request }) => {
+    const adminToken = await loginAsAdminAndGetToken(request);
+    const email = `admin.created.${Date.now()}@example.com`;
+    const response = await request.post('users', {
+      headers: { Authorization: `Bearer ${adminToken}` },
+      data: {
+        first_name: 'Admin',
+        last_name: 'Created',
+        email,
+        password: 'Senha@1234',
+        role: 'user',
+      },
+    });
+
+    expect(response.status()).toBe(201);
+    const payload = await response.json();
+    expect(payload.email).toBe(email);
+    expect(Array.isArray(payload.roles)).toBeTruthy();
+    expect(payload.roles).toContain('user');
+  });
+
+  test('deve retornar dados do próprio usuário em /users/{id}', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.get(`users/${auth.id}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.id).toBe(auth.id);
+    expect(payload.email).toBe(auth.user.email);
+  });
+
+  test('deve bloquear acesso de usuário comum ao /users/{id} de outro usuário', async ({ request }) => {
+    const userA = await createUserAndLogin(request);
+    const userB = await createUserAndLogin(request);
+
+    const response = await request.get(`users/${userB.id}`, {
+      headers: { Authorization: `Bearer ${userA.token}` },
+    });
+
+    expect(response.status()).toBe(403);
+    const payload = await response.json();
+    expect(payload.error).toBe('Access denied for this user');
+  });
+
+  test('deve atualizar o próprio usuário em /users/{id}', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const newFirstName = `Updated-${Date.now()}`;
+    const response = await request.put(`users/${auth.id}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: { first_name: newFirstName },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.id).toBe(auth.id);
+    expect(payload.first_name).toBe(newFirstName);
+  });
+
+  test('deve retornar 400 ao atualizar usuário sem campos permitidos', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.put(`users/${auth.id}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: {},
+    });
+
+    expect(response.status()).toBe(400);
+    const payload = await response.json();
+    expect(payload.error).toBe('No fields to update');
+  });
+
+  test('deve retornar o usuário autenticado em /users/me', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.get('users/me', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.id).toBe(auth.id);
+    expect(payload.email).toBe(auth.user.email);
+  });
+
+  test('deve atualizar endereço em /users/me/address', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.put('users/me/address', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: {
+        address_zip: '01001-000',
+        address_city: 'São Paulo',
+      },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.id).toBe(auth.id);
+    expect(payload.address_city).toBe('São Paulo');
+  });
+
+  test('deve retornar 400 ao atualizar endereço sem campos em /users/me/address', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.put('users/me/address', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: {},
+    });
+
+    expect(response.status()).toBe(400);
+    const payload = await response.json();
+    expect(payload.error).toBe('No address fields to update');
+  });
+
+  test('deve retornar 403 ao deletar usuário sem ser admin', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+    const response = await request.delete(`users/${auth.id}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(response.status()).toBe(403);
+    const payload = await response.json();
+    expect(payload.error).toBe('Only admin can delete users');
+  });
+
+  test('deve encerrar a própria conta e retornar 409 na segunda tentativa', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+
+    const firstResponse = await request.post(`users/${auth.id}/terminate`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(firstResponse.status()).toBe(200);
+    const firstPayload = await firstResponse.json();
+    expect(firstPayload.message).toBe('Account closed with data obfuscation applied');
+    expect(firstPayload.user?.is_active).toBe(false);
+    expect(firstPayload.user?.account_closed_at).toBeTruthy();
+
+    const secondResponse = await request.post(`users/${auth.id}/terminate`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+    expect(secondResponse.status()).toBe(409);
+    const secondPayload = await secondResponse.json();
+    expect(secondPayload.error).toBe('Account is already closed');
   });
 });
