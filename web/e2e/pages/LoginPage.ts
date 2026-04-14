@@ -7,7 +7,7 @@ export class LoginPage extends PageBase {
   readonly submitButton = 'login-submit-btn';
   readonly errorAlert = 'login-error-alert';
   readonly createAccountButton = 'login-create-account-btn';
-  
+
   constructor(page: Page) {
     super(page);
   }
@@ -29,7 +29,7 @@ export class LoginPage extends PageBase {
     await this.fill(this.passwordInput, password);
   }
 
-  async login(email?: string, password?: string) {
+  async doLogin(email?: string, password?: string) {
     if (email) await this.fillEmail(email);
     if (password) await this.fillPassword(password);
     await this.submit();
