@@ -80,7 +80,7 @@ test.describe('Register → Login — Fluxo Completo', () => {
     // ── Step 2: Navega para o Login com as credenciais do cadastro ───────────
     await loginPage.goToLogin();
 
-    await loginPage.login(userData.email, userData.password);
+    await loginPage.doLogin(userData.email, userData.password);
 
     // ── Step 3: Verifica redirecionamento para área logada e saudação na NavBar ───
     await expect(page).toHaveURL('/minha-conta');
@@ -108,7 +108,7 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.goToLogin();
 
-    await loginPage.login(userData.email, userData.password);
+    await loginPage.doLogin(userData.email, userData.password);
 
     await expect(page).toHaveURL('/minha-conta');
     await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
@@ -121,7 +121,7 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.goToLogin();
 
-    await loginPage.login(userData.email, userData.password);
+    await loginPage.doLogin(userData.email, userData.password);
 
     await expect(page).toHaveURL('/minha-conta');
     await expect(page.getByTestId('account-layout-wrapper')).toBeVisible({ timeout: base.timeOut });
@@ -144,7 +144,7 @@ test.describe('Register → Login — Fluxo Completo', () => {
 
     await loginPage.goToLogin();
 
-    await loginPage.login(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
+    await loginPage.doLogin(LOGIN_VALIDATION.testData.validEmail, LOGIN_VALIDATION.testData.wrongPassword);
 
     await expect(loginPage.getErrorAlertLocator()).toBeVisible({ timeout: base.timeOut });
     await expect(loginPage.getErrorAlertLocator()).toContainText(LOGIN_VALIDATION.errorMessages.invalidCredentials);

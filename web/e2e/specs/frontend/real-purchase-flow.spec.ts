@@ -134,10 +134,10 @@ async function createProductForDeletion(request: any, accessToken: string) {
 async function doRealLogin(page: any, credentials: RealFlowUser) {
   const loginPage = new LoginPage(page);
   await loginPage.goToLogin();
-  await loginPage.login(credentials.email, credentials.password);
+  await loginPage.doLogin(credentials.email, credentials.password);
   await expect(page).toHaveURL('/minha-conta', { timeout: 20_000 });
   const nav = new NavComponent(page);
-  await expect(nav.getUserGreetingLocator()).toBeVisible({ timeout: 15_000 });
+  await expect(nav.getUserGreetingLocator()).toBeVisible();
 }
 
 /** Helper: vai ao catálogo e adiciona N produtos ao carrinho */
@@ -201,7 +201,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     console.log(`\n▶ Produto sorteado: [${product.id}] ${product.name} — R$ ${product.price}`);
 
     const navComponent = new NavComponent(page);
-    const cartPage     = new CartPage(page);
+    const cartPage = new CartPage(page);
     const thankYouPage = new ThankYouPage(page);
 
     // 2. Cria usuário real e faz login
@@ -216,7 +216,6 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     await expect(navComponent.getCartBadgeLocator()).not.toContainText('0', { timeout: 10_000 });
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart', { timeout: 10_000 });
-    await waitForPageLoad(page, 'cart');
     await expect(cartPage.getTotalAmountLocator()).toBeVisible({ timeout: 10_000 });
 
     // 5. Intercepta resposta do pagamento para diagnóstico
@@ -225,7 +224,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     page.on('response', async (response) => {
       if (response.url().includes('/api/orders/') && response.url().includes('/payments')) {
         paymentResponseStatus = response.status();
-        try { paymentResponseBody = await response.json(); } catch {}
+        try { paymentResponseBody = await response.json(); } catch { }
       }
     });
 
@@ -243,8 +242,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
 
     // 9. Aguarda navegação para /thank-you
     await expect(page).toHaveURL('/thank-you', { timeout: 30_000 });
-    await waitForPageLoad(page, 'thankYou');
-    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible({ timeout: 15_000 });
+    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible();
 
     console.log(`\n✅ Compra com cartão concluída! Produto: ${product.name}`);
     if (paymentResponseStatus) {
@@ -264,10 +262,10 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     console.log(`\n▶ Produto: [${product.id}] ${product.name}`);
     console.log(`▶ Termo de busca: "${searchTerm}"`);
 
-    const navComponent  = new NavComponent(page);
-    const cartPage      = new CartPage(page);
-    const catalogPage   = new CatalogPage(page);
-    const thankYouPage  = new ThankYouPage(page);
+    const navComponent = new NavComponent(page);
+    const cartPage = new CartPage(page);
+    const catalogPage = new CatalogPage(page);
+    const thankYouPage = new ThankYouPage(page);
 
     // 2. Cria usuário real e faz login
     const credentials = await createRealFlowUser(request);
@@ -275,7 +273,6 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
 
     // 3. Vai ao catálogo e aguarda produtos reais carregarem
     await catalogPage.goToCatalog();
-    await waitForPageLoad(page, 'catalog');
     await catalogPage.getAddToCartButtonLocator().first().waitFor({ state: 'visible', timeout: 20_000 });
 
     // 4. Busca por nome
@@ -298,7 +295,6 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     await expect(navComponent.getCartBadgeLocator()).not.toContainText('0', { timeout: 10_000 });
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart', { timeout: 10_000 });
-    await waitForPageLoad(page, 'cart');
     await expect(cartPage.getTotalAmountLocator()).toBeVisible({ timeout: 10_000 });
 
     // 7. Checkout → pagamentos
@@ -315,8 +311,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
 
     // 10. Confirmação
     await expect(page).toHaveURL('/thank-you', { timeout: 30_000 });
-    await waitForPageLoad(page, 'thankYou');
-    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible({ timeout: 15_000 });
+    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible();
 
     console.log(`\n✅ Compra via busca concluída! Termo: "${searchTerm}"`);
   });
@@ -334,7 +329,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     products.slice(0, howMany).forEach(p => console.log(`   • [${p.id}] ${p.name} — R$ ${p.price}`));
 
     const navComponent = new NavComponent(page);
-    const cartPage     = new CartPage(page);
+    const cartPage = new CartPage(page);
     const thankYouPage = new ThankYouPage(page);
 
     // 2. Cria usuário real e faz login
@@ -349,7 +344,6 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
     await expect(navComponent.getCartBadgeLocator()).toContainText(String(toAdd), { timeout: 10_000 });
     await navComponent.clickCartButton();
     await expect(page).toHaveURL('/cart', { timeout: 10_000 });
-    await waitForPageLoad(page, 'cart');
     await expect(cartPage.getTotalAmountLocator()).toBeVisible({ timeout: 10_000 });
 
     // 5. Checkout → pagamentos (cria pedido real na API)
@@ -371,8 +365,7 @@ test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
 
     // 8. Confirmação (PIX fica com status pending, mas NAVEGA para /thank-you mesmo assim)
     await expect(page).toHaveURL('/thank-you', { timeout: 30_000 });
-    await waitForPageLoad(page, 'thankYou');
-    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible({ timeout: 15_000 });
+    await expect(thankYouPage.getSummaryWrapperLocator()).toBeVisible();
 
     console.log(`\n✅ Compra com PIX concluída! ${toAdd} produto(s).`);
   });

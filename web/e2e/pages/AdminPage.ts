@@ -12,6 +12,10 @@ export class AdminPage extends PageBase {
   constructor(page: Page) {
     super(page);
   }
+  
+  getApiBaseUrl() {
+    return process.env.API_BASE_URL;
+  }
 
   private async bootstrapAuthenticatedSession() {
     await this.goto('/');

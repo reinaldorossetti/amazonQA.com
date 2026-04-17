@@ -97,11 +97,10 @@ test.describe('Frontend Checkout with Orders API', () => {
     });
 
     await catalogPage.goToCatalog();
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     await catalogPage.clickAddToCartFirstProduct();
     await navComponent.clickCartButton();
-    await waitForPageLoad(page, 'cart');
 
     await cartPage.clickProceedToCheckout();
     await expect(page).toHaveURL('/payments');
@@ -109,7 +108,6 @@ test.describe('Frontend Checkout with Orders API', () => {
     await page.getByRole('button', { name: /Pagar agora|Pay now/i }).click();
 
     await expect(page).toHaveURL('/thank-you');
-    await waitForPageLoad(page, 'thankYou');
 
     expect(orderRequests).toBe(1);
     expect(orderRequestBody).toBeTruthy();

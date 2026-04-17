@@ -41,7 +41,7 @@ test.describe('Register and Language', () => {
     });
 
     await registerPage.goToRegister();
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await registerPage.fillPersonalData(userData);
     await registerPage.clickNext();
@@ -51,13 +51,13 @@ test.describe('Register and Language', () => {
 
     // Validar mensagem de sucesso
     await registerPage.waitForSuccessMessage();
-    await expect(page).toHaveURL('/', { timeout: 15_000 });
+    await expect(page).toHaveURL('/');
   });
 
   test('TS03 validação de campos obrigatórios no registro', async ({ page, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await page.getByTestId(registerPage.nextButton).click();
     await expect(page.locator('body')).toHaveText(/Nome é obrigatório./i);
@@ -66,7 +66,7 @@ test.describe('Register and Language', () => {
   test('TS01/TS02 idioma alterna e persiste após reload', async ({ page, waitForPageLoad }) => {
     const navComponent = new NavComponent(page);
     await page.goto('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     await expect(page.getByRole('heading', { name: 'Catálogo de Produtos' })).toBeVisible();
 
@@ -85,7 +85,7 @@ test.describe('Register and Language', () => {
   test('TS04 should render cart empty-state content in English after language toggle', async ({ page, waitForPageLoad }) => {
     const navComponent = new NavComponent(page);
     await page.goto('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     await navComponent.getLanguageToggleLocator().click();
     await expect(page.getByRole('heading', { name: 'Product Catalog' })).toBeVisible();

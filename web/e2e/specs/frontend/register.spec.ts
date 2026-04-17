@@ -3,7 +3,7 @@ import { test, REGISTER_VALIDATION } from '../../fixtures/register.fixture';
 import { RegisterPage } from '../../pages/RegisterPage';
 
 test.describe('Register', () => {
-  
+
   /**
    * TS01 - Happy path: fills out both steps completely and verifies success via toast message
    */
@@ -17,7 +17,7 @@ test.describe('Register', () => {
     await setupViacepMock(page);
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await base.fill(registerPage.firstNameInput, userData.firstName);
     await base.fill(registerPage.lastNameInput, userData.lastName);
@@ -46,7 +46,7 @@ test.describe('Register', () => {
     const invalidEmail = base.generateInvalidEmail();
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await base.fill(registerPage.firstNameInput, userData.firstName);
     await base.fill(registerPage.lastNameInput, userData.lastName);
@@ -68,7 +68,7 @@ test.describe('Register', () => {
     const shortPassword = base.generateShortPassword();
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await base.fill(registerPage.firstNameInput, userData.firstName);
     await base.fill(registerPage.lastNameInput, userData.lastName);
@@ -91,7 +91,7 @@ test.describe('Register', () => {
     const differentPassword = base.generateDifferentPassword();
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await base.fill(registerPage.firstNameInput, userData.firstName);
     await base.fill(registerPage.lastNameInput, userData.lastName);
@@ -111,7 +111,7 @@ test.describe('Register', () => {
     const registerPage = new RegisterPage(page);
     const base = pageBase;
     const userData = base.generateUserData();
-    
+
     // We can define the test scenarios mapping each field to its selectors
     const testCases = [
       {
@@ -160,11 +160,11 @@ test.describe('Register', () => {
     const scenario = testCases[Math.floor(Math.random() * testCases.length)];
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     // Fill all data EXCEPT the selected field
     await scenario.fillAction();
-    
+
     await base.click(registerPage.nextButton);
 
     // Ensure step 0 is still visible (did not advance to step 1)
@@ -188,7 +188,7 @@ test.describe('Register', () => {
     await setupViacepMock(page);
 
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     await base.fill(registerPage.firstNameInput, userData.firstName);
     await base.fill(registerPage.lastNameInput, userData.lastName);
@@ -216,7 +216,7 @@ test.describe('Register', () => {
   test('TS07 - valida todos os campos vazios com mensagens de validação individuais', async ({ page, pageBase, waitForPageLoad }) => {
     const registerPage = new RegisterPage(page);
     await page.goto('/register');
-    await waitForPageLoad(page, 'register');
+    await waitForPageLoad(page);
 
     // Click "next" button with all fields empty
     await pageBase.click(registerPage.nextButton);

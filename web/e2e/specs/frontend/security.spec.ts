@@ -23,7 +23,7 @@ test.describe('Security / Access Control', () => {
 
     // Add product to cart
     await page.getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first().click();
-    
+
     // Go to cart
     await navComponent.getCartButtonLocator().click();
     await expect(page).toHaveURL('/cart');
@@ -61,7 +61,7 @@ test.describe('Security / Access Control', () => {
     });
 
     await page.goto('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await expect(navComponent.getUserGreetingLocator()).toBeVisible();
 
     await navComponent.getLogoutLocator().click();

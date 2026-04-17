@@ -1,11 +1,11 @@
 import { expect, test as base, type Page } from '@playwright/test';
 import { PageBase } from '../helpers/PageBase';
 
-type WaitForPageLoad = (page: Page, pageName: string) => Promise<void>;
+type WaitForPageLoad = (page: Page) => Promise<void>;
 
 export const test = base.extend<{ waitForPageLoad: WaitForPageLoad; pageBase: PageBase }>({
-  waitForPageLoad: async ({}, use) => {
-    const fn: WaitForPageLoad = async (page, pageName) => {
+  waitForPageLoad: async ({ }, use) => {
+    const fn: WaitForPageLoad = async (page) => {
       await page.waitForLoadState('networkidle');
     };
 

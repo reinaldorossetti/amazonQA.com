@@ -44,7 +44,7 @@ test.describe('Login', () => {
     const loginPage = new LoginPage(page);
     const navComponent = new NavComponent(page);
     await page.goto('/login?next=/cart');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.fillEmail('valid@example.com');
     await loginPage.fillPassword('Senha@1234');
@@ -62,7 +62,7 @@ test.describe('Login', () => {
   test('TS02 - should display error for invalid credentials', async ({ page, waitForPageLoad }) => {
     const loginPage = new LoginPage(page);
     await page.goto('/login');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.fillEmail('invalid@example.com');
     await loginPage.fillPassword('senhaErrada');
@@ -78,7 +78,7 @@ test.describe('Login', () => {
   test('TS03 - should validate required fields', async ({ page, waitForPageLoad }) => {
     const loginPage = new LoginPage(page);
     await page.goto('/login');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.submit();
     await expect(loginPage.getErrorAlertLocator()).toContainText(/Preencha e-mail e senha/i);
@@ -91,7 +91,7 @@ test.describe('Login', () => {
   test('TS04 - should show validation when password is blank', async ({ page, waitForPageLoad }) => {
     const loginPage = new LoginPage(page);
     await page.goto('/login');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.fillEmail('valid@example.com');
     await loginPage.fillPassword('');
@@ -107,7 +107,7 @@ test.describe('Login', () => {
   test('TS05 - should show validation when email is blank', async ({ page, waitForPageLoad }) => {
     const loginPage = new LoginPage(page);
     await page.goto('/login');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.fillEmail('');
     await loginPage.fillPassword('Senha@1234');
@@ -124,7 +124,7 @@ test.describe('Login', () => {
     const loginPage = new LoginPage(page);
     const navComponent = new NavComponent(page);
     await page.goto('/login');
-    await waitForPageLoad(page, 'login');
+    await waitForPageLoad(page);
 
     await loginPage.fillEmail('valid@example.com');
     await loginPage.fillPassword('Senha@1234');

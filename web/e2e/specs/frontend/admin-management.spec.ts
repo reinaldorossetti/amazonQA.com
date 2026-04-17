@@ -17,7 +17,7 @@ type AdminLoginPayload = {
   };
 };
 
-const API_BASE_URL = 'http://127.0.0.1:3001/api';
+const API_BASE_URL = process.env.API_BASE_URL;
 
 async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
   const payload = await loginAsAdminWithFallback(request, `${API_BASE_URL}/users/login`);
