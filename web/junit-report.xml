@@ -1,85 +1,192 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="6.968958000000001">
-<testsuite name="frontend\login.spec.ts" timestamp="2026-04-15T12:11:46.169Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="3.788" errors="0">
-<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="3.788">
+<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="66.972137">
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:27:28.742Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="62.679" errors="0">
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.679">
 <system-out>
 <![CDATA[
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\video.webm]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\error-context.md]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\test-failed-1.png]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\video.webm]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\error-context.md]]
 
-[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
-<failure message="expect(received).toBeLessThanOrEqual(expected)" type="expect.toBeLessThanOrEqual">
-<![CDATA[  [frontend-chromium] › frontend\login.spec.ts:74:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [frontend-chromium] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
 
-    Error: expect(received).toBeLessThanOrEqual(expected)
+    Error: expect(locator).toBeVisible() failed
 
-    Expected: <= 30
-    Received:    246
+    Locator: locator('[data-element-id="cart-summary-total-items"]')
+    Expected: visible
+    Timeout: 25000ms
+    Error: element(s) not found
 
-      88 |
-      89 |     // Assertivas: Confere se os valores cortaram exatamente no 30º dígito (length <= 30)
-    > 90 |     expect(domEmailValue.length).toBeLessThanOrEqual(30);
-         |                                  ^
-      91 |     expect(domPasswordValue.length).toBeLessThanOrEqual(30);
-      92 |
-      93 |     // Bônus: Valida se a string presente no campo é de fato os 30 caracteres originais iniciais
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:90:34
+    Call log:
+      - Expect "toBeVisible" with timeout 25000ms
+      - waiting for locator('[data-element-id="cart-summary-total-items"]')
+
+
+      367 |     // Validate the distinct items is 3
+      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+          |                                        ^
+      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
+      371 |     // Validate the total quantity text says 4 items
+      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\error-context.md
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5174/login
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-element-id="cart-summary-total-items"]')
+    Expected: visible
+    Timeout: 25000ms
+    Error: element(s) not found
+
     Call log:
-      - navigating to "http://127.0.0.1:5174/login", waiting until "load"
+      - Expect "toBeVisible" with timeout 25000ms
+      - waiting for locator('[data-element-id="cart-summary-total-items"]')
 
 
-       at ..\helpers\PageBase.ts:95
-
-      93 |    */
-      94 |   async goto(url: string) {
-    > 95 |     await this.page.goto(url);
-         |                     ^
-      96 |   }
-      97 |
-      98 |   /**
-        at LoginPage.goto (D:\github-projects\tester.com\web\e2e\helpers\PageBase.ts:95:21)
-        at LoginPage.goToLogin (D:\github-projects\tester.com\web\e2e\pages\LoginPage.ts:16:16)
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:14:21
+      367 |     // Validate the distinct items is 3
+      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+          |                                        ^
+      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
+      371 |     // Validate the total quantity text says 4 items
+      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\error-context.md
 
     attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip
     Usage:
 
-        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
+        npx playwright show-trace ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:27:28.742Z" hostname="frontend-edge" tests="1" failures="1" skipped="0" time="62.752" errors="0">
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.752">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [frontend-edge] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-element-id="cart-summary-total-items"]')
+    Expected: visible
+    Timeout: 25000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 25000ms
+      - waiting for locator('[data-element-id="cart-summary-total-items"]')
+
+
+      367 |     // Validate the distinct items is 3
+      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+          |                                        ^
+      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
+      371 |     // Validate the total quantity text says 4 items
+      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-element-id="cart-summary-total-items"]')
+    Expected: visible
+    Timeout: 25000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 25000ms
+      - waiting for locator('[data-element-id="cart-summary-total-items"]')
+
+
+      367 |     // Validate the distinct items is 3
+      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+          |                                        ^
+      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
+      371 |     // Validate the total quantity text says 4 items
+      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>

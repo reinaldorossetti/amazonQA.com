@@ -298,7 +298,7 @@ test.describe('Cart and Checkout', () => {
     await expect(page).toHaveURL('/payments');
     await page.getByRole('button', { name: /Pagar agora|Pay now/i }).click();
     await expect(page).toHaveURL('/thank-you');
-    await waitForPageLoad(page, 'thankYou');
+    await waitForPageLoad(page);
 
     await page.getByRole('button', { name: /Voltar ao Catálogo|Back to Catalog/i }).click();
     await expect(page).toHaveURL('/');
@@ -317,7 +317,7 @@ test.describe('Cart and Checkout', () => {
     const cartPage = new CartPage(page);
     const navComponent = new NavComponent(page);
     await page.goto('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     const addButtons = page.getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i });
     await addButtons.nth(0).click();
@@ -337,5 +337,34 @@ test.describe('Cart and Checkout', () => {
     await cartPage.getDeleteButtonLocator().first().click();
     await expect(navComponent.getCartBadgeLocator()).toContainText('0');
     await expect(page.getByTestId('cart-empty-title')).toContainText(/Seu carrinho está vazio|Your cart is empty/i);
+  });
+
+  /**
+   * Validates the difference between distinct items and total quantity in the order summary.
+   * Expected behavior: 3 distinct purchases added, 2 items in one purchase -> 3 items distinct, 4 subtotal total items.
+   */
+  test('TS13 should validate distinct items vs total quantity in the order summary', async ({ page, waitForPageLoad }) => {
+    const navComponent = new NavComponent(page);
+    const catalogPage = new CatalogPage(page);
+    const cartPage = new CartPage(page);
+
+    await catalogPage.goToCatalog();
+    const addButtons = catalogPage.getAddToCartButtonLocator();
+
+    await addButtons.nth(0).click();
+    await addButtons.nth(1).click();
+    await addButtons.nth(2).click();
+
+    await navComponent.clickCartButton();
+    await expect(page).toHaveURL('/cart');
+
+    const firstQuantityInput = cartPage.getQuantityInputLocator().first();
+    await firstQuantityInput.fill('2');
+
+    const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+    await expect(distinctItemsLocator).toBeVisible();
+    await expect(distinctItemsLocator).toHaveText('Itens (3)');
+    const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+    await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
   });
 });

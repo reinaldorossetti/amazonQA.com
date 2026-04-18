@@ -46,7 +46,7 @@ test.describe('Catalog Page', () => {
 
   test('TS01 deve listar produtos ao carregar página', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toBeVisible();
     await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
   });
@@ -54,7 +54,7 @@ test.describe('Catalog Page', () => {
   test('TS02 deve permitir busca por texto e atualizar contagem', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await navComponent.getSearchInputLocator().fill('Smartphone');
 
     await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
@@ -64,7 +64,7 @@ test.describe('Catalog Page', () => {
 
   test('TS03 deve aplicar filtro por categoria', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await page.getByRole('button', { name: 'Acessórios' }).click();
 
     await expect(page.getByTestId(catalogPage.getProductImageSelector(1))).toBeVisible();
@@ -74,7 +74,7 @@ test.describe('Catalog Page', () => {
   test('TS04 deve mostrar estado vazio quando busca não retorna itens', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await navComponent.getSearchInputLocator().fill('PRODUTO_INEXISTENTE_123');
 
     await expect(page.getByTestId(catalogPage.emptyState)).toBeVisible();
@@ -83,7 +83,7 @@ test.describe('Catalog Page', () => {
   test('TS05 deve navegar para detalhes ao clicar no produto', async ({ page, waitForPageLoad }) => {
     const catalogPage = new CatalogPage(page);
     const productDetailsPage = new ProductDetailsPage(page);
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await catalogPage.clickProductImage(1);
 
     await expect(page).toHaveURL(/\/product\/1$/);
@@ -100,7 +100,7 @@ test.describe('Catalog Page', () => {
     const productDetailsPage = new ProductDetailsPage(page);
     const navComponent = new NavComponent(page);
     
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
     await navComponent.getSearchInputLocator().fill('Smartphone');
 
     await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();
@@ -108,11 +108,11 @@ test.describe('Catalog Page', () => {
 
     await catalogPage.clickProductImage(2);
     await expect(page).toHaveURL(/\/product\/2$/);
-    await waitForPageLoad(page, 'productDetails');
+    await waitForPageLoad(page);
 
     await page.getByRole('button', { name: /Voltar|Back/i }).first().click();
     await expect(page).toHaveURL('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     await expect(navComponent.getSearchInputLocator()).toHaveValue('Smartphone');
     await expect(page.getByTestId(catalogPage.getProductImageSelector(2))).toBeVisible();

@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18.3-alpine
     container_name: ecommerce_db_ci
     restart: unless-stopped
     ports:
@@ -10,12 +10,40 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d ecommerce" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  server-ts:
+    build:
+      context: ./server-ts
+      dockerfile: Dockerfile
+    container_name: ecommerce_server_ts
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/ecommerce"
+    volumes:
+      - ./web/src/data:/web/src/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: ecommerce_web
+    ports:
+      - "5174:5174"
+    depends_on:
+      server-ts:
+        condition: service_started
+    restart: unless-stopped
 
 volumes:
   postgres_data:

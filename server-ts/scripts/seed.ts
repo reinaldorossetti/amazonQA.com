@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import pg from 'pg';
 import bcrypt from 'bcrypt';
 
@@ -248,7 +248,12 @@ async function seed(): Promise<void> {
     );
 
     const mockPath = resolve(__dirname, '../../web/src/data/products_mock.json');
-    const products = JSON.parse(readFileSync(mockPath, 'utf8')) as ProductSeed[];
+    let products: ProductSeed[] = [];
+    if (existsSync(mockPath)) {
+      products = JSON.parse(readFileSync(mockPath, 'utf8')) as ProductSeed[];
+    } else {
+      console.log(`⚠️ Mock products file not found at ${mockPath}. Skipping product seed.`);
+    }
 
     console.log(`🌱 Inserting ${products.length} products...`);
     for (const product of products) {

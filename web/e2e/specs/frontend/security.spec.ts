@@ -19,7 +19,7 @@ test.describe('Security / Access Control', () => {
     const navComponent = new NavComponent(page);
     // Go to catalog and wait for it to load
     await page.goto('/');
-    await waitForPageLoad(page, 'catalog');
+    await waitForPageLoad(page);
 
     // Add product to cart
     await page.getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first().click();

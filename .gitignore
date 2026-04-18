@@ -42,3 +42,5 @@ server-spring-kotlin/build/
 server-spring-kotlin/.gradle/
 /server-spring-kotlin/build/
 mobile/node_modules/
+.env
+.env.local

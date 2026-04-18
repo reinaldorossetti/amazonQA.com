@@ -168,7 +168,7 @@ Esse fluxo garante que mudanças na API não quebrem o consumo esperado no front
 
 ## 🧭 Visão geral por projeto
 
-### 1) Server API (`/server`)
+### 1) Server API (`/server-ts`)
 
 Responsável por:
 
@@ -178,9 +178,9 @@ Responsável por:
 - Pedidos (`/api/orders`)
 - Pagamentos (`/api/orders/:id/payments`, boleto, etc.)
 
-Também contém o script de preparação do banco:
+Também contém os scripts do banco de dados na inicialização, que povoam sozinho as tabelas:
 
-- `npm run seed` → cria estrutura e popula produtos iniciais.
+- `npm run seed` → cria estrutura e popula produtos iniciais (usado no boot do docker).
 - `npm run db:reset` → **limpa todo o banco** e refaz o seed do zero.
 
 ### 2) Web (`/web`)
@@ -198,49 +198,59 @@ Aplicação React Native + Expo para Android/iOS, usando o mesmo backend do proj
 
 ---
 
-## 🚀 Ordem recomendada para subir localmente (DB primeiro)
+## 🚀 Como Executar o Projeto (A forma mais fácil com Docker)
 
-> Fluxo recomendado: **subir o PostgreSQL via Docker → seed do backend → iniciar API → iniciar Web/Mobile**.
+> Recomendamos fortemente rodar toda a aplicação baseando-se no `docker-compose.yml`, que sobe o Banco de Dados, a API e o site de uma vez só!
 
-### 1. Subir o banco de dados
+O repositório já conta com o Docker mapeado e linkado para as ferramentas necessárias, requerendo **zero configurações complexas de ambiente** da sua máquina.
 
-Na raiz do repositório:
+### 🐳 Subindo tudo (One-Click Deploy)
+
+Na pasta principal (raiz) do projeto, abra seu terminal e digite apenas isso:
 
 ```bash
-docker compose up -d
+docker compose up --build -d
 ```
 
-### 2. Preparar e subir o backend
+Nesse momento o docker irá construir e subir os 3 serviços. É inteiramente automático. Quando finalizar, utilize:
+- **Site (Frontend):** [http://localhost:5174](http://localhost:5174)
+- **API (Backend):** [http://localhost:3001](http://localhost:3001)
 
+*(O backend criará todas as tabelas e inserirá os 22 produtos falsos no banco sozinho graças ao "Seed" que executa durante a inicialização dele).*
+
+---
+
+### 💻 Como rodar "na mão" para Desenvolvimento (Sem os containers de App)
+
+Se você precisa rodar no modo desenvolvedor clássico com os logs direto no seu terminal (necessita Node.js instalado na máquina):
+
+#### 1. Subir "Apenas" o banco de dados
+Mantenha um banco de pé via Docker para seu ambiente Node de dev consumir:
 ```bash
-cd server
+docker compose up -d postgres
+```
+
+#### 2. Subir o backend
+```bash
+cd server-ts
 npm install
-npm run seed       # apenas na primeira vez
 npm run dev
 ```
 
-API local: `http://localhost:3001`
-
-### 3. Subir o frontend web
-
-Em outro terminal:
-
+#### 3. Subir o frontend web
+Em **outro terminal**:
 ```bash
 cd web
 npm install
 npm run dev
 ```
 
-Web local: `http://127.0.0.1:5174`
-
-### 4. Subir o app mobile (opcional)
-
+#### 4. Subir o app mobile (opcional)
 ```bash
 cd mobile
 npm install
 npm run start
 ```
-
 Se necessário, ajuste `EXPO_PUBLIC_API_BASE_URL` para o IP da sua máquina em emulador/dispositivo.
 
 ---

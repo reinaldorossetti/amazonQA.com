@@ -146,9 +146,9 @@ const Cart = ({
               </Box>
 
               <Stack spacing={0.75} sx={{ mb: 2 }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography variant="body2" color="text.secondary">{t("cart.items")}</Typography>
-                  <Typography variant="body2">{totalItems}</Typography>
+                <Box data-element-id="cart-summary-total-items" sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="body2" color="text.secondary">Itens</Typography>
+                  <Typography variant="body2">({safeCartItems.length})</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">{t("cart.shipping")}</Typography>
@@ -160,7 +160,7 @@ const Cart = ({
                 </Box>
               </Stack>
 
-              <Typography variant="h6" fontWeight={400} sx={{ fontSize: "18px", mb: 2 }}>
+              <Typography data-element-id="cart-summary-subtotal" variant="h6" fontWeight={400} sx={{ fontSize: "18px", mb: 2 }}>
                 Subtotal ({totalItems} items): <Box component="span" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Box>
               </Typography>
 
