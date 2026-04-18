@@ -129,65 +129,97 @@ function ProductFormDialog({ open, product, onClose, onSaved }) {
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      PaperProps={{ sx: { borderRadius: 3 } }}
+      PaperProps={{ 
+        sx: { 
+          borderRadius: '24px', 
+          boxShadow: '0 24px 48px rgba(0,0,0,0.15)',
+          overflow: 'hidden' 
+        } 
+      }}
     >
       <DialogTitle
         id="support-product-dialog-title"
         sx={{
-          background: 'linear-gradient(135deg, #131921 0%, #37475A 100%)',
-          color: '#fff',
+          background: '#fff',
+          color: '#0F1111',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          py: 2,
+          pt: 4,
+          px: 4,
+          pb: 1
         }}
       >
-        <Stack direction="row" spacing={1} alignItems="center">
-          <InventoryIcon sx={{ color: '#ff9900' }} />
-          <Typography fontWeight={700}>
-            {isEditing ? `Editar produto #${product.id}` : 'Novo produto'}
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Box 
+            sx={{ 
+                width: 40, 
+                height: 40, 
+                borderRadius: '12px', 
+                backgroundColor: 'rgba(255, 153, 0, 0.1)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+            }}
+          >
+            <InventoryIcon sx={{ color: '#ff9900' }} />
+          </Box>
+          <Typography variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px' }}>
+            {isEditing ? `Editar Produto` : 'Novo Produto'}
           </Typography>
         </Stack>
-        <IconButton id="support-product-dialog-close" onClick={onClose} sx={{ color: '#fff' }}>
+        <IconButton 
+            id="support-product-dialog-close" 
+            onClick={onClose} 
+            sx={{ 
+                color: '#0F1111', 
+                backgroundColor: '#f5f5f5',
+                '&:hover': { backgroundColor: '#eeeeee' }
+            }}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 3 }}>
-        <Grid container spacing={2}>
+      <DialogContent sx={{ p: 4 }}>
+        <Grid container spacing={3}>
           {/* Name */}
           <Grid item xs={12} sm={8}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Nome do Produto</Typography>
             <TextField
               id="support-product-name"
-              label="Nome *"
+              placeholder="Digite o nome completo"
               fullWidth
-              size="small"
+              variant="outlined"
+              size="medium"
               value={form.name}
               onChange={(e) => set('name', e.target.value)}
               error={!!errors.name}
               helperText={errors.name}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
             />
           </Grid>
           {/* Category */}
           <Grid item xs={12} sm={4}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Categoria</Typography>
             <TextField
               id="support-product-category"
-              label="Categoria"
+              placeholder="Ex: Eletrônicos"
               fullWidth
-              size="small"
+              size="medium"
               value={form.category}
               onChange={(e) => set('category', e.target.value)}
-              helperText={`Sugeridos: ${CATEGORIES.join(', ')}`}
-              FormHelperTextProps={{ sx: { fontSize: '0.65rem' } }}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+              FormHelperTextProps={{ sx: { fontSize: '0.7rem' } }}
             />
           </Grid>
           {/* Price */}
           <Grid item xs={12} sm={4}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Preço</Typography>
             <TextField
               id="support-product-price"
-              label="Preço (R$) *"
               fullWidth
-              size="small"
+              size="medium"
               type="number"
               inputProps={{ min: 0, step: '0.01' }}
               value={form.price}
@@ -196,108 +228,102 @@ function ProductFormDialog({ open, product, onClose, onSaved }) {
               helperText={errors.price}
               InputProps={{
                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                sx: { borderRadius: '12px' }
               }}
             />
           </Grid>
           {/* Shipping cost */}
           <Grid item xs={12} sm={4}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Custo do Frete</Typography>
             <TextField
               id="support-product-shipping"
-              label="Frete (R$)"
               fullWidth
-              size="small"
+              size="medium"
               type="number"
               inputProps={{ min: 0, step: '0.01' }}
               value={form.shipping_cost}
               onChange={(e) => set('shipping_cost', e.target.value)}
               error={!!errors.shipping_cost}
-              helperText={errors.shipping_cost || '0 = frete grátis'}
+              helperText={errors.shipping_cost || '0 = grátis'}
               InputProps={{
                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                sx: { borderRadius: '12px' }
               }}
             />
           </Grid>
           {/* Manufacturer */}
           <Grid item xs={12} sm={4}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Fabricante</Typography>
             <TextField
               id="support-product-manufacturer"
-              label="Fabricante"
+              placeholder="Marca ou Empresa"
               fullWidth
-              size="small"
+              size="medium"
               value={form.manufacturer}
               onChange={(e) => set('manufacturer', e.target.value)}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
             />
           </Grid>
-          {/* Line */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="support-product-line"
-              label="Linha"
-              fullWidth
-              size="small"
-              value={form.line}
-              onChange={(e) => set('line', e.target.value)}
-            />
-          </Grid>
-          {/* Model */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="support-product-model"
-              label="Modelo"
-              fullWidth
-              size="small"
-              value={form.model}
-              onChange={(e) => set('model', e.target.value)}
-            />
-          </Grid>
-          {/* Image URL */}
-          <Grid item xs={12}>
-            <TextField
-              id="support-product-image"
-              label="URL da Imagem"
-              fullWidth
-              size="small"
-              value={form.image}
-              onChange={(e) => set('image', e.target.value)}
-              placeholder="https://..."
-            />
-          </Grid>
-          {/* Preview */}
-          {form.image && (
-            <Grid item xs={12}>
-              <Box
-                component="img"
-                src={form.image}
-                alt="preview"
-                sx={{
-                  height: 80,
-                  objectFit: 'contain',
-                  border: '1px solid #d5d9d9',
-                  borderRadius: 1,
-                  p: 0.5,
-                }}
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </Grid>
-          )}
+
           {/* Description */}
           <Grid item xs={12}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>Descrição</Typography>
             <TextField
               id="support-product-description"
-              label="Descrição"
+              placeholder="Descreva as características do produto..."
               fullWidth
-              size="small"
+              size="medium"
               multiline
               rows={3}
               value={form.description}
               onChange={(e) => set('description', e.target.value)}
+              sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
             />
+          </Grid>
+
+          {/* Image URL with Preview in same row if possible */}
+          <Grid item xs={12}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1, color: '#0F1111' }}>URL da Imagem</Typography>
+            <Stack direction="row" spacing={2} alignItems="center">
+                <TextField
+                id="support-product-image"
+                placeholder="https://..."
+                fullWidth
+                size="medium"
+                value={form.image}
+                onChange={(e) => set('image', e.target.value)}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                />
+                {form.image && (
+                <Box
+                    component="img"
+                    src={form.image}
+                    alt="preview"
+                    sx={{
+                    width: 56,
+                    height: 56,
+                    objectFit: 'contain',
+                    border: '1px solid #d5d9d9',
+                    borderRadius: '12px',
+                    p: 0.5,
+                    backgroundColor: '#fff',
+                    flexShrink: 0
+                    }}
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                />
+                )}
+            </Stack>
           </Grid>
         </Grid>
       </DialogContent>
 
-      <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
-        <Button id="support-product-cancel-btn" onClick={onClose} variant="outlined" color="inherit">
+      <DialogActions sx={{ p: 4, pt: 0, justifyContent: 'flex-end', gap: 2 }}>
+        <Button 
+            id="support-product-cancel-btn" 
+            onClick={onClose} 
+            variant="text" 
+            sx={{ color: '#565959', fontWeight: 700, textTransform: 'none', fontSize: '1rem' }}
+        >
           Cancelar
         </Button>
         <Button
@@ -305,10 +331,21 @@ function ProductFormDialog({ open, product, onClose, onSaved }) {
           onClick={handleSave}
           variant="contained"
           disabled={saving}
-          sx={{ backgroundColor: '#FFD814', color: '#0F1111', fontWeight: 700, '&:hover': { backgroundColor: '#F7CA00' } }}
-          startIcon={saving ? <CircularProgress size={16} sx={{ color: '#0F1111' }} /> : null}
+          sx={{ 
+            backgroundColor: '#FFD814', 
+            color: '#0F1111', 
+            px: 4,
+            py: 1.5,
+            borderRadius: '14px',
+            fontWeight: 800, 
+            textTransform: 'none',
+            fontSize: '1rem',
+            boxShadow: '0 4px 14px rgba(255, 216, 20, 0.4)',
+            '&:hover': { backgroundColor: '#F7CA00', boxShadow: '0 6px 20px rgba(255, 216, 20, 0.6)' } 
+          }}
+          startIcon={saving ? <CircularProgress size={20} sx={{ color: '#0F1111' }} /> : null}
         >
-          {saving ? 'Salvando...' : isEditing ? 'Salvar alterações' : 'Criar produto'}
+          {saving ? 'Salvando...' : isEditing ? 'Atualizar Produto' : 'Cadastrar Produto'}
         </Button>
       </DialogActions>
     </Dialog>

@@ -388,7 +388,7 @@ test.describe('Cart and Checkout', () => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
     await catalogPage.goToCatalog();
-    const searchInput = page.getByTestId('app-search-input');
+    const searchInput = page.locator('#nav-search-input');
     await searchInput.fill('Câmera Vintage');
     await page.keyboard.press('Enter');
     await page.waitForTimeout(500); // give time to filter
