@@ -18,9 +18,9 @@ import { useLanguage } from "../contexts/LanguageContext";
 
 const Cart = ({
   cartItems = [],
-  onUpdateCart = () => {},
-  onRemoveFromCart = () => {},
-  setCartItems = () => {},
+  onUpdateCart = () => { },
+  onRemoveFromCart = () => { },
+  setCartItems = () => { },
 }) => {
   const { t } = useLanguage();
   const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
@@ -30,6 +30,9 @@ const Cart = ({
   );
 
   const totalItems = safeCartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const shippingTotal = safeCartItems.reduce((sum, item) => sum + (item.shipping_cost || 0) * item.quantity, 0);
+  const grandTotal = totalPrice + shippingTotal;
 
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 8, px: { xs: 2, md: 4 } }}>
@@ -108,26 +111,26 @@ const Cart = ({
               <Divider sx={{ mt: 2, mb: 2, borderColor: "#D5D9D9" }} />
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Typography id="cart-order-total" data-element-id="cart-order-total" variant="h6" fontWeight={400} sx={{ fontSize: "18px" }}>
-                   Subtotal ({totalItems} items): <Box component="span" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Box>
+                  Subtotal ({totalItems} items): <Box component="span" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Box>
                 </Typography>
               </Box>
             </Paper>
 
-             {/* Recommended based on recent items section */}
-             <Paper elevation={0} sx={{ mt: 3, p: 3, borderRadius: 0, border: "1px solid #D5D9D9", backgroundColor: "#fff" }}>
-               <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
-                 Recommended based on recent items
-               </Typography>
-               <Box sx={{ display: "flex", gap: 2, overflowX: "auto", pb: 1 }}>
-                 {/* Fake recommended items just to mimic design */}
-                 <Box sx={{ minWidth: 150 }}>
-                   <Box sx={{ width: 100, height: 100, backgroundColor: "#f5f5f5", mb: 1, mx: "auto" }} />
-                   <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }}>Placeholder Item</Typography>
-                   <Typography variant="body2" fontWeight={700} color="error">$99.00</Typography>
-                   <Button variant="contained" size="small" sx={{ backgroundColor: "#FFD814", color: "#111", mt: 1, borderRadius: 8, "&:hover": { backgroundColor: "#F7CA00" } }}>Add to Cart</Button>
-                 </Box>
-               </Box>
-             </Paper>
+            {/* Recommended based on recent items section */}
+            <Paper elevation={0} sx={{ mt: 3, p: 3, borderRadius: 0, border: "1px solid #D5D9D9", backgroundColor: "#fff" }}>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+                Recommended based on recent items
+              </Typography>
+              <Box sx={{ display: "flex", gap: 2, overflowX: "auto", pb: 1 }}>
+                {/* Fake recommended items just to mimic design */}
+                <Box sx={{ minWidth: 150 }}>
+                  <Box sx={{ width: 100, height: 100, backgroundColor: "#f5f5f5", mb: 1, mx: "auto" }} />
+                  <Typography variant="body2" color="primary" sx={{ cursor: "pointer", "&:hover": { color: "#c45500", textDecoration: "underline" } }}>Placeholder Item</Typography>
+                  <Typography variant="body2" fontWeight={700} color="error">$99.00</Typography>
+                  <Button variant="contained" size="small" sx={{ backgroundColor: "#FFD814", color: "#111", mt: 1, borderRadius: 8, "&:hover": { backgroundColor: "#F7CA00" } }}>Add to Cart</Button>
+                </Box>
+              </Box>
+            </Paper>
 
           </Box>
 
@@ -138,25 +141,29 @@ const Cart = ({
                 {t("cart.order_summary")}
               </Typography>
 
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <Typography variant="body2" color="success.main" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                  Your order qualifies for FREE Shipping.
-                </Typography>
-              </Box>
+              {shippingTotal === 0 && (
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                  <Typography variant="body2" color="success.main" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>
+                    Your order qualifies for FREE Shipping.
+                  </Typography>
+                </Box>
+              )}
 
               <Stack spacing={0.75} sx={{ mb: 2 }}>
                 <Box data-element-id="cart-summary-total-items" sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">Itens</Typography>
-                  <Typography variant="body2"> ({safeCartItems.length})</Typography>
+                  <Typography variant="body2">({safeCartItems.length})</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">{t("cart.shipping")}</Typography>
-                  <Typography variant="body2">{t("cart.free")}</Typography>
+                  <Typography data-element-id="cart-summary-shipping" variant="body2">
+                    {shippingTotal === 0 ? t("cart.free") : `R$ ${shippingTotal.toFixed(2)}`}
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">{t("cart.total")}</Typography>
-                  <Typography variant="body2" fontWeight={700}>R$ {totalPrice.toFixed(2)}</Typography>
+                  <Typography variant="body2" fontWeight={700}>R$ {grandTotal.toFixed(2)}</Typography>
                 </Box>
               </Stack>
 

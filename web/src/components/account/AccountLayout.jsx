@@ -8,6 +8,7 @@ const links = [
   { to: '/minha-conta/dados', label: 'Meu perfil' },
   { to: '/minha-conta/endereco', label: 'Meu endereço' },
   { to: '/minha-conta/pedidos', label: 'Meus pedidos' },
+  { to: '/minha-conta/suporte/produtos', label: 'Suporte • Produtos', supportOnly: true },
   { to: '/minha-conta/admin', label: 'Administração', adminOnly: true },
   { to: '/minha-conta/admin/produtos', label: 'Admin • Produtos', adminOnly: true },
   { to: '/minha-conta/admin/usuarios', label: 'Admin • Usuários', adminOnly: true },
@@ -45,7 +46,11 @@ const AccountLayout = () => {
 
           <Stack spacing={1}>
             {links
-              .filter((item) => !item.adminOnly || Boolean(user?.isAdmin))
+              .filter((item) => {
+                if (item.adminOnly) return Boolean(user?.isAdmin);
+                if (item.supportOnly) return Boolean(user?.isSupport);
+                return true;
+              })
               .map((item) => (
               <Button
                 key={item.to}

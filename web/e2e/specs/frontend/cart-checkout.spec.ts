@@ -363,8 +363,44 @@ test.describe('Cart and Checkout', () => {
 
     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
     await expect(distinctItemsLocator).toBeVisible();
-    await expect(distinctItemsLocator).toHaveText('Itens (3)');
+    await expect(distinctItemsLocator).toHaveText('Itens(3)');
     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
+  });
+
+  test('TS14 should display free shipping if cart shipping total is 0', async ({ page, waitForPageLoad }) => {
+    const catalogPage = new CatalogPage(page);
+    const navComponent = new NavComponent(page);
+    await catalogPage.goToCatalog();
+    
+    // Add product 1 (shipping_cost = 0)
+    await catalogPage.getAddToCartButtonLocator().nth(0).click();
+    await navComponent.clickCartButton();
+
+    const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
+    await expect(shippingLocator).toBeVisible();
+    await expect(shippingLocator).toContainText(/Grátis|Free/i);
+    
+    await expect(page.getByText(/Your order qualifies for FREE Shipping/i)).toBeVisible();
+  });
+
+  test('TS15 should display paid shipping and compute grand total if shipping total is greater than 0', async ({ page, waitForPageLoad }) => {
+    const catalogPage = new CatalogPage(page);
+    const navComponent = new NavComponent(page);
+    await catalogPage.goToCatalog();
+    const searchInput = page.getByTestId('app-search-input');
+    await searchInput.fill('Câmera Vintage');
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(500); // give time to filter
+
+    // Add product with paid shipping (Câmera Vintage has 16.00 shipping in seed)
+    await catalogPage.getAddToCartButtonLocator().first().click();
+    await navComponent.clickCartButton();
+
+    const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
+    await expect(shippingLocator).toBeVisible();
+    await expect(shippingLocator).toHaveText('R$ 16.00');
+
+    await expect(page.getByText(/Your order qualifies for FREE Shipping/i)).toBeHidden();
   });
 });

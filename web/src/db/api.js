@@ -46,6 +46,12 @@ export const getProductById = (id) =>
 export const deleteProductByIdAdmin = (id) =>
     http('DELETE', `/products/${id}`);
 
+export const createProduct = (data) =>
+    http('POST', '/products', data);
+
+export const updateProduct = (id, data) =>
+    http('PUT', `/products/${id}`, data);
+
 // ── Users ────────────────────────────────────────────────────────────────────
 
 export const registerUser = (userData) =>

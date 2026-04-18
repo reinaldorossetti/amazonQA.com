@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS products (
     image        TEXT,
     manufacturer TEXT,
     line         TEXT,
-    model        TEXT
+    model        TEXT,
+    shipping_cost NUMERIC(10,2) DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -137,6 +138,7 @@ type ProductSeed = {
   manufacturer?: string;
   line?: string;
   model?: string;
+  shipping_cost?: number;
 };
 
 type SeedUser = {
@@ -174,6 +176,14 @@ async function seed(): Promise<void> {
         email: process.env.SEED_NORMAL_EMAIL ?? 'reinaldo.rossetti@outlook.com',
         password: process.env.SEED_NORMAL_PASSWORD ?? 'qualidade2026@QA',
         roles: ['user'],
+        removeRoles: ['admin'],
+      },
+      {
+        firstName: 'Suporte',
+        lastName: 'Tester',
+        email: process.env.SEED_SUPPORT_EMAIL ?? 'suporte@tester.com',
+        password: process.env.SEED_SUPPORT_PASSWORD ?? 'suporte2026@QA',
+        roles: ['user', 'support'],
         removeRoles: ['admin'],
       },
     ];
@@ -258,8 +268,8 @@ async function seed(): Promise<void> {
     console.log(`🌱 Inserting ${products.length} products...`);
     for (const product of products) {
       await client.query(
-        `INSERT INTO products (name, price, description, category, image, manufacturer, line, model)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+        `INSERT INTO products (name, price, description, category, image, manufacturer, line, model, shipping_cost)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
          ON CONFLICT DO NOTHING`,
         [
           product.name,
@@ -270,6 +280,7 @@ async function seed(): Promise<void> {
           product.manufacturer ?? null,
           product.line ?? null,
           product.model ?? null,
+          product.shipping_cost ?? 0,
         ]
       );
     }

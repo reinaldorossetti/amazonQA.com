@@ -9,6 +9,7 @@ export const mockProducts = [
     manufacturer: 'TimeX',
     line: 'Classic',
     model: 'TX-100',
+    shipping_cost: 0.00,
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ export const mockProducts = [
     manufacturer: 'PhoneCo',
     line: 'X',
     model: 'X-2026',
+    shipping_cost: 15.00,
   },
   {
     id: 3,

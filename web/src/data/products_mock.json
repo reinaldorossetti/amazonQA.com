@@ -8,7 +8,8 @@
     "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=400&h=300&fit=crop",
     "manufacturer": "TimeX",
     "line": "Classic",
-    "model": "TX-100"
+    "model": "TX-100",
+    "shipping_cost": 0.00
   },
   {
     "id": 2,
@@ -19,7 +20,8 @@
     "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop",
     "manufacturer": "RetroCam",
     "line": "Artisan",
-    "model": "RC-500"
+    "model": "RC-500",
+    "shipping_cost": 15.00
   },
   {
     "id": 3,

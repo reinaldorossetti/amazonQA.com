@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '../../../lib/db';
 import { authenticateRequest } from '../../../lib/auth';
-import { isUserAdmin } from '../../../lib/user-roles';
+import { isUserSupport } from '../../../lib/user-roles';
 
 type ProductBody = {
   name?: string;
@@ -12,6 +12,7 @@ type ProductBody = {
   manufacturer?: string | null;
   line?: string | null;
   model?: string | null;
+  shipping_cost?: number;
 };
 
 function getErrorMessage(error: unknown): string {
@@ -46,21 +47,21 @@ export async function POST(request: Request): Promise<Response> {
       return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
-    const admin = await isUserAdmin(authResult.auth.userId);
-    if (!admin) {
-      return NextResponse.json({ error: 'Only admin can create products' }, { status: 403 });
+    const hasAccess = await isUserSupport(authResult.auth.userId);
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Only admin or support can create products' }, { status: 403 });
     }
 
     const body = (await request.json()) as ProductBody;
-    const { name, price, description, category, image, manufacturer, line, model } = body;
+    const { name, price, description, category, image, manufacturer, line, model, shipping_cost } = body;
 
     if (!name || price == null) {
       return NextResponse.json({ error: 'name and price are required' }, { status: 400 });
     }
 
     const { rows } = await query(
-      `INSERT INTO products (name, price, description, category, image, manufacturer, line, model)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      `INSERT INTO products (name, price, description, category, image, manufacturer, line, model, shipping_cost)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
        RETURNING *`,
       [
         name,
@@ -71,6 +72,7 @@ export async function POST(request: Request): Promise<Response> {
         manufacturer ?? null,
         line ?? null,
         model ?? null,
+        shipping_cost ?? 0,
       ]
     );
 

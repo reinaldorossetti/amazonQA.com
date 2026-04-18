@@ -35,6 +35,7 @@ import OrderDetailsPage from "./components/account/OrderDetailsPage";
 import AdminHomePage from "./components/admin/AdminHomePage";
 import AdminProductsPage from "./components/admin/AdminProductsPage";
 import AdminUsersPage from "./components/admin/AdminUsersPage";
+import SupportProductsPage from "./components/support/SupportProductsPage";
 
 import Footer from "./components/Footer";
 import Subnav from "./components/Subnav";
@@ -429,6 +430,14 @@ const AdminOnlyRoute = ({ children }) => {
   return children;
 };
 
+const SupportOnlyRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user?.isSupport) {
+    return <Navigate to="/minha-conta" replace />;
+  }
+  return children;
+};
+
 const AppInner = () => {
   const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState("");
@@ -577,6 +586,14 @@ const AppInner = () => {
                   <AdminOnlyRoute>
                     <AdminUsersPage />
                   </AdminOnlyRoute>
+                }
+              />
+              <Route
+                path="suporte/produtos"
+                element={
+                  <SupportOnlyRoute>
+                    <SupportProductsPage />
+                  </SupportOnlyRoute>
                 }
               />
             </Route>

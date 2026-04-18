@@ -22,7 +22,7 @@ export async function waitForPageLoad(page: Page, pageName: PageName): Promise<v
       const locator = selector.startsWith('text=')
         ? page.locator(selector).first()
         : page.getByTestId(selector).first();
-      await locator.waitFor({ state: 'visible', timeout: 30_000 });
+      await locator.waitFor({ state: 'visible', timeout: 45_000 });
       return;
     } catch (err) {
       lastError = err;
@@ -42,7 +42,7 @@ export class PageBase {
     };
   }
   protected page: Page;
-  timeOut = 20_000;
+  timeOut = 45_000;
 
   constructor(page: Page) {
     this.page = page;

@@ -1,204 +1,370 @@
-<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="66.86453900000001">
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:32:08.702Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="62.709" errors="0">
-<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.709">
+<testsuites id="" name="" tests="65" failures="1" skipped="0" errors="1" time="75.618494">
+<testsuite name="frontend\admin-management.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="5.6" errors="0">
+<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts" time="3.02">
+</testcase>
+<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend\admin-management.spec.ts" time="2.58">
+</testcase>
+</testsuite>
+<testsuite name="frontend\auth.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="16.605" errors="0">
+<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend\auth.spec.ts" time="2.762">
+</testcase>
+<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend\auth.spec.ts" time="2.598">
+</testcase>
+<testcase name="Login › TS03 - should validate required fields" classname="frontend\auth.spec.ts" time="2.913">
+</testcase>
+<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend\auth.spec.ts" time="2.929">
+</testcase>
+<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend\auth.spec.ts" time="2.986">
+</testcase>
+<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend\auth.spec.ts" time="2.417">
+</testcase>
+</testsuite>
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="15" failures="0" skipped="0" time="144.144" errors="1">
+<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend\cart-checkout.spec.ts" time="6.286">
+</testcase>
+<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend\cart-checkout.spec.ts" time="6.19">
+</testcase>
+<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend\cart-checkout.spec.ts" time="1.081">
+</testcase>
+<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend\cart-checkout.spec.ts" time="6.661">
+</testcase>
+<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend\cart-checkout.spec.ts" time="6.522">
+</testcase>
+<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend\cart-checkout.spec.ts" time="6.452">
+</testcase>
+<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend\cart-checkout.spec.ts" time="6.376">
+</testcase>
+<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend\cart-checkout.spec.ts" time="6.581">
+</testcase>
+<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend\cart-checkout.spec.ts" time="6.473">
+</testcase>
+<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend\cart-checkout.spec.ts" time="6.228">
+</testcase>
+<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend\cart-checkout.spec.ts" time="11.509">
+</testcase>
+<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend\cart-checkout.spec.ts" time="6.847">
+</testcase>
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="5.939">
+</testcase>
+<testcase name="Cart and Checkout › TS14 should display free shipping if cart shipping total is 0" classname="frontend\cart-checkout.spec.ts" time="5.85">
+</testcase>
+<testcase name="Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0" classname="frontend\cart-checkout.spec.ts" time="55.149">
 <system-out>
 <![CDATA[
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\test-failed-1.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\video.webm]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\video.webm]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\error-context.md]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\error-context.md]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\test-failed-1.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\video.webm]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\video.webm]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\error-context.md]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\error-context.md]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip]]
+[[ATTACHMENT|test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
-<failure message="expect(locator).toHaveText(expected) failed" type="expect.toHaveText">
-<![CDATA[  [frontend-chromium] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
+<error message="locator.fill: Timeout 25000ms exceeded." type="TimeoutError">
+<![CDATA[  [frontend-chromium] › frontend\cart-checkout.spec.ts:387:3 › Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0 
 
-    Error: expect(locator).toHaveText(expected) failed
-
-    Locator:  locator('[data-element-id="cart-summary-total-items"]')
-    Expected: "Itens (3)"
-    Received: "Itens(3)"
-    Timeout:  25000ms
-
+    TimeoutError: locator.fill: Timeout 25000ms exceeded.
     Call log:
-      - Expect "toHaveText" with timeout 25000ms
-      - waiting for locator('[data-element-id="cart-summary-total-items"]')
-        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
-           - unexpected value "Itens(3)"
+      - waiting for getByTestId('app-search-input')
 
 
-      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-      365 |     await expect(distinctItemsLocator).toBeVisible();
-    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-          |                                        ^
-      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
-      369 |   });
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
+      390 |     await catalogPage.goToCatalog();
+      391 |     const searchInput = page.getByTestId('app-search-input');
+    > 392 |     await searchInput.fill('Câmera Vintage');
+          |                       ^
+      393 |     await page.keyboard.press('Enter');
+      394 |     await page.waitForTimeout(500); // give time to filter
+      395 |
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:392:23
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png
+    ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\video.webm
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\error-context.md
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium\error-context.md
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: expect(locator).toHaveText(expected) failed
-
-    Locator:  locator('[data-element-id="cart-summary-total-items"]')
-    Expected: "Itens (3)"
-    Received: "Itens(3)"
-    Timeout:  25000ms
-
+    TimeoutError: locator.fill: Timeout 25000ms exceeded.
     Call log:
-      - Expect "toHaveText" with timeout 25000ms
-      - waiting for locator('[data-element-id="cart-summary-total-items"]')
-        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
-           - unexpected value "Itens(3)"
+      - waiting for getByTestId('app-search-input')
 
 
-      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-      365 |     await expect(distinctItemsLocator).toBeVisible();
-    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-          |                                        ^
-      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
-      369 |   });
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
+      390 |     await catalogPage.goToCatalog();
+      391 |     const searchInput = page.getByTestId('app-search-input');
+    > 392 |     await searchInput.fill('Câmera Vintage');
+          |                       ^
+      393 |     await page.keyboard.press('Enter');
+      394 |     await page.waitForTimeout(500); // give time to filter
+      395 |
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:392:23
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\test-failed-1.png
+    ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
     attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\video.webm
+    ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\video.webm
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\error-context.md
+    Error Context: ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\error-context.md
 
     attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip
+    ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\trace.zip
     Usage:
 
-        npx playwright show-trace ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip
+        npx playwright show-trace ..\..\test-results\frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="frontend\catalog.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="8.753" errors="0">
+<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend\catalog.spec.ts" time="1.361">
+</testcase>
+<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend\catalog.spec.ts" time="1.407">
+</testcase>
+<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend\catalog.spec.ts" time="1.458">
+</testcase>
+<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend\catalog.spec.ts" time="1.357">
+</testcase>
+<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend\catalog.spec.ts" time="1.523">
+</testcase>
+<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend\catalog.spec.ts" time="1.647">
+</testcase>
+</testsuite>
+<testsuite name="frontend\login.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="5" failures="1" skipped="0" time="7.059" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend\login.spec.ts" time="1.146">
+</testcase>
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend\login.spec.ts" time="1.162">
+</testcase>
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend\login.spec.ts" time="0.957">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend\login.spec.ts" time="1.066">
+</testcase>
+<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend\login.spec.ts" time="2.728">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(received).toBeLessThanOrEqual(expected)" type="expect.toBeLessThanOrEqual">
+<![CDATA[  [frontend-chromium] › frontend\login.spec.ts:71:3 › Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 30
+    Received:    246
+
+      82 |
+      83 |     // Assertivas: Confere se os valores cortaram exatamente no 30º dígito (length <= 30)
+    > 84 |     expect(domEmailValue.length).toBeLessThanOrEqual(30);
+         |                                  ^
+      85 |     expect(domPasswordValue.length).toBeLessThanOrEqual(30);
+      86 |
+      87 |     // Bônus: Valida se a string presente no campo é de fato os 30 caracteres originais iniciais
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:84:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 30
+    Received:    246
+
+      82 |
+      83 |     // Assertivas: Confere se os valores cortaram exatamente no 30º dígito (length <= 30)
+    > 84 |     expect(domEmailValue.length).toBeLessThanOrEqual(30);
+         |                                  ^
+      85 |     expect(domPasswordValue.length).toBeLessThanOrEqual(30);
+      86 |
+      87 |     // Bônus: Valida se a string presente no campo é de fato os 30 caracteres originais iniciais
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\login.spec.ts:84:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\test-results\frontend-login-Login-TS06--74ea2-using-special-chars-payload-frontend-chromium-retry1\trace.zip
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 </testcase>
 </testsuite>
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:32:08.702Z" hostname="frontend-edge" tests="1" failures="1" skipped="0" time="63.221" errors="0">
-<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="63.221">
+<testsuite name="frontend\orders.checkout.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="2" failures="0" skipped="0" time="12.939" errors="0">
+<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend\orders.checkout.spec.ts" time="6.544">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend\orders.checkout.spec.ts" time="6.395">
+</testcase>
+</testsuite>
+<testsuite name="frontend\payments-card-brands.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="31.239" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend\payments-card-brands.spec.ts" time="6.683">
+</testcase>
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend\payments-card-brands.spec.ts" time="7.658">
+</testcase>
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend\payments-card-brands.spec.ts" time="7.1">
+</testcase>
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend\payments-card-brands.spec.ts" time="9.798">
 <system-out>
 <![CDATA[
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-visa-22e0622cd58ff84a94f650dfdf388bdb7b787c99.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\video.webm]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-mastercard-b0fadf974ed3347bcbac38c48bfb7258884db4ac.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\error-context.md]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-elo-30fad35fbd44b4dee0bf189b077e4e7ccef8d32a.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\test-failed-1.png]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-amex-f7e43778a4c950b1109c86a38d5e34751cd5f921.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\video.webm]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hipercard-50c149bfa7bf265511e179eb60656e478c91dd1b.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\error-context.md]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-hiper-80c84dc4220b38175e58a4f29ceda3c14b7fcf15.png]]
 
-[[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip]]
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-cabal-dd8c1ac1a711b4925d60c3d3b10abdbfa12325fb.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-verdecard-c909aeea91c5ce2d5d28f618b91880c0e9f5bbec.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-unionpay-983edebb4e50c3531e7c5ae13ff1face429c95b8.png]]
+
+[[ATTACHMENT|test-results\frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium\attachments\payments-card-data-before-confirmation-diners-730259300cb2c3f47bbce7238dbd70deb053c133.png]]
 ]]>
 </system-out>
-<failure message="expect(locator).toHaveText(expected) failed" type="expect.toHaveText">
-<![CDATA[  [frontend-edge] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
+</testcase>
+</testsuite>
+<testsuite name="frontend\product-details.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="4.599" errors="0">
+<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend\product-details.spec.ts" time="1.033">
+</testcase>
+<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend\product-details.spec.ts" time="1.652">
+</testcase>
+<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend\product-details.spec.ts" time="0.882">
+</testcase>
+<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend\product-details.spec.ts" time="1.032">
+</testcase>
+</testsuite>
+<testsuite name="frontend\real-purchase-flow.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="36.051" errors="0">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS01 — Login real + produto aleatório + checkout + pagamento com cartão" classname="frontend\real-purchase-flow.spec.ts" time="11.662">
+<system-out>
+<![CDATA[
+▶ Produto sorteado: [22] L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico — R$ 18.89
 
-    Error: expect(locator).toHaveText(expected) failed
-
-    Locator:  locator('[data-element-id="cart-summary-total-items"]')
-    Expected: "Itens (3)"
-    Received: "Itens(3)"
-    Timeout:  25000ms
-
-    Call log:
-      - Expect "toHaveText" with timeout 25000ms
-      - waiting for locator('[data-element-id="cart-summary-total-items"]')
-        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
-           - unexpected value "Itens(3)"
-
-
-      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-      365 |     await expect(distinctItemsLocator).toBeVisible();
-    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-          |                                        ^
-      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
-      369 |   });
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\error-context.md
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: expect(locator).toHaveText(expected) failed
-
-    Locator:  locator('[data-element-id="cart-summary-total-items"]')
-    Expected: "Itens (3)"
-    Received: "Itens(3)"
-    Timeout:  25000ms
-
-    Call log:
-      - Expect "toHaveText" with timeout 25000ms
-      - waiting for locator('[data-element-id="cart-summary-total-items"]')
-        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
-           - unexpected value "Itens(3)"
-
-
-      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-      365 |     await expect(distinctItemsLocator).toBeVisible();
-    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-          |                                        ^
-      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
-      369 |   });
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\error-context.md
-
-    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
-    ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip
-    Usage:
-
-        npx playwright show-trace ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
+✅ Compra com cartão concluída! Produto: L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico
+   API pagamento: HTTP 201 — status: authorized
 ]]>
-</failure>
+</system-out>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS02 — Busca de produto real + compra com cartão de crédito" classname="frontend\real-purchase-flow.spec.ts" time="11.868">
+<system-out>
+<![CDATA[
+▶ Produto: [12] Headset Gamer HyperX Cloud II – 7.1 Surround
+▶ Termo de busca: "Headset Gamer"
+
+✅ Compra via busca concluída! Termo: "Headset Gamer"
+]]>
+</system-out>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS03 — Múltiplos produtos aleatórios + checkout com PIX" classname="frontend\real-purchase-flow.spec.ts" time="10.962">
+<system-out>
+<![CDATA[
+▶ Adicionando até 3 produtos aleatórios:
+   • [24] Produto Admin E2E 1776547801604-4874 — R$ 349.9
+   • [16] Em Busca do Tempo Perdido – Box Completo (7 volumes) — R$ 246.11
+   • [12] Headset Gamer HyperX Cloud II – 7.1 Surround — R$ 449
+
+✅ Compra com PIX concluída! 3 produto(s).
+]]>
+</system-out>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend\real-purchase-flow.spec.ts" time="1.559">
+<system-out>
+<![CDATA[
+✅ TS04 concluído! Usuário e2e.delete.user.1776548822851-1817@example.com e produto Produto Delete API 1776548823104-7720 removidos com sucesso.
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-language.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="10.369" errors="0">
+<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend\register-language.spec.ts" time="5.305">
+</testcase>
+<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend\register-language.spec.ts" time="1.417">
+</testcase>
+<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend\register-language.spec.ts" time="1.715">
+</testcase>
+<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend\register-language.spec.ts" time="1.932">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register-login.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="10.798" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend\register-login.spec.ts" time="2.773">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend\register-login.spec.ts" time="6.654">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend\register-login.spec.ts" time="1.371">
+</testcase>
+</testsuite>
+<testsuite name="frontend\register.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="15.002" errors="0">
+<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend\register.spec.ts" time="2.85">
+</testcase>
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend\register.spec.ts" time="1.97">
+</testcase>
+<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend\register.spec.ts" time="1.999">
+</testcase>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend\register.spec.ts" time="1.968">
+</testcase>
+<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend\register.spec.ts" time="1.909">
+</testcase>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend\register.spec.ts" time="2.574">
+</testcase>
+<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend\register.spec.ts" time="1.732">
+</testcase>
+</testsuite>
+<testsuite name="frontend\security.spec.ts" timestamp="2026-04-18T21:46:25.448Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="8.793" errors="0">
+<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend\security.spec.ts" time="6.296">
+</testcase>
+<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend\security.spec.ts" time="0.875">
+</testcase>
+<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend\security.spec.ts" time="1.622">
 </testcase>
 </testsuite>
 </testsuites>

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '../../../../lib/db';
 import { authenticateRequest } from '../../../../lib/auth';
-import { isUserAdmin } from '../../../../lib/user-roles';
+import { isUserSupport } from '../../../../lib/user-roles';
 
 type RouteContext = { params: Promise<{ id: string }> | { id: string } };
 
@@ -14,6 +14,7 @@ type ProductBody = {
   manufacturer?: string | null;
   line?: string | null;
   model?: string | null;
+  shipping_cost?: number;
 };
 
 function toProductId(params: { id: string }): number | null {
@@ -54,9 +55,9 @@ export async function PUT(request: Request, { params }: RouteContext): Promise<R
       return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
-    const admin = await isUserAdmin(authResult.auth.userId);
-    if (!admin) {
-      return NextResponse.json({ error: 'Only admin can update products' }, { status: 403 });
+    const hasAccess = await isUserSupport(authResult.auth.userId);
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Only admin or support can update products' }, { status: 403 });
     }
 
     const productId = toProductId(routeParams);
@@ -65,15 +66,15 @@ export async function PUT(request: Request, { params }: RouteContext): Promise<R
     }
 
     const body = (await request.json()) as ProductBody;
-    const { name, price, description, category, image, manufacturer, line, model } = body;
+    const { name, price, description, category, image, manufacturer, line, model, shipping_cost } = body;
 
     const { rows } = await query(
       `UPDATE products
        SET name=$1, price=$2, description=$3, category=$4, image=$5,
-           manufacturer=$6, line=$7, model=$8
-       WHERE id=$9
+           manufacturer=$6, line=$7, model=$8, shipping_cost=$9
+       WHERE id=$10
        RETURNING *`,
-      [name, price, description, category, image, manufacturer, line, model, productId]
+      [name, price, description, category, image, manufacturer, line, model, shipping_cost ?? 0, productId]
     );
 
     if (!rows.length) {
@@ -96,9 +97,9 @@ export async function DELETE(request: Request, { params }: RouteContext): Promis
       return NextResponse.json({ error: authResult.error }, { status: 401 });
     }
 
-    const admin = await isUserAdmin(authResult.auth.userId);
-    if (!admin) {
-      return NextResponse.json({ error: 'Only admin can delete products' }, { status: 403 });
+    const hasAccess = await isUserSupport(authResult.auth.userId);
+    if (!hasAccess) {
+      return NextResponse.json({ error: 'Only admin or support can delete products' }, { status: 403 });
     }
 
     const productId = toProductId(routeParams);

@@ -40,10 +40,12 @@ export const AuthProvider = ({ children }) => {
 
   const normalizeUser = (rawUser) => {
     if (!rawUser) return null;
+    const roles = Array.isArray(rawUser.roles) ? rawUser.roles : [];
     return {
       ...rawUser,
-      roles: Array.isArray(rawUser.roles) ? rawUser.roles : [],
-      isAdmin: Boolean(rawUser.isAdmin),
+      roles,
+      isAdmin: Boolean(rawUser.isAdmin) || roles.includes('admin'),
+      isSupport: roles.includes('support') || roles.includes('admin'),
     };
   };
 

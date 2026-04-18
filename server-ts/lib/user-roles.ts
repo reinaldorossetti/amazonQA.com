@@ -20,6 +20,15 @@ export async function isUserAdmin(userId: number): Promise<boolean> {
   return (result.rowCount ?? 0) > 0;
 }
 
+export async function isUserSupport(userId: number): Promise<boolean> {
+  const result = await query(
+    'SELECT 1 FROM user_roles WHERE user_id = $1 AND role IN ($2, $3) LIMIT 1',
+    [userId, 'support', 'admin']
+  );
+
+  return (result.rowCount ?? 0) > 0;
+}
+
 export async function ensureUserRole(userId: number, role = 'user'): Promise<void> {
   await query(
     `INSERT INTO user_roles (user_id, role)
