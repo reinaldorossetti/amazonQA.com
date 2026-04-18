@@ -1,6 +1,6 @@
-<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="66.972137">
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:27:28.742Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="62.679" errors="0">
-<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.679">
+<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="66.86453900000001">
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:32:08.702Z" hostname="frontend-chromium" tests="1" failures="1" skipped="0" time="62.709" errors="0">
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.709">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png]]
@@ -18,29 +18,31 @@
 [[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\trace.zip]]
 ]]>
 </system-out>
-<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<failure message="expect(locator).toHaveText(expected) failed" type="expect.toHaveText">
 <![CDATA[  [frontend-chromium] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
 
-    Error: expect(locator).toBeVisible() failed
+    Error: expect(locator).toHaveText(expected) failed
 
-    Locator: locator('[data-element-id="cart-summary-total-items"]')
-    Expected: visible
-    Timeout: 25000ms
-    Error: element(s) not found
+    Locator:  locator('[data-element-id="cart-summary-total-items"]')
+    Expected: "Itens (3)"
+    Received: "Itens(3)"
+    Timeout:  25000ms
 
     Call log:
-      - Expect "toBeVisible" with timeout 25000ms
+      - Expect "toHaveText" with timeout 25000ms
       - waiting for locator('[data-element-id="cart-summary-total-items"]')
+        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
+           - unexpected value "Itens(3)"
 
 
-      367 |     // Validate the distinct items is 3
-      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+      365 |     await expect(distinctItemsLocator).toBeVisible();
+    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
           |                                        ^
-      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-      371 |     // Validate the total quantity text says 4 items
-      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
+      369 |   });
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium\test-failed-1.png
@@ -54,26 +56,28 @@
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: expect(locator).toBeVisible() failed
+    Error: expect(locator).toHaveText(expected) failed
 
-    Locator: locator('[data-element-id="cart-summary-total-items"]')
-    Expected: visible
-    Timeout: 25000ms
-    Error: element(s) not found
+    Locator:  locator('[data-element-id="cart-summary-total-items"]')
+    Expected: "Itens (3)"
+    Received: "Itens(3)"
+    Timeout:  25000ms
 
     Call log:
-      - Expect "toBeVisible" with timeout 25000ms
+      - Expect "toHaveText" with timeout 25000ms
       - waiting for locator('[data-element-id="cart-summary-total-items"]')
+        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
+           - unexpected value "Itens(3)"
 
 
-      367 |     // Validate the distinct items is 3
-      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+      365 |     await expect(distinctItemsLocator).toBeVisible();
+    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
           |                                        ^
-      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-      371 |     // Validate the total quantity text says 4 items
-      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
+      369 |   });
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-chromium-retry1\test-failed-1.png
@@ -96,8 +100,8 @@
 </failure>
 </testcase>
 </testsuite>
-<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:27:28.742Z" hostname="frontend-edge" tests="1" failures="1" skipped="0" time="62.752" errors="0">
-<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="62.752">
+<testsuite name="frontend\cart-checkout.spec.ts" timestamp="2026-04-18T20:32:08.702Z" hostname="frontend-edge" tests="1" failures="1" skipped="0" time="63.221" errors="0">
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend\cart-checkout.spec.ts" time="63.221">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png]]
@@ -115,29 +119,31 @@
 [[ATTACHMENT|test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\trace.zip]]
 ]]>
 </system-out>
-<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<failure message="expect(locator).toHaveText(expected) failed" type="expect.toHaveText">
 <![CDATA[  [frontend-edge] › frontend\cart-checkout.spec.ts:346:3 › Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary 
 
-    Error: expect(locator).toBeVisible() failed
+    Error: expect(locator).toHaveText(expected) failed
 
-    Locator: locator('[data-element-id="cart-summary-total-items"]')
-    Expected: visible
-    Timeout: 25000ms
-    Error: element(s) not found
+    Locator:  locator('[data-element-id="cart-summary-total-items"]')
+    Expected: "Itens (3)"
+    Received: "Itens(3)"
+    Timeout:  25000ms
 
     Call log:
-      - Expect "toBeVisible" with timeout 25000ms
+      - Expect "toHaveText" with timeout 25000ms
       - waiting for locator('[data-element-id="cart-summary-total-items"]')
+        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
+           - unexpected value "Itens(3)"
 
 
-      367 |     // Validate the distinct items is 3
-      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+      365 |     await expect(distinctItemsLocator).toBeVisible();
+    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
           |                                        ^
-      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-      371 |     // Validate the total quantity text says 4 items
-      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
+      369 |   });
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge\test-failed-1.png
@@ -151,26 +157,28 @@
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: expect(locator).toBeVisible() failed
+    Error: expect(locator).toHaveText(expected) failed
 
-    Locator: locator('[data-element-id="cart-summary-total-items"]')
-    Expected: visible
-    Timeout: 25000ms
-    Error: element(s) not found
+    Locator:  locator('[data-element-id="cart-summary-total-items"]')
+    Expected: "Itens (3)"
+    Received: "Itens(3)"
+    Timeout:  25000ms
 
     Call log:
-      - Expect "toBeVisible" with timeout 25000ms
+      - Expect "toHaveText" with timeout 25000ms
       - waiting for locator('[data-element-id="cart-summary-total-items"]')
+        28 × locator resolved to <div class="MuiBox-root css-gg4vpm" data-element-id="cart-summary-total-items">…</div>
+           - unexpected value "Itens(3)"
 
 
-      367 |     // Validate the distinct items is 3
-      368 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
-    > 369 |     await expect(distinctItemsLocator).toBeVisible();
+      364 |     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
+      365 |     await expect(distinctItemsLocator).toBeVisible();
+    > 366 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
           |                                        ^
-      370 |     await expect(distinctItemsLocator).toHaveText('Itens (3)');
-      371 |     // Validate the total quantity text says 4 items
-      372 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
-        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:369:40
+      367 |     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
+      368 |     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
+      369 |   });
+        at D:\github-projects\tester.com\web\e2e\specs\frontend\cart-checkout.spec.ts:366:40
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\..\test-results\frontend-cart-checkout-Car-f8628-antity-in-the-order-summary-frontend-edge-retry1\test-failed-1.png

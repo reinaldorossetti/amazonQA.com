@@ -148,7 +148,7 @@ const Cart = ({
               <Stack spacing={0.75} sx={{ mb: 2 }}>
                 <Box data-element-id="cart-summary-total-items" sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">Itens</Typography>
-                  <Typography variant="body2">({safeCartItems.length})</Typography>
+                  <Typography variant="body2"> ({safeCartItems.length})</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="body2" color="text.secondary">{t("cart.shipping")}</Typography>
