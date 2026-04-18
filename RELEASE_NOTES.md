@@ -11,7 +11,7 @@ Criamos um espaço exclusivo para o nosso time de suporte brilhar! Agora, sem pr
 *   🗑️ **Deletar** itens (com validação de segurança para não afetar pedidos ativos).
 *   🔍 **Buscar** e filtrar o catálogo com alta performance.
 
-![Novo Painel de Gestão para Suporte](C:\Users\reina\.gemini\antigravity\brain\c133f74d-68dc-43fc-8365-ecc7386b7663\support_dashboard_mockup_1776549753304.png)
+![Novo Painel de Gestão para Suporte](d:\github-projects\tester.com\docs\screenshots\gestão-de-produto.png)
 
 ---
 
@@ -20,6 +20,8 @@ Adeus ao "na minha máquina funciona"! 😅 Agora, todo o nosso ecossistema — 
 *   Basta um comando (`docker compose up`) e o ambiente está pronto em qualquer lugar.
 *   Ambiente de desenvolvimento idêntico ao de produção.
 
+![Infraestrutura Docker Orquestrada](d:\github-projects\tester.com\docs\screenshots\docker.png)
+
 ---
 
 ### 🛠️ Gestão de Frete Dinâmica
@@ -27,7 +29,7 @@ Atendendo a pedidos, implementamos o campo `shipping_cost`. 📦
 *   Agora podemos definir frete grátis ou valores específicos para cada item.
 *   O carrinho de compras calcula automaticamente o total e o subtotal, garantindo transparência total para o cliente.
 
-![Interface Intuitiva de Edição de Produtos](C:\Users\reina\.gemini\antigravity\brain\c133f74d-68dc-43fc-8365-ecc7386b7663\product_modal_mockup_1776549764363.png)
+![Interface Intuitiva de Edição de Produtos](d:\github-projects\tester.com\docs\screenshots\editar_produto.png)
 
 ---
 
