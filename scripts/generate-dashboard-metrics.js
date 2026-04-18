@@ -111,11 +111,15 @@ function readE2EJunitStats() {
 
 function createMetrics() {
   const webUnitJunitPath = [
+    path.join(REPORTS_DIR, 'unit-test-report-web', 'unit-report.xml'),
+    path.join(REPORTS_DIR, 'unit-tests-web', 'unit-report.xml'),
     path.join(REPORTS_DIR, 'unit-tests-web', 'junit.xml'),
     path.join(REPORTS_DIR, 'unit-tests', 'junit.xml'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
 
   const backendUnitJunitPath = [
+    path.join(REPORTS_DIR, 'unit-test-report-backend', 'unit-report.xml'),
+    path.join(REPORTS_DIR, 'unit-tests-backend', 'unit-report.xml'),
     path.join(REPORTS_DIR, 'unit-tests-backend', 'junit.xml'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
 
