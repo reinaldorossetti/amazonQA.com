@@ -1,10 +1,8 @@
 name: E2E Pipeline
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
 
 permissions:
   contents: write
@@ -13,242 +11,75 @@ permissions:
   checks: write
 
 jobs:
-  unit-tests:
-    name: Unit tests Web (Vitest)
+  # ── Unit Tests ──────────────────────────────────────────────────────
+  unit:
+    name: Unit Tests (Web & Backend)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: web
-        run: npm install
-
-      - name: Run unit tests with coverage and JUnit
+      - name: Web unit tests
         working-directory: web
         run: |
-          mkdir -p unit-test-report
-          # Use set +e to continue execution even if tests fail so we can collect reports
-          set +e
-          npx vitest run \
-            --coverage \
-            --reporter=default \
-            --reporter=junit \
+          npm install
+          npx vitest run --coverage \
+            --reporter=default --reporter=junit \
             --outputFile=unit-report.xml
-          TEST_EXIT_CODE=$?
-          set -e
 
-          # Move JUnit report into the artifact folder
-          if [ -f unit-report.xml ]; then
-            mv unit-report.xml unit-test-report/junit.xml
-          fi
+      - name: Backend unit tests (DB via Docker Compose)
+        run: |
+          docker compose up -d postgres
+          docker compose exec -T postgres sh -c 'until pg_isready -U postgres -d ecommerce; do sleep 1; done'
+          cd server-ts && npm install
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ecommerce \
+            npx vitest run --config vitest.server.config.ts \
+              --reporter=default --reporter=junit \
+              --outputFile=unit-report.xml
+          docker compose down
 
-          # Move coverage output into the artifact folder when available
-          if [ -d coverage ]; then
-            rm -rf unit-test-report/coverage
-            cp -r coverage unit-test-report/coverage
-          fi
-
-          # Ensure JUnit file exists so upload-artifact always has at least one file
-          if [ ! -f unit-test-report/junit.xml ]; then
-            echo "JUnit report not found, creating dummy report"
-            cat << 'EOF' > unit-test-report/junit.xml
-          <testsuites>
-            <testsuite name="vitest" tests="0" failures="0" errors="0" skipped="0" />
-          </testsuites>
-          EOF
-          fi
-          
-          exit $TEST_EXIT_CODE
-
-      - name: Publish unit test report in GitHub Actions
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: dorny/test-reporter@v1
-        with:
-          name: Unit tests Web (Vitest)
-          path: web/unit-test-report/junit.xml
-          reporter: jest-junit
-          fail-on-error: false
-
-      - name: Upload unit test reports
-        if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: unit-test-report-web
-          path: web/unit-test-report
+          path: web/unit-report.xml
           if-no-files-found: warn
 
-  unit-tests-backend:
-    name: Unit tests Backend-ts (Vitest)
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: server-ts/package-lock.json
-
-      - name: Install backend dependencies
-        working-directory: server-ts
-        run: npm install
-
-      - name: Setup PostgreSQL
-        uses: tj-actions/install-postgresql@v3
-        with:
-          postgresql-version: 17
-
-      - name: Configure PostgreSQL database
-        run: |
-          sudo systemctl start postgresql
-          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
-
-      - name: Wait for PostgreSQL readiness
-        run: |
-          for i in {1..60}; do
-            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
-              echo "PostgreSQL pronto para conexões."
-              exit 0
-            fi
-            echo "Aguardando PostgreSQL ficar pronto..."
-            sleep 2
-          done
-          echo "PostgreSQL não ficou pronto no tempo esperado."
-          exit 1
-
-      - name: Seed backend database
-        working-directory: server-ts
-        run: npm run seed
-
-      - name: Run backend unit tests with JUnit
-        working-directory: server-ts
-        run: |
-          mkdir -p unit-test-report
-          set +e
-          npx vitest run \
-            --config vitest.server.config.ts \
-            --reporter=default \
-            --reporter=junit \
-            --outputFile=unit-report.xml
-          TEST_EXIT_CODE=$?
-          set -e
-
-          if [ -f unit-report.xml ]; then
-            mv unit-report.xml unit-test-report/junit.xml
-          fi
-
-          if [ ! -f unit-test-report/junit.xml ]; then
-            echo "JUnit report not found, creating dummy report"
-            cat << 'EOF' > unit-test-report/junit.xml
-          <testsuites>
-            <testsuite name="vitest-backend" tests="0" failures="0" errors="0" skipped="0" />
-          </testsuites>
-          EOF
-          fi
-
-          exit $TEST_EXIT_CODE
-
-      - name: Publish backend unit test report in GitHub Actions
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: dorny/test-reporter@v1
-        with:
-          name: Unit tests Backend-ts (Vitest)
-          path: server-ts/unit-test-report/junit.xml
-          reporter: jest-junit
-          fail-on-error: false
-
-      - name: Upload backend unit test reports
-        if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: unit-test-report-backend
-          path: server-ts/unit-test-report
+          path: server-ts/unit-report.xml
           if-no-files-found: warn
 
-  contract-tests:
-    name: Contract tests (Pact)
+  # ── Contract Tests ──────────────────────────────────────────────────
+  contract:
+    name: Contract Tests (Pact)
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: |
-            web/package-lock.json
-            server-ts/package-lock.json
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: web
-        run: npm install
-
-      - name: Install backend dependencies
-        working-directory: server-ts
-        run: npm install
-
-      - name: Setup PostgreSQL
-        uses: tj-actions/install-postgresql@v3
-        with:
-          postgresql-version: 17
-
-      - name: Configure PostgreSQL database
+      - name: Run Pact tests (DB via Docker Compose)
         run: |
-          sudo systemctl start postgresql
-          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+          docker compose up -d postgres
+          docker compose exec -T postgres sh -c 'until pg_isready -U postgres -d ecommerce; do sleep 1; done'
+          cd server-ts && npm install
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ecommerce npm run seed
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ecommerce npm run test:pact
+          cd ../web && npm install && npm run test:pact:consumer
+          docker compose down
 
-      - name: Wait for PostgreSQL readiness
-        run: |
-          for i in {1..60}; do
-            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
-              echo "PostgreSQL pronto para conexões."
-              exit 0
-            fi
-            echo "Aguardando PostgreSQL ficar pronto..."
-            sleep 2
-          done
-          echo "PostgreSQL não ficou pronto no tempo esperado."
-          exit 1
-
-      - name: Seed backend database
-        working-directory: server-ts
-        run: npm run seed
-
-      - name: Run contract tests (consumer)
-        working-directory: web
-        run: npm run test:pact:consumer
-
-      - name: Run contract tests (provider)
-        working-directory: server-ts
-        run: npm run test:pact:provider
-
-      - name: Upload pact artifacts
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: pact-artifacts
           path: |
@@ -256,238 +87,90 @@ jobs:
             web/pacts
           if-no-files-found: warn
 
+  # ── E2E Tests (usando docker-compose.yml completo) ──────────────────
   e2e:
+    name: E2E (${{ matrix.project }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      matrix:
-        project: [frontend-chromium, frontend-edge, api]
-    env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
-
+      matrix: { project: [frontend-chromium, frontend-edge, api] }
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: |
-            web/package-lock.json
-            server-ts/package-lock.json
-
-      - name: Restore Playwright runner cache
-        id: playwright-runner-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules/@playwright
-            node_modules/@playwright/test
-            node_modules/playwright
-            node_modules/playwright-core
-          key: ${{ runner.os }}-playwright-runner-${{ hashFiles('web/package-lock.json') }}
-
-      - name: Restore Playwright browsers cache
-        id: playwright-browser-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-browsers-${{ hashFiles('web/package-lock.json') }}
-
-      - name: Install frontend dependencies
+      - name: Install Playwright
         working-directory: web
-        run: npm install
+        run: npm install && npx playwright install --with-deps
 
-      - name: Install backend dependencies
-        working-directory: server-ts
-        run: npm install
+      - name: Start stack (docker-compose.yml)
+        run: docker compose up -d --build
 
-      - name: Install Playwright test runner for root config
-        if: steps.playwright-runner-cache.outputs.cache-hit != 'true'
-        run: npm install --no-save @playwright/test playwright
-
-      - name: Install Playwright browsers and system deps (cache miss)
-        if: steps.playwright-browser-cache.outputs.cache-hit != 'true'
+      - name: Wait for Backend readiness
         working-directory: web
-        run: npx playwright install --with-deps
-
-      - name: Ensure Playwright browsers are available (cache hit)
-        if: steps.playwright-browser-cache.outputs.cache-hit == 'true'
-        working-directory: web
-        run: npx playwright install
-
-      - name: Setup PostgreSQL
-        uses: tj-actions/install-postgresql@v3
-        with:
-          postgresql-version: 17
-
-      - name: Configure PostgreSQL database
-        run: |
-          sudo systemctl start postgresql
-          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
-
-      - name: Wait for PostgreSQL readiness
-        run: |
-          for i in {1..60}; do
-            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
-              echo "PostgreSQL pronto para conexões."
-              exit 0
-            fi
-            echo "Aguardando PostgreSQL ficar pronto..."
-            sleep 2
-          done
-          echo "PostgreSQL não ficou pronto no tempo esperado."
-          exit 1
-
-      - name: Seed backend database
-        working-directory: server-ts
-        run: npm run seed
-
-      - name: Start backend (Next.js) in background
-        working-directory: server-ts
-        run: |
-          nohup npm run dev > ../backend.log 2>&1 &
-          echo $! > ../backend.pid
-          echo "Backend PID: $(cat ../backend.pid)"
-
-      - name: Wait for backend readiness (timeout)
-        continue-on-error: true
         run: npx wait-on --timeout 120000 http://127.0.0.1:3001/api/products
 
-      - name: Start frontend (Vite) in background
+      - name: Wait for Frontend readiness
         working-directory: web
-        run: |
-          nohup npm run dev > ../frontend.log 2>&1 &
-          echo $! > ../frontend.pid
-          echo "Frontend PID: $(cat ../frontend.pid)"
-
-      - name: Wait for frontend readiness (timeout)
-        continue-on-error: true
-        run: npx wait-on --timeout 120000 http://127.0.0.1:5174
+        run: npx wait-on --timeout 60000 http://127.0.0.1:5174
 
       - name: Run E2E tests
         working-directory: web
         continue-on-error: true
-        run: xvfb-run --auto-servernum npx playwright test --config playwright.config.ts --project=${{ matrix.project }}
+        run: xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
 
-      - name: Upload Playwright report
+      - name: Container logs (on failure)
+        if: failure()
+        run: docker compose logs --tail=80
+
+      - name: Stop stack
         if: always()
-        uses: actions/upload-artifact@v4
+        run: docker compose down
+
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: playwright-report-${{ matrix.project }}
-          path: |
-            playwright-report
-            web/playwright-report
+          path: web/playwright-report
           if-no-files-found: ignore
 
-      - name: Upload E2E JUnit report
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: e2e-junit-${{ matrix.project }}
           path: web/junit-report.xml
           if-no-files-found: warn
 
-      - name: Upload test results and logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-and-logs-${{ matrix.project }}
-          path: |
-            test-results
-            web/test-results
-            junit-report.xml
-            web/junit-report.xml
-            backend.log
-            frontend.log
-          if-no-files-found: ignore
-
-      - name: Stop app processes
-        if: always()
-        run: |
-          if [ -f backend.pid ]; then
-            kill $(cat backend.pid) || true
-          fi
-          if [ -f frontend.pid ]; then
-            kill $(cat frontend.pid) || true
-          fi
-
-  deploy-playwright-report:
-    name: Deploy Playwright report to GitHub Pages
-    needs: [unit-tests, unit-tests-backend, contract-tests, e2e]
+  # ── Deploy Reports ──────────────────────────────────────────────────
+  deploy:
+    name: Deploy Reports
+    needs: [unit, contract, e2e]
     runs-on: ubuntu-latest
     if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: tests-report }
 
-      - name: Download Playwright report artifact
-        uses: actions/download-artifact@v4
-        with:
-          pattern: playwright-report-*
-          path: tests-report
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
 
-      - name: Download web unit test report artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: unit-test-report-web
-          path: tests-report/unit-tests-web
-
-      - name: Download backend unit test report artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: unit-test-report-backend
-          path: tests-report/unit-tests-backend
-
-      - name: Download E2E JUnit report artifacts
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          pattern: e2e-junit-*
-          path: tests-report/e2e-junit
-
-      - name: Download contract test artifacts
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: pact-artifacts
-          path: tests-report/contract-tests
-
-      - name: Copy Swagger documentation
+      - name: Build report bundle
         run: |
           mkdir -p tests-report/swagger
-          cp -r docs/swagger/* tests-report/swagger/
-
-      - name: Create HTML index page to redirect to reports
-        run: |
-          mkdir -p tests-report
+          cp -r docs/swagger/* tests-report/swagger/ || true
           cp docs/tests-report/dashboard.html tests-report/index.html
+          node scripts/generate-dashboard-metrics.js
 
-      - name: Setup Node.js for dashboard metrics
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Generate dashboard metrics JSON
-        run: node scripts/generate-dashboard-metrics.js
-
-      - name: Deploy Test reports to gh-pages
-        if: always() && github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v4
+      - uses: peaceiris/actions-gh-pages@v4
+        id: deploy
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
           publish_dir: tests-report
+          publish_branch: gh-pages
           destination_dir: tests-report
           keep_files: true
-

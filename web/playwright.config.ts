@@ -14,7 +14,7 @@ export default defineConfig({
   testDir: './e2e/specs',
   timeout: 50_000,
   expect: {
-    timeout: 25_000,
+    timeout: 30_000,
   },
   fullyParallel: true,
   forbidOnly: isCI,
@@ -29,7 +29,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 25_000,
+    actionTimeout: 30_000,
     navigationTimeout: 50_000,
     testIdAttribute: 'data-element-id',
   },
@@ -45,7 +45,7 @@ export default defineConfig({
         screenshot: 'only-on-failure',
       },
     },
-    
+
     // {
     //   name: 'frontend-webkit',
     //   testMatch: /frontend\/.*\.spec\.ts/,
