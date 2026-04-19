@@ -113,4 +113,98 @@ test.describe('API Products', () => {
     });
     expect(response.status()).toBe(404);
   });
+
+  test('deve retornar 401 ao criar produto sem token', async ({ request }) => {
+    const response = await request.post('products', {
+      data: { name: 'Sem Token', price: 10, category: 'N/A' },
+    });
+    expect(response.status()).toBe(401);
+  });
+
+  test('deve retornar 403 ao criar produto com usuário comum', async ({ request }) => {
+    // Needs a user token instead of admin
+    const userRes = await request.post('users/register', {
+      data: {
+        first_name: 'Product', last_name: 'Tester',
+        email: `common.user.prod.${Date.now()}@example.com`,
+        password: 'Senha@1234', person_type: 'PF'
+      }
+    });
+    const { accessToken } = await (await request.post('users/login', {
+      data: { email: (await userRes.json()).email, password: 'Senha@1234' }
+    })).json();
+
+    const response = await request.post('products', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { name: 'Hack Product', price: 10, category: 'N/A' },
+    });
+    expect(response.status()).toBe(403);
+  });
+
+  test('deve retornar 403 ao deletar produto com usuário comum', async ({ request }) => {
+    const userRes = await request.post('users/register', {
+        data: {
+          first_name: 'Delete', last_name: 'Tester',
+          email: `del.user.prod.${Date.now()}@example.com`,
+          password: 'Senha@1234', person_type: 'PF'
+        }
+      });
+      const { accessToken } = await (await request.post('users/login', {
+        data: { email: (await userRes.json()).email, password: 'Senha@1234' }
+      })).json();
+
+    const response = await request.delete('products/1', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    expect(response.status()).toBe(403);
+  });
+
+  test('deve retornar 403 ao atualizar produto com usuário comum', async ({ request }) => {
+    const userRes = await request.post('users/register', {
+        data: {
+          first_name: 'Update', last_name: 'Tester',
+          email: `upd.user.prod.${Date.now()}@example.com`,
+          password: 'Senha@1234', person_type: 'PF'
+        }
+      });
+      const { accessToken } = await (await request.post('users/login', {
+        data: { email: (await userRes.json()).email, password: 'Senha@1234' }
+      })).json();
+
+    const response = await request.put('products/1', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { name: 'Updated' },
+    });
+    expect(response.status()).toBe(403);
+  });
+
+  test('deve retornar 400 ao buscar produto com id em formato inválido', async ({ request }) => {
+    const response = await request.get('products/abc-invalido');
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao criar produto com preço negativo', async ({ request }) => {
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const response = await request.post('products', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
+      data: {
+        name: 'Preço Negativo',
+        price: -10.50,
+        category: 'Test'
+      }
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao criar produto sem categoria', async ({ request }) => {
+    const adminAccessToken = await loginAsAdminAndGetAccessToken(request);
+    const response = await request.post('products', {
+      headers: { Authorization: `Bearer ${adminAccessToken}` },
+      data: {
+        name: 'Sem Categoria',
+        price: 50
+      }
+    });
+    expect(response.status()).toBe(400);
+  });
 });

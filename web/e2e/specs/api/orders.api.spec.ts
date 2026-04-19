@@ -325,4 +325,71 @@ test.describe('API Orders', () => {
     await deleteProductAsAdmin(request, adminAccessToken, product.id);
   });
 
+  test('deve retornar 400 ao criar pedido com método de pagamento inválido', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { 
+          paymentMethod: 'metodo-invalido',
+          items: [{ productId: 1, quantity: 1 }] 
+        },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao criar pedido com valor de frete negativo', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { 
+          shippingTotal: -10,
+          items: [{ productId: 1, quantity: 1 }]
+        },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao criar pedido com desconto negativo', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { 
+          discountTotal: -5,
+          items: [{ productId: 1, quantity: 1 }]
+        },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 404 ao tentar atualizar status de pedido inexistente', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.put('orders/999999999', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { status: 'paid' },
+    });
+    expect(response.status()).toBe(404);
+  });
+
+  test('deve retornar 401 ao tentar atualizar pedido sem autenticação', async ({ request }) => {
+    const response = await request.put('orders/1', {
+      data: { status: 'paid' },
+    });
+    expect(response.status()).toBe(401);
+  });
+
+  test('deve retornar 400 ao criar pedido com quantidade zero em items', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('orders', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { 
+          items: [{ productId: 1, quantity: 0 }] 
+        },
+    });
+    expect(response.status()).toBe(400);
+  });
 });

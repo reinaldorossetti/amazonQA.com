@@ -344,4 +344,69 @@ test.describe('API Cart', () => {
     await deleteProductAsAdmin(request, adminAccessToken, productA.id);
     await deleteProductAsAdmin(request, adminAccessToken, productB.id);
   });
+
+  test('deve retornar 400 ao adicionar produto inexistente ao carrinho', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { products: [{ productId: 999999999, quantity: 1 }] },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao adicionar produto com quantidade zero', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { products: [{ productId: 1, quantity: 0 }] },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao adicionar produto com quantidade negativa', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { products: [{ productId: 1, quantity: -5 }] },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao tentar adicionar produto sem productId', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.post('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { products: [{ quantity: 1 }] },
+    });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 401 ao listar carrinho sem token', async ({ request }) => {
+    const response = await request.get('cart?userId=1');
+    expect(response.status()).toBe(401);
+  });
+
+  test('deve retornar 404 ao remover item com ID inexistente', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.delete('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { cartItemId: 888888888 },
+    });
+    expect(response.status()).toBe(404);
+  });
+
+  test('deve retornar 400 ao remover item com ID inválido (string)', async ({ request }) => {
+    const user = await createUser(request);
+    const accessToken = await loginAndGetAccessToken(request, user.email, 'Senha@1234');
+    const response = await request.delete('cart', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      data: { cartItemId: 'id-invalido' },
+    });
+    expect(response.status()).toBe(400);
+  });
 });

@@ -416,4 +416,61 @@ test.describe('API Users', () => {
     const secondPayload = await secondResponse.json();
     expect(secondPayload.error).toBe('Account is already closed');
   });
+
+  test('deve retornar 400 para e-mail com formato inválido no registro', async ({ request }) => {
+    const user = uniqueUser();
+    user.email = 'email-invalido';
+    const response = await request.post('users/register', { data: user });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 para senha muito curta no registro', async ({ request }) => {
+    const user = uniqueUser();
+    user.password = '123';
+    const response = await request.post('users/register', { data: user });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao registrar sem person_type', async ({ request }) => {
+    const user = uniqueUser();
+    delete (user as any).person_type;
+    const response = await request.post('users/register', { data: user });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao registrar PF sem informar CPF', async ({ request }) => {
+    const user = uniqueUser();
+    user.person_type = 'PF';
+    user.cpf = null; // CPF is already null in uniqueUser, but making it explicit
+    const response = await request.post('users/register', { data: user });
+    // Note: Some systems might allow this if CPF is not strictly required at registration, 
+    // but usually 400 is expected if the logic requires it for PF.
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 400 ao registrar PJ sem informar CNPJ', async ({ request }) => {
+    const user = uniqueUser();
+    user.person_type = 'PJ';
+    const response = await request.post('users/register', { data: user });
+    expect(response.status()).toBe(400);
+  });
+
+  test('deve retornar 401 ao tentar logar com email inexistente', async ({ request }) => {
+    const response = await request.post('users/login', {
+      data: { email: 'inexistente.user.999@example.com', password: 'Senha@123' },
+    });
+    expect(response.status()).toBe(401);
+  });
+
+  test('deve retornar 403 ao tentar atualizar perfil de outro usuário', async ({ request }) => {
+    const userA = await createUserAndLogin(request);
+    const userB = await createUserAndLogin(request);
+    
+    const response = await request.put(`users/${userB.id}`, {
+      headers: { Authorization: `Bearer ${userA.token}` },
+      data: { first_name: 'Hack Attempt' },
+    });
+    
+    expect(response.status()).toBe(403);
+  });
 });
