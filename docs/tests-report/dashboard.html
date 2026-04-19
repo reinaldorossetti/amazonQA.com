@@ -4,493 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QA Dashboard | Relatórios de Testes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --bg: #0b1020;
-        --panel: #121a33;
-        --panel-soft: #1a2444;
-        --text: #e9eefc;
-        --muted: #aeb8d9;
-        --ok: #22c55e;
-        --mid: #f59e0b;
-        --top: #ef4444;
-        --accent: #60a5fa;
-        --border: #27345f;
-        --tab-active: #60a5fa;
-        --tab-hover: rgba(96, 165, 250, 0.12);
-      }
-
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-
-      body {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(1200px 600px at 90% -10%, #1e3a8a44 0%, transparent 60%),
-          radial-gradient(1000px 500px at -10% -20%, #7c3aed33 0%, transparent 60%),
-          var(--bg);
-        min-height: 100vh;
-      }
-
-      .container {
-        width: min(1200px, 94%);
-        margin: 0 auto;
-        padding: 36px 0 60px;
-      }
-
-      /* ── Hero ─────────────────────────────────────────── */
-      .hero {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-
-      .hero h1 {
-        font-size: clamp(1.6rem, 3vw, 2.2rem);
-        font-weight: 800;
-        letter-spacing: -0.5px;
-      }
-
-      .hero p {
-        color: var(--muted);
-        margin-top: 4px;
-        max-width: 600px;
-        line-height: 1.5;
-      }
-
-      .meta { color: #c9d5ff; font-size: 0.85rem; margin-top: 6px; opacity: 0.8; }
-
-      /* ── CI Badge ─────────────────────────────────────── */
-      .ci-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 18px;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        backdrop-filter: blur(8px);
-        transition: all 0.3s ease;
-      }
-      .ci-status.pass { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-      .ci-status.fail { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-      .ci-status.unknown { background: rgba(168,184,217,0.1); color: #aeb8d9; border: 1px solid rgba(168,184,217,0.2); }
-      .ci-icon { width: 18px; height: 18px; }
-
-      /* ── Tabs ─────────────────────────────────────────── */
-      .tabs-wrapper {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: rgba(11, 16, 32, 0.85);
-        backdrop-filter: blur(16px) saturate(160%);
-        -webkit-backdrop-filter: blur(16px) saturate(160%);
-        border-bottom: 1px solid var(--border);
-        margin: 0 -3% 0;
-        padding: 0 3%;
-      }
-
-      .tabs {
-        display: flex;
-        gap: 4px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-      .tabs::-webkit-scrollbar { display: none; }
-
-      .tab-btn {
-        position: relative;
-        background: none;
-        border: none;
-        color: var(--muted);
-        font-family: inherit;
-        font-size: 0.92rem;
-        font-weight: 600;
-        padding: 16px 22px;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: color 0.2s ease, background 0.2s ease;
-        border-radius: 12px 12px 0 0;
-      }
-
-      .tab-btn:hover {
-        color: var(--text);
-        background: var(--tab-hover);
-      }
-
-      .tab-btn.active {
-        color: var(--tab-active);
-      }
-
-      .tab-btn::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%) scaleX(0);
-        width: 70%;
-        height: 3px;
-        border-radius: 3px 3px 0 0;
-        background: var(--tab-active);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .tab-btn.active::after {
-        transform: translateX(-50%) scaleX(1);
-      }
-
-      .tab-icon {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        vertical-align: -2px;
-        margin-right: 8px;
-      }
-
-      /* ── Tab Content ──────────────────────────────────── */
-      .tab-panels { margin-top: 28px; }
-
-      .tab-panel {
-        display: none;
-        animation: fadeSlideIn 0.4s ease forwards;
-      }
-
-      .tab-panel.active { display: block; }
-
-      @keyframes fadeSlideIn {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* ── Cards ────────────────────────────────────────── */
-      .card {
-        background: linear-gradient(180deg, var(--panel-soft), var(--panel));
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      }
-
-      .card + .card { margin-top: 20px; }
-
-      .card h2, .card h3 { margin: 0 0 12px; }
-      .card h2 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.3px; }
-
-      .muted { color: var(--muted); line-height: 1.6; }
-
-      .section-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        color: var(--accent);
-        margin-bottom: 14px;
-        padding: 6px 14px;
-        border-radius: 999px;
-        background: rgba(96, 165, 250, 0.08);
-        border: 1px solid rgba(96, 165, 250, 0.15);
-      }
-
-      /* ── Grid Layouts ─────────────────────────────────── */
-      .two-col {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      @media (min-width: 860px) {
-        .two-col { grid-template-columns: 340px 1fr; }
-      }
-
-      /* ── Pyramid ──────────────────────────────────────── */
-      .pyramid {
-        margin-top: 22px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .layer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 44px;
-        border-radius: 12px;
-        color: white;
-        font-weight: 700;
-        font-size: 0.92rem;
-        transition: transform 0.2s ease;
-      }
-      .layer:hover { transform: scale(1.04); }
-      .layer.top { width: 100px; background: linear-gradient(135deg, #ef4444, #dc2626); }
-      .layer.mid { width: 200px; background: linear-gradient(135deg, #f59e0b, #d97706); }
-      .layer.base { width: 300px; background: linear-gradient(135deg, #22c55e, #16a34a); }
-
-      .legend { margin-top: 14px; font-size: 0.88rem; }
-      .legend div { margin: 8px 0; }
-      .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
-
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 16px;
-      }
-
-      .stat {
-        background: rgba(11, 18, 41, 0.7);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 12px;
-      }
-      .stat small { color: var(--muted); display: block; font-size: 0.78rem; }
-      .stat strong { font-size: 1.4rem; }
-
-      /* ── Reports Grid ─────────────────────────────────── */
-      .reports-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 14px;
-      }
-
-      .report {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px;
-        background: rgba(11, 18, 41, 0.6);
-        display: grid;
-        gap: 12px;
-        transition: border-color 0.2s ease, transform 0.2s ease;
-      }
-      .report:hover {
-        border-color: rgba(96, 165, 250, 0.3);
-        transform: translateY(-2px);
-      }
-
-      .report-title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .tag {
-        font-size: 0.72rem;
-        padding: 4px 10px;
-        border-radius: 999px;
-        border: 1px solid #3b4a80;
-        color: #d6e1ff;
-        background: rgba(26, 37, 80, 0.6);
-        font-weight: 600;
-      }
-
-      .btn {
-        text-decoration: none;
-        color: #0a1030;
-        background: linear-gradient(180deg, #93c5fd, var(--accent));
-        border-radius: 12px;
-        text-align: center;
-        font-weight: 700;
-        padding: 11px 14px;
-        font-size: 0.88rem;
-        transition: filter 0.2s ease, transform 0.15s ease;
-      }
-      .btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
-      .summary-list { margin: 12px 0 0; padding-left: 20px; }
-      .summary-list li { margin-bottom: 8px; color: var(--muted); line-height: 1.5; }
-
-      /* ── Metrics ──────────────────────────────────────── */
-      .metrics-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 12px;
-        margin-top: 16px;
-      }
-
-      .metric {
-        background: rgba(11, 18, 41, 0.7);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 14px;
-        transition: border-color 0.2s ease;
-      }
-      .metric:hover { border-color: rgba(96, 165, 250, 0.25); }
-      .metric small { color: var(--muted); display: block; font-size: 0.78rem; }
-      .metric strong { font-size: 1.15rem; }
-
-      .charts-grid {
-        margin-top: 16px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 14px;
-      }
-
-      .chart-card {
-        background: rgba(11, 18, 41, 0.6);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px;
-      }
-      .chart-card h4 { margin: 0 0 14px; font-size: 1rem; font-weight: 700; }
-
-      .suite-donuts {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 12px;
-      }
-
-      .donut-wrap { display: grid; justify-items: center; gap: 8px; }
-
-      .donut {
-        --pct: 0;
-        --tone: var(--accent);
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        position: relative;
-        background: conic-gradient(var(--tone) calc(var(--pct) * 1%), #24335c 0);
-        display: grid;
-        place-items: center;
-        transition: transform 0.2s ease;
-      }
-      .donut:hover { transform: scale(1.06); }
-
-      .donut::after {
-        content: "";
-        position: absolute;
-        width: 74px;
-        height: 74px;
-        border-radius: 50%;
-        background: #0d1530;
-        border: 1px solid #2b3f73;
-      }
-
-      .donut-value { position: relative; z-index: 1; font-size: 0.92rem; font-weight: 800; }
-      .donut-label { font-size: 0.78rem; color: var(--muted); text-align: center; }
-
-      .coverage-bars { display: grid; gap: 10px; }
-
-      .coverage-row { display: grid; gap: 5px; }
-
-      .coverage-head {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.82rem;
-        color: var(--muted);
-      }
-
-      .coverage-track {
-        width: 100%;
-        height: 10px;
-        border-radius: 999px;
-        overflow: hidden;
-        background: #1b2748;
-      }
-
-      .coverage-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #34d399, #60a5fa);
-        border-radius: 999px;
-        transition: width 0.8s ease;
-      }
-
-      .bars { margin-top: 16px; display: grid; gap: 10px; }
-
-      .bar-row { display: grid; gap: 5px; }
-      .bar-row span { color: var(--muted); font-size: 0.85rem; }
-
-      .bar-track {
-        width: 100%;
-        height: 12px;
-        border-radius: 999px;
-        overflow: hidden;
-        background: #1b2748;
-        display: flex;
-      }
-      .bar-pass { background: linear-gradient(90deg, #22c55e, #16a34a); }
-      .bar-fail { background: linear-gradient(90deg, #ef4444, #dc2626); }
-      .bar-skip { background: #64748b; }
-
-      .status-pill {
-        margin-top: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.83rem;
-        border-radius: 999px;
-        padding: 8px 14px;
-        border: 1px solid #324777;
-        background: #101a36;
-      }
-      .status-pill.success { color: #86efac; border-color: #1f8f4c; background: rgba(34,197,94,0.12); }
-      .status-pill.warning { color: #fbbf24; border-color: #8c6a11; background: rgba(245,158,11,0.12); }
-
-      /* ── Total Cards (Sucesso / Falha) ─────────────── */
-      .totals-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin-top: 18px;
-      }
-
-      .total-card {
-        border-radius: 16px;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        transition: transform 0.2s ease;
-      }
-      .total-card:hover { transform: translateY(-2px); }
-
-      .total-card.success {
-        background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,163,74,0.08));
-        border: 1px solid rgba(34,197,94,0.3);
-      }
-      .total-card.failure {
-        background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.08));
-        border: 1px solid rgba(239,68,68,0.3);
-      }
-
-      .total-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.4rem;
-        flex-shrink: 0;
-      }
-      .total-card.success .total-icon { background: rgba(34,197,94,0.2); }
-      .total-card.failure .total-icon { background: rgba(239,68,68,0.2); }
-
-      .total-info small { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 2px; }
-      .total-info strong { font-size: 1.6rem; font-weight: 800; }
-      .total-card.success .total-info strong { color: #4ade80; }
-      .total-card.failure .total-info strong { color: #f87171; }
-
-      footer {
-        margin-top: 40px;
-        padding-top: 20px;
-        border-top: 1px solid var(--border);
-        color: var(--muted);
-        font-size: 0.82rem;
-        text-align: center;
-      }
-    </style>
+    <meta name="description" content="Painel central de relatórios, métricas e visão da pirâmide de testes do projeto." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="dashboard-styles.css" />
   </head>
   <body>
     <main class="container">
+
       <!-- ── Hero + CI Badge ──────────────────────────── -->
       <header class="hero">
         <div>
@@ -498,36 +18,54 @@
           <p>Painel central de relatórios, métricas e visão da pirâmide de testes do projeto.</p>
           <div class="meta" id="generatedAt"></div>
         </div>
-        <div id="ciStatusBadge" class="ci-status unknown">
-          <svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div id="ciStatusBadge" class="ci-status unknown" aria-live="polite">
+          <svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
           <span>Verificando esteira...</span>
         </div>
       </header>
 
       <!-- ── Tab Navigation ───────────────────────────── -->
-      <nav class="tabs-wrapper">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="summary">
-            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+      <nav class="tabs-wrapper" aria-label="Navegação principal">
+        <div class="tabs" role="tablist">
+
+          <button class="tab-btn active" data-tab="summary" role="tab" id="tab-summary" aria-controls="panel-summary" aria-selected="true">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
             Resumo
           </button>
-          <button class="tab-btn" data-tab="reports">
-            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+
+          <button class="tab-btn" data-tab="reports" role="tab" id="tab-reports" aria-controls="panel-reports" aria-selected="false">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
             Relatórios
           </button>
-          <button class="tab-btn" data-tab="metrics">
-            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+
+          <button class="tab-btn" data-tab="metrics" role="tab" id="tab-metrics" aria-controls="panel-metrics" aria-selected="false">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
             Métricas CI
           </button>
+
         </div>
       </nav>
 
       <!-- ── Tab Panels ───────────────────────────────── -->
       <div class="tab-panels">
 
-        <!-- ═══ TAB 1: Resumo ═══ -->
-        <section class="tab-panel active" id="panel-summary">
+        <!-- ═══ TAB 1: Resumo ═══════════════════════════ -->
+        <section class="tab-panel active" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
           <div class="two-col">
+
+            <!-- Pyramid -->
             <div class="card">
               <span class="section-label">🔺 Pirâmide de Testes</span>
               <h2>Estratégia de Testes</h2>
@@ -536,79 +74,99 @@
                 uma camada intermediária de <strong>integração/contrato</strong>,
                 e menos testes <strong>E2E</strong> no topo para fluxos críticos.
               </p>
-
               <div class="pyramid" aria-label="Pirâmide de testes">
                 <div class="layer top">E2E</div>
                 <div class="layer mid">Integração / Contrato</div>
                 <div class="layer base">Unidade</div>
               </div>
-
               <div class="legend">
-                <div><span class="dot" style="background:var(--ok)"></span>Base: maior volume, feedback rápido.</div>
-                <div><span class="dot" style="background:var(--mid)"></span>Meio: valida integrações e contratos.</div>
-                <div><span class="dot" style="background:var(--top)"></span>Topo: valida jornada real do usuário.</div>
+                <div><span class="dot dot-ok"></span>Base: maior volume, feedback rápido.</div>
+                <div><span class="dot dot-mid"></span>Meio: valida integrações e contratos.</div>
+                <div><span class="dot dot-top"></span>Topo: valida jornada real do usuário.</div>
               </div>
             </div>
 
+            <!-- Totals + Summary -->
             <div class="card">
               <span class="section-label">📊 Visão Geral</span>
               <h2>Resumo dos Testes</h2>
               <div class="totals-row" id="totalsRow">
                 <div class="total-card success">
                   <div class="total-icon">✅</div>
-                  <div class="total-info"><small>Total com Sucesso</small><strong id="totalPassed">—</strong></div>
+                  <div class="total-info">
+                    <small>Total com Sucesso</small>
+                    <strong id="totalPassed">—</strong>
+                  </div>
                 </div>
                 <div class="total-card failure">
                   <div class="total-icon">❌</div>
-                  <div class="total-info"><small>Total com Falha</small><strong id="totalFailed">—</strong></div>
+                  <div class="total-info">
+                    <small>Total com Falha</small>
+                    <strong id="totalFailed">—</strong>
+                  </div>
                 </div>
               </div>
               <ul class="summary-list" id="testSummary"></ul>
               <div class="stats" id="stats"></div>
             </div>
+
           </div>
         </section>
 
-        <!-- ═══ TAB 2: Relatórios ═══ -->
-        <section class="tab-panel" id="panel-reports">
+        <!-- ═══ TAB 2: Relatórios ════════════════════════ -->
+        <section class="tab-panel" id="panel-reports" role="tabpanel" aria-labelledby="tab-reports">
           <div class="card">
             <span class="section-label">📂 Relatório Detalhado dos Testes</span>
             <h2>Relatório Detalhado dos Testes</h2>
             <p class="muted">Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.</p>
-            <div class="reports-grid" id="reportsGrid" style="margin-top: 18px;"></div>
+            <div class="reports-grid" id="reportsGrid"></div>
           </div>
         </section>
 
-        <!-- ═══ TAB 3: Métricas CI ═══ -->
-        <section class="tab-panel" id="panel-metrics">
+        <!-- ═══ TAB 3: Métricas CI ═══════════════════════ -->
+        <section class="tab-panel" id="panel-metrics" role="tabpanel" aria-labelledby="tab-metrics">
+
+          <!-- Status + Number Cards -->
           <div class="card">
             <span class="section-label">⚡ Pipeline</span>
             <h2>Métricas Dinâmicas (CI)</h2>
             <p class="muted">Esses números vêm da última execução publicada pela pipeline.</p>
-            <div class="status-pill" id="dynamicStatus">Carregando métricas...</div>
+            <div class="status-pill" id="dynamicStatus" aria-live="polite">Carregando métricas...</div>
             <div class="metrics-grid" id="metricsGrid"></div>
           </div>
 
+          <!-- Donut Charts: Taxa de Sucesso -->
           <div class="card">
             <span class="section-label">🍩 Gráficos</span>
             <h2>Taxa de Sucesso por Suíte</h2>
             <div class="charts-grid" id="chartsGrid"></div>
           </div>
 
+          <!-- Coverage Bars: Vitest Web -->
           <div class="card">
             <span class="section-label">📊 Cobertura</span>
             <h2>Cobertura Web (Vitest)</h2>
             <p class="muted">Percentual de código coberto pelos testes unitários (Statements, Lines, Functions, Branches).</p>
-            <div id="coverageGrid" style="margin-top: 14px;"></div>
+            <div id="coverageGrid" class="section-content"></div>
           </div>
 
+          <!-- Bar Chart: Testes Unitários por Projeto -->
           <div class="card">
-            <span class="section-label">📈 Barras</span>
+            <span class="section-label">📈 Unitários</span>
+            <h2>Resultados Unitários por Projeto</h2>
+            <p class="muted">Aprovados ✅ / Falhas ❌ / Pulados ⏭️ por suíte de testes unitários.</p>
+            <div class="bars" id="unitBars"></div>
+          </div>
+
+          <!-- Bar Chart: E2E por Projeto -->
+          <div class="card">
+            <span class="section-label">📈 E2E</span>
             <h2>Resultados E2E por Projeto</h2>
+            <p class="muted">Aprovados ✅ / Falhas ❌ / Pulados ⏭️ por projeto E2E.</p>
             <div class="bars" id="e2eBars"></div>
           </div>
-        </section>
 
+        </section>
       </div>
 
       <footer>
@@ -616,305 +174,14 @@
       </footer>
     </main>
 
-    <script>
-      /* ── Tab Switching ──────────────────────────────── */
-      const tabBtns = document.querySelectorAll('.tab-btn');
-      const tabPanels = document.querySelectorAll('.tab-panel');
-
-      tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabBtns.forEach(b => b.classList.remove('active'));
-          tabPanels.forEach(p => p.classList.remove('active'));
-          btn.classList.add('active');
-          const panel = document.getElementById(`panel-${btn.dataset.tab}`);
-          if (panel) panel.classList.add('active');
-        });
-      });
-
-      /* ── Existing Logic (preserved) ─────────────────── */
-      const reportsBaseUrl = new URL("./", window.location.href).href;
-
-      const reports = [
-        { title: "E2E - Frontend Chromium", type: "E2E", description: "Fluxos ponta a ponta no Chromium.", href: `${reportsBaseUrl}playwright-report-frontend-chromium/` },
-        { title: "E2E - Frontend Edge", type: "E2E", description: "Fluxos ponta a ponta no Edge.", href: `${reportsBaseUrl}playwright-report-frontend-edge/` },
-        { title: "Integração - API", type: "Integração/Contrato", description: "Cenários de integração da API.", href: `${reportsBaseUrl}playwright-report-api/` },
-        { title: "Contrato - Pact", type: "Integração/Contrato", description: "Validação de contrato consumidor/provedor.", href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json` },
-        { title: "Unit Web - Coverage", type: "Unidade", description: "Cobertura e status dos testes unitários do frontend web (Vitest).", href: `${reportsBaseUrl}unit-tests-web/coverage/index.html` },
-        { title: "Unit Web - JUnit XML", type: "Unidade", description: "Saída bruta de execução dos testes unitários do web.", href: `${reportsBaseUrl}unit-tests-web/junit.xml` },
-        { title: "Unit Backend-ts - JUnit XML", type: "Unidade", description: "Saída bruta de execução dos testes unitários do backend-ts.", href: `${reportsBaseUrl}unit-tests-backend/junit.xml` },
-        { title: "Swagger API", type: "Documentação", description: "Documentação interativa dos endpoints.", href: `${reportsBaseUrl}swagger/index.html` }
-      ];
-
-      const testSummaryItems = [
-        "Unidade Web (Vitest): valida componentes e regras do frontend com execução rápida e cobertura detalhada.",
-        "Unidade Backend-ts (Vitest): valida regras e serviços do backend em isolamento.",
-        "Integração/Contrato (Pact e API): garante compatibilidade ponta a ponta na API e contratos consumidor/provedor.",
-        "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores no frontend.",
-        "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints.",
-        "Cobertura (Statements): percentual total de instruções/blocos executados durante os testes.",
-        "Cobertura (Lines): percentual de linhas de código abrangidas pela execução dos testes."
-      ];
-
-      const reportsGrid = document.getElementById("reportsGrid");
-      const stats = document.getElementById("stats");
-      const testSummary = document.getElementById("testSummary");
-      const generatedAt = document.getElementById("generatedAt");
-      const dynamicStatus = document.getElementById("dynamicStatus");
-      const metricsGrid = document.getElementById("metricsGrid");
-      const chartsGrid = document.getElementById("chartsGrid");
-      const e2eBars = document.getElementById("e2eBars");
-
-      const counts = reports.reduce((acc, r) => {
-        if (r.type === "Unidade") acc.unit++;
-        if (r.type === "Integração/Contrato") acc.integration++;
-        if (r.type === "E2E") acc.e2e++;
-        return acc;
-      }, { unit: 0, integration: 0, e2e: 0 });
-
-      reportsGrid.innerHTML = reports.map(r => `
-        <section class="report">
-          <div class="report-title">
-            <strong>${r.title}</strong>
-            <span class="tag">${r.type}</span>
-          </div>
-          <div class="muted">${r.description}</div>
-          <a class="btn" href="${r.href}">Abrir relatório</a>
-        </section>
-      `).join("");
-
-      stats.innerHTML = `
-        <div class="stat"><small>Relatórios E2E</small><strong>${counts.e2e}</strong></div>
-        <div class="stat"><small>Integração/Contrato</small><strong>${counts.integration}</strong></div>
-        <div class="stat"><small>Relatórios Unitários</small><strong>${counts.unit}</strong></div>
-        <div class="stat"><small>Total de atalhos</small><strong>${reports.length}</strong></div>
-      `;
-
-      testSummary.innerHTML = testSummaryItems.map(item => `<li>${item}</li>`).join("");
-      generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")}`;
-
-      const projectLabels = {
-        "frontend-chromium": "E2E Frontend Chromium",
-        "frontend-edge": "E2E Frontend Edge",
-        api: "Integração API"
-      };
-
-      const frontendE2EReportSources = {
-        "frontend-chromium": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-chromium/",
-        "frontend-edge": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/",
-        "api": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/"
-      };
-
-      const formatPercent = v => typeof v !== "number" || Number.isNaN(v) ? "N/D" : `${v.toFixed(1)}%`;
-      const safeNumber = v => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
-      const safePercent = (p, t) => t <= 0 ? 0 : Math.max(0, Math.min(100, (p / t) * 100));
-
-      function renderDonut(title, passed, total, tone) {
-        const pct = safePercent(passed, total);
-        return `
-          <div class="donut-wrap">
-            <div class="donut" style="--pct:${pct}; --tone:${tone};">
-              <span class="donut-value">${pct.toFixed(1)}%</span>
-            </div>
-            <div class="donut-label">${title}<br>${passed}/${total} aprovados</div>
-          </div>
-        `;
-      }
-
-      function renderCoverageBar(label, percent) {
-        const pct = typeof percent === "number" && !Number.isNaN(percent) ? Math.max(0, Math.min(100, percent)) : 0;
-        return `
-          <div class="coverage-row">
-            <div class="coverage-head">
-              <span>${label}</span>
-              <span>${typeof percent === "number" && !Number.isNaN(percent) ? `${percent.toFixed(1)}%` : "N/D"}</span>
-            </div>
-            <div class="coverage-track"><div class="coverage-fill" style="width:${pct}%"></div></div>
-          </div>
-        `;
-      }
-
-      function renderBarRow(label, passed, failed, skipped, total) {
-        if (total <= 0) return "";
-        return `
-          <div class="bar-row">
-            <span>${label}: ${passed} ✅ / ${failed} ❌ / ${skipped} ⏭️ (Total: ${total})</span>
-            <div class="bar-track" role="img" aria-label="${label}">
-              <div class="bar-pass" style="width:${(passed/total)*100}%"></div>
-              <div class="bar-fail" style="width:${(failed/total)*100}%"></div>
-              <div class="bar-skip" style="width:${(skipped/total)*100}%"></div>
-            </div>
-          </div>
-        `;
-      }
-
-      function readPlaywrightCounterFromAnchors(doc, label) {
-        const anchors = Array.from(doc.querySelectorAll("a"));
-        const pattern = new RegExp(`^${label}\\s*(\\d+)$`, "i");
-        for (const a of anchors) {
-          const text = (a.textContent || "").replace(/\s+/g, " ").trim();
-          const match = text.match(pattern);
-          if (match) return safeNumber(match[1]);
-        }
-        return null;
-      }
-
-      function parsePlaywrightSummaryFromDocument(doc) {
-        const all = readPlaywrightCounterFromAnchors(doc, "All");
-        const passed = readPlaywrightCounterFromAnchors(doc, "Passed");
-        const failed = readPlaywrightCounterFromAnchors(doc, "Failed");
-        const flaky = readPlaywrightCounterFromAnchors(doc, "Flaky");
-        const skipped = readPlaywrightCounterFromAnchors(doc, "Skipped");
-
-        if ([all, passed, failed, skipped].every(v => typeof v === "number")) {
-          return { tests: all, passed, failures: failed, flaky: typeof flaky === "number" ? flaky : 0, skipped };
-        }
-
-        const text = (doc.body?.innerText || doc.documentElement?.innerText || "").replace(/\s+/g, " ");
-        const allM = text.match(/\bAll\s*(\d+)\b/i);
-        const passedM = text.match(/\bPassed\s*(\d+)\b/i);
-        const failedM = text.match(/\bFailed\s*(\d+)\b/i);
-        const flakyM = text.match(/\bFlaky\s*(\d+)\b/i);
-        const skippedM = text.match(/\bSkipped\s*(\d+)\b/i);
-        if (!allM || !passedM || !failedM || !skippedM) return null;
-        return { tests: safeNumber(allM[1]), passed: safeNumber(passedM[1]), failures: safeNumber(failedM[1]), flaky: flakyM ? safeNumber(flakyM[1]) : 0, skipped: safeNumber(skippedM[1]) };
-      }
-
-      async function loadPlaywrightSummaryFromUrl(reportUrl) {
-        return new Promise((resolve, reject) => {
-          const iframe = document.createElement("iframe");
-          Object.assign(iframe.style, { position:"absolute", width:"1px", height:"1px", opacity:"0", pointerEvents:"none", left:"-9999px" });
-          iframe.src = reportUrl;
-          let done = false, pollTimer = null, timeoutTimer = null;
-          const finalize = (result, error) => { if (done) return; done = true; clearInterval(pollTimer); clearTimeout(timeoutTimer); iframe.remove(); error ? reject(error) : resolve(result); };
-          iframe.addEventListener("load", () => {
-            pollTimer = setInterval(() => {
-              try { const doc = iframe.contentDocument; if (!doc) return; const p = parsePlaywrightSummaryFromDocument(doc); if (p && p.tests > 0) finalize(p); } catch { finalize(null, new Error("read error")); }
-            }, 250);
-          });
-          iframe.addEventListener("error", () => finalize(null, new Error("load error")));
-          timeoutTimer = setTimeout(() => finalize(null, new Error("timeout")), 12000);
-          document.body.appendChild(iframe);
-        });
-      }
-
-      async function enrichFrontendE2EFromPlaywrightReports(data) {
-        const next = JSON.parse(JSON.stringify(data || {}));
-        next.e2e = next.e2e || {}; next.e2e.byProject = next.e2e.byProject || {};
-        const updates = await Promise.all(Object.entries(frontendE2EReportSources).map(async ([k, url]) => {
-          try { return { k, url, s: await loadPlaywrightSummaryFromUrl(url) }; } catch { return null; }
-        }));
-        for (const item of updates) {
-          if (!item) continue;
-          const { k, url, s } = item;
-          const f = safeNumber(s.failures) + safeNumber(s.flaky);
-          next.e2e.byProject[k] = { tests: safeNumber(s.tests), passed: safeNumber(s.passed), failures: f, errors: 0, skipped: safeNumber(s.skipped), status: f === 0 ? "passed" : "failed", sourceFile: url };
-        }
-        const totals = Object.values(next.e2e.byProject).reduce((a, c) => { a.tests += safeNumber(c.tests); a.failures += safeNumber(c.failures); a.errors += safeNumber(c.errors); a.skipped += safeNumber(c.skipped); a.passed += safeNumber(c.passed); return a; }, { tests:0, failures:0, errors:0, skipped:0, passed:0 });
-        next.e2e.totals = { ...totals, status: totals.tests > 0 ? (totals.failures === 0 && totals.errors === 0 ? "passed" : "failed") : "unknown" };
-        return next;
-      }
-
-      function renderCIStatus(data) {
-        const badge = document.getElementById("ciStatusBadge");
-        if (!data) { badge.className = "ci-status unknown"; badge.innerHTML = `<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Status Indisponível</span>`; return; }
-        const uw = data?.unit?.web ?? {}, ub = data?.unit?.backend ?? {};
-        const uFails = safeNumber(uw.failures) + safeNumber(uw.errors) + safeNumber(ub.failures) + safeNumber(ub.errors);
-        const eFails = safeNumber(data?.e2e?.totals?.failures) + safeNumber(data?.e2e?.totals?.errors);
-        const total = safeNumber(uw.tests) + safeNumber(ub.tests) + safeNumber(data?.e2e?.totals?.tests);
-        if (total === 0) { badge.className="ci-status fail"; badge.innerHTML=`<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg><span>Esteira Falhou (0 Testes)</span>`; }
-        else if (uFails > 0 || eFails > 0) { badge.className="ci-status fail"; badge.innerHTML=`<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Esteira Falhou (${uFails+eFails} erros)</span>`; }
-        else { badge.className="ci-status pass"; badge.innerHTML=`<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Esteira CI: Sucesso</span>`; }
-      }
-
-      function renderDynamicMetrics(data) {
-        const uw = data?.unit?.web ?? data?.unit ?? {}, ub = data?.unit?.backend ?? {};
-        const e2eT = data?.e2e?.totals ?? {}, e2eP = data?.e2e?.byProject ?? {};
-        const api = e2eP["api"] || { tests:0, passed:0, failures:0, errors:0, skipped:0 };
-        const apiT = safeNumber(api.tests), apiF = safeNumber(api.failures) + safeNumber(api.errors);
-        const totalE2E = Math.max(0, safeNumber(e2eT.tests) - apiT);
-        const totalE2EF = Math.max(0, safeNumber(e2eT.failures) + safeNumber(e2eT.errors) - apiF);
-
-        dynamicStatus.className = "status-pill success";
-        dynamicStatus.textContent = "Métricas carregadas com sucesso";
-
-        const uwT = safeNumber(uw.tests), uwF = safeNumber(uw.failures)+safeNumber(uw.errors), uwS = safeNumber(uw.skipped), uwP = Math.max(safeNumber(uw.passed) || uwT-uwF-uwS, 0);
-        const ubT = safeNumber(ub.tests), ubF = safeNumber(ub.failures)+safeNumber(ub.errors), ubS = safeNumber(ub.skipped), ubP = Math.max(safeNumber(ub.passed) || ubT-ubF-ubS, 0);
-        const apiP = Math.max(safeNumber(api.passed), 0), e2eFP = Math.max(safeNumber(e2eT.passed) - apiP, 0);
-
-        // Update totals in the Resumo tab
-        const grandPassed = uwP + ubP + apiP + Math.max(safeNumber(e2eT.passed), 0);
-        const grandFailed = uwF + ubF + apiF + totalE2EF;
-        document.getElementById("totalPassed").textContent = grandPassed;
-        document.getElementById("totalFailed").textContent = grandFailed;
-
-        metricsGrid.innerHTML = `
-          <div class="metric"><small>Unit Web executados</small><strong>${uwT}</strong></div>
-          <div class="metric"><small>Falhas Unit Web</small><strong>${uwF}</strong></div>
-          <div class="metric"><small>Unit Backend executados</small><strong>${ubT}</strong></div>
-          <div class="metric"><small>Falhas Unit Backend</small><strong>${ubF}</strong></div>
-          <div class="metric"><small>Testes de API executados</small><strong>${apiT}</strong></div>
-          <div class="metric"><small>Falhas Testes de API</small><strong>${apiF}</strong></div>
-          <div class="metric"><small>E2E executados</small><strong>${totalE2E}</strong></div>
-          <div class="metric"><small>Falhas E2E</small><strong>${totalE2EF}</strong></div>
-          <div class="metric"><small>Cobertura Web (Statements)</small><strong>${formatPercent(uw?.coverage?.statements?.percent)}</strong></div>
-          <div class="metric"><small>Cobertura Web (Lines)</small><strong>${formatPercent(uw?.coverage?.lines?.percent)}</strong></div>
-        `;
-
-        chartsGrid.innerHTML = `
-          <section class="chart-card">
-            <h4>Taxa de Sucesso por Suíte</h4>
-            <div class="suite-donuts">
-              ${renderDonut("Unit Web", uwP, uwT, "#60a5fa")}
-              ${renderDonut("Unit Backend", ubP, ubT, "#34d399")}
-              ${renderDonut("Integração API", Math.max(apiT - apiF - safeNumber(api.skipped), 0), apiT, "#f59e0b")}
-              ${renderDonut("E2E Frontend", Math.max(e2eFP, 0), totalE2E, "#ef4444")}
-            </div>
-          </section>
-        `;
-
-        // Coverage bars in their own dedicated section
-        const coverageGrid = document.getElementById("coverageGrid");
-        if (coverageGrid) {
-          coverageGrid.innerHTML = `
-            <div class="coverage-bars">
-              ${renderCoverageBar("Statements", uw?.coverage?.statements?.percent)}
-              ${renderCoverageBar("Lines", uw?.coverage?.lines?.percent)}
-              ${renderCoverageBar("Functions", uw?.coverage?.functions?.percent)}
-              ${renderCoverageBar("Branches", uw?.coverage?.branches?.percent)}
-            </div>
-          `;
-        }
-
-        e2eBars.innerHTML = ["api","frontend-chromium","frontend-edge"].map(k => {
-          const p = e2eP[k]; if (!p) return "";
-          return renderBarRow(projectLabels[k]??k, safeNumber(p.passed), safeNumber(p.failures)+safeNumber(p.errors), safeNumber(p.skipped), safeNumber(p.tests));
-        }).join("");
-
-        if (data?.generatedAt) {
-          const d = new Date(data.generatedAt);
-          if (!Number.isNaN(d.getTime())) generatedAt.textContent = `Atualizado em: ${new Date().toLocaleString("pt-BR")} · Dados CI: ${d.toLocaleString("pt-BR")}`;
-        }
-      }
-
-      async function loadDynamicMetrics() {
-        try {
-          const res = await fetch(`${reportsBaseUrl}dashboard-metrics.json`, { cache: "no-store" });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          const enriched = await enrichFrontendE2EFromPlaywrightReports(data);
-          renderDynamicMetrics(enriched);
-          renderCIStatus(enriched);
-        } catch {
-          dynamicStatus.className = "status-pill warning";
-          dynamicStatus.textContent = "Métricas dinâmicas indisponíveis nesta publicação.";
-          metricsGrid.innerHTML = "";
-          chartsGrid.innerHTML = "";
-          e2eBars.innerHTML = "";
-          renderCIStatus(null);
-        }
-      }
-
-      loadDynamicMetrics();
-    </script>
+    <!-- ── Feature Modules (load order matters) ─────── -->
+    <!-- ── Feature Modules ─────────────────────────────── -->
+    <!-- v2 cache-bust: increment when deploying updated JS -->
+    <script src="dashboard-metrics-data.js?v=2"></script>
+    <script src="dashboard-utils.js?v=2"></script>
+    <script src="dashboard-tabs.js?v=2"></script>
+    <script src="dashboard-summary.js?v=2"></script>
+    <script src="dashboard-reports.js?v=2"></script>
+    <script src="dashboard-metrics.js?v=2"></script>
   </body>
 </html>
