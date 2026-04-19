@@ -229,3 +229,14 @@ async function enrichE2EFromPlaywrightReports(data) {
 
   return next;
 }
+
+/**
+ * Updates the summary total counters if they exist on the page.
+ */
+function updateSummaryTotals(grandPassed, grandFailed) {
+    const elPassed = document.getElementById('totalPassed');
+    const elFailed = document.getElementById('totalFailed');
+    const fmt = v => (typeof v === 'number' && Number.isFinite(v)) ? v : 0;
+    if (elPassed) elPassed.textContent = fmt(grandPassed);
+    if (elFailed) elFailed.textContent = fmt(grandFailed);
+}

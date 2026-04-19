@@ -62,7 +62,10 @@ function renderMetricCards(data) {
   const ubT = safeNumber(ub.tests);
   const ubF = safeNumber(ub.failures) + safeNumber(ub.errors);
 
-  document.getElementById('metricsGrid').innerHTML = `
+  const el = document.getElementById('metricsGrid');
+  if (!el) return { uwT, uwF, ubT, ubF, apiT, apiF, totalE2E, totalE2EF };
+
+  el.innerHTML = `
     <div class="metric"><small>Unit Web executados</small><strong>${uwT}</strong></div>
     <div class="metric"><small>Falhas Unit Web</small><strong>${uwF}</strong></div>
     <div class="metric"><small>Unit Backend executados</small><strong>${ubT}</strong></div>
@@ -94,7 +97,10 @@ function renderDonutCharts(data, metrics) {
   const apiP  = Math.max(safeNumber(api.passed), 0);
   const e2eFP = Math.max(safeNumber(e2eT.passed) - apiP, 0);
 
-  document.getElementById('chartsGrid').innerHTML = `
+  const el = document.getElementById('chartsGrid');
+  if (!el) return { uwP, ubP, uwS, ubS };
+
+  el.innerHTML = `
     <section class="chart-card">
       <h4>Taxa de Sucesso por Suíte</h4>
       <div class="suite-donuts">
@@ -246,13 +252,19 @@ async function loadDynamicMetrics() {
   }
 
   if (!data) {
-    dynamicStatus.className   = 'status-pill warning';
-    dynamicStatus.textContent = 'Métricas dinâmicas indisponíveis nesta publicação.';
-    document.getElementById('metricsGrid').innerHTML  = '';
-    document.getElementById('chartsGrid').innerHTML   = '';
-    document.getElementById('e2eBars').innerHTML      = '';
-    document.getElementById('unitBars').innerHTML     = '';
-    document.getElementById('coverageGrid').innerHTML = '';
+    if (dynamicStatus) {
+        dynamicStatus.className   = 'status-pill warning';
+        dynamicStatus.textContent = 'Métricas dinâmicas indisponíveis nesta publicação.';
+    }
+    const safeSetHTML = (id, html) => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+    };
+    safeSetHTML('metricsGrid', '');
+    safeSetHTML('chartsGrid', '');
+    safeSetHTML('e2eBars', '');
+    safeSetHTML('unitBars', '');
+    safeSetHTML('coverageGrid', '');
     renderCIBadge(null);
     return;
   }

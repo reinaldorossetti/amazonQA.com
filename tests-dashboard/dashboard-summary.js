@@ -29,15 +29,4 @@ function renderSummaryTab() {
     `Atualizado em: ${new Date().toLocaleString('pt-BR')}`;
 }
 
-/**
- * Called after CI data loads to update the grand total cards in the Resumo tab.
- */
-function updateSummaryTotals(grandPassed, grandFailed) {
-  const elPassed = document.getElementById('totalPassed');
-  const elFailed = document.getElementById('totalFailed');
-  const fmt = v => Number.isFinite(v) ? v : 0;
-  if (elPassed) elPassed.textContent = fmt(grandPassed);
-  if (elFailed) elFailed.textContent = fmt(grandFailed);
-}
-
 document.addEventListener('DOMContentLoaded', renderSummaryTab);
