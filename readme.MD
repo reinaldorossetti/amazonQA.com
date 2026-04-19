@@ -34,7 +34,7 @@ Todas as três aplicações compartilham o **mesmo backend** (`/server`), garant
 
 
 ### 📊 **Dashboard de Qualidade do Projeto:** 
-[Dashboard](https://reinaldorossetti.github.io/amazonQA.com/tests-report/index.html)  
+[Dashboard](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/index.html)  
 
 ---
 
@@ -105,13 +105,13 @@ flowchart BT
 
 **Relatórios públicos da pirâmide e da documentação:**
 
-- **Cobertura unitária (Vitest):** [Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-report/unit-tests/coverage/index.html)
-- **Testes de API (Playwright):** [Playwright API](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/index.html)
-- **Testes de contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
-- **E2E Frontend (Playwright / Chromium):** [Browser Chromium](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-chromium/index.html)
-- **E2E Frontend (Playwright / WebKit):** [Browser WebKit](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-webkit/index.html)
-- **E2E Frontend (Playwright / Edge):** [Browser Edge](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/index.html)
-- **Swagger da API:** https://reinaldorossetti.github.io/amazonQA.com/tests-report/swagger/index.html
+- **Cobertura unitária (Vitest):** [Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/unit-tests/coverage/index.html)
+- **Testes de API (Playwright):** [Playwright API](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-api/index.html)
+- **Testes de contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- **E2E Frontend (Playwright / Chromium):** [Browser Chromium](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-chromium/index.html)
+- **E2E Frontend (Playwright / WebKit):** [Browser WebKit](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-webkit/index.html)
+- **E2E Frontend (Playwright / Edge):** [Browser Edge](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-edge/index.html)
+- **Swagger da API:** https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/swagger/index.html
 - **Guia completo de Pact:** [Guia de Testes de Pacto](pact-tests-guide.md)
 
 ---
@@ -120,22 +120,22 @@ flowchart BT
 
 Acompanhe os resultados diários, a cobertura e a documentação pública disponibilizada usando **GH-Pages** através dos nossos relatórios:
 
-- 📑 **Todos os Testes (Índice):** [Visualizar Relatórios Gerais](https://reinaldorossetti.github.io/amazonQA.com/tests-report/index.html)
+- 📑 **Todos os Testes (Índice):** [Visualizar Relatórios Gerais](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/index.html)
 
-- 📘 **Documentação Swagger (API):** [Swagger UI](https://reinaldorossetti.github.io/amazonQA.com/tests-report/swagger/index.html)
+- 📘 **Documentação Swagger (API):** [Swagger UI](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/swagger/index.html)
 
-- 🧪 **Cobertura de Unitários/Unidade (Vitest):** [Unit Tests Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-report/unit-tests/coverage/index.html)
+- 🧪 **Cobertura de Unitários/Unidade (Vitest):** [Unit Tests Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/unit-tests/coverage/index.html)
 
-- 🔌 **Relatório de Testes de API:** [Playwright API Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/index.html)
+- 🔌 **Relatório de Testes de API:** [Playwright API Report](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-api/index.html)
 
-- 🤝 **Relatório de Testes de Contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- 🤝 **Relatório de Testes de Contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
 
 - 📘 **Guia dos Testes de Pacto:** [pact-tests-guide.md](pact-tests-guide.md)
 
 **📱 Relatórios UI E2E (Playwright por Browser):**
-- 🌐 [Relatório Frontend - Chromium](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-chromium/index.html)
-- 🌐 [Relatório Frontend - WebKit](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-webkit/index.html)
-- 🌐 [Relatório Frontend - Edge](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/index.html)
+- 🌐 [Relatório Frontend - Chromium](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-chromium/index.html)
+- 🌐 [Relatório Frontend - WebKit](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-webkit/index.html)
+- 🌐 [Relatório Frontend - Edge](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/playwright-report-frontend-edge/index.html)
 
 
 ### E2E tests commands:
@@ -167,7 +167,7 @@ npx playwright codegen
 
 Os testes de contrato validam o acordo entre **frontend (consumer)** e **backend (provider)** sem depender de uma suíte E2E completa.
 
-- 📄 **Report do contrato publicado (GH Pages):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+- 📄 **Report do contrato publicado (GH Pages):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
 - 📚 **Guia completo (implementação + execução):** [Guia de Testes de Pacto](pact-tests-guide.md)
 
 Esse fluxo garante que mudanças na API não quebrem o consumo esperado no frontend e adiciona uma camada extra de segurança na esteira de CI.
@@ -306,8 +306,8 @@ Se necessário, ajuste `EXPO_PUBLIC_API_BASE_URL` para o IP da sua máquina em e
 
 Relatórios públicos (GitHub Pages):
 
-- Índice de relatórios: <https://reinaldorossetti.github.io/tester.com/tests-report/>
-- Swagger: <https://reinaldorossetti.github.io/tester.com/tests-report/swagger/index.html>
+- Índice de relatórios: <https://reinaldorossetti.github.io/tester.com/tests-dashboard/>
+- Swagger: <https://reinaldorossetti.github.io/tester.com/tests-dashboard/swagger/index.html>
 
 ---
 
