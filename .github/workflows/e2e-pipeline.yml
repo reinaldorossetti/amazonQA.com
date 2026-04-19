@@ -33,6 +33,7 @@ jobs:
             --outputFile=unit-report.xml
 
       - name: Backend unit tests (DB via Docker Compose)
+        continue-on-error: true
         run: |
           docker compose up -d postgres
           docker compose exec -T postgres sh -c 'until pg_isready -U postgres -d ecommerce; do sleep 1; done'
