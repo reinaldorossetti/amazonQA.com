@@ -32,6 +32,10 @@ tester.com/
 
 Todas as três aplicações compartilham o **mesmo backend** (`/server`), garantindo paridade funcional entre web e mobile.
 
+
+### 📊 **Dashboard de Qualidade do Projeto:** 
+[Dashboard](https://reinaldorossetti.github.io/amazonQA.com/tests-report/index.html)  
+
 ---
 
 ## 🎬 Demonstração — Fluxo Completo em Vídeo (compra REAL, sem mock)
@@ -101,7 +105,6 @@ flowchart BT
 
 **Relatórios públicos da pirâmide e da documentação:**
 
-- **Índice geral de testes:** https://reinaldorossetti.github.io/amazonQA.com/tests-report/
 - **Cobertura unitária (Vitest):** [Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-report/unit-tests/coverage/index.html)
 - **Testes de API (Playwright):** [Playwright API](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/index.html)
 - **Testes de contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
@@ -117,11 +120,16 @@ flowchart BT
 
 Acompanhe os resultados diários, a cobertura e a documentação pública disponibilizada usando **GH-Pages** através dos nossos relatórios:
 
-- 📑 **Todos os Testes (Índice):** [Visualizar Relatórios Gerais](https://reinaldorossetti.github.io/amazonQA.com/tests-report/)
+- 📑 **Todos os Testes (Índice):** [Visualizar Relatórios Gerais](https://reinaldorossetti.github.io/amazonQA.com/tests-report/index.html)
+
 - 📘 **Documentação Swagger (API):** [Swagger UI](https://reinaldorossetti.github.io/amazonQA.com/tests-report/swagger/index.html)
+
 - 🧪 **Cobertura de Unitários/Unidade (Vitest):** [Unit Tests Coverage](https://reinaldorossetti.github.io/amazonQA.com/tests-report/unit-tests/coverage/index.html)
+
 - 🔌 **Relatório de Testes de API:** [Playwright API Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/index.html)
+
 - 🤝 **Relatório de Testes de Contrato (Pact):** [Pact Contract Report](https://reinaldorossetti.github.io/amazonQA.com/tests-report/contract-tests/pacts/tester-web-frontend-tester-backend-api.json)
+
 - 📘 **Guia dos Testes de Pacto:** [pact-tests-guide.md](pact-tests-guide.md)
 
 **📱 Relatórios UI E2E (Playwright por Browser):**

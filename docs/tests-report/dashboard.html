@@ -596,6 +596,13 @@
           </div>
 
           <div class="card">
+            <span class="section-label">📊 Cobertura</span>
+            <h2>Cobertura Web (Vitest)</h2>
+            <p class="muted">Percentual de código coberto pelos testes unitários (Statements, Lines, Functions, Branches).</p>
+            <div id="coverageGrid" style="margin-top: 14px;"></div>
+          </div>
+
+          <div class="card">
             <span class="section-label">📈 Barras</span>
             <h2>Resultados E2E por Projeto</h2>
             <div class="bars" id="e2eBars"></div>
@@ -693,7 +700,8 @@
 
       const frontendE2EReportSources = {
         "frontend-chromium": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-chromium/",
-        "frontend-edge": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/"
+        "frontend-edge": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-frontend-edge/",
+        "api": "https://reinaldorossetti.github.io/amazonQA.com/tests-report/playwright-report-api/"
       };
 
       const formatPercent = v => typeof v !== "number" || Number.isNaN(v) ? "N/D" : `${v.toFixed(1)}%`;
@@ -862,16 +870,20 @@
               ${renderDonut("E2E Frontend", Math.max(e2eFP, 0), totalE2E, "#ef4444")}
             </div>
           </section>
-          <section class="chart-card">
-            <h4>Cobertura Web</h4>
+        `;
+
+        // Coverage bars in their own dedicated section
+        const coverageGrid = document.getElementById("coverageGrid");
+        if (coverageGrid) {
+          coverageGrid.innerHTML = `
             <div class="coverage-bars">
               ${renderCoverageBar("Statements", uw?.coverage?.statements?.percent)}
               ${renderCoverageBar("Lines", uw?.coverage?.lines?.percent)}
               ${renderCoverageBar("Functions", uw?.coverage?.functions?.percent)}
               ${renderCoverageBar("Branches", uw?.coverage?.branches?.percent)}
             </div>
-          </section>
-        `;
+          `;
+        }
 
         e2eBars.innerHTML = ["api","frontend-chromium","frontend-edge"].map(k => {
           const p = e2eP[k]; if (!p) return "";

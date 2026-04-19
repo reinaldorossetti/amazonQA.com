@@ -81,24 +81,41 @@ function parseCoverageMetric(html, metricName) {
 }
 
 function readE2EJunitStats() {
-  const e2eRoot = path.join(REPORTS_DIR, 'e2e-junit');
-  if (!fs.existsSync(e2eRoot)) {
-    return {};
+  const statsByProject = {};
+
+  // Collect candidate directories from two possible layouts:
+  // 1. Old layout:  tests-report/e2e-junit/e2e-junit-api/
+  // 2. New layout:  tests-report/e2e-junit-api/  (flat, from download-artifact)
+  const candidateDirs = [];
+
+  // Old nested layout
+  const nestedRoot = path.join(REPORTS_DIR, 'e2e-junit');
+  if (fs.existsSync(nestedRoot)) {
+    const nested = fs.readdirSync(nestedRoot, { withFileTypes: true }).filter((e) => e.isDirectory());
+    for (const entry of nested) {
+      candidateDirs.push({ dir: path.join(nestedRoot, entry.name), name: entry.name });
+    }
   }
 
-  const statsByProject = {};
-  const artifactDirs = fs.readdirSync(e2eRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+  // New flat layout: scan REPORTS_DIR for directories matching e2e-junit-*
+  if (fs.existsSync(REPORTS_DIR)) {
+    const flat = fs.readdirSync(REPORTS_DIR, { withFileTypes: true })
+      .filter((e) => e.isDirectory() && e.name.startsWith('e2e-junit-'));
+    for (const entry of flat) {
+      candidateDirs.push({ dir: path.join(REPORTS_DIR, entry.name), name: entry.name });
+    }
+  }
 
-  for (const dirEntry of artifactDirs) {
-    const artifactDir = path.join(e2eRoot, dirEntry.name);
-    const projectName = dirEntry.name.replace(/^e2e-junit-/, '');
+  for (const { dir: artifactDir, name } of candidateDirs) {
+    const projectName = name.replace(/^e2e-junit-/, '');
+    if (statsByProject[projectName]) continue; // avoid duplicates, first wins
 
     const candidates = [
       path.join(artifactDir, 'junit-report.xml'),
       path.join(artifactDir, 'web', 'junit-report.xml'),
     ];
 
-    const junitPath = candidates.find((candidatePath) => fs.existsSync(candidatePath));
+    const junitPath = candidates.find((p) => fs.existsSync(p));
     const xml = junitPath ? safeRead(junitPath) : null;
     statsByProject[projectName] = {
       ...parseJUnit(xml),
