@@ -49,3 +49,4 @@ mobile/node_modules/
 /coverage/
 trace/
 /data/
+dashboard-metrics.json

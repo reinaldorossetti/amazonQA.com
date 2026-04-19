@@ -11,6 +11,89 @@
  * Depends on: dashboard-utils.js, dashboard-summary.js
  */
 
+/* ── Runtime JUnit Parser ─────────────────────────── */
+
+/**
+ * Parses a JUnit XML string into a structured stats object.
+ */
+function parseJUnitXML(xmlText) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+  
+  // Try <testsuites> first, then fall back to <testsuite>
+  let target = xmlDoc.querySelector('testsuites');
+  if (!target) target = xmlDoc.querySelector('testsuite');
+
+  if (!target) {
+    return { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' };
+  }
+
+  const tests    = safeNumber(target.getAttribute('tests'));
+  const failures = safeNumber(target.getAttribute('failures'));
+  const errors   = safeNumber(target.getAttribute('errors'));
+  const skipped  = safeNumber(target.getAttribute('skipped'));
+  const passed   = Math.max(0, tests - failures - errors - skipped);
+  
+  let status = 'unknown';
+  if (tests > 0) {
+    status = (failures === 0 && errors === 0) ? 'passed' : 'failed';
+  }
+
+  return { tests, failures, errors, skipped, passed, status };
+}
+
+/**
+ * Fetches an XML file and parses it.
+ */
+async function fetchAndParseJUnit(url) {
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const text = await res.text();
+    return parseJUnitXML(text);
+  } catch (e) {
+    console.warn(`Failed to fetch/parse JUnit from ${url}:`, e);
+    return null;
+  }
+}
+
+/**
+ * Parses Vitest coverage HTML for metrics.
+ */
+function parseCoverageHTML(htmlText) {
+  if (!htmlText) return null;
+  
+  const extract = (metric) => {
+    const regex = new RegExp(`<span\\s+class=["']strong["']>([^<]+)<\\/span>\\s*<span\\s+class=["']quiet["']>${metric}<\\/span>\\s*<span\\s+class=["']fraction["']>([^<]+)<\\/span>`, 'i');
+    const match = htmlText.match(regex);
+    if (!match) return { percent: null, covered: 0, total: 0 };
+    
+    const [covered, total] = match[2].split('/').map(v => safeNumber(v.trim()));
+    const percentRaw = match[1].trim().replace('%', '');
+    const percent = Number.parseFloat(percentRaw);
+    
+    return { percent, covered, total };
+  };
+
+  return {
+    statements: extract('Statements'),
+    branches:   extract('Branches'),
+    functions:  extract('Functions'),
+    lines:      extract('Lines')
+  };
+}
+
+async function fetchAndParseCoverage(url) {
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const text = await res.text();
+    return parseCoverageHTML(text);
+  } catch {
+    return null;
+  }
+}
+
 /* ── CI Badge ────────────────────────────────────── */
 function renderCIBadge(data) {
   const badge = document.getElementById('ciStatusBadge');
@@ -233,46 +316,94 @@ function renderDynamicMetrics(data) {
 /* ── Data Loader ─────────────────────────────────── */
 async function loadDynamicMetrics() {
   const dynamicStatus = document.getElementById('dynamicStatus');
-
-  /**
-   * Try to fetch the JSON from the server (works on GitHub Pages / HTTP).
-   * If that fails (CORS on file://, 404, network error), fall back to the
-   * locally-embedded data in dashboard-metrics-data.js.
-   */
-  let data = null;
-  try {
-    const res = await fetch(`${reportsBaseUrl}dashboard-metrics.json`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    data = await res.json();
-  } catch {
-    // Graceful fallback: use the locally embedded simulation data
-    if (window.DASHBOARD_METRICS_FALLBACK) {
-      data = window.DASHBOARD_METRICS_FALLBACK;
-    }
+  if (dynamicStatus) {
+    dynamicStatus.className = 'status-pill info';
+    dynamicStatus.textContent = 'Coletando dados dos arquivos JUnit...';
   }
 
-  if (!data) {
-    if (dynamicStatus) {
-        dynamicStatus.className   = 'status-pill warning';
-        dynamicStatus.textContent = 'Métricas dinâmicas indisponíveis nesta publicação.';
+  // Define candidate paths for runtime data gathering
+  const paths = {
+    unitWeb:     [`${reportsBaseUrl}unit-tests-web/junit.xml`],
+    unitBackend: [`${reportsBaseUrl}unit-tests-backend/junit.xml`],
+    coverage:    `${reportsBaseUrl}unit-tests-web/coverage/index.html`,
+    e2e: {
+      'api':               `${reportsBaseUrl}e2e-junit-api/junit-report.xml`,
+      'frontend-chromium': `${reportsBaseUrl}e2e-junit-frontend-chromium/junit-report.xml`,
+      'frontend-edge':     `${reportsBaseUrl}e2e-junit-frontend-edge/junit-report.xml`
     }
-    const safeSetHTML = (id, html) => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = html;
-    };
-    safeSetHTML('metricsGrid', '');
-    safeSetHTML('chartsGrid', '');
-    safeSetHTML('e2eBars', '');
-    safeSetHTML('unitBars', '');
-    safeSetHTML('coverageGrid', '');
-    renderCIBadge(null);
+  };
+
+  // 1. Fetch and parse everything in parallel
+  const [xmlWeb, xmlBackend, covHtml, ...e2eXmls] = await Promise.all([
+    fetchAndParseJUnit(paths.unitWeb[0]),
+    fetchAndParseJUnit(paths.unitBackend[0]),
+    fetchAndParseCoverage(paths.coverage),
+    ...Object.values(paths.e2e).map(url => fetchAndParseJUnit(url))
+  ]);
+
+  // 2. Build the data structure at runtime
+  const e2eprojects = {};
+  Object.keys(paths.e2e).forEach((key, idx) => {
+    if (e2eXmls[idx]) {
+      e2eprojects[key] = e2eXmls[idx];
+    }
+  });
+
+  const e2eTotals = Object.values(e2eprojects).reduce(
+    (acc, cur) => {
+      acc.tests += cur.tests;
+      acc.failures += cur.failures;
+      acc.errors += cur.errors;
+      acc.skipped += cur.skipped;
+      acc.passed += cur.passed;
+      return acc;
+    },
+    { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 }
+  );
+
+  const runtimeData = {
+    generatedAt: new Date().toISOString(),
+    unit: {
+      web: xmlWeb ? { ...xmlWeb, coverage: covHtml } : null,
+      backend: xmlBackend
+    },
+    e2e: {
+      byProject: e2eprojects,
+      totals: {
+        ...e2eTotals,
+        status: e2eTotals.tests > 0 && e2eTotals.failures === 0 && e2eTotals.errors === 0 ? 'passed' : 'failed'
+      }
+    }
+  };
+
+  // 3. Fallback to existing JSON or Embedded Mock if all fetches failed
+  if (!xmlWeb && !xmlBackend && e2eTotals.tests === 0) {
+    try {
+      const res = await fetch(`${reportsBaseUrl}dashboard-metrics.json`, { cache: 'no-store' });
+      if (res.ok) {
+        const jsonData = await res.json();
+        renderDynamicMetrics(jsonData);
+        renderCIBadge(jsonData);
+        return;
+      }
+    } catch {}
+
+    if (window.DASHBOARD_METRICS_FALLBACK) {
+      renderDynamicMetrics(window.DASHBOARD_METRICS_FALLBACK);
+      renderCIBadge(window.DASHBOARD_METRICS_FALLBACK);
+    } else {
+      if (dynamicStatus) {
+        dynamicStatus.className = 'status-pill warning';
+        dynamicStatus.textContent = 'Nenhum dado JUnit encontrado.';
+      }
+      renderCIBadge(null);
+    }
     return;
   }
 
-  // Enrich E2E data from live Playwright reports (best-effort; falls back to JSON values)
-  const enriched = await enrichE2EFromPlaywrightReports(data);
-  renderDynamicMetrics(enriched);
-  renderCIBadge(enriched);
+  // 4. Render the gathered data
+  renderDynamicMetrics(runtimeData);
+  renderCIBadge(runtimeData);
 }
 
 document.addEventListener('DOMContentLoaded', loadDynamicMetrics);
