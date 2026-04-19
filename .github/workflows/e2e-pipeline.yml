@@ -47,15 +47,15 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: unit-test-report-web
-          path: ./tests-dashboard/unit-tests-web/junit.xml
+          name: unit-tests-web
+          path: web/tests-dashboard/unit-tests-web/
           if-no-files-found: warn
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: unit-test-report-backend
-          path: ./tests-dashboard/unit-tests-backend/junit.xml
+          name: unit-tests-backend
+          path: server-ts/tests-dashboard/unit-tests-backend/
           if-no-files-found: warn
 
   # ── Contract Tests ──────────────────────────────────────────────────
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: pact-artifacts
+          name: contract-tests
           path: |
             pacts
             web/pacts
@@ -164,23 +164,8 @@ jobs:
       - name: Build report bundle
         run: |
           mkdir -p tests-dashboard/swagger
-          cp -r docs/swagger/* tests-dashboard/swagger/ || true
-          # Copia relatórios de cobertura e junit do web
-          if [ -d web/unit-tests-web ]; then cp -r web/unit-tests-web tests-dashboard/; fi
-          if [ -d web/unit-test-report-web ]; then cp -r web/unit-test-report-web tests-dashboard/; fi
-          if [ -d web/coverage ]; then cp -r web/coverage tests-dashboard/unit-tests-web/; fi
-          # Copia relatórios de cobertura e junit do backend
-          if [ -d server-ts/unit-tests-backend ]; then cp -r server-ts/unit-tests-backend tests-dashboard/; fi
-          if [ -d server-ts/unit-test-report-backend ]; then cp -r server-ts/unit-test-report-backend tests-dashboard/; fi
-          # Copia relatórios E2E
-          if [ -d web/playwright-report-frontend-chromium ]; then cp -r web/playwright-report-frontend-chromium tests-dashboard/; fi
-          if [ -d web/playwright-report-frontend-edge ]; then cp -r web/playwright-report-frontend-edge tests-dashboard/; fi
-          if [ -d web/playwright-report-api ]; then cp -r web/playwright-report-api tests-dashboard/; fi
-          # Copia outros relatórios relevantes
-          if [ -d web/pacts ]; then cp -r web/pacts tests-dashboard/; fi
-          if [ -d pacts ]; then cp -r pacts tests-dashboard/; fi
-          cp -r tests-dashboard/* tests-dashboard/  || true
-
+          if [ -d docs/swagger ]; then cp -r docs/swagger/* tests-dashboard/swagger/ || true; fi
+          
       - uses: peaceiris/actions-gh-pages@v4
         id: deploy
         with:
