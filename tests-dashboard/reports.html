@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Dashboard | Relatórios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard-styles.css">
+</head>
+<body>
+    <main class="container">
+        <header class="hero">
+            <div>
+                <h1>Relatórios de Testes</h1>
+                <p>Acesse os relatórios detalhados gerados por cada ferramenta de teste.</p>
+            </div>
+        </header>
+
+        <nav class="tabs-wrapper">
+            <div class="tabs">
+                <a href="index.html" class="tab-btn">Resumo</a>
+                <a href="reports.html" class="tab-btn active">Relatórios</a>
+                <a href="metrics.html" class="tab-btn">Métricas CI</a>
+            </div>
+        </nav>
+
+        <div class="tab-panels">
+            <section class="tab-panel active">
+                <div class="card">
+                    <span class="section-label">📂 Links Diretos</span>
+                    <h2>Explorar Resultados</h2>
+                    <p class="muted">Links para relatórios Playwright, Vitest Coverage, Swagger e mais.</p>
+                    <div class="reports-grid" id="reportsGrid">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            QA Dashboard Automatizado · 2026
+        </footer>
+    </main>
+
+    <script src="dashboard-utils.js"></script>
+    <script src="dashboard-reports.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             if (window.renderReportsTab) renderReportsTab();
+        });
+    </script>
+</body>
+</html>

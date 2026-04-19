@@ -30,7 +30,7 @@ jobs:
           npm install
           npx vitest run --coverage \
             --reporter=default --reporter=junit \
-            --outputFile=unit-report.xml
+            --outputFile=./tests-dashboard/unit-tests-web/junit.xml
 
       - name: Backend unit tests (DB via Docker Compose)
         continue-on-error: true
@@ -41,21 +41,21 @@ jobs:
           DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ecommerce \
             npx vitest run --config vitest.server.config.ts \
               --reporter=default --reporter=junit \
-              --outputFile=unit-report.xml
+              --outputFile=./tests-dashboard/unit-tests-backend/junit.xml
           docker compose down
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: unit-test-report-web
-          path: web/unit-report.xml
+          path: ./tests-dashboard/unit-tests-web/junit.xml
           if-no-files-found: warn
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: unit-test-report-backend
-          path: server-ts/unit-report.xml
+          path: ./tests-dashboard/unit-tests-backend/junit.xml
           if-no-files-found: warn
 
   # ── Contract Tests ──────────────────────────────────────────────────
@@ -111,7 +111,7 @@ jobs:
 
       - name: Wait for Backend readiness
         working-directory: web
-        run: npx wait-on --timeout 120000 http://127.0.0.1:3001/api/products
+        run: npx wait-on --timeout 60000 http://127.0.0.1:3001/api/products
 
       - name: Wait for Frontend readiness
         working-directory: web
@@ -156,23 +156,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-        with: { path: tests-report }
+        with: { path: tests-dashboard }
 
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
 
       - name: Build report bundle
         run: |
-          mkdir -p tests-report/swagger
-          cp -r docs/swagger/* tests-report/swagger/ || true
-          cp -r docs/tests-report/* tests-report/ || true
-          cp docs/tests-report/dashboard.html tests-report/index.html
+          mkdir -p tests-dashboard/swagger
+          cp -r docs/swagger/* tests-dashboard/swagger/ || true
+          # Copia relatórios de cobertura e junit do web
+          if [ -d web/unit-tests-web ]; then cp -r web/unit-tests-web tests-dashboard/; fi
+          if [ -d web/unit-test-report-web ]; then cp -r web/unit-test-report-web tests-dashboard/; fi
+          if [ -d web/coverage ]; then cp -r web/coverage tests-dashboard/unit-tests-web/; fi
+          # Copia relatórios de cobertura e junit do backend
+          if [ -d server-ts/unit-tests-backend ]; then cp -r server-ts/unit-tests-backend tests-dashboard/; fi
+          if [ -d server-ts/unit-test-report-backend ]; then cp -r server-ts/unit-test-report-backend tests-dashboard/; fi
+          # Copia relatórios E2E
+          if [ -d web/playwright-report-frontend-chromium ]; then cp -r web/playwright-report-frontend-chromium tests-dashboard/; fi
+          if [ -d web/playwright-report-frontend-edge ]; then cp -r web/playwright-report-frontend-edge tests-dashboard/; fi
+          if [ -d web/playwright-report-api ]; then cp -r web/playwright-report-api tests-dashboard/; fi
+          # Copia outros relatórios relevantes
+          if [ -d web/pacts ]; then cp -r web/pacts tests-dashboard/; fi
+          if [ -d pacts ]; then cp -r pacts tests-dashboard/; fi
+          cp -r tests-dashboard/* tests-dashboard/  || true
 
       - uses: peaceiris/actions-gh-pages@v4
         id: deploy
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: tests-report
+          publish_dir: tests-dashboard
           publish_branch: gh-pages
-          destination_dir: tests-report
+          destination_dir: tests-dashboard
           keep_files: true

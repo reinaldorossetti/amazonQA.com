@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="42" failures="9" errors="0" time="0.1014735">
+    <testsuite name="tests/api/boleto-download-endpoint.test.ts" timestamp="2026-04-19T19:13:25.139Z" hostname="PC-Gamer-Reinaldo" tests="2" failures="0" errors="0" skipped="0" time="0.0250417">
+        <testcase classname="tests/api/boleto-download-endpoint.test.ts" name="Boleto download endpoint &gt; returns PDF for valid orderId" time="0.0231998">
+        </testcase>
+        <testcase classname="tests/api/boleto-download-endpoint.test.ts" name="Boleto download endpoint &gt; returns 400 for invalid orderId" time="0.0006049">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/api/orders-endpoints.test.ts" timestamp="2026-04-19T19:13:25.143Z" hostname="PC-Gamer-Reinaldo" tests="7" failures="0" errors="0" skipped="0" time="0.0143801">
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; POST /api/orders returns 401 when unauthenticated" time="0.0054872">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; POST /api/orders returns 400 for empty cart" time="0.0018502">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; POST /api/orders creates order from payload items when persisted cart is empty" time="0.0026759">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; GET /api/orders lists orders for authenticated user" time="0.000979">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; GET /api/orders/:id blocks access to another user order" time="0.0005807">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; PUT /api/orders/:id returns 400 for invalid status transition" time="0.0007758">
+        </testcase>
+        <testcase classname="tests/api/orders-endpoints.test.ts" name="Orders API endpoints &gt; DELETE /api/orders/:id cancels eligible order" time="0.0006459">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/api/payments-endpoints.test.ts" timestamp="2026-04-19T19:13:25.144Z" hostname="PC-Gamer-Reinaldo" tests="6" failures="0" errors="0" skipped="0" time="0.0129545">
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; POST /api/orders/:id/payments returns 401 when unauthenticated" time="0.0050206">
+        </testcase>
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; POST /api/orders/:id/payments validates payment method" time="0.0015276">
+        </testcase>
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; POST /api/orders/:id/payments creates authorized credit payment" time="0.0009241">
+        </testcase>
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; POST /api/orders/:id/payments generates mocked boleto with fake CNPJ" time="0.0021529">
+        </testcase>
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; POST /api/orders/:id/payments generates mocked PIX QR code with readable text" time="0.001499">
+        </testcase>
+        <testcase classname="tests/api/payments-endpoints.test.ts" name="Payments API endpoints &gt; GET /api/orders/:id/payments/:paymentId blocks access from another user" time="0.0004932">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/api/products-endpoints.test.ts" timestamp="2026-04-19T19:13:25.145Z" hostname="PC-Gamer-Reinaldo" tests="14" failures="9" errors="0" skipped="0" time="0.0240881">
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; GET /api/products remains public" time="0.0066642">
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; POST /api/products returns 401 without authentication" time="0.0010459">
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; POST /api/products returns 403 for non-admin users" time="0.0067008">
+            <system-err>
+[POST /api/products] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 403 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:79:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; POST /api/products creates product for admin" time="0.0012995">
+            <system-err>
+[POST /api/products] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 201 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:90:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; PUT /api/products/:id returns 401 without authentication" time="0.0007819">
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; PUT /api/products/:id returns 403 for non-admin users" time="0.0009653">
+            <system-err>
+[PUT /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 403 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:113:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; PUT /api/products/:id returns 404 for non-existing product" time="0.0008027">
+            <system-err>
+[PUT /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 404 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:125:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id returns 401 without authentication" time="0.0004295">
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id returns 403 for non-admin users" time="0.0008896">
+            <system-err>
+[DELETE /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 403 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:148:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id returns 400 for invalid ID" time="0.0007914">
+            <system-err>
+[DELETE /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 400 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:158:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id returns 404 for non-existing product" time="0.000579">
+            <system-err>
+[DELETE /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 404 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:169:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id removes product for admin" time="0.0006507">
+            <system-err>
+[DELETE /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 200 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:181:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; DELETE /api/products/:id returns 409 when product is linked to orders" time="0.000706">
+            <system-err>
+[DELETE /api/products/:id] [vitest] No &quot;isUserSupport&quot; export is defined on the &quot;../../lib/user-roles&quot; mock. Did you forget to return it from &quot;vi.mock&quot;?
+If you need to partially mock a module, you can use &quot;importOriginal&quot; helper inside:
+
+
+            </system-err>
+            <failure message="expected 500 to be 409 // Object.is equality" type="AssertionError">
+AssertionError: expected 500 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 500
+
+ ❯ tests/api/products-endpoints.test.ts:196:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/api/products-endpoints.test.ts" name="Products API endpoints &gt; GET /api/products/:id returns 400 for invalid ID" time="0.0003259">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/api/users-endpoints.test.ts" timestamp="2026-04-19T19:13:25.153Z" hostname="PC-Gamer-Reinaldo" tests="9" failures="0" errors="0" skipped="0" time="0.0146752">
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; GET /api/users returns 401 when unauthenticated" time="0.0057045">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; GET /api/users returns list for admin" time="0.001633">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; POST /api/users creates user and sets roles" time="0.0021171">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; GET /api/users/:id blocks access for another non-admin user" time="0.0006399">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; PUT /api/users/:id updates user" time="0.0008281">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; DELETE /api/users/:id allows hard delete for admin" time="0.0004485">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; POST /api/users/:id/terminate closes and obfuscates account" time="0.0005998">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; POST /api/users/login blocks inactive user" time="0.0005221">
+        </testcase>
+        <testcase classname="tests/api/users-endpoints.test.ts" name="Users API endpoints &gt; POST /api/users/register creates default user role" time="0.0008704">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/api/users-me-endpoints.test.ts" timestamp="2026-04-19T19:13:25.155Z" hostname="PC-Gamer-Reinaldo" tests="4" failures="0" errors="0" skipped="0" time="0.0103339">
+        <testcase classname="tests/api/users-me-endpoints.test.ts" name="Users Me API endpoints &gt; GET /api/users/me returns 401 without authentication" time="0.0048344">
+        </testcase>
+        <testcase classname="tests/api/users-me-endpoints.test.ts" name="Users Me API endpoints &gt; GET /api/users/me returns authenticated user data" time="0.0022753">
+        </testcase>
+        <testcase classname="tests/api/users-me-endpoints.test.ts" name="Users Me API endpoints &gt; PUT /api/users/me/address returns 400 when no address fields are provided" time="0.0010561">
+        </testcase>
+        <testcase classname="tests/api/users-me-endpoints.test.ts" name="Users Me API endpoints &gt; PUT /api/users/me/address updates authenticated address" time="0.0008302">
+        </testcase>
+    </testsuite>
+</testsuites>

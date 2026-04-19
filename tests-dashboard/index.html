@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Dashboard | Resumo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard-styles.css">
+</head>
+<body>
+    <main class="container">
+        <header class="hero">
+            <div>
+                <h1>Dashboard de Qualidade</h1>
+                <p>Visão geral da saúde dos testes e estratégia de pirâmide.</p>
+                <div class="meta" id="generatedAt">Carregando dados...</div>
+            </div>
+            <div id="ciStatusBadge" class="ci-status unknown">
+                <span>Verificando status...</span>
+            </div>
+        </header>
+
+        <nav class="tabs-wrapper">
+            <div class="tabs">
+                <a href="index.html" class="tab-btn active">Resumo</a>
+                <a href="reports.html" class="tab-btn">Relatórios</a>
+                <a href="metrics.html" class="tab-btn">Métricas CI</a>
+            </div>
+        </nav>
+
+        <div class="tab-panels">
+            <section class="tab-panel active">
+                <div class="two-col">
+                    <!-- Pirâmide -->
+                    <div class="card">
+                        <span class="section-label">🔺 Pirâmide de Testes</span>
+                        <h2>Estratégia de Testes</h2>
+                        <p class="muted">A estratégia prioriza testes de unidade na base para feedback rápido.</p>
+                        <div class="pyramid">
+                            <div class="layer top">E2E</div>
+                            <div class="layer mid">Integração</div>
+                            <div class="layer base">Unidade</div>
+                        </div>
+                        <div class="legend">
+                            <div><span class="dot dot-ok"></span>Base: Maior volume, feedback rápido.</div>
+                            <div><span class="dot dot-mid"></span>Meio: Valida contratos e integrações.</div>
+                            <div><span class="dot dot-top"></span>Topo: Valida fluxos reais do usuário.</div>
+                        </div>
+                    </div>
+
+                    <!-- Totais -->
+                    <div class="card">
+                        <span class="section-label">📊 Visão Geral</span>
+                        <h2>Resumo dos Testes</h2>
+                        <div class="totals-row">
+                            <div class="total-card success">
+                                <div class="total-icon">✅</div>
+                                <div class="total-info">
+                                    <small>Sucesso</small>
+                                    <strong id="totalPassed">—</strong>
+                                </div>
+                            </div>
+                            <div class="total-card failure">
+                                <div class="total-icon">❌</div>
+                                <div class="total-info">
+                                    <small>Falhas</small>
+                                    <strong id="totalFailed">—</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="summary-list" id="testSummary"></ul>
+                        <div class="stats" id="stats"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            QA Dashboard Automatizado · 2026
+        </footer>
+    </main>
+
+    <script src="dashboard-utils.js"></script>
+    <script src="dashboard-metrics-data.js"></script>
+    <script src="dashboard-metrics.js"></script>
+    <script src="dashboard-summary.js"></script>
+    <script>
+        // Initialize with default metrics and try to load dynamic ones
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // The actual logic for fetching and rendering is in loadDynamicMetrics in dashboard-metrics.js
+                // but for index.html we specifically want to ensure renderSummaryTab runs.
+                if (window.renderSummaryTab) renderSummaryTab();
+                
+                // loadDynamicMetrics from dashboard-metrics.js will handle the fetch and update totals/badge
+                if (window.loadDynamicMetrics) await loadDynamicMetrics();
+            } catch (e) {
+                console.warn('Dashboard init error:', e);
+            }
+        });
+    </script>
+</body>
+</html>

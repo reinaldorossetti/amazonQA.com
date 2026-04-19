@@ -44,3 +44,8 @@ server-spring-kotlin/.gradle/
 mobile/node_modules/
 .env
 .env.local
+.webm
+.zip
+/coverage/
+trace/
+/data/
