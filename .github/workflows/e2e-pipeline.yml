@@ -163,8 +163,8 @@ jobs:
         run: |
           mkdir -p tests-report/swagger
           cp -r docs/swagger/* tests-report/swagger/ || true
+          cp -r docs/tests-report/* tests-report/ || true
           cp docs/tests-report/dashboard.html tests-report/index.html
-          node scripts/generate-dashboard-metrics.js
 
       - uses: peaceiris/actions-gh-pages@v4
         id: deploy
