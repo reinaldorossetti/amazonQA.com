@@ -35,9 +35,10 @@ Atendendo a pedidos, implementamos o campo `shipping_cost`. 📦
 
 ### ✅ Qualidade Acima de Tudo
 Continuamos firmes no nosso **DoD (Definition of Done)**:
-*   🛡️ **Segurança**: Novos papéis de acesso (`isSupport`) via JWT.
-*   🧪 **Testes E2E**: Cobertura ampliada com Playwright para validar fluxos complexos de frete e checkout.
-*   💎 **Design Premium**: Ajustes finos no contraste e usabilidade para uma experiência "Uau".
+*   🧪 **Cobertura de API Expandida**: Alcançamos a marca de **100 testes de API**! 💯 Adicionamos 27 novos testes focados em cenários negativos (validação de dados, segurança, limites de estoque e permissões), garantindo que nossa API seja resiliente a erros e tentativas de acesso indevido.
+*   🛡️ **Segurança**: Novos papéis de acesso (`isSupport`) via JWT e validações cross-user em endpoints críticos.
+*   🎭 **Testes E2E**: Cobertura ampliada com Playwright para validar fluxos complexos de frete e checkout em múltiplos navegadores.
+*   💎 **Design Premium**: Dashboard refatorado com arquitetura modular e visual premium para acompanhamento em tempo real.
 
 ---
 
