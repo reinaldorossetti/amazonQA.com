@@ -23,6 +23,7 @@ import com.amazonqa.android.ui.components.ErrorStateView
 import com.amazonqa.android.ui.theme.*
 import com.amazonqa.shared.domain.models.Product
 import com.amazonqa.shared.presentation.*
+import com.amazonqa.shared.utils.toBrazilianCurrency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +32,8 @@ fun CatalogScreen(
     cartViewModel: CartViewModel,
     orderViewModel: OrderViewModel,
     onNavigateToCart: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val cartItems by cartViewModel.items.collectAsState()
@@ -46,7 +48,8 @@ fun CatalogScreen(
             AmazonHeader(
                 cartItemCount = cartCount, 
                 onProfileClick = onNavigateToProfile,
-                onCartClick = onNavigateToCart
+                onCartClick = onNavigateToCart,
+                onLogout = onLogout
             ) 
         }
     ) { padding ->
@@ -89,7 +92,7 @@ fun ProductCard(product: Product, onAddToCart: () -> Unit) {
             Column(modifier = Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween) {
                 Column {
                     Text(product.name, maxLines = 2, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
-                    Text("R$ ${product.price}", color = Color(0xFFB12704), fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(product.price.toBrazilianCurrency(), color = Color(0xFFB12704), fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
                 Button(
                     onClick = onAddToCart,

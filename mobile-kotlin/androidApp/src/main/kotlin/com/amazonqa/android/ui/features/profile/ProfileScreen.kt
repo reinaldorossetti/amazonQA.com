@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.amazonqa.android.ui.theme.*
 import com.amazonqa.shared.presentation.*
 import com.amazonqa.shared.utils.AppErrors
+import com.amazonqa.shared.utils.toBrazilianCurrency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +71,8 @@ fun ProfileScreen(authState: AuthState, orderViewModel: OrderViewModel, onBack: 
                                                     Text("Pedido #${order.id ?: "..."}", fontWeight = FontWeight.Bold)
                                                     Text(order.status.uppercase(), color = if(order.status == "paid") Color(0xFF008a00) else Color.Gray, fontSize = 12.sp)
                                                 }
-                                                Text("Total: R$ ${order.total}", fontSize = 14.sp)
-                                                Text("Data: ${order.createdAt?.split("T")?.get(0) ?: "Hoje"}", fontSize = 12.sp, color = Color.Gray)
+                                                Text("Total: ${order.total.toBrazilianCurrency()}", fontSize = 14.sp)
+                                                Text("Data: ${order.created_at?.split("T")?.get(0) ?: "Hoje"}", fontSize = 12.sp, color = Color.Gray)
                                             }
                                         }
                                     }

@@ -3,6 +3,7 @@ package com.amazonqa.android.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +18,12 @@ import com.amazonqa.shared.utils.AppStrings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AmazonHeader(cartItemCount: Int, onProfileClick: () -> Unit, onCartClick: () -> Unit) {
+fun AmazonHeader(
+    cartItemCount: Int, 
+    onProfileClick: () -> Unit, 
+    onCartClick: () -> Unit, 
+    onLogout: () -> Unit
+) {
     Surface(color = AmazonDark, shadowElevation = 4.dp) {
         Row(
             modifier = Modifier.fillMaxWidth().height(60.dp).padding(horizontal = 16.dp),
@@ -27,6 +33,10 @@ fun AmazonHeader(cartItemCount: Int, onProfileClick: () -> Unit, onCartClick: ()
             Text("AmazonQA", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
             
             Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onLogout) {
+                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.White)
+                }
+                
                 IconButton(onClick = onProfileClick) {
                     Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.White)
                 }

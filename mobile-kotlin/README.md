@@ -101,10 +101,15 @@ emulator -avd <NOME_DO_EMULADOR>
 | **Instalar App** | `./gradlew :androidApp:installDebug` |
 | **Rodar Testes** | `./gradlew :shared:test` |
 | **Listar Emuladores** | `emulator -list-avds` |
-| **Subir Emulador** | `emulator -avd <nome>` |
+| **Subir Emulador** | `emulator -avd Pixel_8a` |
 | **Ver Logs (App)** | `adb logcat *:S AmazonQA:V` |
 | **Parar Gradle** | `./gradlew --stop` |
 | **Matar Java** | `Stop-Process -Name java -Force` |
+
+
+adb kill-server
+adb start-server
+Stop-Process -Name "emulator", "qemu-system-x86_64"
 
 ## 🐞 Depuração e Troubleshooting
 

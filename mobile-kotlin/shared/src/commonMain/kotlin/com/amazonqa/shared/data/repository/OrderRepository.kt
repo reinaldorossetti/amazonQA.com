@@ -2,6 +2,7 @@ package com.amazonqa.shared.data.repository
 
 import com.amazonqa.shared.data.network.ApiClient
 import com.amazonqa.shared.domain.models.Order
+import com.amazonqa.shared.domain.models.PaginatedResponse
 import com.amazonqa.shared.domain.models.PaymentRequest
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -18,7 +19,8 @@ class OrderRepository(private val api: ApiClient) {
     }
 
     suspend fun getOrders(): List<Order> {
-        return api.client.get("/api/orders").body()
+        val response: PaginatedResponse<Order> = api.client.get("/api/orders").body()
+        return response.items
     }
 
     suspend fun processPayment(payment: PaymentRequest): Map<String, String> {

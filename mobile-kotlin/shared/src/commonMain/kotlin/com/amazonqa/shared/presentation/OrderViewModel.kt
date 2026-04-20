@@ -37,9 +37,9 @@ class OrderViewModel(private val repository: OrderRepository) {
     suspend fun createOrder(userId: Int, cartItems: List<CartItem>, total: Double): Order? {
         return try {
             val orderItems = cartItems.map { 
-                OrderItem(productId = it.product.id, quantity = it.quantity, price = it.product.price) 
+                OrderItem(product_id = it.product.id, quantity = it.quantity, price = it.product.price) 
             }
-            val order = Order(userId = userId, items = orderItems, total = total)
+            val order = Order(user_id = userId, items = orderItems, total = total)
             val createdOrder = repository.createOrder(order, "key-${System.currentTimeMillis()}")
             
             // Reload orders after creation

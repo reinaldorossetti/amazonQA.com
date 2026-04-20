@@ -20,6 +20,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.amazonqa.android.ui.theme.*
 import com.amazonqa.shared.presentation.*
+import com.amazonqa.shared.utils.toBrazilianCurrency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +69,7 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
                                 Spacer(Modifier.width(16.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(item.product.name, maxLines = 1, fontSize = 14.sp)
-                                    Text("R$ ${item.product.price}", fontWeight = FontWeight.Bold)
+                                    Text(item.product.price.toBrazilianCurrency(), fontWeight = FontWeight.Bold)
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     IconButton(onClick = { viewModel.removeFromCart(item.product.id) }) {
@@ -88,7 +89,7 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text("Subtotal", fontSize = 18.sp)
-                            Text("R$ $total", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text(total.toBrazilianCurrency(), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                         }
                         Spacer(Modifier.height(16.dp))
                         Button(

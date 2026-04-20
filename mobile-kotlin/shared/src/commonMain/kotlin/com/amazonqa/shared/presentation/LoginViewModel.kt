@@ -61,4 +61,9 @@ class LoginViewModel(private val repository: AuthRepository) {
             }
         }
     }
+
+    fun logout() {
+        repository.logout()
+        _state.value = AuthState.Idle
+    }
 }

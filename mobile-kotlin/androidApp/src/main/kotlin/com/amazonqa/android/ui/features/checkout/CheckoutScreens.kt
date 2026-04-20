@@ -25,6 +25,7 @@ import com.amazonqa.shared.domain.models.CartItem
 import com.amazonqa.shared.presentation.*
 import com.amazonqa.shared.utils.AppStrings
 import com.amazonqa.shared.utils.AppErrors
+import com.amazonqa.shared.utils.toBrazilianCurrency
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.launch
@@ -62,7 +63,7 @@ fun CheckoutScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp)) {
-            Text("${AppStrings.orderTotalLabel}: R$ $total", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text("${AppStrings.orderTotalLabel}: ${total.toBrazilianCurrency()}", fontSize = 24.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(24.dp))
             Text(AppStrings.paymentMethodSelection, fontWeight = FontWeight.SemiBold)
             
@@ -347,14 +348,14 @@ fun OrderSummarySection(items: List<CartItem>, total: Double) {
                     Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(item.product.name, Modifier.weight(1f), fontSize = 12.sp, maxLines = 1)
                         Text("${item.quantity}", Modifier.width(40.dp), fontSize = 12.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-                        Text("R$ ${item.product.price * item.quantity}", Modifier.width(80.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                        Text((item.product.price * item.quantity).toBrazilianCurrency(), Modifier.width(80.dp), fontSize = 12.sp, fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.End)
                     }
                 }
                 
                 HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
                 Row(Modifier.background(Color(0xFFF7F7F7)).padding(12.dp)) {
                     Text("VALOR TOTAL", Modifier.weight(1f), fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                    Text("R$ $total", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFFB12704))
+                    Text(total.toBrazilianCurrency(), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFFB12704))
                 }
             }
         }

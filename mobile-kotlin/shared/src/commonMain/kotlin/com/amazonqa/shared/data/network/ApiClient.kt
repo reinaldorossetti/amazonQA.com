@@ -10,6 +10,8 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 class ApiClient(private val hostAddress: String = "10.0.2.2", private val hostPort: Int = 3001) {
+    var authToken: String? = null
+
     val client = HttpClient {
         install(ContentNegotiation) {
             json(
@@ -33,6 +35,9 @@ class ApiClient(private val hostAddress: String = "10.0.2.2", private val hostPo
                 protocol = URLProtocol.HTTP
                 host = hostAddress
                 port = hostPort
+            }
+            authToken?.let {
+                header("Authorization", "Bearer $it")
             }
         }
     }

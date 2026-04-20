@@ -20,6 +20,14 @@ data class AuthResponse(
 )
 
 @Serializable
+data class PaginatedResponse<T>(
+    val page: Int,
+    val pageSize: Int,
+    val total: Int,
+    val items: List<T>
+)
+
+@Serializable
 data class LoginRequest(
     val email: String,
     val password: String
@@ -55,19 +63,19 @@ data class CartItem(
 
 @Serializable
 data class OrderItem(
-    val productId: Int,
+    val product_id: Int,
     val quantity: Int,
-    val price: Double
+    val price: Double? = 0.0
 )
 
 @Serializable
 data class Order(
     val id: Int? = null,
-    val userId: Int,
-    val items: List<OrderItem>,
-    val total: Double,
+    val user_id: Int? = null,
+    val items: List<OrderItem> = emptyList(),
+    val total: Double = 0.0,
     val status: String = "pending",
-    val createdAt: String? = null
+    val created_at: String? = null
 )
 
 @Serializable

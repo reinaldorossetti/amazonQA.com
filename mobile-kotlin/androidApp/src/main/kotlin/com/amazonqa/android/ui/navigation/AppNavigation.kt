@@ -46,7 +46,11 @@ fun AppNavigation(
             cartViewModel = cartViewModel,
             orderViewModel = orderViewModel,
             onNavigateToCart = { currentScreen = "cart" },
-            onNavigateToProfile = { currentScreen = "profile" }
+            onNavigateToProfile = { currentScreen = "profile" },
+            onLogout = { 
+                loginViewModel.logout()
+                currentScreen = "login" 
+            }
         )
         "cart" -> CartScreen(
             viewModel = cartViewModel,

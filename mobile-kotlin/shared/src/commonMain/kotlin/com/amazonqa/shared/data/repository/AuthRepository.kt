@@ -10,16 +10,24 @@ import io.ktor.http.*
 class AuthRepository(private val api: ApiClient) {
 
     suspend fun login(email: String, password: String): AuthResponse {
-        return api.client.post("/api/users/login") {
+        val response: AuthResponse = api.client.post("/api/users/login") {
             contentType(ContentType.Application.Json)
             setBody(LoginRequest(email, password))
         }.body()
+        api.authToken = response.accessToken
+        return response
     }
 
     suspend fun register(userData: Map<String, String>): AuthResponse {
-        return api.client.post("/api/users/register") {
+        val response: AuthResponse = api.client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(userData)
         }.body()
+        api.authToken = response.accessToken
+        return response
+    }
+
+    fun logout() {
+        api.authToken = null
     }
 }
