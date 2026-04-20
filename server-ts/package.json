@@ -21,7 +21,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^16.4.5",
-    "next": "^16.0.0",
+    "next": "^16.2.3",
     "pg": "^8.11.3"
   },
   "devDependencies": {
@@ -37,6 +37,6 @@
     "vitest": "^4.1.0"
   },
   "overrides": {
-    "axios": "^1.14.0"
+    "axios": "^1.15.1"
   }
 }
