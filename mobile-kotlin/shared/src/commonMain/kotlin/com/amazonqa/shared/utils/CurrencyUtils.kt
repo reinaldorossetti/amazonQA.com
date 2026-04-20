@@ -4,15 +4,11 @@ package com.amazonqa.shared.utils
  * Formata um valor Double para o padrão de moeda brasileiro (R$ 0,00)
  */
 fun Double.toCurrency(): String {
-    val integerPart = this.toInt()
-    val decimalPart = ((this - integerPart) * 100).toInt()
+    val totalCents = kotlin.math.round(this * 100).toInt()
+    val integerPart = totalCents / 100
+    val decimalPart = kotlin.math.abs(totalCents % 100)
     
-    val decimalStr = if (decimalPart < 0) {
-        val absDecimal = kotlin.math.abs(decimalPart)
-        if (absDecimal < 10) "0$absDecimal" else "$absDecimal"
-    } else {
-        if (decimalPart < 10) "0$decimalPart" else "$decimalPart"
-    }
+    val decimalStr = if (decimalPart < 10) "0$decimalPart" else "$decimalPart"
     
     return "$integerPart,$decimalStr"
 }

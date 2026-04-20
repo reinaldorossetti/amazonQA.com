@@ -43,7 +43,9 @@ fun CheckoutScreen(
     var isProcessing by remember { mutableStateOf(false) }
     var showLoginError by remember { mutableStateOf(false) }
     val items by cartViewModel.items.collectAsState()
-    val total = cartViewModel.getTotal()
+    val total by remember {
+        derivedStateOf { items.sumOf { it.product.price * it.quantity } }
+    }
     val scope = rememberCoroutineScope()
 
     Scaffold(

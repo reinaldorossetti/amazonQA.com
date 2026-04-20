@@ -1,8 +1,8 @@
 # 📱 AmazonQA - Mobile Kotlin Multiplatform (KMM)
 
-![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-blue?style=for-the-badge&logo=kotlin)
+![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-2.2.0-blue?style=for-the-badge&logo=kotlin)
 ![Android SDK 34](https://img.shields.io/badge/Android-SDK%2034-green?style=for-the-badge&logo=android)
-![Java 22](https://img.shields.io/badge/Java-22-red?style=for-the-badge&logo=openjdk)
+![Java 21](https://img.shields.io/badge/Java-21-red?style=for-the-badge&logo=openjdk)
 ![Compose Multiplatform](https://img.shields.io/badge/Compose-Multiplatform-orange?style=for-the-badge&logo=jetpackcompose)
 
 Projeto mobile multiplataforma desenvolvido em **Kotlin Multiplatform (KMM)**, integrando o ecossistema AmazonQA. O aplicativo consome os endpoints REST do backend Next.js e segue os mais rigorosos padrões de **Clean Architecture**, **SOLID** e **Clean Code**.
@@ -14,15 +14,27 @@ Projeto mobile multiplataforma desenvolvido em **Kotlin Multiplatform (KMM)**, i
 O projeto é dividido em três módulos principais:
 - **`shared`**: Core do projeto contendo a lógica de negócio, modelos de domínio, repositórios de dados e clientes de rede (Ktor).
 - **`androidApp`**: Camada nativa Android utilizando **Jetpack Compose** para a UI.
-- **`iosApp`**: Camada nativa iOS (SwiftUI).
 
 ### Tecnologias Utilizadas
 - **Linguagem:** Kotlin 2.2.0
-- **UI:** Jetpack Compose (Android) / SwiftUI (iOS)
-- **Rede:** Ktor Client (Content Negotiation, Logging, Serialization)
-- **Injeção de Dependência:** Koin
-- **Assincronismo:** Kotlin Coroutines & Flow/StateFlow
-- **Serialização:** kotlinx.serialization
+- **UI:** Jetpack Compose (Android) com Material 3.
+- **Rede:** Ktor Client (Content Negotiation, Logging, Serialization).
+- **Injeção de Dependência:** Koin (Core & Android).
+- **Assincronismo:** Kotlin Coroutines & Flow/StateFlow.
+- **Serialização:** kotlinx.serialization (JSON).
+- **Imagens:** Coil Compose (Carregamento assíncrono e cache).
+- **Utilidades:** ZXing (Barcode/QR Code scanning).
+
+---
+
+## ✨ Funcionalidades Implementadas
+
+- [x] **Autenticação Completa**: Login, Registro (com validação de campos) e Logout.
+- [x] **Catálogo de Produtos**: Listagem dinâmica com carregamento de imagens via Bridge IP (`10.0.2.2`).
+- [x] **Carrinho de Compras**: Adição/remoção de itens e persistência de estado.
+- [x] **Gestão de Pedidos**: Fluxo de checkout e histórico de ordens.
+- [x] **Segurança**: Armazenamento seguro de tokens JWT.
+- [x] **Interface Premium**: Design baseado na Amazon com bordas quadradas (`RectangleShape`) e micro-animações.
 
 ---
 
@@ -33,141 +45,105 @@ Seguimos a paleta de cores oficial da Amazon para garantir uma experiência cons
 - **Amazon Yellow (#FFD814):** Botões de compra.
 - **Amazon Blue (#007185):** Links e interações.
 
----
-
-## 🚀 Guia de Inicialização (Passo a Passo)
-
-### Pré-requisitos
-- **JDK 22** instalado e configurado no `JAVA_HOME`.
-- **Android Studio** (Koala ou superior).
-- **Gradle 9.0+** (instalado via wrapper ou global).
-- **Emulator** configurado com API 34+.
-
-### 1. Clonagem e Configuração
-```bash
-git clone https://github.com/reinaldorossetti/tester.com.git
-cd mobile-kotlin
-```
-
-### 2. Comandos de Build e Execução
-
-#### Gerar Build Completa
-```powershell
-./gradlew clean assembleDebug
-# Ou usando a tarefa customizada:
-./gradlew rebuild
-```
-
-> [!TIP]
-> Foi adicionado em `gradle.properties` a configuração `org.gradle.vfs.watch=false` para ajudar com problemas de arquivos travados no Windows durante o build.
-
-#### Instalar no Emulador Android
-Certifique-se de que o emulador está rodando (`adb devices` para verificar).
-```powershell
-./gradlew :androidApp:installDebug
-```
-
-#### Gerenciar Emuladores (Linha de Comando)
-Caso precise listar ou iniciar um emulador manualmente:
-
-**Listar emuladores disponíveis:**
-```powershell
-emulator -list-avds
-```
-
-**Iniciar um emulador específico:**
-```powershell
-# Substitua <NOME_DO_EMULADOR> pelo nome retornado no comando anterior
-emulator -avd <NOME_DO_EMULADOR>
-```
-
-> [!NOTE]
-> No Windows, certifique-se de que o binário `emulator` está no seu PATH (geralmente em `%ANDROID_HOME%\emulator`).
-
-#### Executar Testes Unitários
-```powershell
-./gradlew :shared:test
-```
-
-
----
-
-## 🚀 Referência Rápida de Comandos
-
-| Ação | Comando |
-| :--- | :--- |
-| **Limpar e Build** | `./gradlew clean assembleDebug` |
-| **Rebuild Total** | `./gradlew rebuild` |
-| **Instalar App** | `./gradlew :androidApp:installDebug` |
-| **Rodar Testes** | `./gradlew :shared:test` |
-| **Listar Emuladores** | `emulator -list-avds` |
-| **Subir Emulador** | `emulator -avd Pixel_8a` |
-| **Ver Logs (App)** | `adb logcat *:S AmazonQA:V` |
-| **Parar Gradle** | `./gradlew --stop` |
-| **Matar Java** | `Stop-Process -Name java -Force` |
-
-
-adb kill-server
-adb start-server
-Stop-Process -Name "emulator", "qemu-system-x86_64"
-
-## 🐞 Depuração e Troubleshooting
-
-### Ativar Logs de Debug
-Para ver logs detalhados durante o build ou execução:
-```powershell
-./gradlew :androidApp:installDebug --info --stacktrace
-```
-
-### Monitorar Logs do Aplicativo (Logcat)
-Use o filtro para capturar apenas as mensagens do AmazonQA:
-```powershell
-adb logcat *:S AmazonQA:V
-```
-
-### ⚠️ Erro Comum: "Unable to delete file / File Lock"
-No Windows, é comum o Gradle falhar ao tentar sobrescrever arquivos (`classes.jar` ou `R.jar`). Caso ocorra:
-
-1. Feche o Android Studio/VS Code.
-2. Force o fechamento dos daemons travados:
-   ```powershell
-   ./gradlew --stop
-   Stop-Process -Name java -Force
-   ```
-3. Limpe as pastas de build manualmente:
-   ```powershell
-   Remove-Item -Path shared/build, androidApp/build -Recurse -Force
-   ```
-
-### 🖋️ Sintaxe Kotlin: "Imports are only allowed in the beginning of file"
-Se encontrar este erro ao usar anotações de nível de arquivo (como `@file:OptIn`), certifique-se de que a anotação esteja na **primeira linha do arquivo**, antes mesmo da declaração do `package`.
-
-### 🌐 Conectividade Local (Emulator)
-O Android Emulator não reconhece `localhost` como a sua máquina host.
-- **Backend URL:** Use `http://10.0.2.2:3000` em vez de `localhost`.
-- **Imagens:** O projeto utiliza **Coil** para carregamento dinâmico. Foi implementado o mapeamento automático de URLs do backend para o endereço bridge do emulador.
+> [!IMPORTANT]
+> Conforme requisitos de design, utilizamos **bordas quadradas (Square Edges)** em todos os inputs e botões para manter a robustez visual.
 
 ---
 
 ## 🗺️ Estrutura de Pastas
+
 ```text
 mobile-kotlin/
-├── androidApp/          # Código nativo Android (Compose)
-├── iosApp/              # Código nativo iOS (SwiftUI)
-├── shared/              # Código compartilhado entre plataformas
-│   ├── src/commonMain/  # Lógica de negócio, Repository, Models
-│   ├── src/androidMain/ # Implementações específicas Android
-│   └── src/iosMain/     # Implementações específicas iOS
-└── gradle/              # Configurações do Gradle e Version Catalog
+├── androidApp/          # Código nativo Android (Jetpack Compose)
+│   └── src/main/kotlin/com/amazonqa/android/ui/
+│       ├── components/  # Componentes reutilizáveis (Botões, Cards, etc)
+│       ├── features/    # Telas organizadas por funcionalidade (Auth, Cart, Catalog)
+│       ├── navigation/  # Configuração de rotas e navegação entre telas
+│       └── theme/       # Identidade visual (Cores, Tipografia, Formas)
+├── shared/              # Código compartilhado (KMM)
+│   ├── src/commonMain/  # Core compartilhado
+│   │   ├── data/        # Repositórios e Network (Ktor)
+│   │   ├── domain/      # Modelos de dados e lógica de negócio
+│   │   ├── presentation/# ViewModels e State Management
+│   │   └── util/        # Helpers e utilitários
+│   ├── src/commonTest/  # Testes unitários compartilhados
+│   └── src/androidMain/ # Implementações específicas Android
+└── gradle/              # Version Catalog e configurações
 ```
+
+### 🏛️ Organização da Camada de UI (Android)
+A interface do Android foi projetada seguindo o padrão de **Vertical Slices** dentro da pasta `features`, garantindo que cada funcionalidade seja auto-contida:
+- **`components/`**: Widgets globais (ex: `AmazonButton`, `ProductCard`) que mantêm a consistência visual.
+- **`features/`**:
+    - `auth/`: Fluxos de Login e Cadastro com validações em tempo real.
+    - `catalog/`: Navegação por categorias e busca de produtos.
+    - `cart/`: Gestão de itens e cálculo de frete/impostos.
+    - `checkout/`: Processamento de pagamentos e confirmação.
+- **`navigation/`**: Centraliza a lógica de `NavHost`, garantindo um fluxo de usuário fluido e desacoplado.
+
+---
+
+## 🚀 Guia de Inicialização
+
+### Pré-requisitos
+- **JDK 21** instalado e configurado no `JAVA_HOME`.
+- **Android Studio** (Koala ou superior).
+- **Gradle 9.0+** (via wrapper).
+- **Emulador Android** (API 34+).
+
+### 1. Comandos de Build e Execução
+
+**Gerar Build Completa:**
+```powershell
+./gradlew clean assembleDebug
+```
+
+**Instalar no Emulador:**
+```powershell
+./gradlew :androidApp:installDebug
+```
+
+**Rodar Testes Unitários:**
+```powershell
+./gradlew :shared:test
+```
+
+---
+
+## 🚀 Referência de Comandos
+
+| Ação | Comando |
+| :--- | :--- |
+| **Limpar e Build** | `./gradlew clean assembleDebug` |
+| **Instalar App** | `./gradlew :androidApp:installDebug` |
+| **Rodar Testes** | `./gradlew :shared:test` |
+| **Listar Emuladores** | `emulator -list-avds` |
+| **Parar Gradle** | `./gradlew --stop` |
+| **Matar Java (Lock)** | `Stop-Process -Name java -Force` |
+
+---
+
+## 🐞 Troubleshooting
+
+### ⚠️ Windows File Lock ("Unable to delete file")
+Se o Gradle travar ao tentar sobrescrever arquivos:
+1. Feche o Android Studio.
+2. Execute `./gradlew --stop`.
+3. Mate processos java: `Stop-Process -Name java -Force`.
+4. Limpe manualmente: `Remove-Item -Path shared/build, androidApp/build -Recurse -Force`.
+
+### 🌐 Conectividade com Backend Local
+O Emulador Android usa um IP específico para acessar o `localhost` da sua máquina:
+- **URL Base:** `http://10.0.2.2:3000`
+- **Network Security:** O app está configurado para aceitar tráfego HTTP em `10.0.2.2` para facilitar o desenvolvimento local.
 
 ---
 
 ## 📝 Regras de Qualidade (DoD)
 - **Zero Chamadas HTTP na UI**: Toda comunicação deve passar pelos repositórios no módulo `shared`.
-- **Cobertura de Testes**: Mínimo de 80% nas regras de negócio.
-- **Lint**: Código formatado conforme `ktlint` e livre de warnings críticos.
-- **JWT**: Armazenamento seguro de tokens nas plataformas específicas.
+- **Arquitetura em Camadas**: Separação clara entre Data, Domain e Presentation.
+- **Clean Code**: Nomes descritivos e funções de responsabilidade única.
+- **Testes**: Validar regras de negócio e conectividade (ver `BackendConnectivityTest`).
 
 ---
 

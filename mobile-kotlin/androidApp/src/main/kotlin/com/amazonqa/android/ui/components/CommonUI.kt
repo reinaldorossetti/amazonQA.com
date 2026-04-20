@@ -1,6 +1,6 @@
 package com.amazonqa.android.ui.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
@@ -10,53 +10,67 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amazonqa.android.ui.theme.*
-import com.amazonqa.shared.utils.AppStrings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmazonHeader(
-    cartItemCount: Int, 
-    onProfileClick: () -> Unit, 
-    onCartClick: () -> Unit, 
-    onLogout: () -> Unit
+        cartItemCount: Int,
+        onProfileClick: () -> Unit,
+        onCartClick: () -> Unit,
+        onLogout: () -> Unit
 ) {
     Surface(color = AmazonDark, shadowElevation = 4.dp) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(60.dp).padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth().height(60.dp).padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("AmazonQA", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            
+            Image(
+                    painter = painterResource(id = com.amazonqa.android.R.drawable.logo),
+                    contentDescription = "Amazon Logo",
+                    modifier = Modifier.height(40.dp).width(110.dp),
+                    contentScale = ContentScale.Fit
+            )
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onLogout) {
-                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = Color.White)
+                    Icon(
+                            Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = Color.White
+                    )
                 }
-                
+
                 IconButton(onClick = onProfileClick) {
                     Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.White)
                 }
-                
+
                 Box {
                     IconButton(onClick = onCartClick) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
+                        Icon(
+                                Icons.Default.ShoppingCart,
+                                contentDescription = "Cart",
+                                tint = Color.White
+                        )
                     }
                     if (cartItemCount > 0) {
                         Surface(
-                            shape = androidx.compose.foundation.shape.CircleShape,
-                            color = AmazonOrange,
-                            modifier = Modifier.align(Alignment.TopEnd).size(18.dp)
+                                shape = androidx.compose.foundation.shape.CircleShape,
+                                color = AmazonOrange,
+                                modifier = Modifier.align(Alignment.TopEnd).size(18.dp)
                         ) {
                             Text(
-                                text = cartItemCount.toString(),
-                                color = Color.White,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.wrapContentSize(Alignment.Center)
+                                    text = cartItemCount.toString(),
+                                    color = Color.White,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.wrapContentSize(Alignment.Center)
                             )
                         }
                     }
@@ -69,24 +83,26 @@ fun AmazonHeader(
 @Composable
 fun ErrorStateView(message: String, onRetry: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            imageVector = Icons.Default.Info, 
-            contentDescription = null, 
-            modifier = Modifier.size(64.dp), 
-            tint = Color.Gray
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = Color.Gray
         )
         Spacer(Modifier.height(16.dp))
-        Text(message, textAlign = androidx.compose.ui.text.style.TextAlign.Center, color = Color.Gray)
+        Text(
+                message,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                color = Color.Gray
+        )
         Spacer(Modifier.height(16.dp))
         Button(
-            onClick = onRetry,
-            colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
-        ) {
-            Text("Tentar novamente", color = Color.White)
-        }
+                onClick = onRetry,
+                colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
+        ) { Text("Tentar novamente", color = Color.White) }
     }
 }

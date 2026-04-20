@@ -26,7 +26,9 @@ import com.amazonqa.shared.utils.toBrazilianCurrency
 @Composable
 fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> Unit) {
     val items by viewModel.items.collectAsState()
-    val total = viewModel.getTotal()
+    val total by remember {
+        derivedStateOf { items.sumOf { it.product.price * it.quantity } }
+    }
 
     Scaffold(
         topBar = {
@@ -69,7 +71,16 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
                                 Spacer(Modifier.width(16.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(item.product.name, maxLines = 1, fontSize = 14.sp)
-                                    Text(item.product.price.toBrazilianCurrency(), fontWeight = FontWeight.Bold)
+                                    Row {
+                                        Text(item.product.price.toBrazilianCurrency(), color = Color.Gray, fontSize = 12.sp)
+                                        if (item.quantity > 1) {
+                                            Text(" x ${item.quantity} = ", color = Color.Gray, fontSize = 12.sp)
+                                            Text((item.product.price * item.quantity).toBrazilianCurrency(), fontWeight = FontWeight.Bold, color = AmazonOrange)
+                                        }
+                                    }
+                                    if (item.quantity == 1) {
+                                        Text(item.product.price.toBrazilianCurrency(), fontWeight = FontWeight.Bold)
+                                    }
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     IconButton(onClick = { viewModel.removeFromCart(item.product.id) }) {
