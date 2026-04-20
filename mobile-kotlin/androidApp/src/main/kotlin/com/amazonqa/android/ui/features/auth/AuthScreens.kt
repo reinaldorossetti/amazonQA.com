@@ -30,6 +30,7 @@ import com.amazonqa.shared.utils.AppStrings
 fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onSkip: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState()
 
     Column(
@@ -68,6 +69,16 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                 label = { Text(AppStrings.loginPassword) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RectangleShape,
+                visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            if (passwordVisible) Icons.Default.LockOpen else Icons.Default.Lock,
+                            contentDescription = if (passwordVisible) "Esconder senha" else "Mostrar senha",
+                            tint = Color.Gray
+                        )
+                    }
+                },
                 colors =
                         OutlinedTextFieldDefaults.colors(
                                 focusedTextColor = Color.White,
@@ -129,6 +140,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
     var isPessoaFisica by remember { mutableStateOf(true) }
+    var showErrors by remember { mutableStateOf(false) }
 
     val state by viewModel.state.collectAsState()
 
@@ -274,7 +286,11 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                             onValueChange = { firstName = it },
                             label = { Text("Nome *") },
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
+                            isError = showErrors && firstName.isBlank(),
+                            supportingText = if (showErrors && firstName.isBlank()) {
+                                { Text("Campo obrigatório", color = Color.Red) }
+                            } else null
                     )
                     Spacer(Modifier.width(12.dp))
                     OutlinedTextField(
@@ -282,7 +298,11 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                             onValueChange = { lastName = it },
                             label = { Text("Sobrenome *") },
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
+                            isError = showErrors && lastName.isBlank(),
+                            supportingText = if (showErrors && lastName.isBlank()) {
+                                { Text("Campo obrigatório", color = Color.Red) }
+                            } else null
                     )
                 }
                 Spacer(Modifier.height(12.dp))
@@ -293,10 +313,13 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text(if (isPessoaFisica) "CPF *" else "CNPJ *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        isError = showErrors && cpf.isBlank(),
                         supportingText = {
-                            Text(
-                                    "Formato: ${if(isPessoaFisica) "000.000.000-00" else "00.000.000/0000-00"}"
-                            )
+                            if (showErrors && cpf.isBlank()) {
+                                Text("Campo obrigatório", color = Color.Red)
+                            } else {
+                                Text("Formato: ${if(isPessoaFisica) "000.000.000-00" else "00.000.000/0000-00"}")
+                            }
                         }
                 )
                 Spacer(Modifier.height(12.dp))
@@ -306,7 +329,11 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         onValueChange = { email = it },
                         label = { Text("Email *") },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(8.dp),
+                        isError = showErrors && email.isBlank(),
+                        supportingText = if (showErrors && email.isBlank()) {
+                            { Text("Campo obrigatório", color = Color.Red) }
+                        } else null
                 )
                 Spacer(Modifier.height(12.dp))
 
@@ -316,7 +343,14 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Telefone / WhatsApp *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        supportingText = { Text("Formato: (00) 00000-0000") }
+                        isError = showErrors && phone.isBlank(),
+                        supportingText = {
+                            if (showErrors && phone.isBlank()) {
+                                Text("Campo obrigatório", color = Color.Red)
+                            } else {
+                                Text("Formato: (00) 00000-0000")
+                            }
+                        }
                 )
                 Spacer(Modifier.height(12.dp))
 
@@ -326,6 +360,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Senha *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        isError = showErrors && (password.isBlank() || password.length < 8),
                         visualTransformation =
                                 if (passwordVisible)
                                         androidx.compose.ui.text.input.VisualTransformation.None
@@ -333,13 +368,21 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         trailingIcon = {
                             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                                 Icon(
-                                        if (passwordVisible) Icons.Default.Info
+                                        if (passwordVisible) Icons.Default.LockOpen
                                         else Icons.Default.Lock,
-                                        null
+                                        contentDescription = if (passwordVisible) "Esconder senha" else "Mostrar senha"
                                 )
                             }
                         },
-                        supportingText = { Text("Mínimo 8 caracteres") }
+                        supportingText = {
+                            if (showErrors && password.isBlank()) {
+                                Text("Campo obrigatório", color = Color.Red)
+                            } else if (password.length > 0 && password.length < 8) {
+                                Text("Mínimo 8 caracteres", color = Color.Red)
+                            } else {
+                                Text("Mínimo 8 caracteres")
+                            }
+                        }
                 )
                 Spacer(Modifier.height(12.dp))
 
@@ -349,6 +392,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Confirmar Senha *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        isError = showErrors && (confirmPassword.isBlank() || confirmPassword != password),
                         visualTransformation =
                                 if (confirmPasswordVisible)
                                         androidx.compose.ui.text.input.VisualTransformation.None
@@ -358,18 +402,31 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                                     onClick = { confirmPasswordVisible = !confirmPasswordVisible }
                             ) {
                                 Icon(
-                                        if (confirmPasswordVisible) Icons.Default.Info
+                                        if (confirmPasswordVisible) Icons.Default.LockOpen
                                         else Icons.Default.Lock,
-                                        null
+                                        contentDescription = if (confirmPasswordVisible) "Esconder senha" else "Mostrar senha"
                                 )
                             }
-                        }
+                        },
+                        supportingText = if (showErrors && confirmPassword.isBlank()) {
+                            { Text("Campo obrigatório", color = Color.Red) }
+                        } else if (showErrors && confirmPassword != password) {
+                            { Text("As senhas não conferem", color = Color.Red) }
+                        } else null
                 )
 
                 Spacer(Modifier.height(32.dp))
 
                 Button(
-                        onClick = { viewModel.register(firstName, lastName, email, password) },
+                        onClick = {
+                            if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || 
+                                password.isBlank() || password.length < 8 || 
+                                confirmPassword != password || cpf.isBlank() || phone.isBlank()) {
+                                showErrors = true
+                            } else {
+                                viewModel.register(firstName, lastName, email, password)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth().height(56.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = AmazonYellow),
                         shape = RoundedCornerShape(8.dp)
