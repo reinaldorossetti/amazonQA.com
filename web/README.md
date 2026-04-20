@@ -162,9 +162,42 @@ Os testes de contrato validam o acordo entre **frontend (consumer)** e **backend
 
 Esse fluxo garante que mudanças na API não quebrem o consumo esperado no frontend e adiciona uma camada extra de segurança na esteira de CI.
 
----
+## 🎨 Paleta Visual de Cores do Projeto
+
+O visual do projeto segue a identidade Amazon, com tons escuros, laranja, amarelo e azul. Abaixo, a paleta principal utilizada no frontend e dashboards:
+
+| Cor         | Exemplo Visual | Hex       | Uso Principal                      |
+|-------------|:-------------:|:---------:|------------------------------------|
+| Primária    | <span style="display:inline-block;width:32px;height:20px;background:#131921;border:1px solid #ccc"></span> | #131921 | Header, fundo principal, botões    |
+| Secundária  | <span style="display:inline-block;width:32px;height:20px;background:#FF9900;border:1px solid #ccc"></span> | #FF9900 | Botões, destaques, logo           |
+| Tertiária   | <span style="display:inline-block;width:32px;height:20px;background:#232f3e;border:1px solid #ccc"></span> | #232f3e | Menus, rodapé, áreas secundárias   |
+| Background  | <span style="display:inline-block;width:32px;height:20px;background:#F7F7F7;border:1px solid #ccc"></span> | #F7F7F7 | Fundo geral da aplicação           |
+| Amarelo Btn | <span style="display:inline-block;width:32px;height:20px;background:#FFD814;border:1px solid #ccc"></span> | #FFD814 | Botão "Comprar"                   |
+| Azul Link   | <span style="display:inline-block;width:32px;height:20px;background:#007185;border:1px solid #ccc"></span> | #007185 | Links, textos ativos               |
+| Azul Claro  | <span style="display:inline-block;width:32px;height:20px;background:#00A8E1;border:1px solid #ccc"></span> | #00A8E1 | Links secundários                  |
+| Verde OK    | <span style="display:inline-block;width:32px;height:20px;background:#22c55e;border:1px solid #ccc"></span> | #22c55e | Indicador de estoque, sucesso      |
+| Vermelho    | <span style="display:inline-block;width:32px;height:20px;background:#ef4444;border:1px solid #ccc"></span> | #ef4444 | Erros, falhas em testes            |
+| Laranja Mid | <span style="display:inline-block;width:32px;height:20px;background:#f59e0b;border:1px solid #ccc"></span> | #f59e0b | Alertas, badges                    |
+| Azul Métrica| <span style="display:inline-block;width:32px;height:20px;background:#60a5fa;border:1px solid #ccc"></span> | #60a5fa | Dashboards, métricas               |
+
+**Exemplo visual:**
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+  <div style="width:32px;height:20px;background:#131921;border:1px solid #ccc" title="#131921"></div>
+  <div style="width:32px;height:20px;background:#FF9900;border:1px solid #ccc" title="#FF9900"></div>
+  <div style="width:32px;height:20px;background:#232f3e;border:1px solid #ccc" title="#232f3e"></div>
+  <div style="width:32px;height:20px;background:#F7F7F7;border:1px solid #ccc" title="#F7F7F7"></div>
+  <div style="width:32px;height:20px;background:#FFD814;border:1px solid #ccc" title="#FFD814"></div>
+  <div style="width:32px;height:20px;background:#007185;border:1px solid #ccc" title="#007185"></div>
+  <div style="width:32px;height:20px;background:#00A8E1;border:1px solid #ccc" title="#00A8E1"></div>
+  <div style="width:32px;height:20px;background:#22c55e;border:1px solid #ccc" title="#22c55e"></div>
+  <div style="width:32px;height:20px;background:#ef4444;border:1px solid #ccc" title="#ef4444"></div>
+  <div style="width:32px;height:20px;background:#f59e0b;border:1px solid #ccc" title="#f59e0b"></div>
+  <div style="width:32px;height:20px;background:#60a5fa;border:1px solid #ccc" title="#60a5fa"></div>
+</div>
+
+> As cores são aplicadas em botões, menus, dashboards, indicadores de status e backgrounds, reforçando a identidade visual e acessibilidade.
 Passo a Passo para Rodar a Aplicação Localmente:
-````
 git clone https://github.com/reinaldorossetti/amazonQA.com.git
 cd amazonQA.com
 docker-compose -f docker-compose.yml up

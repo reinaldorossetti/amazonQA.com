@@ -50,3 +50,7 @@ mobile/node_modules/
 trace/
 /data/
 dashboard-metrics.json
+.gradle/
+.kotlin/
+.idea/
+build/
