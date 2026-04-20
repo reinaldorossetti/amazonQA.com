@@ -27,8 +27,10 @@ jobs:
         working-directory: web
         continue-on-error: true
         run: |
+          mkdir -p tests-dashboard/unit-tests-web/coverage
           npm install
-          npx vitest run --coverage \
+          npx vitest run --coverage.enabled=true \
+            --coverage.reportsDirectory=./tests-dashboard/unit-tests-web/coverage \
             --reporter=default --reporter=junit \
             --outputFile=./tests-dashboard/unit-tests-web/junit.xml
 
@@ -38,10 +40,12 @@ jobs:
           docker compose up -d postgres
           docker compose exec -T postgres sh -c 'until pg_isready -U postgres -d ecommerce; do sleep 1; done'
           cd server-ts && npm install
+          mkdir -p ../web/tests-dashboard/unit-tests-backend/coverage
           DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ecommerce \
-            npx vitest run --config vitest.server.config.ts \
+            npx vitest run --config vitest.server.config.ts --coverage.enabled=true \
+              --coverage.reportsDirectory=../web/tests-dashboard/unit-tests-backend/coverage \
               --reporter=default --reporter=junit \
-              --outputFile=./tests-dashboard/unit-tests-backend/junit.xml
+              --outputFile=../web/tests-dashboard/unit-tests-backend/junit.xml
           docker compose down
 
       - uses: actions/upload-artifact@v4
@@ -55,7 +59,7 @@ jobs:
         if: always()
         with:
           name: unit-tests-backend
-          path: server-ts/tests-dashboard/unit-tests-backend/
+          path: web/tests-dashboard/unit-tests-backend/
           if-no-files-found: warn
 
   # ── Contract Tests ──────────────────────────────────────────────────
