@@ -80,6 +80,112 @@ function parseCoverageMetric(html, metricName) {
   return { percent, covered, total };
 }
 
+// --------------------------------------------------
+// Robust discovery helpers for CI environments
+// --------------------------------------------------
+
+const SKIP_DIRS = new Set(['node_modules', '.git', '.gradle', 'build', 'dist', 'out', 'target']);
+
+function safeJoin() {
+  return path.join.apply(null, arguments);
+}
+
+function tryStat(p) {
+  try { return fs.statSync(p); } catch { return null; }
+}
+
+function recursiveFind(dir, testFn, maxDepth = 6, results = [], depth = 0) {
+  if (!dir || depth > maxDepth) return results;
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return results; }
+  for (const e of entries) {
+    try {
+      const name = e.name;
+      const full = path.join(dir, name);
+      if (e.isFile()) {
+        if (testFn(name, full)) results.push(full);
+      } else if (e.isDirectory()) {
+        if (SKIP_DIRS.has(name)) continue;
+        recursiveFind(full, testFn, maxDepth, results, depth + 1);
+      }
+    } catch (err) { /* skip individual entries */ }
+  }
+  return results;
+}
+
+function findMostRecent(files) {
+  if (!files || files.length === 0) return null;
+  let best = null; let bestM = -1;
+  for (const f of files) {
+    const s = tryStat(f);
+    if (!s) continue;
+    const m = s.mtimeMs || 0;
+    if (m > bestM) { bestM = m; best = f; }
+  }
+  return best;
+}
+
+function findJUnitAnywhere(rootDirs = [ROOT], preferWeb = false) {
+  const nameRegex = /^junit(-report)?(\.xml)?$|^unit-report\.xml$|^junit-report\.xml$/i;
+  const matches = [];
+  for (const rd of rootDirs) {
+    recursiveFind(rd, (name, full) => {
+      if (nameRegex.test(name)) return true; return false;
+    }, 5, matches, 0);
+  }
+  if (matches.length === 0) return null;
+  // Prefer paths that include web/frontend/unit-tests-web when preferWeb
+  if (preferWeb) {
+    const pref = matches.find(p => /unit[-_]?tests[-_]?web|web[\/\\]/i.test(p));
+    if (pref) return pref;
+  }
+  return findMostRecent(matches) || matches[0];
+}
+
+function findCoverageAnywhere(rootDirs = [ROOT]) {
+  const matches = [];
+  for (const rd of rootDirs) {
+    recursiveFind(rd, (name, full) => {
+      if (/index\.html$/i.test(name) && /coverage/i.test(full)) return true; return false;
+    }, 6, matches, 0);
+  }
+  return findMostRecent(matches);
+}
+
+/**
+ * Parse a Playwright report index.html and extract basic counters.
+ * Returns null if no sensible counters are found.
+ */
+function parsePlaywrightSummaryFromHTML(html) {
+  if (!html) return null;
+  // Strip tags to plain text and normalize whitespace
+  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+
+  const allM = text.match(/\bAll\s*(\d+)\b/i);
+  const passedM = text.match(/\bPassed\s*(\d+)\b/i);
+  const failedM = text.match(/\bFailed\s*(\d+)\b/i);
+  const flakyM = text.match(/\bFlaky\s*(\d+)\b/i);
+  const skippedM = text.match(/\bSkipped\s*(\d+)\b/i);
+
+  const all = allM ? parseIntSafe(allM[1]) : null;
+  const passed = passedM ? parseIntSafe(passedM[1]) : null;
+  const failures = failedM ? parseIntSafe(failedM[1]) : 0;
+  const flaky = flakyM ? parseIntSafe(flakyM[1]) : 0;
+  const skipped = skippedM ? parseIntSafe(skippedM[1]) : 0;
+
+  let tests = all;
+  if (tests === null) {
+    // If 'All' not present, try to compute from other counters
+    if (passed !== null) tests = passed + failures + skipped + flaky;
+    else return null;
+  }
+
+  const status = tests > 0 && failures === 0 ? 'passed' : (tests > 0 ? 'failed' : 'unknown');
+
+  return { tests, passed: passed ?? Math.max(0, tests - failures - skipped - flaky), failures, errors: 0, skipped, flaky, status };
+}
+
+
 function readE2EJunitStats() {
   const statsByProject = {};
 
@@ -145,6 +251,34 @@ function createMetrics() {
     path.join(REPORTS_DIR, 'unit-tests', 'coverage', 'index.html'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
 
+  // If not found in REPORTS_DIR, try a wider repository scan (useful in CI)
+  const scanRoots = [REPORTS_DIR, ROOT, process.env.GITHUB_WORKSPACE || ROOT].filter(Boolean);
+  if (!webUnitJunitPath) {
+    const found = findJUnitAnywhere(scanRoots, true);
+    if (found) {
+      console.log(`Discovered web JUnit at: ${path.relative(ROOT, found)}`);
+      webUnitJunitPath = found;
+    }
+  }
+  if (!backendUnitJunitPath) {
+    // prefer backend-like paths
+    const found = findJUnitAnywhere(scanRoots, false);
+    if (found && /backend|server|api|service/i.test(found)) {
+      console.log(`Discovered backend JUnit at: ${path.relative(ROOT, found)}`);
+      backendUnitJunitPath = found;
+    } else {
+      // try to find any junit that looks like backend
+      const candidates = [];
+      for (const rd of scanRoots) recursiveFind(rd, (name, full) => /junit.*\.xml$/i.test(name) && /backend|service|api/i.test(full), 5, candidates);
+      const pick = findMostRecent(candidates);
+      if (pick) { backendUnitJunitPath = pick; console.log(`Discovered backend JUnit (fallback) at: ${path.relative(ROOT, pick)}`); }
+    }
+  }
+  if (!webUnitCoveragePath) {
+    const cov = findCoverageAnywhere(scanRoots);
+    if (cov) { webUnitCoveragePath = cov; console.log(`Discovered coverage HTML at: ${path.relative(ROOT, cov)}`); }
+  }
+
   const webUnitJunit = parseJUnit(webUnitJunitPath ? safeRead(webUnitJunitPath) : null);
   const backendUnitJunit = parseJUnit(backendUnitJunitPath ? safeRead(backendUnitJunitPath) : null);
   const coverageHtml = webUnitCoveragePath ? safeRead(webUnitCoveragePath) : null;
@@ -157,14 +291,65 @@ function createMetrics() {
   };
 
   const e2eByProject = readE2EJunitStats();
+
+  // Discover Playwright reports (index.html under playwright-report-* dirs)
+  try {
+    const scanRoots = [REPORTS_DIR, ROOT, process.env.GITHUB_WORKSPACE || ROOT].filter(Boolean);
+    const pwIndexFiles = [];
+    for (const rd of scanRoots) {
+      recursiveFind(rd, (name, full) => {
+        return name.toLowerCase() === 'index.html' && /playwright-report[-_]/i.test(full);
+      }, 6, pwIndexFiles, 0);
+    }
+
+    // Deduplicate
+    const uniq = Array.from(new Set(pwIndexFiles));
+    for (const f of uniq) {
+      try {
+        const dirName = path.basename(path.dirname(f));
+        const key = dirName.replace(/^playwright-report[-_]/i, '').toLowerCase();
+        const html = safeRead(f);
+        const stats = parsePlaywrightSummaryFromHTML(html);
+        if (!stats) continue;
+        const rel = path.relative(ROOT, f).replace(/\\/g, '/');
+        if (e2eByProject[key]) {
+          // merge counts
+          const ex = e2eByProject[key];
+          e2eByProject[key] = {
+            tests: (ex.tests || 0) + (stats.tests || 0),
+            failures: (ex.failures || 0) + (stats.failures || 0),
+            errors: (ex.errors || 0) + (stats.errors || 0),
+            skipped: (ex.skipped || 0) + (stats.skipped || 0),
+            passed: (ex.passed || 0) + (stats.passed || 0),
+            status: ((ex.tests || 0) + (stats.tests || 0)) > 0 && ((ex.failures || 0) + (stats.failures || 0) + (ex.errors || 0) + (stats.errors || 0)) === 0 ? 'passed' : 'failed',
+            sourceFile: ex.sourceFile ? `${ex.sourceFile};${rel}` : rel,
+          };
+        } else {
+          e2eByProject[key] = { ...stats, sourceFile: rel };
+        }
+        console.log(`Discovered Playwright report for '${key}': ${rel}`);
+      } catch (err) { /* ignore individual parse errors */ }
+    }
+  } catch (err) { /* ignore */ }
+
+  // Ensure known Playwright projects appear in the JSON even if no report was found
+  try {
+    const PW_KEYS = ['frontend-chromium', 'frontend-edge', 'api'];
+    for (const k of PW_KEYS) {
+      if (!e2eByProject[k]) {
+        e2eByProject[k] = { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown', sourceFile: null };
+      }
+    }
+  } catch (err) { /* ignore */ }
+
   const e2eList = Object.values(e2eByProject);
   const e2eTotals = e2eList.reduce(
     (acc, current) => {
-      acc.tests += current.tests;
-      acc.failures += current.failures;
-      acc.errors += current.errors;
-      acc.skipped += current.skipped;
-      acc.passed += current.passed;
+      acc.tests += current.tests || 0;
+      acc.failures += current.failures || 0;
+      acc.errors += current.errors || 0;
+      acc.skipped += current.skipped || 0;
+      acc.passed += current.passed || 0;
       return acc;
     },
     { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 },

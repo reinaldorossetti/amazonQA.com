@@ -54,3 +54,5 @@ dashboard-metrics.json
 .kotlin/
 .idea/
 build/
+playwright-report-frontend-edge/
+playwright-report-frontend-chromium/
