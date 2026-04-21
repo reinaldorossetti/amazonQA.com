@@ -365,7 +365,47 @@ const Register = () => {
       toast.success("Cadastro realizado com sucesso! Bem-vindo(a)! 🎉");
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {
-      toast.error(err.message || "Erro ao realizar cadastro.");
+      // If server returned structured validation info, map to per-field errors
+      if (err && err.body && Array.isArray(err.body.missingFields)) {
+        const serverErrors = { ...initialErrors };
+        const fieldMap = {
+          person_type: 'personType',
+          first_name: 'firstName',
+          last_name: 'lastName',
+          email: 'email',
+          password: 'password',
+          cpf: 'cpf',
+          cnpj: 'cnpj',
+          company_name: 'companyName',
+          address_zip: 'addressZip',
+          address_street: 'addressStreet',
+          address_number: 'addressNumber',
+          address_complement: 'addressComplement',
+          address_neighborhood: 'addressNeighborhood',
+          address_city: 'addressCity',
+          address_state: 'addressState',
+          residence_proof_filename: 'residenceProof',
+        };
+
+        err.body.missingFields.forEach((f) => {
+          const localKey = fieldMap[f] || f;
+          serverErrors[localKey] = 'Campo obrigatório.';
+        });
+        setErrors(serverErrors);
+        toast.error('Preencha os campos obrigatórios indicados.');
+      } else if (err && err.body && err.body.field && err.body.message) {
+        // field-specific validation error (e.g., invalid person_type)
+        const serverErrors = { ...initialErrors };
+        const fieldMap = {
+          person_type: 'personType',
+        };
+        const localKey = fieldMap[err.body.field] || err.body.field;
+        serverErrors[localKey] = err.body.message || 'Valor inválido.';
+        setErrors(serverErrors);
+        toast.error(err.body.message || 'Erro de validação.');
+      } else {
+        toast.error(err.message || "Erro ao realizar cadastro.");
+      }
     } finally {
       setSubmitting(false);
     }

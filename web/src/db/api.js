@@ -30,7 +30,11 @@ async function http(method, path, body, extraHeaders = {}) {
     }
 
     if (!res.ok) {
-        throw new Error(data.error || `HTTP ${res.status}`);
+        const err = new Error(data.error || `HTTP ${res.status}`);
+        // attach parsed body and status so callers can react to structured errors
+        err.status = res.status;
+        err.body = data;
+        throw err;
     }
     return data;
 }
