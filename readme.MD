@@ -13,11 +13,12 @@ O **tester.com** é uma plataforma de e-commerce completa, construída como ambi
 | Jornada | Descrição |
 |---|---|
 | 🔐 **Autenticação** | Cadastro de usuário, login, logout e proteção de rotas |
-| 🛒 **Catálogo & Busca** | Listagem de produtos, filtro por categoria e busca por texto. Ao selecionar **Ofertas do Dia**, os produtos exibidos recebem **10% de desconto automático** no preço. |
-| 🛍️ **Carrinho** | Adicionar/remover produtos, atualizar quantidades, badge do carrinho |
-| 💳 **Checkout & Pagamento** | Fluxo completo: carrinho → pedido → pagamento → confirmação |
-| 👤 **Área do Cliente** | Perfil, histórico de pedidos e gerenciamento de conta |
-| 🔑 **Área Admin** | Gestão de produtos e usuários |
+| 🛒 **Catálogo & Busca** | Listagem de produtos, filtro por categoria e busca por texto. Ao selecionar **Ofertas do Dia**, os produtos exibidos recebem **10% de desconto automático**; buscas e filtros otimizados para alta performance. |
+| 🛍️ **Carrinho** | Adicionar/remover produtos, atualizar quantidades, badge do carrinho; cálculos de subtotal com descontos aplicados. |
+| 💳 **Checkout & Pagamento** | Fluxo completo: carrinho → pedido → pagamento → confirmação. Suporte a cartão, PIX e boleto; cálculo dinâmico de frete por item (`shipping_cost`) e regras de frete grátis aplicáveis no checkout. |
+| 👤 **Área do Cliente** | Perfil, histórico de pedidos, gerenciamento de conta e visualização detalhada de pedidos e pagamentos. |
+| 🛠️ **Área de Suporte** | Painel para o time de suporte com CRUD de produtos: criar, editar preços/categorias, filtrar e buscar itens — com validações que evitam impacto em pedidos ativos. |
+| 🔑 **Área Admin** | Gestão avançada de produtos e usuários, controle de permissões e roles (incl. role `isSupport`) |
 
 ---
 
