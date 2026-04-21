@@ -169,6 +169,20 @@ jobs:
         run: |
           mkdir -p tests-dashboard/swagger
           if [ -d docs/swagger ]; then cp -r docs/swagger/* tests-dashboard/swagger/ || true; fi
+      
+      - name: Generate dashboard metrics
+        if: always()
+        run: |
+          echo "Running dashboard generator to emit dashboard-metrics.json and history snapshots"
+          node ./tests-dashboard/generate-dashboard-metrics.js || true
+
+      - name: Show generated files
+        if: always()
+        run: |
+          ls -la tests-dashboard || true
+          ls -la tests-dashboard/history || true
+          echo '--- latest-scan.json ---'
+          cat tests-dashboard/history/latest-scan.json || true
           
       - uses: peaceiris/actions-gh-pages@v4
         id: deploy

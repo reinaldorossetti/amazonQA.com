@@ -56,4 +56,7 @@ dashboard-metrics.json
 build/
 playwright-report-frontend-edge/
 playwright-report-frontend-chromium/
+unit-tests-backend/
+e2e-junit-api/
 latest-scan.json
+dates.json
