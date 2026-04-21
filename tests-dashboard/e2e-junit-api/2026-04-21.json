@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-21T20:24:07.166Z",
+  "generatedAt": "2026-04-21T22:49:54.804Z",
   "source": "github-actions-artifacts",
   "unit": {
     "web": {
       "tests": 171,
-      "failures": 0,
+      "failures": 1,
       "errors": 0,
       "skipped": 0,
-      "passed": 171,
-      "status": "passed",
+      "passed": 170,
+      "status": "failed",
       "sourceFile": "tests-dashboard/unit-tests-web/junit.xml",
       "coverage": {
         "statements": {
@@ -62,6 +62,24 @@
         "passed": 0,
         "status": "failed",
         "sourceFile": "tests-dashboard/e2e-junit-api/junit-report.xml"
+      },
+      "frontend-chromium": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0,
+        "status": "unknown",
+        "sourceFile": null
+      },
+      "frontend-edge": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0,
+        "status": "unknown",
+        "sourceFile": null
       }
     },
     "totals": {
@@ -72,5 +90,17 @@
       "passed": 0,
       "status": "failed"
     }
+  },
+  "scan": {
+    "webUnitJunitPath": "tests-dashboard/unit-tests-web/junit.xml",
+    "backendUnitJunitPath": "tests-dashboard/unit-tests-backend/junit.xml",
+    "webUnitCoveragePath": "tests-dashboard/unit-tests-web/coverage/index.html",
+    "playwrightIndexFiles": [],
+    "e2eDirs": [],
+    "scanRoots": [
+      "D:\\github-projects\\tester.com\\tests-dashboard",
+      "D:\\github-projects\\tester.com",
+      "D:\\github-projects\\tester.com"
+    ]
   }
 }

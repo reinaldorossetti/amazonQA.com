@@ -355,6 +355,22 @@ function createMetrics() {
     { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 },
   );
 
+  // Build scan metadata for debugging/CI visibility
+  const scanInfo = {
+    webUnitJunitPath: webUnitJunitPath ? path.relative(ROOT, webUnitJunitPath).replace(/\\/g, '/') : null,
+    backendUnitJunitPath: backendUnitJunitPath ? path.relative(ROOT, backendUnitJunitPath).replace(/\\/g, '/') : null,
+    webUnitCoveragePath: webUnitCoveragePath ? path.relative(ROOT, webUnitCoveragePath).replace(/\\/g, '/') : null,
+    playwrightIndexFiles: (typeof uniq !== 'undefined' ? uniq.map(f => path.relative(ROOT, f).replace(/\\/g, '/')) : []),
+    e2eDirs: (() => {
+      try {
+        return fs.existsSync(path.join(REPORTS_DIR, 'e2e-junit'))
+          ? fs.readdirSync(path.join(REPORTS_DIR)).filter(e => fs.statSync(path.join(REPORTS_DIR, e)).isDirectory() && e.startsWith('e2e-junit-'))
+          : [];
+      } catch { return []; }
+    })(),
+    scanRoots
+  };
+
   return {
     generatedAt: new Date().toISOString(),
     source: 'github-actions-artifacts',
@@ -396,6 +412,7 @@ function createMetrics() {
         status: e2eTotals.tests > 0 && e2eTotals.failures === 0 && e2eTotals.errors === 0 ? 'passed' : 'failed',
       },
     },
+    scan: scanInfo
   };
 }
 
@@ -420,6 +437,18 @@ function run() {
   const historyFile = path.join(HISTORY_DIR, `${dateStr}.json`);
   fs.writeFileSync(historyFile, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
   console.log(`Wrote history snapshot: ${path.relative(ROOT, historyFile)}`);
+
+  // Write a latest-scan.json with the discovery details (useful for CI debugging)
+  try {
+    const latestScanPath = path.join(HISTORY_DIR, 'latest-scan.json');
+    const scanObj = {
+      generatedAt: metrics.generatedAt || new Date().toISOString(),
+      writtenAt: new Date().toISOString(),
+      scan: metrics.scan || null
+    };
+    fs.writeFileSync(latestScanPath, `${JSON.stringify(scanObj, null, 2)}\n`, 'utf8');
+    console.log(`Wrote latest scan info: ${path.relative(ROOT, latestScanPath)}`);
+  } catch (e) { /* non-fatal */ }
 
   // Maintain a dates.json with the most recent 3 dates available
   // Collect date files from HISTORY_DIR, plus any snapshots that may exist in
