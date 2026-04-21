@@ -26,6 +26,7 @@ components:
 
     Product:
       type: object
+      required: [name, price]
       properties:
         id:
           type: integer
@@ -34,6 +35,10 @@ components:
         price:
           type: number
           format: float
+        shipping_cost:
+          type: number
+          format: float
+          default: 0
         description:
           type: string
           nullable: true
@@ -71,6 +76,11 @@ components:
         created_at:
           type: string
           format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
 
     LoginResponse:
       type: object
@@ -101,9 +111,16 @@ components:
           type: string
         price:
           type: number
+        image:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
 
     OrderItem:
       type: object
+      required: [id, order_id, product_id, product_name_snapshot, unit_price_snapshot, quantity, line_total, created_at]
       properties:
         id:
           type: integer
@@ -315,6 +332,7 @@ components:
 
     Payment:
       type: object
+      required: [id, order_id, user_id, method, amount, status, created_at, updated_at]
       properties:
         id:
           type: integer
