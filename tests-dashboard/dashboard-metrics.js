@@ -268,6 +268,30 @@ function updateTimestamp(data) {
   if (el) el.textContent = `Atualizado em: ${new Date().toLocaleString('pt-BR')} · Dados CI: ${d.toLocaleString('pt-BR')}`;
 }
 
+/**
+ * Return a metrics object filled with zeros to display when a snapshot is missing.
+ */
+function getZeroMetrics(dateStr) {
+  const gen = dateStr ? `${dateStr}T00:00:00.000Z` : new Date().toISOString();
+  return {
+    generatedAt: gen,
+    unit: {
+      web: {
+        tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0,
+        coverage: {
+          statements: { percent: 0, covered: 0, total: 0 },
+          lines:      { percent: 0, covered: 0, total: 0 },
+          functions:  { percent: 0, covered: 0, total: 0 },
+          branches:   { percent: 0, covered: 0, total: 0 }
+        }
+      },
+      backend: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 },
+      totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' }
+    },
+    e2e: { byProject: {}, totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' } }
+  };
+}
+
 /* ── Grand Totals (Resumo tab) ───────────────────── */
 function computeAndUpdateGrandTotals(data) {
   const uw  = data?.unit?.web     ?? {};
@@ -319,6 +343,140 @@ async function loadDynamicMetrics() {
   if (dynamicStatus) {
     dynamicStatus.className = 'status-pill info';
     dynamicStatus.textContent = 'Coletando dados dos arquivos JUnit...';
+  }
+
+  // Try to load recent historical snapshots (dates.json) and present a date filter
+  async function fetchAndRenderHistoric(dateStr) {
+    const dynamicStatusLocal = document.getElementById('dynamicStatus');
+    if (dynamicStatusLocal) {
+      dynamicStatusLocal.className = 'status-pill info';
+      dynamicStatusLocal.textContent = `Carregando métricas de ${dateStr}...`;
+    }
+    try {
+      const res = await fetch(`${reportsBaseUrl}history/${dateStr}.json`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('not found');
+      const json = await res.json();
+      renderDynamicMetrics(json);
+      renderCIBadge(json);
+      return true;
+    } catch (e) {
+      console.warn('Historic metrics not available for', dateStr, e);
+      return false;
+    }
+  }
+
+  try {
+    const datesRes = await fetch(`${reportsBaseUrl}history/dates.json`, { cache: 'no-store' });
+    if (datesRes.ok) {
+      const dates = await datesRes.json();
+      if (Array.isArray(dates) && dates.length > 0) {
+        const listEl = document.getElementById('historyList');
+        const sidebar = document.getElementById('historySidebar');
+        if (listEl && sidebar) {
+          listEl.innerHTML = '';
+
+          // Fetch snapshots in parallel to enrich the sidebar with status/summary
+          // Only show up to 3 recent dates in the sidebar
+          const snapshots = await Promise.all(dates.slice(0, 3).map(async (d) => {
+            try {
+              const r = await fetch(`${reportsBaseUrl}history/${d}.json`, { cache: 'no-store' });
+              if (!r.ok) return { date: d, metrics: null };
+              const json = await r.json();
+              return { date: d, metrics: json };
+            } catch (e) {
+              return { date: d, metrics: null };
+            }
+          }));
+
+          snapshots.forEach((snap) => {
+            const li = document.createElement('li');
+            li.className = 'history-item';
+            li.dataset.date = snap.date;
+
+            const dateDisplay = (() => {
+              try { return new Date(snap.date).toLocaleDateString('pt-BR'); } catch { return snap.date; }
+            })();
+
+            // Determine a simple overall status (unit totals + e2e totals)
+            let status = 'unknown';
+            try {
+              const unitStatus = snap.metrics?.unit?.totals?.status;
+              const e2eStatus = snap.metrics?.e2e?.totals?.status;
+              if (unitStatus === 'passed' && (e2eStatus === 'passed' || e2eStatus === undefined)) status = 'passed';
+              else if (unitStatus === 'failed' || e2eStatus === 'failed') status = 'failed';
+            } catch { status = 'unknown'; }
+            // Minimal list item: only date and a colored dot status (no numbers/coverage text)
+            li.innerHTML = `
+              <div class="h-left">
+                <div class="h-date">${dateDisplay}</div>
+              </div>
+              <div class="h-right">
+                <span class="h-dot ${status}" title="${status}"></span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="chev" style="margin-left:8px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            `;
+
+            // keyboard accessibility
+            li.setAttribute('role', 'button');
+            li.tabIndex = 0;
+            li.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); li.click(); } });
+            li.addEventListener('click', async () => {
+              // Clear any previous visual state
+              document.querySelectorAll('.history-item').forEach(e => {
+                e.classList.remove('active');
+                e.classList.remove('disabled');
+                e.setAttribute('aria-disabled', 'false');
+                e.tabIndex = 0;
+              });
+
+              // Visually dim the non-selected items but keep them clickable
+              document.querySelectorAll('.history-item').forEach(e => {
+                if (e !== li) {
+                  e.classList.add('disabled');
+                  e.setAttribute('aria-disabled', 'true');
+                }
+              });
+
+              // Activate this item visually
+              li.classList.add('active');
+
+              try {
+                if (snap.metrics) {
+                  renderDynamicMetrics(snap.metrics);
+                  renderCIBadge(snap.metrics);
+                } else {
+                  const ok = await fetchAndRenderHistoric(snap.date);
+                  if (!ok) {
+                    // Show zeroed metrics when snapshot not available
+                    const zero = getZeroMetrics(snap.date);
+                    renderDynamicMetrics(zero);
+                    renderCIBadge(zero);
+                    const ds = document.getElementById('dynamicStatus');
+                    if (ds) { ds.className = 'status-pill warning'; ds.textContent = 'Dados não encontrados para essa execução — valores zerados.'; }
+                  }
+                }
+              } catch (err) {
+                console.error('Error loading history snapshot', err);
+                const zero = getZeroMetrics(snap.date);
+                renderDynamicMetrics(zero);
+                renderCIBadge(zero);
+                const ds = document.getElementById('dynamicStatus');
+                if (ds) { ds.className = 'status-pill warning'; ds.textContent = 'Erro ao carregar execução — valores zerados.'; }
+              }
+            });
+
+            listEl.appendChild(li);
+          });
+
+          // Select first item by default
+          const first = listEl.querySelector('.history-item');
+          if (first) first.click();
+          return;
+        }
+      }
+    }
+  } catch (e) {
+    // ignore and fallback to live parsing
   }
 
   // Define candidate paths for runtime data gathering

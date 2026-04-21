@@ -29,44 +29,56 @@
 
         <div class="tab-panels">
             <section class="tab-panel active">
-                
-                <!-- Cards de Números -->
-                <div class="card">
-                    <span class="section-label">⚡ Pipeline</span>
-                    <h2>Status da Execução</h2>
-                    <div id="dynamicStatus" class="status-pill">Iniciando análise...</div>
-                    <div class="metrics-grid" id="metricsGrid"></div>
-                </div>
+                <div class="metrics-layout">
+                    <aside class="card history-sidebar" id="historySidebar">
+                        <span class="section-label">⏱️ Execuções Recentes</span>
+                        <h2>Execuções Recentes</h2>
+                        <p class="muted">Selecione uma execução para carregar métricas dessa data.</p>
+                        <ul class="history-list" id="historyList">
+                            <!-- preenchido dinamicamente -->
+                        </ul>
+                        <div class="sidebar-foot muted">Mostrando últimas 3 execuções</div>
+                    </aside>
 
-                <!-- Cobertura -->
-                <div class="card">
-                    <span class="section-label">📊 Cobertura Vitest</span>
-                    <h2>Cobertura Web</h2>
-                    <p class="muted">Percentual de código testado no frontend.</p>
-                    <div id="coverageGrid" class="section-content"></div>
-                </div>
+                    <div class="metrics-main">
+                        <!-- Cards de Números -->
+                        <div class="card">
+                            <span class="section-label">⚡ Pipeline</span>
+                            <h2>Status da Execução</h2>
+                            <div id="dynamicStatus" class="status-pill">Iniciando análise...</div>
+                            <div class="metrics-grid" id="metricsGrid"></div>
+                        </div>
 
-                <!-- Gráficos de Barra: Unitários -->
-                <div class="card">
-                    <span class="section-label">📈 Unitários</span>
-                    <h2>Resultados Unitários por Projeto</h2>
-                    <div class="bars" id="unitBars"></div>
-                </div>
+                        <!-- Cobertura -->
+                        <div class="card">
+                            <span class="section-label">📊 Cobertura Vitest</span>
+                            <h2>Cobertura Web</h2>
+                            <p class="muted">Percentual de código testado no frontend.</p>
+                            <div id="coverageGrid" class="section-content"></div>
+                        </div>
 
-                <!-- Gráficos de Barra: E2E -->
-                <div class="card">
-                    <span class="section-label">📈 E2E</span>
-                    <h2>Resultados E2E por Projeto</h2>
-                    <div class="bars" id="e2eBars"></div>
-                </div>
-                
-                 <!-- Taxa de Sucesso (Donuts) -->
-                 <div class="card">
-                    <span class="section-label">🍩 Taxa de Sucesso</span>
-                    <h2>Sucesso por Categoria</h2>
-                    <div class="charts-grid" id="chartsGrid"></div>
-                </div>
+                        <!-- Gráficos de Barra: Unitários -->
+                        <div class="card">
+                            <span class="section-label">📈 Unitários</span>
+                            <h2>Resultados Unitários por Projeto</h2>
+                            <div class="bars" id="unitBars"></div>
+                        </div>
 
+                        <!-- Gráficos de Barra: E2E -->
+                        <div class="card">
+                            <span class="section-label">📈 E2E</span>
+                            <h2>Resultados E2E por Projeto</h2>
+                            <div class="bars" id="e2eBars"></div>
+                        </div>
+                        
+                        <!-- Taxa de Sucesso (Donuts) -->
+                        <div class="card">
+                            <span class="section-label">🍩 Taxa de Sucesso</span>
+                            <h2>Sucesso por Categoria</h2>
+                            <div class="charts-grid" id="chartsGrid"></div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
 

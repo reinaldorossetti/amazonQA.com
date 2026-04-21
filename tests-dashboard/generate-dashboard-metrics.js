@@ -221,8 +221,138 @@ function run() {
   }
 
   const metrics = createMetrics();
+  // Write main dashboard file
   fs.writeFileSync(OUTPUT_FILE, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
   console.log(`Dashboard metrics generated at ${path.relative(ROOT, OUTPUT_FILE)}`);
+
+  // Also persist per-date snapshots so the UI can show a filter by execution date.
+  // We'll write a history file with the full metrics and also copies inside
+  // unit-tests-web and unit-tests-backend (if present), plus any e2e artifact dirs.
+  const dateStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const HISTORY_DIR = path.join(REPORTS_DIR, 'history');
+  if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
+
+  const historyFile = path.join(HISTORY_DIR, `${dateStr}.json`);
+  fs.writeFileSync(historyFile, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
+  console.log(`Wrote history snapshot: ${path.relative(ROOT, historyFile)}`);
+
+  // Maintain a dates.json with the most recent 3 dates available
+  // Collect date files from HISTORY_DIR, plus any snapshots that may exist in
+  // unit-tests-web, unit-tests-backend and e2e-junit-* folders so the UI can
+  // present a complete list even if some snapshots live outside history/.
+  const datePattern = /^\d{4}-\d{2}-\d{2}\.json$/;
+  const dateSet = new Set();
+
+  // from history dir
+  try {
+    const files = fs.readdirSync(HISTORY_DIR).filter(f => datePattern.test(f));
+    for (const f of files) dateSet.add(f.replace(/\.json$/, ''));
+  } catch (e) { /* ignore */ }
+
+  // from unit-test folders
+  const extraDirs = [path.join(REPORTS_DIR, 'unit-tests-web'), path.join(REPORTS_DIR, 'unit-tests-backend')];
+  for (const d of extraDirs) {
+    try {
+      if (fs.existsSync(d) && fs.statSync(d).isDirectory()) {
+        const fsFiles = fs.readdirSync(d).filter(f => datePattern.test(f));
+        for (const f of fsFiles) dateSet.add(f.replace(/\.json$/, ''));
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  // from e2e dirs
+  try {
+    const e2eDirs = fs.readdirSync(REPORTS_DIR, { withFileTypes: true })
+      .filter(e => e.isDirectory() && e.name.startsWith('e2e-junit-'))
+      .map(d => path.join(REPORTS_DIR, d.name));
+    for (const ed of e2eDirs) {
+      try {
+        const edFiles = fs.readdirSync(ed).filter(f => datePattern.test(f));
+        for (const f of edFiles) dateSet.add(f.replace(/\.json$/, ''));
+      } catch (e) { /* ignore */ }
+    }
+  } catch (e) { /* ignore */ }
+
+  const dates = Array.from(dateSet).sort((a, b) => b.localeCompare(a));
+  const recentDates = dates.slice(0, 3);
+  fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(recentDates, null, 2)}\n`, 'utf8');
+  console.log(`Updated history dates: ${recentDates.join(', ')}`);
+
+  // If there is an embedded fallback JSON in dashboard-metrics-data.js, try to
+  // extract its generatedAt and include as a candidate date (useful for demo data).
+  try {
+    const fallbackPath = path.join(REPORTS_DIR, 'dashboard-metrics-data.js');
+    if (fs.existsSync(fallbackPath)) {
+      const content = fs.readFileSync(fallbackPath, 'utf8');
+      const m = content.match(/"generatedAt"\s*:\s*"([^"]+)"/);
+      if (m) {
+        const d = m[1].slice(0, 10);
+        if (!dateSet.has(d)) {
+          dateSet.add(d);
+          const updated = Array.from(dateSet).sort((a,b) => b.localeCompare(a)).slice(0,3);
+          fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
+          console.log(`Included fallback generatedAt date: ${d}`);
+        }
+      }
+    }
+  } catch (e) { /* ignore */ }
+
+  // Write copies into unit-tests-web and unit-tests-backend folders (so older systems can pick by path)
+  const copyTargets = [path.join(REPORTS_DIR, 'unit-tests-web'), path.join(REPORTS_DIR, 'unit-tests-backend')];
+  for (const targetDir of copyTargets) {
+    try {
+      if (fs.existsSync(targetDir) && fs.statSync(targetDir).isDirectory()) {
+        const out = path.join(targetDir, `${dateStr}.json`);
+        fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
+        // trim older snapshots in this directory (keep last 3)
+        const candidates = fs.readdirSync(targetDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
+        const toRemove = candidates.slice(3);
+        for (const r of toRemove) fs.unlinkSync(path.join(targetDir, r));
+      }
+    } catch (e) {
+      console.warn(`Failed to write copy into ${targetDir}:`, e && e.message);
+    }
+  }
+
+  // Also write copies into any e2e-junit-* directories found at REPORTS_DIR
+  try {
+    const e2eDirs = fs.readdirSync(REPORTS_DIR, { withFileTypes: true })
+      .filter(e => e.isDirectory() && e.name.startsWith('e2e-junit-'))
+      .map(d => path.join(REPORTS_DIR, d.name));
+    for (const adir of e2eDirs) {
+      try {
+        const out = path.join(adir, `${dateStr}.json`);
+        fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
+        const candidates = fs.readdirSync(adir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
+        const toRemove = candidates.slice(3);
+        for (const r of toRemove) fs.unlinkSync(path.join(adir, r));
+      } catch (e) { /* non-fatal */ }
+    }
+  } catch (e) { /* ignore */ }
+
+  // Ensure history directory also contains any snapshots that may exist in the
+  // unit / e2e folders (copy them into history if they are missing).
+  try {
+    const extraDirs = [path.join(REPORTS_DIR, 'unit-tests-web'), path.join(REPORTS_DIR, 'unit-tests-backend')];
+    const e2eDirs = fs.readdirSync(REPORTS_DIR, { withFileTypes: true })
+      .filter(e => e.isDirectory() && e.name.startsWith('e2e-junit-'))
+      .map(d => path.join(REPORTS_DIR, d.name));
+
+    for (const d of extraDirs.concat(e2eDirs)) {
+      try {
+        if (!fs.existsSync(d) || !fs.statSync(d).isDirectory()) continue;
+        const found = fs.readdirSync(d).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
+        for (const f of found) {
+          const src = path.join(d, f);
+          const dst = path.join(HISTORY_DIR, f);
+          if (!fs.existsSync(dst)) {
+            try { fs.copyFileSync(src, dst); console.log(`Copied ${path.relative(ROOT, src)} -> ${path.relative(ROOT, dst)}`); }
+            catch (e) { /* ignore copy errors */ }
+          }
+        }
+      } catch (e) { /* ignore */ }
+    }
+  } catch (e) { /* ignore */ }
 }
 
 run();
