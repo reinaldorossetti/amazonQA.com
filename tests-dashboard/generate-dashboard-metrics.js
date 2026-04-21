@@ -284,14 +284,27 @@ function run() {
     const fallbackPath = path.join(REPORTS_DIR, 'dashboard-metrics-data.js');
     if (fs.existsSync(fallbackPath)) {
       const content = fs.readFileSync(fallbackPath, 'utf8');
-      const m = content.match(/"generatedAt"\s*:\s*"([^"]+)"/);
+      // Try to extract a JS-assigned object: window.DASHBOARD_METRICS_FALLBACK = { ... };
+      const m = content.match(/window\.DASHBOARD_METRICS_FALLBACK\s*=\s*({[\s\S]*?})\s*;/);
       if (m) {
-        const d = m[1].slice(0, 10);
-        if (!dateSet.has(d)) {
-          dateSet.add(d);
-          const updated = Array.from(dateSet).sort((a,b) => b.localeCompare(a)).slice(0,3);
-          fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
-          console.log(`Included fallback generatedAt date: ${d}`);
+        try {
+          const obj = JSON.parse(m[1]);
+          const gen = obj && obj.generatedAt ? String(obj.generatedAt).slice(0,10) : null;
+          if (gen) {
+            const outPath = path.join(HISTORY_DIR, `${gen}.json`);
+            if (!fs.existsSync(outPath)) {
+              fs.writeFileSync(outPath, `${JSON.stringify(obj, null, 2)}\n`, 'utf8');
+              console.log(`Wrote fallback snapshot: ${path.relative(ROOT, outPath)}`);
+            }
+            if (!dateSet.has(gen)) {
+              dateSet.add(gen);
+              const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 3);
+              fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
+              console.log(`Included fallback generatedAt date: ${gen}`);
+            }
+          }
+        } catch (err) {
+          // ignore parse errors
         }
       }
     }

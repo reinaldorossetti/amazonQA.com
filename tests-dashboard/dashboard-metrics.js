@@ -42,12 +42,19 @@ function parseJUnitXML(xmlText) {
   return { tests, failures, errors, skipped, passed, status };
 }
 
+// Utility to bust caches when fetching static artifacts during development.
+function cacheUrl(u) {
+  try {
+    return `${u}${u.includes('?') ? '&' : '?'}t=${Date.now()}`;
+  } catch { return u; }
+}
+
 /**
  * Fetches an XML file and parses it.
  */
 async function fetchAndParseJUnit(url) {
   try {
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(cacheUrl(url), { cache: 'no-store' });
     if (!res.ok) return null;
     const text = await res.text();
     return parseJUnitXML(text);
@@ -85,7 +92,7 @@ function parseCoverageHTML(htmlText) {
 
 async function fetchAndParseCoverage(url) {
   try {
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(cacheUrl(url), { cache: 'no-store' });
     if (!res.ok) return null;
     const text = await res.text();
     return parseCoverageHTML(text);
@@ -353,7 +360,7 @@ async function loadDynamicMetrics() {
       dynamicStatusLocal.textContent = `Carregando métricas de ${dateStr}...`;
     }
     try {
-      const res = await fetch(`${reportsBaseUrl}history/${dateStr}.json`, { cache: 'no-store' });
+      const res = await fetch(cacheUrl(`${reportsBaseUrl}history/${dateStr}.json`), { cache: 'no-store' });
       if (!res.ok) throw new Error('not found');
       const json = await res.json();
       renderDynamicMetrics(json);
@@ -366,7 +373,7 @@ async function loadDynamicMetrics() {
   }
 
   try {
-    const datesRes = await fetch(`${reportsBaseUrl}history/dates.json`, { cache: 'no-store' });
+    const datesRes = await fetch(cacheUrl(`${reportsBaseUrl}history/dates.json`), { cache: 'no-store' });
     if (datesRes.ok) {
       const dates = await datesRes.json();
       if (Array.isArray(dates) && dates.length > 0) {
@@ -379,7 +386,7 @@ async function loadDynamicMetrics() {
           // Only show up to 3 recent dates in the sidebar
           const snapshots = await Promise.all(dates.slice(0, 3).map(async (d) => {
             try {
-              const r = await fetch(`${reportsBaseUrl}history/${d}.json`, { cache: 'no-store' });
+              const r = await fetch(cacheUrl(`${reportsBaseUrl}history/${d}.json`), { cache: 'no-store' });
               if (!r.ok) return { date: d, metrics: null };
               const json = await r.json();
               return { date: d, metrics: json };
@@ -537,7 +544,7 @@ async function loadDynamicMetrics() {
   // 3. Fallback to existing JSON or Embedded Mock if all fetches failed
   if (!xmlWeb && !xmlBackend && e2eTotals.tests === 0) {
     try {
-      const res = await fetch(`${reportsBaseUrl}dashboard-metrics.json`, { cache: 'no-store' });
+      const res = await fetch(cacheUrl(`${reportsBaseUrl}dashboard-metrics.json`), { cache: 'no-store' });
       if (res.ok) {
         const jsonData = await res.json();
         renderDynamicMetrics(jsonData);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T20:58:01.849Z",
+  "generatedAt": "2026-04-19T19:13:38.037Z",
   "source": "github-actions-artifacts",
   "unit": {
     "web": {
@@ -53,21 +53,11 @@
     }
   },
   "e2e": {
-    "byProject": {
-      "api": {
-        "tests": 104,
-        "failures": 0,
-        "errors": 104,
-        "skipped": 0,
-        "passed": 0,
-        "status": "failed",
-        "sourceFile": "tests-dashboard/e2e-junit-api/junit-report.xml"
-      }
-    },
+    "byProject": {},
     "totals": {
-      "tests": 104,
+      "tests": 0,
       "failures": 0,
-      "errors": 104,
+      "errors": 0,
       "skipped": 0,
       "passed": 0,
       "status": "failed"
