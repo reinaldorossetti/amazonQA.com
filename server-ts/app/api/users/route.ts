@@ -99,7 +99,7 @@ export async function POST(request: Request): Promise<Response> {
 
     const body = (await request.json()) as AdminCreateUserBody;
     const {
-      person_type = 'PF',
+      person_type,
       first_name,
       last_name,
       email,
@@ -116,12 +116,25 @@ export async function POST(request: Request): Promise<Response> {
       address_city,
       address_state,
       residence_proof_filename,
-      role = 'user',
+      role,
     } = body;
 
-    if (!first_name || !last_name || !email || !password) {
+    // Validate required fields and return structured missingFields when absent
+    const requiredFields = ['first_name', 'last_name', 'email', 'password', 'role'];
+    const missingFields = requiredFields.filter((f) => {
+      const v = (body as any)[f];
+      return v === undefined || v === null || (typeof v === 'string' && v.trim() === '');
+    });
+
+    if (missingFields.length) {
+      return NextResponse.json({ error: 'Missing required fields', missingFields }, { status: 400 });
+    }
+
+    // Validate role value
+    const allowedRoles = ['user', 'admin', 'support'];
+    if (!allowedRoles.includes(String(role))) {
       return NextResponse.json(
-        { error: 'Required fields: first_name, last_name, email, password' },
+        { error: 'Invalid value', field: 'role', message: 'Invalid role. Allowed: user, admin, support' },
         { status: 400 }
       );
     }
@@ -161,7 +174,7 @@ export async function POST(request: Request): Promise<Response> {
       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,NOW(),true)
       RETURNING id, person_type, first_name, last_name, email, created_at, updated_at, is_active`,
       [
-        person_type,
+        person_type ?? 'PF',
         first_name,
         last_name,
         email,
@@ -182,16 +195,18 @@ export async function POST(request: Request): Promise<Response> {
     );
 
     const createdUser = insertResult.rows[0] as { id: number } & Record<string, unknown>;
-    const normalizedRole = role === 'admin' ? 'admin' : 'user';
+    const normalizedRole = String(role);
     await ensureUserRole(createdUser.id, 'user');
-    if (normalizedRole === 'admin') {
-      await ensureUserRole(createdUser.id, 'admin');
+    if (normalizedRole !== 'user') {
+      await ensureUserRole(createdUser.id, normalizedRole);
     }
+
+    const roles = normalizedRole === 'admin' ? ['admin', 'user'] : normalizedRole === 'support' ? ['support', 'user'] : ['user'];
 
     return NextResponse.json(
       {
         ...createdUser,
-        roles: normalizedRole === 'admin' ? ['admin', 'user'] : ['user'],
+        roles,
       },
       { status: 201 }
     );

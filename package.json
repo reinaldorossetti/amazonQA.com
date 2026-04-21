@@ -2,5 +2,8 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0"
+  },
+  "dependencies": {
+    "yaml": "^2.8.3"
   }
 }

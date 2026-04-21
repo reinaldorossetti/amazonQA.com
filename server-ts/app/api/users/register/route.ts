@@ -30,7 +30,7 @@ export async function POST(request: Request): Promise<Response> {
   try {
     const body = (await request.json()) as RegisterBody;
     const {
-      person_type = 'PF',
+      person_type,
       first_name,
       last_name,
       email,
@@ -49,9 +49,21 @@ export async function POST(request: Request): Promise<Response> {
       residence_proof_filename,
     } = body;
 
-    if (!first_name || !last_name || !email || !password) {
+    // Validate required fields and build a clear response for missing ones
+    const requiredFields = ['person_type', 'first_name', 'last_name', 'email', 'password'];
+    const missingFields = requiredFields.filter((f) => {
+      const v = (body as any)[f];
+      return v === undefined || v === null || (typeof v === 'string' && v.trim() === '');
+    });
+
+    if (missingFields.length) {
+      return NextResponse.json({ error: 'Missing required fields', missingFields }, { status: 400 });
+    }
+
+    // Validate person_type value
+    if (!(person_type === 'PF' || person_type === 'PJ')) {
       return NextResponse.json(
-        { error: 'Required fields: first_name, last_name, email, password' },
+        { error: 'Invalid value', field: 'person_type', message: 'person_type must be PF or PJ' },
         { status: 400 }
       );
     }

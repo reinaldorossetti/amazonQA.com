@@ -24,6 +24,16 @@ components:
         error:
           type: string
 
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+        missingFields:
+          type: array
+          items:
+            type: string
+
     Product:
       type: object
       required: [name, price]
@@ -515,7 +525,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [first_name, last_name, email, password]
+              required: [person_type, first_name, last_name, email, password]
               properties:
                 person_type:
                   type: string
@@ -536,6 +546,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSafe'
+        '400':
+          description: Campos obrigatórios faltando
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
         '409':
           description: Conflito de e-mail/CPF/CNPJ
 
@@ -607,7 +623,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [first_name, last_name, email, password]
+              required: [first_name, last_name, email, password, role]
               properties:
                 first_name:
                   type: string
@@ -619,10 +635,16 @@ paths:
                   type: string
                 role:
                   type: string
-                  enum: [user, admin]
+                  enum: [user, admin, support]
       responses:
         '201':
           description: Usuário criado
+        '400':
+          description: Campos obrigatórios faltando ou valor inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
         '403':
           description: Requer admin
 
