@@ -101,6 +101,24 @@ async function fetchAndParseCoverage(url) {
   }
 }
 
+// Attempt to trigger server-side generation of today's snapshot (best-effort).
+async function triggerGenerateIfAvailable(timeoutMs = 2500) {
+  const endpoints = [
+    `${reportsBaseUrl}api/generate-dashboard`,
+    'http://localhost:3030/api/generate-dashboard'
+  ];
+  for (const ep of endpoints) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      const res = await fetch(cacheUrl(ep), { method: 'POST', signal: controller.signal, mode: 'cors' });
+      clearTimeout(timer);
+      if (res && res.ok) return true;
+    } catch (e) { /* ignore */ }
+  }
+  return false;
+}
+
 /* ── CI Badge ────────────────────────────────────── */
 function renderCIBadge(data) {
   const badge = document.getElementById('ciStatusBadge');
@@ -373,6 +391,8 @@ async function loadDynamicMetrics() {
   }
 
   try {
+    // Best-effort: trigger server-side generator so that today's snapshot exists
+    try { await triggerGenerateIfAvailable(2000); } catch {}
     const datesRes = await fetch(cacheUrl(`${reportsBaseUrl}history/dates.json`), { cache: 'no-store' });
     if (datesRes.ok) {
       const dates = await datesRes.json();

@@ -553,4 +553,8 @@ function run() {
   } catch (e) { /* ignore */ }
 }
 
-run();
+if (require.main === module) {
+  run();
+}
+
+module.exports = { createMetrics, run };
