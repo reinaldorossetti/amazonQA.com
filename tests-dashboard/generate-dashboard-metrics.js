@@ -63,21 +63,34 @@ function parseCoverageMetric(html, metricName) {
     return { percent: null, covered: 0, total: 0 };
   }
 
-  const metricRegex = new RegExp(
-    `<span\\s+class=["']strong["']>([^<]+)<\\/span>\\s*<span\\s+class=["']quiet["']>${metricName}<\\/span>\\s*<span\\s+class=["']fraction["']>([^<]+)<\\/span>`,
-    'i',
-  );
-  const match = html.match(metricRegex);
+  // Find the metric block by its name
+  const quietRegex = new RegExp(`<span\\s+class=["']quiet["']>${metricName}<\\/span>`, 'i');
+  const quietMatch = html.match(quietRegex);
+  if (!quietMatch) return { percent: null, covered: 0, total: 0 };
 
-  if (!match) {
-    return { percent: null, covered: 0, total: 0 };
-  }
+  const pos = quietMatch.index;
+  // Look backwards for the strong tag (percentage) within 200 chars
+  const prevChunk = html.substring(Math.max(0, pos - 200), pos);
+  const strongMatch = [...prevChunk.matchAll(/<span\s+class=["']strong["']>([^<]+)<\/span>/gi)].pop();
+  
+  // Look forwards for the fraction tag within 200 chars
+  const nextChunk = html.substring(pos, pos + 200);
+  const fractionMatch = nextChunk.match(/<span\s+class=["']fraction["']>([^<]+)<\/span>/i);
 
-  const percentRaw = match[1].trim();
-  const [coveredRaw = '0', totalRaw = '0'] = match[2].trim().split('/');
+  const percentRaw = strongMatch ? strongMatch[1].trim() : '';
+  const fractionRaw = fractionMatch ? fractionMatch[1].trim() : '0/0';
+
+  const [coveredRaw = '0', totalRaw = '0'] = fractionRaw.split('/');
   const covered = parseIntSafe(coveredRaw);
   const total = parseIntSafe(totalRaw);
-  const percent = /^\d+(\.\d+)?%$/.test(percentRaw) ? Number.parseFloat(percentRaw) : null;
+  
+  // Try to parse percent, fallback to calculated if needed
+  let percent = null;
+  if (/^\d+(\.\d+)?%$/.test(percentRaw)) {
+    percent = Number.parseFloat(percentRaw);
+  } else if (total > 0) {
+    percent = Math.round((covered / total) * 1000) / 10;
+  }
 
   return { percent, covered, total };
 }
@@ -250,8 +263,16 @@ function createMetrics() {
 
   let webUnitCoveragePath = [
     path.join(REPORTS_DIR, 'unit-tests-web', 'coverage', 'index.html'),
+    path.join(REPORTS_DIR, 'unit-tests-web', 'coverage', 'lcov-report', 'index.html'),
     path.join(REPORTS_DIR, 'unit-tests', 'coverage', 'index.html'),
+    path.join(REPORTS_DIR, 'unit-test-report-web', 'coverage', 'index.html'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
+
+  if (webUnitCoveragePath) {
+    console.log(`Found web coverage at: ${webUnitCoveragePath}`);
+  } else {
+    console.log('Web coverage report not found in standard locations.');
+  }
 
   // If not found in REPORTS_DIR, try a wider repository scan (useful in CI)
   const scanRoots = [REPORTS_DIR, ROOT, process.env.GITHUB_WORKSPACE || ROOT].filter(Boolean);

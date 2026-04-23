@@ -208,7 +208,8 @@ describe('Users API endpoints', () => {
 
   it('POST /api/users/register creates default user role', async () => {
     queryMock
-      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] }) // email check
+      .mockResolvedValueOnce({ rows: [] }) // cpf check
       .mockResolvedValueOnce({ rows: [{ id: 123, email: 'novo@teste.com', first_name: 'Novo' }] })
       .mockResolvedValueOnce({ rows: [] });
 
@@ -219,10 +220,37 @@ describe('Users API endpoints', () => {
         last_name: 'User',
         email: 'novo@teste.com',
         password: '123456',
+        cpf: '12345678901',
       })
     );
 
     expect(response.status).toBe(201);
     expect(queryMock).toHaveBeenLastCalledWith(expect.stringContaining('INSERT INTO user_roles'), [123]);
+  });
+
+  it('POST /api/users/register returns 400 for PF without CPF', async () => {
+    const response = await registerUser(
+      jsonRequest('http://localhost/api/users/register', 'POST', {
+        person_type: 'PF',
+        first_name: 'Novo',
+        last_name: 'User',
+        email: 'novo@teste.com',
+        password: '123456',
+      })
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it('POST /api/users/register returns 400 for PJ without CNPJ', async () => {
+    const response = await registerUser(
+      jsonRequest('http://localhost/api/users/register', 'POST', {
+        person_type: 'PJ',
+        first_name: 'Empresa',
+        last_name: 'LTDA',
+        email: 'pj@teste.com',
+        password: '123456',
+      })
+    );
+    expect(response.status).toBe(400);
   });
 });

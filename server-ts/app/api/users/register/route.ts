@@ -68,6 +68,14 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
+    if (person_type === 'PF' && (!cpf || cpf.trim() === '')) {
+      return NextResponse.json({ error: 'CPF is required for person_type PF' }, { status: 400 });
+    }
+
+    if (person_type === 'PJ' && (!cnpj || cnpj.trim() === '')) {
+      return NextResponse.json({ error: 'CNPJ is required for person_type PJ' }, { status: 400 });
+    }
+
     const emailCheck = await query('SELECT id FROM users WHERE email = $1', [email]);
     if (emailCheck.rows.length) {
       return NextResponse.json({ error: 'This email is already registered.' }, { status: 409 });
