@@ -14,6 +14,7 @@
     "test:pact:provider": "tsx scripts/verify-pact-provider.ts",
     "test:pact": "npm run test:pact:provider",
     "test": "vitest run --config vitest.server.config.ts",
+    "test:unit": "node -e \"const fs=require('fs'); fs.rmSync('../tests-dashboard/unit-tests-backend', {recursive:true, force:true});\" && vitest run --config vitest.server.config.ts --reporter=default --reporter=junit --outputFile=../tests-dashboard/unit-tests-backend/junit.xml",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix"

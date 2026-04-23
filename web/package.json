@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --port 5174 --host 0.0.0.0",
-    "test:unit": "vitest run",
+    "test:unit": "node -e \"const fs=require('fs'); fs.rmSync('../tests-dashboard/unit-tests-web', {recursive:true, force:true});\" && vitest run --reporter=default --reporter=junit --outputFile=../tests-dashboard/unit-tests-web/junit.xml",
     "test:pact:consumer": "vitest run --config vitest.pact.config.js",
     "test:pact:provider": "node ../tests/pact/provider/verify-provider.mjs",
     "test:pact": "npm run test:pact:consumer && npm run test:pact:provider",
