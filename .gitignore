@@ -60,3 +60,5 @@ unit-tests-backend/
 e2e-junit-api/
 latest-scan.json
 dates.json
+history/*.json
+unit-tests-web/*.json
