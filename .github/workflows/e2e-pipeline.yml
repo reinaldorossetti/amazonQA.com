@@ -54,14 +54,14 @@ jobs:
         if: always()
         with:
           name: unit-tests-web
-          path: web/tests-dashboard/unit-tests-web/
+          path: tests-dashboard/unit-tests-web/
           if-no-files-found: warn
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: unit-tests-backend
-          path: web/tests-dashboard/unit-tests-backend/
+          path: tests-dashboard/unit-tests-backend/
           if-no-files-found: warn
 
   # ── Contract Tests ──────────────────────────────────────────────────
@@ -126,7 +126,12 @@ jobs:
       - name: Run E2E tests
         working-directory: web
         continue-on-error: true
-        run: xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
+        env:
+          PLAYWRIGHT_HTML_REPORT: ../tests-dashboard/playwright-report
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: ../tests-dashboard/junit-report.xml
+        run: |
+          mkdir -p ../tests-dashboard/playwright-report
+          xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
 
       - name: Container logs (on failure)
         if: failure()
@@ -140,14 +145,14 @@ jobs:
         if: always()
         with:
           name: playwright-report-${{ matrix.project }}
-          path: web/playwright-report
+          path: tests-dashboard/playwright-report
           if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: e2e-junit-${{ matrix.project }}
-          path: web/junit-report.xml
+          path: tests-dashboard/junit-report.xml
           if-no-files-found: warn
 
   # ── Deploy Reports ──────────────────────────────────────────────────
