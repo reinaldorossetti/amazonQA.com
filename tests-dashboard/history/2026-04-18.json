@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-18T23:38:33.078Z",
+  "source": "github-actions-artifacts",
+  "unit": {
+    "web": { "tests": 100, "passed": 70 },
+    "totals": { "tests": 100, "passed": 70 }
+  },
+  "e2e": { "totals": { "tests": 50, "passed": 20 } }
+}

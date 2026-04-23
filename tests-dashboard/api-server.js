@@ -6,8 +6,10 @@ const fs = require('fs');
 const generator = require('./generate-dashboard-metrics.js');
 
 const PORT = process.env.DASHBOARD_API_PORT || 3030;
-const ROOT = process.cwd();
-const REPORTS_DIR = path.join(ROOT, 'tests-dashboard');
+const REPORTS_DIR = __dirname;
+const ROOT = fs.existsSync(path.join(__dirname, '..', 'package.json'))
+  ? path.join(__dirname, '..')
+  : process.cwd();
 const HISTORY_DIR = path.join(REPORTS_DIR, 'history');
 
 function sendJSON(res, statusCode, obj) {

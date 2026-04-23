@@ -1,8 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const ROOT = process.cwd();
-const REPORTS_DIR = path.join(ROOT, 'tests-dashboard');
+const REPORTS_DIR = __dirname;
+const ROOT = fs.existsSync(path.join(__dirname, '..', 'package.json'))
+  ? path.join(__dirname, '..')
+  : process.cwd();
 const OUTPUT_FILE = path.join(REPORTS_DIR, 'dashboard-metrics.json');
 
 function safeRead(filePath) {
@@ -488,7 +490,7 @@ function run() {
   } catch (e) { /* ignore */ }
 
   const dates = Array.from(dateSet).sort((a, b) => b.localeCompare(a));
-  const recentDates = dates.slice(0, 3);
+  const recentDates = dates.slice(0, 5);
   fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(recentDates, null, 2)}\n`, 'utf8');
   console.log(`Updated history dates: ${recentDates.join(', ')}`);
 
@@ -512,7 +514,7 @@ function run() {
             }
             if (!dateSet.has(gen)) {
               dateSet.add(gen);
-              const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 3);
+              const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 5);
               fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
               console.log(`Included fallback generatedAt date: ${gen}`);
             }
@@ -531,9 +533,9 @@ function run() {
       if (fs.existsSync(targetDir) && fs.statSync(targetDir).isDirectory()) {
         const out = path.join(targetDir, `${dateStr}.json`);
         fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
-        // trim older snapshots in this directory (keep last 3)
+        // trim older snapshots in this directory (keep last 5)
         const candidates = fs.readdirSync(targetDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
-        const toRemove = candidates.slice(3);
+        const toRemove = candidates.slice(5);
         for (const r of toRemove) fs.unlinkSync(path.join(targetDir, r));
       }
     } catch (e) {
@@ -551,7 +553,7 @@ function run() {
         const out = path.join(adir, `${dateStr}.json`);
         fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
         const candidates = fs.readdirSync(adir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
-        const toRemove = candidates.slice(3);
+        const toRemove = candidates.slice(5);
         for (const r of toRemove) fs.unlinkSync(path.join(adir, r));
       } catch (e) { /* non-fatal */ }
     }

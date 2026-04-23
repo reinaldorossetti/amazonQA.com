@@ -126,44 +126,58 @@
         <!-- ═══ TAB 3: Métricas CI ═══════════════════════ -->
         <section class="tab-panel" id="panel-metrics" role="tabpanel" aria-labelledby="tab-metrics">
 
-          <!-- Status + Number Cards -->
-          <div class="card">
-            <span class="section-label">⚡ Pipeline</span>
-            <h2>Métricas Dinâmicas (CI)</h2>
-            <p class="muted">Esses números vêm da última execução publicada pela pipeline.</p>
-            <div class="status-pill" id="dynamicStatus" aria-live="polite">Carregando métricas...</div>
-            <div class="metrics-grid" id="metricsGrid"></div>
-          </div>
+          <div class="metrics-layout">
+            <!-- Sidebar: Histórico -->
+            <aside class="card history-sidebar" id="historySidebar">
+              <span class="section-label">⏱️ Execuções</span>
+              <h2>Execuções Recentes</h2>
+              <p class="muted">Selecione uma data para ver os detalhes daquela execução.</p>
+              <ul class="history-list" id="historyList">
+                <!-- Preenchido via dashboard-metrics.js -->
+              </ul>
+              <div class="sidebar-foot muted">Mostrando últimas 5 execuções</div>
+            </aside>
 
-          <!-- Donut Charts: Taxa de Sucesso -->
-          <div class="card">
-            <span class="section-label">🍩 Gráficos</span>
-            <h2>Taxa de Sucesso por Suíte</h2>
-            <div class="charts-grid" id="chartsGrid"></div>
-          </div>
+            <!-- Conteúdo Principal de Métricas -->
+            <div class="metrics-main">
+              <!-- Status + Number Cards -->
+              <div class="card">
+                <span class="section-label">⚡ Pipeline</span>
+                <h2>Métricas Dinâmicas (CI)</h2>
+                <p class="muted">Esses números vêm da última execução publicada pela pipeline.</p>
+                <div class="status-pill" id="dynamicStatus" aria-live="polite">Carregando métricas...</div>
+                <div class="metrics-grid" id="metricsGrid"></div>
+              </div>
 
-          <!-- Coverage Bars: Vitest Web -->
-          <div class="card">
-            <span class="section-label">📊 Cobertura</span>
-            <h2>Cobertura Web (Vitest)</h2>
-            <p class="muted">Percentual de código coberto pelos testes unitários (Statements, Lines, Functions, Branches).</p>
-            <div id="coverageGrid" class="section-content"></div>
-          </div>
+              <!-- Donut Charts: Taxa de Sucesso -->
+              <div class="card">
+                <span class="section-label">🍩 Gráficos</span>
+                <h2>Taxa de Sucesso por Suíte</h2>
+                <div class="charts-grid" id="chartsGrid"></div>
+              </div>
 
-          <!-- Bar Chart: Testes Unitários por Projeto -->
-          <div class="card">
-            <span class="section-label">📈 Unitários</span>
-            <h2>Resultados Unitários por Projeto</h2>
-            <p class="muted">Aprovados ✅ / Falhas ❌ / Pulados ⏭️ por suíte de testes unitários.</p>
-            <div class="bars" id="unitBars"></div>
-          </div>
+              <!-- Coverage Bars: Vitest Web -->
+              <div class="card">
+                <span class="section-label">📊 Cobertura</span>
+                <h2>Cobertura Web (Vitest)</h2>
+                <p class="muted">Percentual de código coberto pelos testes unitários.</p>
+                <div id="coverageGrid" class="section-content"></div>
+              </div>
 
-          <!-- Bar Chart: E2E por Projeto -->
-          <div class="card">
-            <span class="section-label">📈 E2E</span>
-            <h2>Resultados E2E por Projeto</h2>
-            <p class="muted">Aprovados ✅ / Falhas ❌ / Pulados ⏭️ por projeto E2E.</p>
-            <div class="bars" id="e2eBars"></div>
+              <!-- Bar Chart: Testes Unitários por Projeto -->
+              <div class="card">
+                <span class="section-label">📈 Unitários</span>
+                <h2>Resultados Unitários por Projeto</h2>
+                <div class="bars" id="unitBars"></div>
+              </div>
+
+              <!-- Bar Chart: E2E por Projeto -->
+              <div class="card">
+                <span class="section-label">📈 E2E</span>
+                <h2>Resultados E2E por Projeto</h2>
+                <div class="bars" id="e2eBars"></div>
+              </div>
+            </div>
           </div>
 
         </section>
@@ -182,6 +196,6 @@
     <script src="dashboard-tabs.js?v=2"></script>
     <script src="dashboard-summary.js?v=2"></script>
     <script src="dashboard-reports.js?v=2"></script>
-    <script src="dashboard-metrics.js?v=2"></script>
+    <script src="dashboard-metrics.js?v=3"></script>
   </body>
 </html>

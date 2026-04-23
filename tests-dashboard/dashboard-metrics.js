@@ -401,10 +401,15 @@ async function loadDynamicMetrics() {
         const sidebar = document.getElementById('historySidebar');
         if (listEl && sidebar) {
           listEl.innerHTML = '';
+          const foot = sidebar.querySelector('.sidebar-foot');
+          if (foot) foot.textContent = 'Mostrando últimas 5 execuções';
+
+          // Sort dates descending (newest first)
+          dates.sort((a, b) => b.localeCompare(a));
 
           // Fetch snapshots in parallel to enrich the sidebar with status/summary
-          // Only show up to 3 recent dates in the sidebar
-          const snapshots = await Promise.all(dates.slice(0, 3).map(async (d) => {
+          // Show up to 5 recent dates in the sidebar
+          const snapshots = await Promise.all(dates.slice(0, 5).map(async (d) => {
             try {
               const r = await fetch(cacheUrl(`${reportsBaseUrl}history/${d}.json`), { cache: 'no-store' });
               if (!r.ok) return { date: d, metrics: null };
@@ -421,7 +426,10 @@ async function loadDynamicMetrics() {
             li.dataset.date = snap.date;
 
             const dateDisplay = (() => {
-              try { return new Date(snap.date).toLocaleDateString('pt-BR'); } catch { return snap.date; }
+              try { 
+                // Adicionamos T00:00:00 para evitar o shift de timezone (UTC vs Local)
+                return new Date(snap.date + 'T00:00:00').toLocaleDateString('pt-BR'); 
+              } catch { return snap.date; }
             })();
 
             // Determine a simple overall status (unit totals + e2e totals)
@@ -589,6 +597,20 @@ async function loadDynamicMetrics() {
   // 4. Render the gathered data
   renderDynamicMetrics(runtimeData);
   renderCIBadge(runtimeData);
+
+  // Listener para garantir que o snapshot mais recente seja exibido ao clicar na aba de métricas
+  const tabMetrics = document.getElementById('tab-metrics');
+  if (tabMetrics) {
+    tabMetrics.addEventListener('click', () => {
+      const listEl = document.getElementById('historyList');
+      if (listEl) {
+        const first = listEl.querySelector('.history-item');
+        if (first) {
+          first.click();
+        }
+      }
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadDynamicMetrics);

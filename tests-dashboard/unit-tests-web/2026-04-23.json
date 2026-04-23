@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T23:38:33.078Z",
+  "generatedAt": "2026-04-23T12:06:30.171Z",
   "source": "github-actions-artifacts",
   "unit": {
     "web": {
@@ -90,5 +90,17 @@
       "passed": 0,
       "status": "failed"
     }
+  },
+  "scan": {
+    "webUnitJunitPath": "tests-dashboard/unit-tests-web/junit.xml",
+    "backendUnitJunitPath": "tests-dashboard/unit-tests-backend/junit.xml",
+    "webUnitCoveragePath": "tests-dashboard/unit-tests-web/coverage/index.html",
+    "playwrightIndexFiles": [],
+    "e2eDirs": [],
+    "scanRoots": [
+      "D:\\github-projects\\tester.com\\tests-dashboard",
+      "D:\\github-projects\\tester.com",
+      "D:\\github-projects\\tester.com"
+    ]
   }
 }
