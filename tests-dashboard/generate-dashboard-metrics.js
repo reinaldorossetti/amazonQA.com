@@ -453,11 +453,16 @@ function run() {
   // Also persist per-date snapshots so the UI can show a filter by execution date.
   // We'll write a history file with the full metrics and also copies inside
   // unit-tests-web and unit-tests-backend (if present), plus any e2e artifact dirs.
-  const dateStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10);
+  const hour = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  const fullId = `${dateStr}-${hour}h${min}m`;
+  
   const HISTORY_DIR = path.join(REPORTS_DIR, 'history');
   if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
 
-  const historyFile = path.join(HISTORY_DIR, `${dateStr}.json`);
+  const historyFile = path.join(HISTORY_DIR, `${fullId}.json`);
   fs.writeFileSync(historyFile, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
   console.log(`Wrote history snapshot: ${path.relative(ROOT, historyFile)}`);
 
@@ -477,7 +482,7 @@ function run() {
   // Collect date files from HISTORY_DIR, plus any snapshots that may exist in
   // unit-tests-web, unit-tests-backend and e2e-junit-* folders so the UI can
   // present a complete list even if some snapshots live outside history/.
-  const datePattern = /^\d{4}-\d{2}-\d{2}\.json$/;
+  const datePattern = /^(\d{4}-\d{2}-\d{2})(-\d{2}h\d{2}m)?\.json$/;
   const dateSet = new Set();
 
   // from history dir
@@ -552,10 +557,10 @@ function run() {
   for (const targetDir of copyTargets) {
     try {
       if (fs.existsSync(targetDir) && fs.statSync(targetDir).isDirectory()) {
-        const out = path.join(targetDir, `${dateStr}.json`);
+        const out = path.join(targetDir, `${fullId}.json`);
         fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
         // trim older snapshots in this directory (keep last 5)
-        const candidates = fs.readdirSync(targetDir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
+        const candidates = fs.readdirSync(targetDir).filter(f => datePattern.test(f)).sort((a,b) => b.localeCompare(a));
         const toRemove = candidates.slice(5);
         for (const r of toRemove) fs.unlinkSync(path.join(targetDir, r));
       }
@@ -571,9 +576,9 @@ function run() {
       .map(d => path.join(REPORTS_DIR, d.name));
     for (const adir of e2eDirs) {
       try {
-        const out = path.join(adir, `${dateStr}.json`);
+        const out = path.join(adir, `${fullId}.json`);
         fs.writeFileSync(out, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
-        const candidates = fs.readdirSync(adir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort((a,b) => b.localeCompare(a));
+        const candidates = fs.readdirSync(adir).filter(f => datePattern.test(f)).sort((a,b) => b.localeCompare(a));
         const toRemove = candidates.slice(5);
         for (const r of toRemove) fs.unlinkSync(path.join(adir, r));
       } catch (e) { /* non-fatal */ }

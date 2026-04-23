@@ -61,6 +61,16 @@ O dashboard não utiliza um banco de dados tradicional; ele consome artefatos de
 - Navigate to http://localhost:8080/dashboard.html
 - Click on "Métricas CI"
 - Verify 5 execution entries in the sidebar (displaying Date and Time)
+
+MenuExecuções Recentes
+Selecione uma execução para carregar métricas dessa data.
+23/04/2026 19h30m
+23/04/2026 17h30m
+
+Folder history: 
+/tests-dashboard/history/
+2026-04-23-19h30m.json
+2026-04-23-17h30m.json
 - Verify current date is the first and selected
-- Verify data is not zeroed
+- Verify data is not zeroe'd
 - Report final status

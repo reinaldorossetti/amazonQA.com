@@ -62,3 +62,6 @@ latest-scan.json
 dates.json
 history/*.json
 unit-tests-web/*.json
+/tests-dashboard/history/*.*
+/tests-dashboard/scratch/*.*
+/tests-dashboard/unit-tests-web/*.*

@@ -427,12 +427,22 @@ async function loadDynamicMetrics() {
 
             const dateDisplay = (() => {
               try { 
+                // Prioritize parsing the ID if it matches the new format YYYY-MM-DD-HHhMMm
+                const idMatch = snap.date.match(/^(\d{4}-\d{2}-\d{2})-(\d{2})h(\d{2})m$/);
+                if (idMatch) {
+                  const [_, datePart, hour, min] = idMatch;
+                  const [y, m, d] = datePart.split('-');
+                  return `${d}/${m}/${y} ${hour}h${min}m`;
+                }
+
                 if (snap.metrics?.generatedAt) {
                   const d = new Date(snap.metrics.generatedAt);
-                  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                  const hh = d.getHours().toString().padStart(2, '0');
+                  const mm = d.getMinutes().toString().padStart(2, '0');
+                  return d.toLocaleDateString('pt-BR') + ` ${hh}h${mm}m`;
                 }
                 // Fallback para quando não tem timestamp (usa snap.date)
-                return new Date(snap.date + 'T00:00:00').toLocaleDateString('pt-BR'); 
+                return new Date(snap.date.slice(0, 10) + 'T00:00:00').toLocaleDateString('pt-BR'); 
               } catch { return snap.date; }
             })();
 
