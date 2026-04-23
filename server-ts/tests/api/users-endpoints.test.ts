@@ -10,6 +10,7 @@ const {
   hashMock,
   compareMock,
   randomUUIDMock,
+  isUserSupportMock,
 } = vi.hoisted(() => ({
   queryMock: vi.fn(),
   authenticateRequestMock: vi.fn(),
@@ -20,6 +21,7 @@ const {
   hashMock: vi.fn(),
   compareMock: vi.fn(),
   randomUUIDMock: vi.fn(),
+  isUserSupportMock: vi.fn(),
 }));
 
 vi.mock('../../lib/db', () => ({
@@ -33,6 +35,7 @@ vi.mock('../../lib/auth', () => ({
 
 vi.mock('../../lib/user-roles', () => ({
   isUserAdmin: isUserAdminMock,
+  isUserSupport: isUserSupportMock,
   getRolesForUser: getRolesForUserMock,
   ensureUserRole: ensureUserRoleMock,
 }));
@@ -80,6 +83,7 @@ describe('Users API endpoints', () => {
     });
 
     isUserAdminMock.mockResolvedValue(true);
+    isUserSupportMock.mockResolvedValue(true);
     getRolesForUserMock.mockResolvedValue(['user']);
     ensureUserRoleMock.mockResolvedValue(undefined);
     signAccessTokenMock.mockReturnValue({ accessToken: 'token-123', expiresIn: 3600 });
@@ -210,6 +214,7 @@ describe('Users API endpoints', () => {
 
     const response = await registerUser(
       jsonRequest('http://localhost/api/users/register', 'POST', {
+        person_type: 'PF',
         first_name: 'Novo',
         last_name: 'User',
         email: 'novo@teste.com',

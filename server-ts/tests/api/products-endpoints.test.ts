@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { queryMock, authenticateRequestMock, isUserAdminMock } = vi.hoisted(() => ({
+const { queryMock, authenticateRequestMock, isUserAdminMock, isUserSupportMock } = vi.hoisted(() => ({
   queryMock: vi.fn(),
   authenticateRequestMock: vi.fn(),
   isUserAdminMock: vi.fn(),
+  isUserSupportMock: vi.fn(),
 }));
 
 vi.mock('../../lib/db', () => ({
@@ -16,6 +17,7 @@ vi.mock('../../lib/auth', () => ({
 
 vi.mock('../../lib/user-roles', () => ({
   isUserAdmin: isUserAdminMock,
+  isUserSupport: isUserSupportMock,
 }));
 
 import { GET as getProducts, POST as postProducts } from '../../app/api/products/route';
@@ -43,6 +45,7 @@ describe('Products API endpoints', () => {
     });
 
     isUserAdminMock.mockResolvedValue(true);
+    isUserSupportMock.mockResolvedValue(true);
   });
 
   it('GET /api/products remains public', async () => {
@@ -69,7 +72,7 @@ describe('Products API endpoints', () => {
   });
 
   it('POST /api/products returns 403 for non-admin users', async () => {
-    isUserAdminMock.mockResolvedValueOnce(false);
+    isUserSupportMock.mockResolvedValueOnce(false);
 
     const response = await postProducts(
       jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10 })
@@ -102,7 +105,7 @@ describe('Products API endpoints', () => {
   });
 
   it('PUT /api/products/:id returns 403 for non-admin users', async () => {
-    isUserAdminMock.mockResolvedValueOnce(false);
+    isUserSupportMock.mockResolvedValueOnce(false);
 
     const response = await putProductById(
       jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: 20 }),
@@ -137,7 +140,7 @@ describe('Products API endpoints', () => {
   });
 
   it('DELETE /api/products/:id returns 403 for non-admin users', async () => {
-    isUserAdminMock.mockResolvedValueOnce(false);
+    isUserSupportMock.mockResolvedValueOnce(false);
 
     const response = await deleteProductById(
       new Request('http://localhost/api/products/1', { method: 'DELETE' }),
