@@ -68,6 +68,14 @@ export async function PUT(request: Request, { params }: RouteContext): Promise<R
     const body = (await request.json()) as ProductBody;
     const { name, price, description, category, image, manufacturer, line, model, shipping_cost } = body;
 
+    if (!name || price == null || !category) {
+      return NextResponse.json({ error: 'name, price and category are required' }, { status: 400 });
+    }
+
+    if (price < 0) {
+      return NextResponse.json({ error: 'price cannot be negative' }, { status: 400 });
+    }
+
     const { rows } = await query(
       `UPDATE products
        SET name=$1, price=$2, description=$3, category=$4, image=$5,

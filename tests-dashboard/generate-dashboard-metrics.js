@@ -235,20 +235,20 @@ function readE2EJunitStats() {
 }
 
 function createMetrics() {
-  const webUnitJunitPath = [
+  let webUnitJunitPath = [
     path.join(REPORTS_DIR, 'unit-tests-web', 'junit.xml'), // Caminho prioritário
     path.join(REPORTS_DIR, 'unit-test-report-web', 'unit-report.xml'),
     path.join(REPORTS_DIR, 'unit-tests-web', 'unit-report.xml'),
     path.join(REPORTS_DIR, 'unit-tests', 'junit.xml'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
 
-  const backendUnitJunitPath = [
+  let backendUnitJunitPath = [
     path.join(REPORTS_DIR, 'unit-tests-backend', 'junit.xml'), // Caminho prioritário
     path.join(REPORTS_DIR, 'unit-test-report-backend', 'unit-report.xml'),
     path.join(REPORTS_DIR, 'unit-tests-backend', 'unit-report.xml'),
   ].find((candidatePath) => fs.existsSync(candidatePath));
 
-  const webUnitCoveragePath = [
+  let webUnitCoveragePath = [
     path.join(REPORTS_DIR, 'unit-tests-web', 'coverage', 'index.html'),
     path.join(REPORTS_DIR, 'unit-tests', 'coverage', 'index.html'),
   ].find((candidatePath) => fs.existsSync(candidatePath));

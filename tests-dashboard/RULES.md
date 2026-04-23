@@ -39,8 +39,7 @@ O dashboard não utiliza um banco de dados tradicional; ele consome artefatos de
 
 1.  **Parsing de JUnit (XML):** O dashboard lê arquivos `junit.xml` gerados pelo Vitest e Playwright para extrair contagens de testes e status.
 2.  **Scraping de Cobertura (HTML):** Extrai métricas de cobertura diretamente do `index.html` gerado pelo Vitest (Istanbul/v8).
-3.  **Histórico via JSON:** Armazena snapshots diários na pasta `/history` em formato JSON para permitir a navegação retroativa.
-O dashboard deve listar os ultimos 5 snapshots, sendo o mais recente o primeiro, em ordem decrescente do maior para o menor data (Ex: 21/04/2026, 20/04/2026, ...). Ao clicar na aba de "Métricas CI", o dashboard deve exibir os dados mais atualizados do último snapshot disponível.
+3.  **Histórico via JSON:** Armazena snapshots diários na pasta `/history` em formato JSON para permitir a navegação retroativa. O dashboard deve listar os últimos 5 snapshots, exibindo a **Data e Hora** da execução. Os itens devem estar em ordem decrescente (do mais recente para o mais antigo). Ao clicar na aba de "Métricas CI", o dashboard deve carregar e selecionar automaticamente o snapshot mais recente.
 4.  **Cache-Busting:** Todas as requisições de dados utilizam um parâmetro de timestamp (`?t=...`) para garantir que o navegador não exiba dados obsoletos após uma nova execução da pipeline.
 5.  **Fallback:** Caso os arquivos XML não estejam disponíveis (ex: erro na pipeline antes da geração dos artefatos), o dashboard tenta carregar um arquivo `dashboard-metrics.json` ou exibe valores zerados com um alerta ao usuário.
 
@@ -61,7 +60,7 @@ O dashboard deve listar os ultimos 5 snapshots, sendo o mais recente o primeiro,
 ## 6. Checklist
 - Navigate to http://localhost:8080/dashboard.html
 - Click on "Métricas CI"
-- Verify 5 execution dates in the sidebar
-- Verify 23/04/2026 is the first and selected, or current date if exists
+- Verify 5 execution entries in the sidebar (displaying Date and Time)
+- Verify current date is the first and selected
 - Verify data is not zeroed
 - Report final status

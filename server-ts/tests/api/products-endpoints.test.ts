@@ -63,7 +63,7 @@ describe('Products API endpoints', () => {
     authenticateRequestMock.mockReturnValueOnce({ ok: false, error: 'Missing bearer token' });
 
     const response = await postProducts(
-      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10 })
+      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10, category: 'Test' })
     );
     const payload = await response.json();
 
@@ -75,7 +75,7 @@ describe('Products API endpoints', () => {
     isUserSupportMock.mockResolvedValueOnce(false);
 
     const response = await postProducts(
-      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10 })
+      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10, category: 'Test' })
     );
     const payload = await response.json();
 
@@ -87,17 +87,31 @@ describe('Products API endpoints', () => {
     queryMock.mockResolvedValueOnce({ rows: [{ id: 99, name: 'Novo', price: 10 }] });
 
     const response = await postProducts(
-      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10 })
+      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10, category: 'Test' })
     );
 
     expect(response.status).toBe(201);
+  });
+
+  it('POST /api/products returns 400 for negative price', async () => {
+    const response = await postProducts(
+      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: -1, category: 'Test' })
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it('POST /api/products returns 400 for missing category', async () => {
+    const response = await postProducts(
+      jsonRequest('http://localhost/api/products', 'POST', { name: 'Novo', price: 10 })
+    );
+    expect(response.status).toBe(400);
   });
 
   it('PUT /api/products/:id returns 401 without authentication', async () => {
     authenticateRequestMock.mockReturnValueOnce({ ok: false, error: 'Missing bearer token' });
 
     const response = await putProductById(
-      jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: 20 }),
+      jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: 20, category: 'Test' }),
       { params: { id: '1' } }
     );
 
@@ -108,7 +122,7 @@ describe('Products API endpoints', () => {
     isUserSupportMock.mockResolvedValueOnce(false);
 
     const response = await putProductById(
-      jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: 20 }),
+      jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: 20, category: 'Test' }),
       { params: { id: '1' } }
     );
     const payload = await response.json();
@@ -121,11 +135,19 @@ describe('Products API endpoints', () => {
     queryMock.mockResolvedValueOnce({ rows: [] });
 
     const response = await putProductById(
-      jsonRequest('http://localhost/api/products/999', 'PUT', { name: 'Atualizado', price: 20 }),
+      jsonRequest('http://localhost/api/products/999', 'PUT', { name: 'Atualizado', price: 20, category: 'Test' }),
       { params: { id: '999' } }
     );
 
     expect(response.status).toBe(404);
+  });
+
+  it('PUT /api/products/:id returns 400 for negative price', async () => {
+    const response = await putProductById(
+      jsonRequest('http://localhost/api/products/1', 'PUT', { name: 'Atualizado', price: -5, category: 'Test' }),
+      { params: { id: '1' } }
+    );
+    expect(response.status).toBe(400);
   });
 
   it('DELETE /api/products/:id returns 401 without authentication', async () => {

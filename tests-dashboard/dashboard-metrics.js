@@ -427,7 +427,11 @@ async function loadDynamicMetrics() {
 
             const dateDisplay = (() => {
               try { 
-                // Adicionamos T00:00:00 para evitar o shift de timezone (UTC vs Local)
+                if (snap.metrics?.generatedAt) {
+                  const d = new Date(snap.metrics.generatedAt);
+                  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                }
+                // Fallback para quando não tem timestamp (usa snap.date)
                 return new Date(snap.date + 'T00:00:00').toLocaleDateString('pt-BR'); 
               } catch { return snap.date; }
             })();
