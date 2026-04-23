@@ -176,6 +176,15 @@ jobs:
         run: |
           mkdir -p tests-dashboard/swagger
           if [ -d docs/swagger ]; then cp -r docs/swagger/* tests-dashboard/swagger/ || true; fi
+          
+      - name: Restore history from gh-pages
+        if: always()
+        continue-on-error: true
+        run: |
+          echo "Fetching previous history from gh-pages branch..."
+          git fetch origin gh-pages --depth=1
+          git checkout origin/gh-pages -- tests-dashboard/history || echo "No previous history found on gh-pages."
+          ls -R tests-dashboard/history || true
       
       - name: Generate dashboard metrics
         if: always()

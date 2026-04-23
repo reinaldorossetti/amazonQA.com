@@ -516,7 +516,7 @@ function run() {
   } catch (e) { /* ignore */ }
 
   const dates = Array.from(dateSet).sort((a, b) => b.localeCompare(a));
-  const recentDates = dates.slice(0, 5);
+  const recentDates = dates.slice(0, 15);
   fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(recentDates, null, 2)}\n`, 'utf8');
   console.log(`Updated history dates: ${recentDates.join(', ')}`);
 
