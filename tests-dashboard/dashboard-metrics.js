@@ -12,9 +12,12 @@ const translations = {
     checkingPipeline: "Verificando esteira...",
     qaEfficiencyTitle: "Eficiência de QA",
     qaEfficiencyDesc: "Métricas de impacto e retorno do processo de qualidade.",
-    qaEfficiencyExpl: "A Densidade de Defeitos indica a qualidade do código por volume, enquanto o ROI mostra o tempo economizado através da automação.",
+    qaEfficiencyExpl: "A Densidade de Defeitos indica a qualidade do código por volume, o ROI mostra a economia com automação, e a Instabilidade identifica testes intermitentes.",
     defectDensity: "Densidade de Defeitos",
     automationROI: "ROI de Automação (Economia)",
+    flakinessRate: "Taxa de Instabilidade (Flakiness)",
+    flakyTests: "Testes instáveis",
+    totalE2ETests: "Total de testes E2E",
     manual: "Manual",
     automation: "Automação",
     financialSavings: "Economia Mensal por execução:",
@@ -102,9 +105,12 @@ const translations = {
     checkingPipeline: "Checking pipeline...",
     qaEfficiencyTitle: "QA Efficiency",
     qaEfficiencyDesc: "Metrics on the impact and return of the quality process.",
-    qaEfficiencyExpl: "Defect Density indicates code quality by volume, while ROI shows the time saved through automation.",
+    qaEfficiencyExpl: "Defect Density indicates code quality by volume, ROI shows the time saved through automation, and Flakiness identifies intermittent tests.",
     defectDensity: "Defect Density",
     automationROI: "Automation ROI (Savings)",
+    flakinessRate: "Flakiness Rate (Instability)",
+    flakyTests: "Flaky tests",
+    totalE2ETests: "Total E2E tests",
     manual: "Manual",
     automation: "Automation",
     financialSavings: "Monthly Savings per execution:",
@@ -521,7 +527,8 @@ function getZeroMetrics(dateStr) {
     e2e: { byProject: {}, totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' } },
     qaEfficiency: {
       defectDensity: { bugs: 0, kloc: 0, value: 0 },
-      automationROI: { manualHours: 0, automationHours: 0, savedHours: 0 }
+      automationROI: { manualHours: 0, automationHours: 0, savedHours: 0 },
+      flakiness: { flakyTests: 0, totalE2E: 0, value: 0 }
     }
   };
 }
@@ -556,7 +563,8 @@ function computeAndUpdateGrandTotals(data) {
 function renderQAEfficiency(data) {
   const eff = data?.qaEfficiency ?? {
     defectDensity: { bugs: 0, kloc: 0, value: 0 },
-    automationROI: { manualHours: 0, automationHours: 0, savedHours: 0, hourlyRate: 60 }
+    automationROI: { manualHours: 0, automationHours: 0, savedHours: 0, hourlyRate: 60 },
+    flakiness: { flakyTests: 0, totalE2E: 0, value: 0 }
   };
 
   const grid = document.getElementById('qaEfficiencyGrid');
@@ -565,14 +573,22 @@ function renderQAEfficiency(data) {
   const t = translations[currentLang];
   const dd = eff.defectDensity;
   const roi = eff.automationROI;
+  const flaky = eff.flakiness || { flakyTests: 0, totalE2E: 0, value: 0 };
   const hourlyRate = roi.hourlyRate || 60;
   const financialSavings = roi.savedHours * hourlyRate;
+  
+  const flakinessValue = flaky.value || (flaky.totalE2E > 0 ? (flaky.flakyTests / flaky.totalE2E) * 100 : 0);
 
   grid.innerHTML = `
     <div class="metric highlight success">
       <small>${t.defectDensity}</small>
       <strong>${dd.value.toFixed(2)}</strong>
       <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${dd.bugs} bugs / ${dd.kloc} KLOC</p>
+    </div>
+    <div class="metric highlight warning">
+      <small>${t.flakinessRate}</small>
+      <strong>${flakinessValue.toFixed(1)}%</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${flaky.flakyTests} ${t.flakyTests} / ${flaky.totalE2E} E2E</p>
     </div>
     <div class="metric highlight success">
       <small>${t.automationROI}</small>

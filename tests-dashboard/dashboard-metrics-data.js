@@ -63,6 +63,7 @@ window.DASHBOARD_METRICS_FALLBACK = {
   },
   "qaEfficiency": {
     "defectDensity": { "bugs": 5, "kloc": 12.5, "value": 0.4 },
-    "automationROI": { "manualHours": 40, "automationHours": 2, "savedHours": 38, "hourlyRate": 60 }
+    "automationROI": { "manualHours": 40, "automationHours": 2, "savedHours": 38, "hourlyRate": 60 },
+    "flakiness": { "flakyTests": 2, "totalE2E": 292, "value": 0.68 }
   }
 };
