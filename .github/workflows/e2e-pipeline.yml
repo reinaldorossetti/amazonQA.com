@@ -127,15 +127,18 @@ jobs:
         working-directory: web
         continue-on-error: true
         env:
-          PLAYWRIGHT_HTML_REPORT: ../tests-dashboard/playwright-report
-          PLAYWRIGHT_JUNIT_OUTPUT_NAME: ../tests-dashboard/junit-report.xml
+          PLAYWRIGHT_HTML_REPORT: playwright-report
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: junit-report.xml
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
         run: |
-          mkdir -p ../tests-dashboard/playwright-report
           xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
 
       - name: Container logs (on failure)
-        if: failure()
-        run: docker compose logs --tail=80
+        if: always()
+        run: |
+          echo "=== Docker Compose Logs ==="
+          docker compose logs --tail=100
+          echo "=== End of Logs ==="
 
       - name: Stop stack
         if: always()
@@ -145,14 +148,14 @@ jobs:
         if: always()
         with:
           name: playwright-report-${{ matrix.project }}
-          path: tests-dashboard/playwright-report
+          path: web/playwright-report
           if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: e2e-junit-${{ matrix.project }}
-          path: tests-dashboard/junit-report.xml
+          path: web/junit-report.xml
           if-no-files-found: warn
 
   # ── Deploy Reports ──────────────────────────────────────────────────

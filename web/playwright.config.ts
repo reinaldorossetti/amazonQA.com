@@ -22,8 +22,8 @@ export default defineConfig({
   workers: isCI ? 3 : 6,
   reporter: [
     ['list'],
-    ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ['junit', { outputFile: 'junit-report.xml' }],
+    ['html', { open: 'never', outputFolder: process.env.PLAYWRIGHT_HTML_REPORT || 'playwright-report' }],
+    ['junit', { outputFile: process.env.PLAYWRIGHT_JUNIT_OUTPUT_NAME || 'junit-report.xml' }],
   ],
   use: {
     trace: 'on-first-retry',
