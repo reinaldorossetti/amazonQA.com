@@ -55,12 +55,20 @@ export async function POST(request: Request): Promise<Response> {
     const body = (await request.json()) as ProductBody;
     const { name, price, description, category, image, manufacturer, line, model, shipping_cost } = body;
 
-    if (!name || price == null || !category) {
-      return NextResponse.json({ error: 'name, price and category are required' }, { status: 400 });
+    if (!name || name.trim() === '') {
+      return NextResponse.json({ error: 'name is required' }, { status: 400 });
+    }
+
+    if (price == null || typeof price !== 'number') {
+      return NextResponse.json({ error: 'price is required and must be a number' }, { status: 400 });
     }
 
     if (price < 0) {
       return NextResponse.json({ error: 'price cannot be negative' }, { status: 400 });
+    }
+
+    if (!category || category.trim() === '') {
+      return NextResponse.json({ error: 'category is required' }, { status: 400 });
     }
 
     const { rows } = await query(

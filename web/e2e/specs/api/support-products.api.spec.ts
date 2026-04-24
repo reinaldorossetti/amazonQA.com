@@ -2,6 +2,17 @@ import { expect, test } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
 
+function generateValidCPF(): string {
+  const randomNumbers = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+  let sum = randomNumbers.reduce((acc, digit, i) => acc + digit * (10 - i), 0);
+  const firstDigit = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  const numbersWithFirst = [...randomNumbers, firstDigit];
+  sum = numbersWithFirst.reduce((acc, digit, i) => acc + digit * (11 - i), 0);
+  const secondDigit = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  const cpfArray = [...randomNumbers, firstDigit, secondDigit];
+  return `${cpfArray.slice(0, 3).join('')}.${cpfArray.slice(3, 6).join('')}.${cpfArray.slice(6, 9).join('')}-${cpfArray.slice(9).join('')}`;
+}
+
 /**
  * Helper: login as support user and return access token
  */
@@ -193,6 +204,7 @@ test.describe('API Products - Support Role & Shipping Cost', () => {
         email: `e2e-normal-${suffix}@example.com`,
         password: 'Normal@1234',
         person_type: 'PF',
+        cpf: generateValidCPF(),
       },
     });
     expect(regRes.status()).toBe(201);

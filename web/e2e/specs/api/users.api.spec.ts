@@ -9,7 +9,7 @@ function uniqueUser() {
     email: `pw.user.${suffix}@example.com`,
     password: 'Senha@1234',
     person_type: 'PF',
-    cpf: null,
+    cpf: generateValidCPF(),
   };
 }
 
@@ -441,7 +441,7 @@ test.describe('API Users', () => {
   test('deve retornar 400 ao registrar PF sem informar CPF', async ({ request }) => {
     const user = uniqueUser();
     user.person_type = 'PF';
-    user.cpf = null; // CPF is already null in uniqueUser, but making it explicit
+    (user as any).cpf = null; // CPF is already null in uniqueUser, but making it explicit
     const response = await request.post('users/register', { data: user });
     // Note: Some systems might allow this if CPF is not strictly required at registration, 
     // but usually 400 is expected if the logic requires it for PF.

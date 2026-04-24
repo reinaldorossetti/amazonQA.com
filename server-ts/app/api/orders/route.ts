@@ -84,11 +84,18 @@ function normalizeTotals(body: OrderBody = {}):
     return { ok: false, error: 'Invalid discountTotal' };
   }
 
+  const allowedMethods = ['credit', 'debit', 'pix', 'boleto'];
+  const paymentMethod = body.paymentMethod ?? null;
+
+  if (paymentMethod && !allowedMethods.includes(paymentMethod.toLowerCase())) {
+    return { ok: false, error: 'Invalid payment method' };
+  }
+
   return {
     ok: true,
     shippingTotal,
     discountTotal,
-    paymentMethod: body.paymentMethod ?? null,
+    paymentMethod,
     shippingAddress: body.shippingAddress ?? null,
     billingInfo: body.billingInfo ?? null,
   };

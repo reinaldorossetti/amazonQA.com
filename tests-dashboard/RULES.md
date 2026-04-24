@@ -74,3 +74,8 @@ Folder history:
 - Verify current date is the first and selected
 - Verify data is not zeroe'd
 - Report final status
+
+
+Execuções Recentes
+Selecione uma execução para carregar métricas dessa data.
+Deve mostrar no rodapé: Mostrando últimas 7 execuções, não deve exibir mais que 7 execuções.

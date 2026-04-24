@@ -193,7 +193,7 @@ jobs:
         if: always()
         run: |
           echo "Running dashboard generator to emit dashboard-metrics.json and history snapshots"
-          node ./tests-dashboard/generate-dashboard-metrics.js || true
+          node ./tests-dashboard/*.js || true
 
       - name: Show generated files
         if: always()

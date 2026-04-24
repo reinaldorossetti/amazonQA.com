@@ -187,8 +187,12 @@ export async function DELETE(request: Request): Promise<Response> {
     const body = (await request.json()) as CartBody;
     const cartItemId = body.cartItemId;
 
-    if (!cartItemId) {
+    if (cartItemId === undefined || cartItemId === null) {
       return NextResponse.json({ error: 'cartItemId is required' }, { status: 400 });
+    }
+
+    if (typeof cartItemId !== 'number' || !Number.isInteger(cartItemId)) {
+      return NextResponse.json({ error: 'cartItemId must be a valid integer' }, { status: 400 });
     }
 
     const deleteResult = await query('DELETE FROM cart_items WHERE id = $1 AND user_id = $2', [

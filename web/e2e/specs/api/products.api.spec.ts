@@ -1,6 +1,17 @@
 import { expect, test } from '@playwright/test';
 import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
 
+function generateValidCPF(): string {
+  const randomNumbers = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10));
+  let sum = randomNumbers.reduce((acc, digit, i) => acc + digit * (10 - i), 0);
+  const firstDigit = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  const numbersWithFirst = [...randomNumbers, firstDigit];
+  sum = numbersWithFirst.reduce((acc, digit, i) => acc + digit * (11 - i), 0);
+  const secondDigit = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  const cpfArray = [...randomNumbers, firstDigit, secondDigit];
+  return `${cpfArray.slice(0, 3).join('')}.${cpfArray.slice(3, 6).join('')}.${cpfArray.slice(6, 9).join('')}-${cpfArray.slice(9).join('')}`;
+}
+
 async function loginAsAdminAndGetAccessToken(request: any): Promise<string> {
   const payload = await loginAsAdminWithFallback(request, 'users/login');
   expect(payload.accessToken).toBeTruthy();
@@ -95,7 +106,7 @@ test.describe('API Products', () => {
         name: 'Inexistente',
         price: 10,
         description: null,
-        category: null,
+        category: 'Test',
         image: null,
         manufacturer: null,
         line: null,
@@ -127,7 +138,8 @@ test.describe('API Products', () => {
       data: {
         first_name: 'Product', last_name: 'Tester',
         email: `common.user.prod.${Date.now()}@example.com`,
-        password: 'Senha@1234', person_type: 'PF'
+        password: 'Senha@1234', person_type: 'PF',
+        cpf: generateValidCPF(),
       }
     });
     const { accessToken } = await (await request.post('users/login', {
@@ -146,7 +158,8 @@ test.describe('API Products', () => {
         data: {
           first_name: 'Delete', last_name: 'Tester',
           email: `del.user.prod.${Date.now()}@example.com`,
-          password: 'Senha@1234', person_type: 'PF'
+          password: 'Senha@1234', person_type: 'PF',
+          cpf: generateValidCPF(),
         }
       });
       const { accessToken } = await (await request.post('users/login', {
@@ -164,7 +177,8 @@ test.describe('API Products', () => {
         data: {
           first_name: 'Update', last_name: 'Tester',
           email: `upd.user.prod.${Date.now()}@example.com`,
-          password: 'Senha@1234', person_type: 'PF'
+          password: 'Senha@1234', person_type: 'PF',
+          cpf: generateValidCPF(),
         }
       });
       const { accessToken } = await (await request.post('users/login', {

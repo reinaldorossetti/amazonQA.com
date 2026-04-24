@@ -292,7 +292,7 @@ function createMetrics() {
     } else {
       // try to find any junit that looks like backend
       const candidates = [];
-      for (const rd of scanRoots) recursiveFind(rd, (name, full) => /junit.*\.xml$/i.test(name) && /backend|service|api/i.test(full), 5, candidates);
+      recursiveFind(rd, (name, full) => /junit.*\.xml$/i.test(name) && /backend|service|api/i.test(full), 5, candidates);
       const pick = findMostRecent(candidates);
       if (pick) { backendUnitJunitPath = pick; console.log(`Discovered backend JUnit (fallback) at: ${path.relative(ROOT, pick)}`); }
     }
@@ -478,7 +478,7 @@ function run() {
     console.log(`Wrote latest scan info: ${path.relative(ROOT, latestScanPath)}`);
   } catch (e) { /* non-fatal */ }
 
-  // Maintain a dates.json with the most recent 3 dates available
+  // Maintain a dates.json with the most recent 7 dates available
   // Collect date files from HISTORY_DIR, plus any snapshots that may exist in
   // unit-tests-web, unit-tests-backend and e2e-junit-* folders so the UI can
   // present a complete list even if some snapshots live outside history/.
@@ -516,7 +516,7 @@ function run() {
   } catch (e) { /* ignore */ }
 
   const dates = Array.from(dateSet).sort((a, b) => b.localeCompare(a));
-  const recentDates = dates.slice(0, 15);
+  const recentDates = dates.slice(0, 7);
   fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(recentDates, null, 2)}\n`, 'utf8');
   console.log(`Updated history dates: ${recentDates.join(', ')}`);
 
@@ -540,7 +540,9 @@ function run() {
             }
             if (!dateSet.has(gen)) {
               dateSet.add(gen);
-              const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 5);
+              const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 7);
+              // Update frontend label logic via updated if foot exists
+              // if (foot) foot.textContent = 'Mostrando últimas 7 execuções';
               fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
               console.log(`Included fallback generatedAt date: ${gen}`);
             }

@@ -402,14 +402,14 @@ async function loadDynamicMetrics() {
         if (listEl && sidebar) {
           listEl.innerHTML = '';
           const foot = sidebar.querySelector('.sidebar-foot');
-          if (foot) foot.textContent = 'Mostrando últimas 15 execuções';
+          if (foot) foot.textContent = 'Mostrando últimas 7 execuções';
 
           // Sort dates descending (newest first)
           dates.sort((a, b) => b.localeCompare(a));
 
           // Fetch snapshots in parallel to enrich the sidebar with status/summary
-          // Show up to 15 recent dates in the sidebar
-          const snapshots = await Promise.all(dates.slice(0, 15).map(async (d) => {
+          // Show up to 7 recent dates in the sidebar
+          const snapshots = await Promise.all(dates.slice(0, 7).map(async (d) => {
             try {
               const r = await fetch(cacheUrl(`${reportsBaseUrl}history/${d}.json`), { cache: 'no-store' });
               if (!r.ok) return { date: d, metrics: null };

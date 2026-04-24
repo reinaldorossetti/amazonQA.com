@@ -60,6 +60,17 @@ export async function POST(request: Request): Promise<Response> {
       return NextResponse.json({ error: 'Missing required fields', missingFields }, { status: 400 });
     }
 
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email || '')) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
+    // Password length validation
+    if (!password || password.length < 6) {
+      return NextResponse.json({ error: 'Password must be at least 6 characters long' }, { status: 400 });
+    }
+
     // Validate person_type value
     if (!(person_type === 'PF' || person_type === 'PJ')) {
       return NextResponse.json(
