@@ -1,0 +1,56 @@
+import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+const isCI = !!(globalThis as { process?: { env?: { CI?: string } } }).process?.env?.CI;
+
+export default defineConfig({
+  testDir: './e2e/specs/api',
+  timeout: 30_000,
+  expect: {
+    timeout: 20_000,
+  },
+  fullyParallel: true,
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 1,
+  workers: 6,
+  reporter: [
+    ['list'],
+    ['html', { open: 'never', outputFolder: process.env.PLAYWRIGHT_HTML_REPORT || 'playwright-report' }],
+    ['junit', { outputFile: process.env.PLAYWRIGHT_JUNIT_OUTPUT_NAME || 'junit-report.xml' }],
+  ],
+  use: {
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    actionTimeout: 30_000,
+    navigationTimeout: 20_000,
+    testIdAttribute: 'data-element-id',
+  },
+  projects: [
+    {
+      name: 'frontend-chromium',
+      testMatch: /frontend\/.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
+        baseURL: 'http://127.0.0.1:5174',
+        headless: isCI,
+        screenshot: 'only-on-failure',
+      },
+    },
+    {
+      name: 'api',
+      testMatch: /api\/.*\.spec\.ts/,
+      use: {
+        baseURL: 'http://127.0.0.1:3001/api/',
+      },
+    },
+  ],
+});
