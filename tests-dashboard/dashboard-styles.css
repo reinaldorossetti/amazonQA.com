@@ -72,6 +72,46 @@ body {
 .ci-status.unknown { background: rgba(168,184,217,0.1); color: #aeb8d9; border: 1px solid rgba(168,184,217,0.2); }
 .ci-icon { width: 18px; height: 18px; }
 
+/* ── Header Actions ──────────────────────────────── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.lang-btn:hover {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: var(--accent);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.lang-btn:active {
+  transform: translateY(0);
+}
+
+.lang-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
 /* ── Tabs ────────────────────────────────────────── */
 .tabs-wrapper {
   position: sticky;
@@ -309,6 +349,21 @@ body {
 .metric:hover { border-color: rgba(96, 165, 250, 0.25); }
 .metric small { color: var(--muted); display: block; font-size: 0.78rem; }
 .metric strong { font-size: 1.15rem; }
+.metric.highlight {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(30, 58, 138, 0.1));
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.metric.highlight strong {
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.metric.highlight.success { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.08); }
+.metric.highlight.success strong { color: #4ade80; }
+.metric.highlight.failure { border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.08); }
+.metric.highlight.failure strong { color: #f87171; }
+.metric.highlight.warning { border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08); }
+.metric.highlight.warning strong { color: #fbbf24; }
 
 /* ── Status Pill ─────────────────────────────────── */
 .status-pill {

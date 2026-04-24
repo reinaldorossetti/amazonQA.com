@@ -1,15 +1,203 @@
 /**
  * dashboard-metrics.js
- * Renders the "Métricas CI" tab:
- *   - CI status badge
- *   - Dynamic metric number cards
- *   - Donut charts (success rate by suite)
- *   - Coverage bars (Vitest web)
- *   - E2E bar chart by project
- *   - Unit Tests bar chart by project  ← NEW
- *
- * Depends on: dashboard-utils.js, dashboard-summary.js
  */
+
+/* ── Localization ────────────────────────────────── */
+let currentLang = localStorage.getItem('dashboard-lang') || 'PT';
+
+const translations = {
+  PT: {
+    title: "Dashboard de Qualidade",
+    subtitle: "Painel central de relatórios, métricas e visão da pirâmide de testes do projeto.",
+    checkingPipeline: "Verificando esteira...",
+    qaEfficiencyTitle: "Eficiência de QA",
+    qaEfficiencyDesc: "Métricas de impacto e retorno do processo de qualidade.",
+    qaEfficiencyExpl: "A Densidade de Defeitos indica a qualidade do código por volume, enquanto o ROI mostra o tempo economizado através da automação.",
+    defectDensity: "Densidade de Defeitos",
+    automationROI: "ROI de Automação (Economia)",
+    manual: "Manual",
+    automation: "Automação",
+    financialSavings: "Economia Mensal por execução:",
+    totalExecuted: "Total de testes executados",
+    totalFailures: "Total de Falhas",
+    totalSuccess: "Total de Sucesso",
+    totalNotExecuted: "Total Não Executados",
+    unitWebExecuted: "Unit Web executados",
+    unitWebFailures: "Falhas Unit Web",
+    unitBackendExecuted: "Unit Backend executados",
+    unitBackendFailures: "Falhas Unit Backend",
+    apiExecuted: "Testes de API executados",
+    apiFailures: "Falhas Testes de API",
+    e2eExecuted: "E2E executados",
+    e2eFailures: "Falhas E2E",
+    covStatements: "Cobertura Web (Statements)",
+    covLines: "Cobertura Web (Lines)",
+    successRateSuite: "Taxa de Sucesso por Suíte",
+    unitWeb: "Unit Web",
+    unitBackend: "Unit Backend",
+    integrationApi: "Integração API",
+    e2eFrontend: "E2E Frontend",
+    statements: "Statements",
+    lines: "Lines",
+    functions: "Functions",
+    branches: "Branches",
+    recentExecutions: "Execuções Recentes",
+    selectDate: "Selecione uma data para ver os detalhes daquela execução.",
+    showingLast7: "Mostrando últimas 7 execuções",
+    qaEfficiency: "Eficiência de QA",
+    impactMetrics: "Métricas de impacto e retorno do processo de qualidade.",
+    coverageWeb: "Cobertura Web (Vitest)",
+    unitResultsProject: "Resultados Unitários por Projeto",
+    e2eResultsProject: "Resultados E2E por Projeto",
+    tabSummary: "Resumo",
+    tabReports: "Relatórios",
+    tabMetrics: "Métricas CI",
+    dynamicMetricsTitle: "Métricas Dinâmicas (CI)",
+    dynamicMetricsDesc: "Esses números vêm da última execução publicada pela pipeline.",
+    loadingMetrics: "Carregando métricas...",
+    metricsLoaded: "Métricas carregadas com sucesso",
+    noDataFound: "Nenhum dado JUnit encontrado.",
+    updatedAt: "Atualizado em:",
+    ciData: "Dados CI:",
+    unitWebDesc: "Unidade Web (Vitest): valida componentes e regras do frontend com execução rápida e cobertura detalhada.",
+    unitBackendDesc: "Unidade Backend-ts (Vitest): valida regras e serviços do backend em isolamento.",
+    integrationDesc: "Integração/Contrato (Pact e API): garante compatibilidade ponta a ponta na API e contratos consumidor/provedor.",
+    e2eDesc: "E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores no frontend.",
+    swaggerDesc: "Documentação (Swagger): apoio para inspeção e validação manual dos endpoints.",
+    covStatementsDesc: "Cobertura (Statements): percentual total de instruções/blocos executados durante os testes.",
+    covLinesDesc: "Cobertura (Lines): percentual de linhas de código abrangidas pela execução dos testes.",
+    testPyramid: "Pirâmide de Testes",
+    testStrategy: "Estratégia de Testes",
+    strategyDesc: "A estratégia prioriza muitos testes de unidade na base (rápidos e baratos), uma camada intermediária de integração/contrato, e menos testes E2E no topo para fluxos críticos.",
+    e2e: "E2E",
+    integrationContract: "Integração / Contrato",
+    unit: "Unidade",
+    legendBase: "Base: maior volume, feedback rápido.",
+    legendMid: "Meio: valida integrações e contratos.",
+    legendTop: "Topo: valida jornada real do usuário.",
+    overview: "Visão Geral",
+    testSummaryTitle: "Resumo dos Testes",
+    reportsDetailedLabel: "📂 Relatório Detalhado dos Testes",
+    reportsDetailedTitle: "Relatório Detalhado dos Testes",
+    reportsDetailedDesc: "Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.",
+    pipelineLabel: "Pipeline",
+    approved: "aprovados",
+    totalLabel: "Total",
+    statusUnavailable: "Status Indisponível",
+    pipelineFailZero: "Esteira Falhou (0 Testes)",
+    pipelineFail: "Esteira Falhou",
+    pipelinePass: "Esteira CI: Sucesso",
+    errors: "erros",
+    footerText: "Dashboard publicado automaticamente via GitHub Actions · Ponto único de acesso aos resultados de qualidade.",
+    historySidebarDesc: "Histórico detalhado das execuções da esteira.",
+    dataNotFoundZero: "Dados não encontrados para essa execução — valores zerados.",
+    errorLoadingZero: "Erro ao carregar execução — valores zerados.",
+    noJUnitData: "Nenhum dado JUnit encontrado.",
+    collectingData: "Coletando dados dos arquivos JUnit...",
+    loadingMetricsFor: "Carregando métricas de"
+  },
+  EN: {
+    title: "Quality Dashboard",
+    subtitle: "Central panel for reports, metrics, and project testing pyramid view.",
+    checkingPipeline: "Checking pipeline...",
+    qaEfficiencyTitle: "QA Efficiency",
+    qaEfficiencyDesc: "Metrics on the impact and return of the quality process.",
+    qaEfficiencyExpl: "Defect Density indicates code quality by volume, while ROI shows the time saved through automation.",
+    defectDensity: "Defect Density",
+    automationROI: "Automation ROI (Savings)",
+    manual: "Manual",
+    automation: "Automation",
+    financialSavings: "Monthly Savings per execution:",
+    totalExecuted: "Total tests executed",
+    totalFailures: "Total Failures",
+    totalSuccess: "Total Success",
+    totalNotExecuted: "Total Not Executed",
+    unitWebExecuted: "Unit Web executed",
+    unitWebFailures: "Unit Web Failures",
+    unitBackendExecuted: "Unit Backend executed",
+    unitBackendFailures: "Unit Backend Failures",
+    apiExecuted: "API Tests executed",
+    apiFailures: "API Tests Failures",
+    e2eExecuted: "E2E executed",
+    e2eFailures: "E2E Failures",
+    covStatements: "Web Coverage (Statements)",
+    covLines: "Web Coverage (Lines)",
+    successRateSuite: "Success Rate per Suite",
+    unitWeb: "Unit Web",
+    unitBackend: "Unit Backend",
+    integrationApi: "API Integration",
+    e2eFrontend: "E2E Frontend",
+    statements: "Statements",
+    lines: "Lines",
+    functions: "Functions",
+    branches: "Branches",
+    recentExecutions: "Recent Executions",
+    selectDate: "Select a date to view execution details.",
+    showingLast7: "Showing last 7 executions",
+    qaEfficiency: "QA Efficiency",
+    impactMetrics: "Quality process impact and return metrics.",
+    coverageWeb: "Web Coverage (Vitest)",
+    unitResultsProject: "Unit Results by Project",
+    e2eResultsProject: "E2E Results by Project",
+    tabSummary: "Summary",
+    tabReports: "Reports",
+    tabMetrics: "CI Metrics",
+    dynamicMetricsTitle: "Dynamic Metrics (CI)",
+    dynamicMetricsDesc: "These numbers come from the last execution published by the pipeline.",
+    loadingMetrics: "Loading metrics...",
+    metricsLoaded: "Metrics loaded successfully",
+    noDataFound: "No JUnit data found.",
+    updatedAt: "Updated at:",
+    ciData: "CI Data:",
+    unitWebDesc: "Web Unit (Vitest): validates frontend components and rules with fast execution and detailed coverage.",
+    unitBackendDesc: "Backend Unit (Vitest): validates backend rules and services in isolation.",
+    integrationDesc: "Integration/Contract (Pact and API): ensures end-to-end compatibility on API and consumer/provider contracts.",
+    e2eDesc: "E2E (Playwright): verifies real critical journeys across multiple frontend browsers.",
+    swaggerDesc: "Documentation (Swagger): support for manual inspection and validation of endpoints.",
+    covStatementsDesc: "Coverage (Statements): total percentage of instructions/blocks executed during tests.",
+    covLinesDesc: "Coverage (Lines): percentage of code lines covered by test execution.",
+    testPyramid: "Testing Pyramid",
+    testStrategy: "Test Strategy",
+    strategyDesc: "The strategy prioritizes many unit tests at the base (fast and cheap), a middle layer of integration/contract, and fewer E2E tests at the top for critical flows.",
+    e2e: "E2E",
+    integrationContract: "Integration / Contract",
+    unit: "Unit",
+    legendBase: "Base: higher volume, fast feedback.",
+    legendMid: "Middle: validates integrations and contracts.",
+    legendTop: "Top: validates real user journey.",
+    overview: "Overview",
+    testSummaryTitle: "Test Summary",
+    reportsDetailedLabel: "📂 Detailed Test Report",
+    reportsDetailedTitle: "Detailed Test Report",
+    reportsDetailedDesc: "Use the shortcuts below to quickly open results for each test type.",
+    pipelineLabel: "Pipeline",
+    approved: "approved",
+    totalLabel: "Total"
+  }
+};
+
+function applyTranslations() {
+  const t = translations[currentLang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  const langText = document.getElementById('langText');
+  if (langText) langText.textContent = currentLang;
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === 'PT' ? 'EN' : 'PT';
+  localStorage.setItem('dashboard-lang', currentLang);
+  applyTranslations();
+  // Re-render components that use translations
+  if (window.lastMetricsData) {
+    renderDynamicMetrics(window.lastMetricsData);
+  }
+  if (typeof renderSummaryTab === 'function') {
+    renderSummaryTab();
+  }
+}
 
 /* ── Runtime JUnit Parser ─────────────────────────── */
 
@@ -124,13 +312,14 @@ function renderCIBadge(data) {
   const badge = document.getElementById('ciStatusBadge');
   if (!badge) return;
 
+  const t = translations[currentLang];
   const iconWarn = `<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
   const iconFail = `<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
   const iconPass = `<svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
 
   if (!data) {
     badge.className = 'ci-status unknown';
-    badge.innerHTML = `${iconWarn}<span>Status Indisponível</span>`;
+    badge.innerHTML = `${iconWarn}<span>${t.statusUnavailable || 'Status Indisponível'}</span>`;
     return;
   }
 
@@ -142,13 +331,13 @@ function renderCIBadge(data) {
 
   if (total === 0) {
     badge.className = 'ci-status fail';
-    badge.innerHTML = `${iconWarn}<span>Esteira Falhou (0 Testes)</span>`;
+    badge.innerHTML = `${iconWarn}<span>${t.pipelineFailZero || 'Esteira Falhou (0 Testes)'}</span>`;
   } else if (uFails > 0 || eFails > 0) {
     badge.className = 'ci-status fail';
-    badge.innerHTML = `${iconFail}<span>Esteira Falhou (${uFails + eFails} erros)</span>`;
+    badge.innerHTML = `${iconFail}<span>${t.pipelineFail || 'Esteira Falhou'} (${uFails + eFails} ${t.errors || 'erros'})</span>`;
   } else {
     badge.className = 'ci-status pass';
-    badge.innerHTML = `${iconPass}<span>Esteira CI: Sucesso</span>`;
+    badge.innerHTML = `${iconPass}<span>${t.pipelinePass || 'Esteira CI: Sucesso'}</span>`;
   }
 }
 
@@ -170,20 +359,31 @@ function renderMetricCards(data) {
   const ubT = safeNumber(ub.tests);
   const ubF = safeNumber(ub.failures) + safeNumber(ub.errors);
 
+  const allTests = uwT + ubT + safeNumber(e2eT.tests);
+  const allFails = uwF + ubF + safeNumber(e2eT.failures) + safeNumber(e2eT.errors);
+  const allSkip  = safeNumber(uw.skipped) + safeNumber(ub.skipped) + safeNumber(e2eT.skipped);
+  const allPass  = safeNumber(uw.passed) + safeNumber(ub.passed) + safeNumber(e2eT.passed);
+
+  const t = translations[currentLang];
   const el = document.getElementById('metricsGrid');
   if (!el) return { uwT, uwF, ubT, ubF, apiT, apiF, totalE2E, totalE2EF };
 
   el.innerHTML = `
-    <div class="metric"><small>Unit Web executados</small><strong>${uwT}</strong></div>
-    <div class="metric"><small>Falhas Unit Web</small><strong>${uwF}</strong></div>
-    <div class="metric"><small>Unit Backend executados</small><strong>${ubT}</strong></div>
-    <div class="metric"><small>Falhas Unit Backend</small><strong>${ubF}</strong></div>
-    <div class="metric"><small>Testes de API executados</small><strong>${apiT}</strong></div>
-    <div class="metric"><small>Falhas Testes de API</small><strong>${apiF}</strong></div>
-    <div class="metric"><small>E2E executados</small><strong>${totalE2E}</strong></div>
-    <div class="metric"><small>Falhas E2E</small><strong>${totalE2EF}</strong></div>
-    <div class="metric"><small>Cobertura Web (Statements)</small><strong>${formatPercent(uw?.coverage?.statements?.percent)}</strong></div>
-    <div class="metric"><small>Cobertura Web (Lines)</small><strong>${formatPercent(uw?.coverage?.lines?.percent)}</strong></div>
+    <div class="metric highlight"><small>${t.totalExecuted}</small><strong>${allTests}</strong></div>
+    <div class="metric highlight failure"><small>${t.totalFailures}</small><strong>${allFails}</strong></div>
+    <div class="metric highlight success"><small>${t.totalSuccess}</small><strong>${allPass}</strong></div>
+    <div class="metric highlight warning"><small>${t.totalNotExecuted}</small><strong>${allSkip}</strong></div>
+
+    <div class="metric"><small>${t.unitWebExecuted}</small><strong>${uwT}</strong></div>
+    <div class="metric"><small>${t.unitWebFailures}</small><strong>${uwF}</strong></div>
+    <div class="metric"><small>${t.unitBackendExecuted}</small><strong>${ubT}</strong></div>
+    <div class="metric"><small>${t.unitBackendFailures}</small><strong>${ubF}</strong></div>
+    <div class="metric"><small>${t.apiExecuted}</small><strong>${apiT}</strong></div>
+    <div class="metric"><small>${t.apiFailures}</small><strong>${apiF}</strong></div>
+    <div class="metric"><small>${t.e2eExecuted}</small><strong>${totalE2E}</strong></div>
+    <div class="metric"><small>${t.e2eFailures}</small><strong>${totalE2EF}</strong></div>
+    <div class="metric"><small>${t.covStatements}</small><strong>${formatPercent(uw?.coverage?.statements?.percent)}</strong></div>
+    <div class="metric"><small>${t.covLines}</small><strong>${formatPercent(uw?.coverage?.lines?.percent)}</strong></div>
   `;
 
   return { uwT, uwF, ubT, ubF, apiT, apiF, totalE2E, totalE2EF };
@@ -205,17 +405,18 @@ function renderDonutCharts(data, metrics) {
   const apiP  = Math.max(safeNumber(api.passed), 0);
   const e2eFP = Math.max(safeNumber(e2eT.passed) - apiP, 0);
 
+  const t = translations[currentLang];
   const el = document.getElementById('chartsGrid');
   if (!el) return { uwP, ubP, uwS, ubS };
 
   el.innerHTML = `
     <section class="chart-card">
-      <h4>Taxa de Sucesso por Suíte</h4>
+      <h4>${t.successRateSuite}</h4>
       <div class="suite-donuts">
-        ${renderDonut('Unit Web',      uwP,   uwT,       '#60a5fa')}
-        ${renderDonut('Unit Backend',  ubP,   ubT,       '#34d399')}
-        ${renderDonut('Integração API',Math.max(apiT - apiF - safeNumber(api.skipped), 0), apiT, '#f59e0b')}
-        ${renderDonut('E2E Frontend',  Math.max(e2eFP, 0), totalE2E, '#ef4444')}
+        ${renderDonut(t.unitWeb,      uwP,   uwT,       '#60a5fa')}
+        ${renderDonut(t.unitBackend,  ubP,   ubT,       '#34d399')}
+        ${renderDonut(t.integrationApi, Math.max(apiT - apiF - safeNumber(api.skipped), 0), apiT, '#f59e0b')}
+        ${renderDonut(t.e2eFrontend,  Math.max(e2eFP, 0), totalE2E, '#ef4444')}
       </div>
     </section>
   `;
@@ -227,16 +428,18 @@ function renderDonutCharts(data, metrics) {
 function renderCoverageBars(data) {
   const uw  = data?.unit?.web ?? {};
   const cov = uw?.coverage ?? {};
+  const t   = translations[currentLang];
   const el  = document.getElementById('coverageGrid');
   if (!el) return;
 
   el.innerHTML = `
     <div class="coverage-bars">
-      ${renderCoverageBar('Statements', cov?.statements?.percent)}
-      ${renderCoverageBar('Lines',      cov?.lines?.percent)}
-      ${renderCoverageBar('Functions',  cov?.functions?.percent)}
-      ${renderCoverageBar('Branches',   cov?.branches?.percent)}
-    </div>`;
+      ${renderCoverageBar(t.statements, cov?.statements?.percent)}
+      ${renderCoverageBar(t.lines,      cov?.lines?.percent)}
+      ${renderCoverageBar(t.functions,  cov?.functions?.percent)}
+      ${renderCoverageBar(t.branches,   cov?.branches?.percent)}
+    </div>
+  `;
 }
 
 /* ── E2E Bar Chart ───────────────────────────────── */
@@ -290,7 +493,9 @@ function updateTimestamp(data) {
   const d = new Date(data.generatedAt);
   if (Number.isNaN(d.getTime())) return;
   const el = document.getElementById('generatedAt');
-  if (el) el.textContent = `Atualizado em: ${new Date().toLocaleString('pt-BR')} · Dados CI: ${d.toLocaleString('pt-BR')}`;
+  const t = translations[currentLang];
+  const locale = currentLang === 'PT' ? 'pt-BR' : 'en-US';
+  if (el) el.textContent = `${t.updatedAt} ${new Date().toLocaleString(locale)} · ${t.ciData} ${d.toLocaleString(locale)}`;
 }
 
 /**
@@ -313,7 +518,11 @@ function getZeroMetrics(dateStr) {
       backend: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0 },
       totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' }
     },
-    e2e: { byProject: {}, totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' } }
+    e2e: { byProject: {}, totals: { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' } },
+    qaEfficiency: {
+      defectDensity: { bugs: 0, kloc: 0, value: 0 },
+      automationROI: { manualHours: 0, automationHours: 0, savedHours: 0 }
+    }
   };
 }
 
@@ -338,21 +547,60 @@ function computeAndUpdateGrandTotals(data) {
   const apiF = safeNumber(api.failures) + safeNumber(api.errors);
   const totalE2EF = Math.max(0, safeNumber(e2eT.failures) + safeNumber(e2eT.errors) - apiF);
 
-  const grandPassed = safeNumber(uwP + ubP + apiP + Math.max(safeNumber(e2eT.passed), 0));
-  const grandFailed = safeNumber(uwF + ubF + apiF + totalE2EF);
+  const grandPassed = safeNumber(uwP + ubP + safeNumber(e2eT.passed));
+  const grandFailed = safeNumber(uwF + ubF + safeNumber(e2eT.failures) + safeNumber(e2eT.errors));
 
   updateSummaryTotals(grandPassed, grandFailed);
 }
 
+function renderQAEfficiency(data) {
+  const eff = data?.qaEfficiency ?? {
+    defectDensity: { bugs: 0, kloc: 0, value: 0 },
+    automationROI: { manualHours: 0, automationHours: 0, savedHours: 0, hourlyRate: 60 }
+  };
+
+  const grid = document.getElementById('qaEfficiencyGrid');
+  if (!grid) return;
+
+  const t = translations[currentLang];
+  const dd = eff.defectDensity;
+  const roi = eff.automationROI;
+  const hourlyRate = roi.hourlyRate || 60;
+  const financialSavings = roi.savedHours * hourlyRate;
+
+  grid.innerHTML = `
+    <div class="metric highlight success">
+      <small>${t.defectDensity}</small>
+      <strong>${dd.value.toFixed(2)}</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${dd.bugs} bugs / ${dd.kloc} KLOC</p>
+    </div>
+    <div class="metric highlight success">
+      <small>${t.automationROI}</small>
+      <strong>${roi.savedHours}h</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${t.manual}: ${roi.manualHours}h | ${t.automation}: ${roi.automationHours}h</p>
+      <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:0.85rem;">
+        <div style="color:var(--ok); margin-bottom:4px;">💰 ${t.financialSavings}</div>
+        <div style="font-size:1.4rem; font-weight:800; color:#4ade80;">R$ ${financialSavings.toLocaleString('pt-BR')}</div>
+      </div>
+    </div>
+    <p class="muted" style="grid-column: 1 / -1; font-size: 0.85rem; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
+      💡 <strong>${t.qaEfficiencyTitle}:</strong> ${t.qaEfficiencyExpl}
+    </p>
+  `;
+}
+
 /* ── Main Metrics Renderer ───────────────────────── */
 function renderDynamicMetrics(data) {
+  window.lastMetricsData = data; // Store for re-rendering on lang change
   const dynamicStatus = document.getElementById('dynamicStatus');
+  const t = translations[currentLang];
   if (dynamicStatus) {
     dynamicStatus.className   = 'status-pill success';
-    dynamicStatus.textContent = 'Métricas carregadas com sucesso';
+    dynamicStatus.textContent = t.metricsLoaded;
   }
 
   const metrics = renderMetricCards(data);
+  renderQAEfficiency(data);
   renderDonutCharts(data, metrics);
 
   renderCoverageBars(data);
@@ -360,14 +608,16 @@ function renderDynamicMetrics(data) {
   renderUnitBars(data);
   computeAndUpdateGrandTotals(data);
   updateTimestamp(data);
+  applyTranslations(); // Ensure static texts are updated
 }
 
 /* ── Data Loader ─────────────────────────────────── */
 async function loadDynamicMetrics() {
   const dynamicStatus = document.getElementById('dynamicStatus');
+  const t = translations[currentLang];
   if (dynamicStatus) {
     dynamicStatus.className = 'status-pill info';
-    dynamicStatus.textContent = 'Coletando dados dos arquivos JUnit...';
+    dynamicStatus.textContent = t.collectingData || 'Coletando dados...';
   }
 
   // Try to load recent historical snapshots (dates.json) and present a date filter
@@ -375,7 +625,7 @@ async function loadDynamicMetrics() {
     const dynamicStatusLocal = document.getElementById('dynamicStatus');
     if (dynamicStatusLocal) {
       dynamicStatusLocal.className = 'status-pill info';
-      dynamicStatusLocal.textContent = `Carregando métricas de ${dateStr}...`;
+      dynamicStatusLocal.textContent = `${t.loadingMetricsFor || 'Carregando métricas de'} ${dateStr}...`;
     }
     try {
       const res = await fetch(cacheUrl(`${reportsBaseUrl}history/${dateStr}.json`), { cache: 'no-store' });
@@ -401,8 +651,9 @@ async function loadDynamicMetrics() {
         const sidebar = document.getElementById('historySidebar');
         if (listEl && sidebar) {
           listEl.innerHTML = '';
+          const t = translations[currentLang];
           const foot = sidebar.querySelector('.sidebar-foot');
-          if (foot) foot.textContent = 'Mostrando últimas 7 execuções';
+          if (foot) foot.textContent = t.showingLast7;
 
           // Sort dates descending (newest first)
           dates.sort((a, b) => b.localeCompare(a));
@@ -439,10 +690,12 @@ async function loadDynamicMetrics() {
                   const d = new Date(snap.metrics.generatedAt);
                   const hh = d.getHours().toString().padStart(2, '0');
                   const mm = d.getMinutes().toString().padStart(2, '0');
-                  return d.toLocaleDateString('pt-BR') + ` ${hh}h${mm}m`;
+                  const locale = currentLang === 'PT' ? 'pt-BR' : 'en-US';
+                  return d.toLocaleDateString(locale) + ` ${hh}h${mm}m`;
                 }
                 // Fallback para quando não tem timestamp (usa snap.date)
-                return new Date(snap.date.slice(0, 10) + 'T00:00:00').toLocaleDateString('pt-BR'); 
+                const locale = currentLang === 'PT' ? 'pt-BR' : 'en-US';
+                return new Date(snap.date.slice(0, 10) + 'T00:00:00').toLocaleDateString(locale); 
               } catch { return snap.date; }
             })();
 
@@ -501,7 +754,7 @@ async function loadDynamicMetrics() {
                     renderDynamicMetrics(zero);
                     renderCIBadge(zero);
                     const ds = document.getElementById('dynamicStatus');
-                    if (ds) { ds.className = 'status-pill warning'; ds.textContent = 'Dados não encontrados para essa execução — valores zerados.'; }
+                    if (ds) { ds.className = 'status-pill warning'; ds.textContent = t.dataNotFoundZero; }
                   }
                 }
               } catch (err) {
@@ -510,7 +763,7 @@ async function loadDynamicMetrics() {
                 renderDynamicMetrics(zero);
                 renderCIBadge(zero);
                 const ds = document.getElementById('dynamicStatus');
-                if (ds) { ds.className = 'status-pill warning'; ds.textContent = 'Erro ao carregar execução — valores zerados.'; }
+                if (ds) { ds.className = 'status-pill warning'; ds.textContent = t.errorLoadingZero; }
               }
             });
 
@@ -601,7 +854,7 @@ async function loadDynamicMetrics() {
     } else {
       if (dynamicStatus) {
         dynamicStatus.className = 'status-pill warning';
-        dynamicStatus.textContent = 'Nenhum dado JUnit encontrado.';
+        dynamicStatus.textContent = t.noJUnitData;
       }
       renderCIBadge(null);
     }
@@ -627,4 +880,15 @@ async function loadDynamicMetrics() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', loadDynamicMetrics);
+/* ── Initialization ─────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Setup language toggle
+  const langBtn = document.getElementById('langToggle');
+  if (langBtn) {
+    langBtn.addEventListener('click', toggleLanguage);
+  }
+  applyTranslations();
+
+  // 2. Load metrics
+  loadDynamicMetrics();
+});

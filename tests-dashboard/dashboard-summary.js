@@ -15,18 +15,21 @@ function renderSummaryTab() {
     { unit: 0, integration: 0, e2e: 0 }
   );
 
+  const t = (typeof translations !== 'undefined' && translations[currentLang]) || {};
+
   document.getElementById('stats').innerHTML = `
-    <div class="stat"><small>Relatórios E2E</small><strong>${counts.e2e}</strong></div>
-    <div class="stat"><small>Integração/Contrato</small><strong>${counts.integration}</strong></div>
-    <div class="stat"><small>Relatórios Unitários</small><strong>${counts.unit}</strong></div>
-    <div class="stat"><small>Total de atalhos</small><strong>${REPORTS.length}</strong></div>
+    <div class="stat"><small>${t.e2eResultsProject || 'Relatórios E2E'}</small><strong>${counts.e2e}</strong></div>
+    <div class="stat"><small>${t.integrationContract || 'Integração/Contrato'}</small><strong>${counts.integration}</strong></div>
+    <div class="stat"><small>${t.unitResultsProject || 'Relatórios Unitários'}</small><strong>${counts.unit}</strong></div>
+    <div class="stat"><small>${currentLang === 'PT' ? 'Total de atalhos' : 'Total shortcuts'}</small><strong>${REPORTS.length}</strong></div>
   `;
 
   document.getElementById('testSummary').innerHTML =
-    TEST_SUMMARY_ITEMS.map(item => `<li>${item}</li>`).join('');
+    TEST_SUMMARY_ITEMS.map(key => `<li>${t[key] || key}</li>`).join('');
 
+  const locale = currentLang === 'PT' ? 'pt-BR' : 'en-US';
   document.getElementById('generatedAt').textContent =
-    `Atualizado em: ${new Date().toLocaleString('pt-BR')}`;
+    `${t.updatedAt || 'Atualizado em:'} ${new Date().toLocaleString(locale)}`;
 }
 
 document.addEventListener('DOMContentLoaded', renderSummaryTab);

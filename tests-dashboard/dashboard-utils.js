@@ -23,13 +23,13 @@ const REPORTS = [
 ];
 
 const TEST_SUMMARY_ITEMS = [
-  'Unidade Web (Vitest): valida componentes e regras do frontend com execução rápida e cobertura detalhada.',
-  'Unidade Backend-ts (Vitest): valida regras e serviços do backend em isolamento.',
-  'Integração/Contrato (Pact e API): garante compatibilidade ponta a ponta na API e contratos consumidor/provedor.',
-  'E2E (Playwright): verifica jornadas críticas reais em múltiplos navegadores no frontend.',
-  'Documentação (Swagger): apoio para inspeção e validação manual dos endpoints.',
-  'Cobertura (Statements): percentual total de instruções/blocos executados durante os testes.',
-  'Cobertura (Lines): percentual de linhas de código abrangidas pela execução dos testes.'
+  'unitWebDesc',
+  'unitBackendDesc',
+  'integrationDesc',
+  'e2eDesc',
+  'swaggerDesc',
+  'covStatementsDesc',
+  'covLinesDesc'
 ];
 
 const E2E_PROJECT_LABELS = {
@@ -56,12 +56,15 @@ const PLAYWRIGHT_REPORT_SOURCES = {
  */
 function renderDonut(title, passed, total, tone) {
   const pct = safePercent(passed, total);
+  const t = (typeof translations !== 'undefined' && translations[currentLang]) || { approved: 'aprovados' };
+  const approvedLabel = t.approved || (currentLang === 'PT' ? 'aprovados' : 'approved');
+  
   return `
     <div class="donut-wrap">
       <div class="donut" style="--pct:${pct}; --tone:${tone};">
         <span class="donut-value">${pct.toFixed(1)}%</span>
       </div>
-      <div class="donut-label">${title}<br>${passed}/${total} aprovados</div>
+      <div class="donut-label">${title}<br>${passed}/${total} ${approvedLabel}</div>
     </div>`;
 }
 
@@ -95,9 +98,12 @@ function renderBarRow(label, passed, failed, skipped, total) {
   const passW  = (passed  / total) * 100;
   const failW  = (failed  / total) * 100;
   const skipW  = (skipped / total) * 100;
+  const t = (typeof translations !== 'undefined' && translations[currentLang]) || { totalLabel: 'Total' };
+  const totalLabel = t.totalLabel || (currentLang === 'PT' ? 'Total' : 'Total');
+
   return `
     <div class="bar-row">
-      <span>${label}: ${passed} ✅ / ${failed} ❌ / ${skipped} ⏭️ (Total: ${total})</span>
+      <span>${label}: ${passed} ✅ / ${failed} ❌ / ${skipped} ⏭️ (${totalLabel}: ${total})</span>
       <div class="bar-track" role="img" aria-label="${label}">
         <div class="bar-pass" style="width:${passW}%"></div>
         <div class="bar-fail" style="width:${failW}%"></div>
