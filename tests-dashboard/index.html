@@ -1,103 +1,215 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Dashboard | Resumo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard-styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Dashboard | Relatórios de Testes</title>
+    <meta name="description" content="Painel central de relatórios, métricas e visão da pirâmide de testes do projeto." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="dashboard-styles.css" />
+  </head>
+  <body>
     <main class="container">
-        <header class="hero">
-            <div>
-                <h1>Dashboard de Qualidade</h1>
-                <p>Visão geral da saúde dos testes e estratégia de pirâmide.</p>
-                <div class="meta" id="generatedAt">Carregando dados...</div>
-            </div>
-            <div id="ciStatusBadge" class="ci-status unknown">
-                <span>Verificando status...</span>
-            </div>
-        </header>
 
-        <nav class="tabs-wrapper">
-            <div class="tabs">
-                <a href="index.html" class="tab-btn active">Resumo</a>
-                <a href="reports.html" class="tab-btn">Relatórios</a>
-                <a href="metrics.html" class="tab-btn">Métricas CI</a>
-            </div>
-        </nav>
-
-        <div class="tab-panels">
-            <section class="tab-panel active">
-                <div class="two-col">
-                    <!-- Pirâmide -->
-                    <div class="card">
-                        <span class="section-label">🔺 Pirâmide de Testes</span>
-                        <h2>Estratégia de Testes</h2>
-                        <p class="muted">A estratégia prioriza testes de unidade na base para feedback rápido.</p>
-                        <div class="pyramid">
-                            <div class="layer top">E2E</div>
-                            <div class="layer mid">Integração</div>
-                            <div class="layer base">Unidade</div>
-                        </div>
-                        <div class="legend">
-                            <div><span class="dot dot-ok"></span>Base: Maior volume, feedback rápido.</div>
-                            <div><span class="dot dot-mid"></span>Meio: Valida contratos e integrações.</div>
-                            <div><span class="dot dot-top"></span>Topo: Valida fluxos reais do usuário.</div>
-                        </div>
-                    </div>
-
-                    <!-- Totais -->
-                    <div class="card">
-                        <span class="section-label">📊 Visão Geral</span>
-                        <h2>Resumo dos Testes</h2>
-                        <div class="totals-row">
-                            <div class="total-card success">
-                                <div class="total-icon">✅</div>
-                                <div class="total-info">
-                                    <small>Sucesso</small>
-                                    <strong id="totalPassed">—</strong>
-                                </div>
-                            </div>
-                            <div class="total-card failure">
-                                <div class="total-icon">❌</div>
-                                <div class="total-info">
-                                    <small>Falhas</small>
-                                    <strong id="totalFailed">—</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="summary-list" id="testSummary"></ul>
-                        <div class="stats" id="stats"></div>
-                    </div>
-                </div>
-            </section>
+      <!-- ── Hero + CI Badge ──────────────────────────── -->
+      <header class="hero">
+        <div>
+          <h1 data-i18n="title">Dashboard de Qualidade</h1>
+          <p data-i18n="subtitle">Painel central de relatórios, métricas e visão da pirâmide de testes do projeto.</p>
+          <div class="meta" id="generatedAt"></div>
         </div>
+        <div class="header-actions">
+          <button id="langToggle" class="lang-btn" aria-label="Alterar idioma / Change language">
+            <span class="lang-icon">🌐</span>
+            <span id="langText">PT</span>
+          </button>
+          <div id="ciStatusBadge" class="ci-status unknown" aria-live="polite">
+            <svg class="ci-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span data-i18n="checkingPipeline">Verificando esteira...</span>
+          </div>
+        </div>
+      </header>
 
-        <footer>
-            QA Dashboard Automatizado · 2026
-        </footer>
+      <!-- ── Tab Navigation ───────────────────────────── -->
+      <nav class="tabs-wrapper" aria-label="Navegação principal">
+        <div class="tabs" role="tablist">
+
+          <button class="tab-btn active" data-tab="summary" role="tab" id="tab-summary" aria-controls="panel-summary" aria-selected="true">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <span data-i18n="tabSummary">Resumo</span>
+          </button>
+
+          <button class="tab-btn" data-tab="reports" role="tab" id="tab-reports" aria-controls="panel-reports" aria-selected="false">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span data-i18n="tabReports">Relatórios</span>
+          </button>
+
+          <button class="tab-btn" data-tab="metrics" role="tab" id="tab-metrics" aria-controls="panel-metrics" aria-selected="false">
+            <svg class="tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+            <span data-i18n="tabMetrics">Métricas CI</span>
+          </button>
+
+        </div>
+      </nav>
+
+      <!-- ── Tab Panels ───────────────────────────────── -->
+      <div class="tab-panels">
+
+        <!-- ═══ TAB 1: Resumo ═══════════════════════════ -->
+        <section class="tab-panel active" id="panel-summary" role="tabpanel" aria-labelledby="tab-summary">
+          <div class="two-col">
+
+            <!-- Pyramid -->
+            <div class="card">
+              <span class="section-label" data-i18n="testPyramid">🔺 Pirâmide de Testes</span>
+              <h2 data-i18n="testStrategy">Estratégia de Testes</h2>
+              <p class="muted" data-i18n="strategyDesc">
+                A estratégia prioriza muitos testes de unidade na base (rápidos e baratos),
+                uma camada intermediária de integração/contrato,
+                e menos testes E2E no topo para fluxos críticos.
+              </p>
+              <div class="pyramid" aria-label="Pirâmide de testes">
+                <div class="layer top" data-i18n="e2e">E2E</div>
+                <div class="layer mid" data-i18n="integrationContract">Integração / Contrato</div>
+                <div class="layer base" data-i18n="unit">Unidade</div>
+              </div>
+              <div class="legend">
+                <div data-i18n="legendBase"><span class="dot dot-ok"></span>Base: maior volume, feedback rápido.</div>
+                <div data-i18n="legendMid"><span class="dot dot-mid"></span>Meio: valida integrações e contratos.</div>
+                <div data-i18n="legendTop"><span class="dot dot-top"></span>Topo: valida jornada real do usuário.</div>
+              </div>
+            </div>
+
+            <!-- Totals + Summary -->
+            <div class="card">
+              <span class="section-label" data-i18n="overview">📊 Visão Geral</span>
+              <h2 data-i18n="testSummaryTitle">Resumo dos Testes</h2>
+              <div class="totals-row" id="totalsRow">
+                <div class="total-card success">
+                  <div class="total-icon">✅</div>
+                  <div class="total-info">
+                    <small data-i18n="totalSuccess">Total com Sucesso</small>
+                    <strong id="totalPassed">—</strong>
+                  </div>
+                </div>
+                <div class="total-card failure">
+                  <div class="total-icon">❌</div>
+                  <div class="total-info">
+                    <small data-i18n="totalFailures">Total com Falha</small>
+                    <strong id="totalFailed">—</strong>
+                  </div>
+                </div>
+              </div>
+              <ul class="summary-list" id="testSummary"></ul>
+              <div class="stats" id="stats"></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ═══ TAB 2: Relatórios ════════════════════════ -->
+        <section class="tab-panel" id="panel-reports" role="tabpanel" aria-labelledby="tab-reports">
+          <div class="card">
+            <span class="section-label" data-i18n="reportsDetailedLabel">📂 Relatório Detalhado dos Testes</span>
+            <h2 data-i18n="reportsDetailedTitle">Relatório Detalhado dos Testes</h2>
+            <p class="muted" data-i18n="reportsDetailedDesc">Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.</p>
+            <div class="reports-grid" id="reportsGrid"></div>
+          </div>
+        </section>
+
+        <!-- ═══ TAB 3: Métricas CI ═══════════════════════ -->
+        <section class="tab-panel" id="panel-metrics" role="tabpanel" aria-labelledby="tab-metrics">
+
+          <div class="metrics-layout">
+            <!-- Sidebar: Histórico -->
+            <aside class="card history-sidebar" id="historySidebar">
+              <span class="section-label" data-i18n="recentExecutions">⏱️ Execuções Recentes</span>
+              <h2 data-i18n="recentExecutions">Execuções Recentes</h2>
+              <p class="muted" data-i18n="selectDate">Selecione uma data para ver os detalhes daquela execução.</p>
+              <ul class="history-list" id="historyList">
+                <!-- Preenchido via dashboard-metrics.js -->
+              </ul>
+              <div class="sidebar-foot muted" data-i18n="showingLast7">Mostrando últimas 7 execuções</div>
+            </aside>
+
+            <!-- Conteúdo Principal de Métricas -->
+            <div class="metrics-main">
+              <!-- Status + Number Cards -->
+              <div class="card">
+                <span class="section-label" data-i18n="pipelineLabel">⚡ Pipeline</span>
+                <h2 data-i18n="dynamicMetricsTitle">Métricas Dinâmicas (CI)</h2>
+                <p class="muted" data-i18n="dynamicMetricsDesc">Esses números vêm da última execução publicada pela pipeline.</p>
+                <div class="status-pill" id="dynamicStatus" aria-live="polite" data-i18n="loadingMetrics">Carregando métricas...</div>
+                <div class="metrics-grid" id="metricsGrid"></div>
+              </div>
+
+              <!-- Eficiência de QA -->
+              <div class="card">
+                <span class="section-label" data-i18n="qaEfficiency">🚀 Eficiência</span>
+                <h2 data-i18n="qaEfficiency">Eficiência de QA</h2>
+                <p class="muted" data-i18n="impactMetrics">Métricas de impacto e retorno do processo de qualidade.</p>
+                <div class="metrics-grid" id="qaEfficiencyGrid"></div>
+              </div>
+
+              <!-- Donut Charts: Taxa de Sucesso -->
+              <div class="card">
+                <span class="section-label" data-i18n="successRateSuite">🍩 Gráficos</span>
+                <h2 data-i18n="successRateSuite">Taxa de Sucesso por Suíte</h2>
+                <div class="charts-grid" id="chartsGrid"></div>
+              </div>
+
+              <!-- Coverage Bars: Vitest Web -->
+              <div class="card">
+                <span class="section-label" data-i18n="coverageWeb">📊 Cobertura</span>
+                <h2 data-i18n="coverageWeb">Cobertura Web (Vitest)</h2>
+                <p class="muted" data-i18n="coverageWeb">Percentual de código coberto pelos testes unitários.</p>
+                <div id="coverageGrid" class="section-content"></div>
+              </div>
+
+              <!-- Bar Chart: Testes Unitários por Projeto -->
+              <div class="card">
+                <span class="section-label" data-i18n="unitResultsProject">📈 Unitários</span>
+                <h2 data-i18n="unitResultsProject">Resultados Unitários por Projeto</h2>
+                <div class="bars" id="unitBars"></div>
+              </div>
+
+              <!-- Bar Chart: E2E por Projeto -->
+              <div class="card">
+                <span class="section-label" data-i18n="e2eResultsProject">📈 E2E</span>
+                <h2 data-i18n="e2eResultsProject">Resultados E2E por Projeto</h2>
+                <div class="bars" id="e2eBars"></div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+      <footer data-i18n="footerText">
+        Dashboard publicado automaticamente via GitHub Actions · Ponto único de acesso aos resultados de qualidade.
+      </footer>
     </main>
 
-    <script src="dashboard-utils.js"></script>
-    <script src="dashboard-metrics-data.js"></script>
-    <script src="dashboard-metrics.js"></script>
-    <script src="dashboard-summary.js"></script>
-    <script>
-        // Initialize with default metrics and try to load dynamic ones
-        window.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // The actual logic for fetching and rendering is in loadDynamicMetrics in dashboard-metrics.js
-                // but for index.html we specifically want to ensure renderSummaryTab runs.
-                if (window.renderSummaryTab) renderSummaryTab();
-                
-                // loadDynamicMetrics from dashboard-metrics.js will handle the fetch and update totals/badge
-                if (window.loadDynamicMetrics) await loadDynamicMetrics();
-            } catch (e) {
-                console.warn('Dashboard init error:', e);
-            }
-        });
-    </script>
-</body>
+    <!-- ── Feature Modules (load order matters) ─────── -->
+    <!-- ── Feature Modules ─────────────────────────────── -->
+    <!-- v2 cache-bust: increment when deploying updated JS -->
+    <!-- <script src="dashboard-metrics-data.js?v=2"></script> -->
+    <script src="dashboard-utils.js?v=2"></script>
+    <script src="dashboard-tabs.js?v=2"></script>
+    <script src="dashboard-summary.js?v=2"></script>
+    <script src="dashboard-reports.js?v=2"></script>
+    <script src="dashboard-metrics.js?v=9"></script>
+  </body>
 </html>
