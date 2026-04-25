@@ -61,6 +61,7 @@ e2e-junit-api/
 latest-scan.json
 dates.json
 history/*.json
+history/
 unit-tests-web/*.json
 /tests-dashboard/history/*.*
 /tests-dashboard/scratch/*.*

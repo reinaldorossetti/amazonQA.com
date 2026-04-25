@@ -97,7 +97,14 @@ const translations = {
     errorLoadingZero: "Erro ao carregar execução — valores zerados.",
     noJUnitData: "Nenhum dado JUnit encontrado.",
     collectingData: "Coletando dados dos arquivos JUnit...",
-    loadingMetricsFor: "Carregando métricas de"
+    loadingMetricsFor: "Carregando métricas de",
+    defectLeakage: "Fuga de Defeitos (Leakage)",
+    automationCoverage: "Cobertura de Automação",
+    escapedBugs: "Bugs Escapados (Prod)",
+    detectedBugs: "Detectados em QA",
+    testCycleTime: "Tempo de Ciclo de Teste",
+    mttrLabel: "MTTR (Tempo de Resposta)",
+    target: "Meta"
   },
   EN: {
     title: "Quality Dashboard",
@@ -178,7 +185,14 @@ const translations = {
     reportsDetailedDesc: "Use the shortcuts below to quickly open results for each test type.",
     pipelineLabel: "Pipeline",
     approved: "approved",
-    totalLabel: "Total"
+    totalLabel: "Total",
+    defectLeakage: "Defect Leakage",
+    automationCoverage: "Automation Coverage",
+    escapedBugs: "Escaped Bugs (Prod)",
+    detectedBugs: "Detected in QA",
+    testCycleTime: "Test Cycle Time",
+    mttrLabel: "MTTR (Response Time)",
+    target: "Target"
   }
 };
 
@@ -615,6 +629,10 @@ function renderQAEfficiency(data) {
   const dd = eff.defectDensity;
   const roi = eff.automationROI;
   const flaky = eff.flakiness || { flakyTests: 0, totalE2E: 0, value: 0 };
+  const leakage = eff.defectLeakage || { escapedToProduction: 0, detectedInQA: 0, leakageRate: 0 };
+  const coverage = eff.testAutomationCoverage || { automated: 0, manual: 0, coveragePercent: 0 };
+  const mttr = eff.mttr || { meanTimeToRepair: 0 };
+  
   const hourlyRate = roi.hourlyRate || 60;
   const financialSavings = roi.savedHours * hourlyRate;
   
@@ -626,11 +644,13 @@ function renderQAEfficiency(data) {
       <strong>${dd.value.toFixed(2)}</strong>
       <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${dd.bugs} bugs / ${dd.kloc} KLOC</p>
     </div>
+    
     <div class="metric highlight warning">
       <small>${t.flakinessRate}</small>
       <strong>${flakinessValue.toFixed(1)}%</strong>
       <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${flaky.flakyTests} ${t.flakyTests} / ${flaky.totalE2E} E2E</p>
     </div>
+
     <div class="metric highlight success">
       <small>${t.automationROI}</small>
       <strong>${roi.savedHours}h</strong>
@@ -640,6 +660,25 @@ function renderQAEfficiency(data) {
         <div style="font-size:1.4rem; font-weight:800; color:#4ade80;">R$ ${financialSavings.toLocaleString('pt-BR')}</div>
       </div>
     </div>
+
+    <div class="metric highlight ${leakage.leakageRate > 5 ? 'failure' : 'success'}">
+      <small>${t.defectLeakage}</small>
+      <strong>${leakage.leakageRate.toFixed(1)}%</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${leakage.escapedToProduction} Prod / ${leakage.detectedInQA} QA</p>
+    </div>
+
+    <div class="metric highlight info">
+      <small>${t.automationCoverage}</small>
+      <strong>${coverage.coveragePercent.toFixed(1)}%</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${coverage.automated} auto / ${coverage.totalTestCases || (coverage.automated + coverage.manual)} total</p>
+    </div>
+
+    <div class="metric highlight info">
+      <small>${t.mttrLabel}</small>
+      <strong>${mttr.meanTimeToRepair}h</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">Avg time to repair bugs</p>
+    </div>
+
     <p class="muted" style="grid-column: 1 / -1; font-size: 0.85rem; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px;">
       💡 <strong>${t.qaEfficiencyTitle}:</strong> ${t.qaEfficiencyExpl}
     </p>
