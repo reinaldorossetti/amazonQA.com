@@ -533,6 +533,47 @@ function getZeroMetrics(dateStr) {
   };
 }
 
+/**
+ * Compute a best-effort QA efficiency object from available runtime data.
+ * Uses heuristics when exact values are not present in snapshots.
+ */
+function computeQAEfficiencyFromData(data) {
+  const uw = data?.unit?.web ?? {};
+  const ub = data?.unit?.backend ?? {};
+  const e2eTotals = data?.e2e?.totals ?? {};
+
+  const totalE2E = safeNumber(e2eTotals.tests) || Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + safeNumber(p.tests), 0);
+
+  const uwF = safeNumber(uw.failures) + safeNumber(uw.errors);
+  const ubF = safeNumber(ub.failures) + safeNumber(ub.errors);
+  const e2eF = safeNumber(e2eTotals.failures) + safeNumber(e2eTotals.errors);
+  const allFails = uwF + ubF + e2eF;
+
+  // Defect density heuristic: try to use coverage lines total as proxy for KLOC
+  const linesTotal = safeNumber(uw?.coverage?.lines?.total);
+  const kloc = linesTotal > 0 ? Math.max(0.1, +(linesTotal / 1000).toFixed(1)) : 0;
+  const bugs = allFails > 0 ? Math.max(1, Math.round(allFails / 10)) : 0;
+  const defectValue = kloc > 0 ? +(bugs / kloc).toFixed(2) : 0;
+
+  // Flakiness: sum any 'flaky' counters from e2e byProject if available
+  const flakyFromProjects = Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + safeNumber(p.flaky || 0), 0);
+  const flakyTests = flakyFromProjects || 0;
+  const flakinessValue = totalE2E > 0 ? +(flakyTests / totalE2E * 100) : 0;
+
+  // Automation ROI heuristic: hours per E2E test (manual vs automated)
+  const manualPerTest = 0.137; // ~8.2 minutes
+  const autoPerTest = 0.0068;  // ~0.41 minutes
+  const manualHours = +(totalE2E * manualPerTest).toFixed(1);
+  const automationHours = +(totalE2E * autoPerTest).toFixed(1);
+  const savedHours = +(manualHours - automationHours).toFixed(1);
+
+  return {
+    defectDensity: { bugs, kloc, value: defectValue },
+    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60 },
+    flakiness: { flakyTests, totalE2E, value: flakinessValue }
+  };
+}
+
 /* ── Grand Totals (Resumo tab) ───────────────────── */
 function computeAndUpdateGrandTotals(data) {
   const uw  = data?.unit?.web     ?? {};
@@ -852,6 +893,22 @@ async function loadDynamicMetrics() {
     }
   };
 
+  // Best-effort: enrich E2E counters from Playwright reports (may populate 'flaky')
+  let enrichedData = runtimeData;
+  try {
+    if (typeof enrichE2EFromPlaywrightReports === 'function') {
+      enrichedData = await enrichE2EFromPlaywrightReports(runtimeData);
+    }
+  } catch (err) {
+    // ignore enrichment errors and keep runtimeData
+    enrichedData = runtimeData;
+  }
+
+  // Ensure QA efficiency block exists (compute heuristics if not present)
+  if (!enrichedData.qaEfficiency) {
+    enrichedData.qaEfficiency = computeQAEfficiencyFromData(enrichedData);
+  }
+
   // 3. Fallback to existing JSON or Embedded Mock if all fetches failed
   if (!xmlWeb && !xmlBackend && e2eTotals.tests === 0) {
     try {
@@ -877,9 +934,9 @@ async function loadDynamicMetrics() {
     return;
   }
 
-  // 4. Render the gathered data
-  renderDynamicMetrics(runtimeData);
-  renderCIBadge(runtimeData);
+  // 4. Render the gathered/enriched data
+  renderDynamicMetrics(enrichedData);
+  renderCIBadge(enrichedData);
 
   // Listener para garantir que o snapshot mais recente seja exibido ao clicar na aba de métricas
   const tabMetrics = document.getElementById('tab-metrics');

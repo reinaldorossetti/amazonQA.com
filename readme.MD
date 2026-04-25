@@ -28,7 +28,7 @@ O **tester.com** é uma plataforma de e-commerce completa, construída como ambi
 tester.com/
 ├── 📁 web/      → React + Vite  (frontend da loja + testes)
 ├── 📁 server/   → Next.js API   (REST API + PostgreSQL)
-└── 📁 mobile/   → React Native + Expo (app Android/iOS)
+└── 📁 mobile-kotlin/   → Kotlin Multiplatform (KMM) — shared Kotlin core + Android app
 ```
 
 Todas as três aplicações compartilham o **mesmo backend** (`/server`), garantindo paridade funcional entre web e mobile.
@@ -201,9 +201,9 @@ Frontend React + Vite, com foco em:
 - área administrativa;
 - suíte de testes unitários, contrato (Pact) e E2E (Playwright).
 
-### 3) Mobile (`/mobile`)
+### 3) Mobile (`/mobile-kotlin`)
 
-Aplicação React Native + Expo para Android/iOS, usando o mesmo backend do projeto web.
+Aplicação Kotlin Multiplatform (KMM) para Android (módulo `androidApp`) com lógica compartilhada no módulo `shared`. Veja `mobile-kotlin/README.md` para detalhes de build, execução e diagramas da arquitetura.
 
 ---
 
@@ -256,11 +256,14 @@ npm run dev
 
 #### 4. Subir o app mobile (opcional)
 ```bash
-cd mobile
-npm install
-npm run start
+cd mobile-kotlin
+# Build and install on emulator (Android)
+./gradlew :androidApp:installDebug
+
+# Run shared unit tests
+./gradlew :shared:test
 ```
-Se necessário, ajuste `EXPO_PUBLIC_API_BASE_URL` para o IP da sua máquina em emulador/dispositivo.
+Se necessário, ajuste a URL base do emulador (ex.: `http://10.0.2.2:3001`) conforme descrito em `mobile-kotlin/README.md`.
 
 ---
 
@@ -286,13 +289,15 @@ Se necessário, ajuste `EXPO_PUBLIC_API_BASE_URL` para o IP da sua máquina em e
 
 ### Mobile
 
-- **React Native** + **Expo**
-- **TypeScript**
-- **React Navigation**
-- **React Native Paper**
-- **React Query**
-- **Jest** (+ React Native Testing Library)
-- **Detox** (E2E mobile)
+- **Kotlin Multiplatform (KMM)** — lógica compartilhada em `shared`, UI nativa em `androidApp`
+- **Kotlin 2.2.0**
+- **Jetpack Compose** (Android) / Compose Multiplatform (quando aplicável)
+- **Ktor Client** (HTTP)
+- **kotlinx.serialization** (JSON)
+- **Kotlin Coroutines & Flow/StateFlow**
+- **Koin** (injeção de dependência)
+- **Coil** (carregamento de imagens)
+- **ZXing** (Barcode / QR Code)
 
 ---
 
@@ -300,7 +305,7 @@ Se necessário, ajuste `EXPO_PUBLIC_API_BASE_URL` para o IP da sua máquina em e
 
 - **Documentação Web (detalhada)**: [`web/README.md`](web/README.md)
 - **Documentação Server (detalhada)**: [`server/readme.MD`](server/readme.MD)
-- **Documentação Mobile / plano**: [`mobile/README.md`](mobile/README.md)
+- **Documentação Mobile / plano**: [`mobile-kotlin/README.md`](mobile-kotlin/README.md)
 - **Guia de testes de contrato (Pact)**: [`pact-tests-guide.md`](pact-tests-guide.md)
 - **Guia de testes e esteira**: [`tests-readme.MD`](tests-readme.MD)
 - **Swagger local**: [`docs/swagger/index.html`](docs/swagger/index.html)
@@ -363,11 +368,9 @@ npm run test:e2e:report
 ### Mobile
 
 ```bash
-cd mobile
-npm run test
-npm run test:api
-npm run e2e:build:android
-npm run e2e:test:android
+cd mobile-kotlin
+./gradlew :shared:test
+./gradlew :androidApp:installDebug
 ```
 
 ---

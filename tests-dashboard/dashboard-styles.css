@@ -213,6 +213,13 @@ body {
   border: 1px solid rgba(96, 165, 250, 0.15);
 }
 
+/* Normalize icon and emoji sizes inside labels and header to avoid layout breaks */ 
+.section-label svg, .section-label img { width: 18px; height: 18px; flex-shrink: 0; }
+.section-label { font-size: 0.72rem; line-height: 1; }
+.lang-icon { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; font-size: 0.95rem; line-height: 1; }
+.total-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+.header-actions svg { width: 18px; height: 18px; flex-shrink: 0; }
+
 /* ── Grid Layouts ────────────────────────────────── */
 .two-col {
   display: grid;

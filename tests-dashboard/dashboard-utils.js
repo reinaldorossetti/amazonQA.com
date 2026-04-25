@@ -203,21 +203,22 @@ async function enrichE2EFromPlaywrightReports(data) {
   for (const item of updates) {
     if (!item) continue;
     const { k, s } = item;
-    const f = safeNumber(s.failures) + safeNumber(s.flaky);
+    // Preserve flaky count separately so QA efficiency can use it
     next.e2e.byProject[k] = {
       tests:    safeNumber(s.tests),
       passed:   safeNumber(s.passed),
-      failures: f,
+      failures: safeNumber(s.failures),
+      flaky:    safeNumber(s.flaky),
       errors:   0,
       skipped:  safeNumber(s.skipped),
-      status:   f === 0 ? 'passed' : 'failed'
+      status:   (safeNumber(s.failures) + safeNumber(s.flaky)) === 0 ? 'passed' : 'failed'
     };
   }
 
   const totals = Object.values(next.e2e.byProject).reduce(
     (a, c) => {
       a.tests    += safeNumber(c.tests);
-      a.failures += safeNumber(c.failures);
+      a.failures += safeNumber(c.failures) + safeNumber(c.flaky || 0);
       a.errors   += safeNumber(c.errors);
       a.skipped  += safeNumber(c.skipped);
       a.passed   += safeNumber(c.passed);
