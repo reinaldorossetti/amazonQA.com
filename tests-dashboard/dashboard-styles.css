@@ -141,9 +141,13 @@ body {
   font-family: inherit;
   font-size: 0.92rem;
   font-weight: 600;
-  padding: 16px 22px;
+  padding: 12px 18px;
   cursor: pointer;
   white-space: nowrap;
+  /* align icon and label horizontally */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   transition: color 0.2s ease, background 0.2s ease;
   border-radius: 12px 12px 0 0;
   text-decoration: none; /* Added for anchor tags */
@@ -161,6 +165,14 @@ body {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tab-btn.active::after { transform: translateX(-50%) scaleX(1); }
+
+/* Icons inside tab buttons */
+.tab-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: inline-block;
+}
 
 /* ── Tab Panels ──────────────────────────────────── */
 .tab-panels { margin-top: 28px; }
