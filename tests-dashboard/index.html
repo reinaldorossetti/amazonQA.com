@@ -20,7 +20,7 @@
           <div class="meta" id="generatedAt"></div>
         </div>
         <div class="header-actions">
-          <button id="langToggle" class="lang-btn" aria-label="Alterar idioma / Change language" onclick="toggleLanguage()">
+          <button id="langToggle" class="lang-btn" aria-label="Alterar idioma / Change language">
             <span class="lang-icon">🌐</span>
             <span id="langText">PT</span>
           </button>
@@ -74,7 +74,7 @@
 
             <!-- Pyramid -->
             <div class="card">
-              <span class="section-label" data-i18n="testPyramid">🔺 Pirâmide de Testes</span>
+              <span class="section-label">🔺 <span data-i18n="testPyramidLabel">Pirâmide de Testes</span></span>
               <h2 data-i18n="testStrategy">Estratégia de Testes</h2>
               <p class="muted" data-i18n="strategyDesc">
                 A estratégia prioriza muitos testes de unidade na base (rápidos e baratos),
@@ -95,7 +95,7 @@
 
             <!-- Totals + Summary -->
             <div class="card">
-              <span class="section-label" data-i18n="overview">📊 Visão Geral</span>
+              <span class="section-label">📊 <span data-i18n="overviewLabel">Visão Geral</span></span>
               <h2 data-i18n="testSummaryTitle">Resumo dos Testes</h2>
               <div class="totals-row" id="totalsRow">
                 <div class="total-card success">
@@ -123,7 +123,7 @@
         <!-- ═══ TAB 2: Relatórios ════════════════════════ -->
         <section class="tab-panel" id="panel-reports" role="tabpanel" aria-labelledby="tab-reports">
           <div class="card">
-            <span class="section-label" data-i18n="reportsDetailedLabel">📂 Relatório Detalhado dos Testes</span>
+            <span class="section-label">📂 <span data-i18n="reportsDetailedLabel">Relatórios</span></span>
             <h2 data-i18n="reportsDetailedTitle">Relatório Detalhado dos Testes</h2>
             <p class="muted" data-i18n="reportsDetailedDesc">Use os atalhos abaixo para abrir rapidamente os resultados de cada tipo de teste.</p>
             <div class="reports-grid" id="reportsGrid"></div>
@@ -136,7 +136,7 @@
           <div class="metrics-layout">
             <!-- Sidebar: Histórico -->
             <aside class="card history-sidebar" id="historySidebar">
-              <span class="section-label" data-i18n="recentExecutions">⏱️ Execuções Recentes</span>
+              <span class="section-label">⏱️ <span data-i18n="recentExecutionsLabel">Histórico</span></span>
               <h2 data-i18n="recentExecutions">Execuções Recentes</h2>
               <p class="muted" data-i18n="selectDate">Selecione uma data para ver os detalhes daquela execução.</p>
               <ul class="history-list" id="historyList">
@@ -149,7 +149,7 @@
             <div class="metrics-main">
               <!-- Status + Number Cards -->
               <div class="card">
-                <span class="section-label" data-i18n="pipelineLabel">⚡ Pipeline</span>
+                <span class="section-label">⚡ <span data-i18n="pipelineLabel">Pipeline</span></span>
                 <h2 data-i18n="dynamicMetricsTitle">Métricas Dinâmicas (CI)</h2>
                 <p class="muted" data-i18n="dynamicMetricsDesc">Esses números vêm da última execução publicada pela pipeline.</p>
                 <div class="status-pill" id="dynamicStatus" aria-live="polite" data-i18n="loadingMetrics">Carregando métricas...</div>
@@ -158,7 +158,7 @@
 
               <!-- Eficiência de QA -->
               <div class="card">
-                <span class="section-label" data-i18n="qaEfficiency">🚀 Eficiência</span>
+                <span class="section-label">🚀 <span data-i18n="qaEfficiencyLabel">Eficiência</span></span>
                 <h2 data-i18n="qaEfficiencyTitle">Eficiência de QA</h2>
                 <p class="muted" data-i18n="qaEfficiencyDesc">Métricas de impacto e retorno do processo de qualidade.</p>
                 <div class="metrics-grid" id="qaEfficiencyGrid"></div>
@@ -166,14 +166,14 @@
 
               <!-- Donut Charts: Taxa de Sucesso -->
               <div class="card">
-                <span class="section-label" data-i18n="successRateSuite">🍩 Gráficos</span>
+                <span class="section-label">🍩 <span data-i18n="successRateSuiteLabel">Gráficos</span></span>
                 <h2 data-i18n="successRateSuite">Taxa de Sucesso por Suíte</h2>
                 <div class="charts-grid" id="chartsGrid"></div>
               </div>
 
               <!-- Coverage Bars: Vitest Web -->
               <div class="card">
-                <span class="section-label" data-i18n="coverageWeb">📊 Cobertura</span>
+                <span class="section-label">📊 <span data-i18n="coverageWebLabel">Cobertura</span></span>
                 <h2 data-i18n="coverageWeb">Cobertura Web (Vitest)</h2>
                 <p class="muted" data-i18n="covStatementsDesc">Percentual de código coberto pelos testes unitários.</p>
                 <div id="coverageGrid" class="section-content"></div>
@@ -181,14 +181,14 @@
 
               <!-- Bar Chart: Testes Unitários por Projeto -->
               <div class="card">
-                <span class="section-label" data-i18n="unitResultsProject">📈 Unitários</span>
+                <span class="section-label">📈 <span data-i18n="unitResultsLabel">Unitários</span></span>
                 <h2 data-i18n="unitResultsProject">Resultados Unitários por Projeto</h2>
                 <div class="bars" id="unitBars"></div>
               </div>
 
               <!-- Bar Chart: E2E por Projeto -->
               <div class="card">
-                <span class="section-label" data-i18n="e2eResultsProject">📈 E2E</span>
+                <span class="section-label">📈 <span data-i18n="e2eResultsLabel">E2E</span></span>
                 <h2 data-i18n="e2eResultsProject">Resultados E2E por Projeto</h2>
                 <div class="bars" id="e2eBars"></div>
               </div>
