@@ -113,6 +113,16 @@ A interface do Android foi projetada seguindo o padrão de **Vertical Slices** d
 ./gradlew :androidApp:connectedDebugAndroidTest
 ```
 
+**Gerar Relatório Allure (Após execução instrumentada):**
+```powershell
+# 1. Pull dos resultados do dispositivo
+adb pull /data/data/com.amazonqa.android/files/allure-results ./allure-results
+
+# 2. Gerar e abrir o report
+allure generate ./allure-results -o ./allure-report --clean
+allure open ./allure-report
+```
+
 ---
 
 ## 🧪 Qualidade e Automação de Testes

@@ -82,7 +82,6 @@ fun ProductCard(product: Product, onAddToCart: () -> Unit) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(product.image)
-                    .crossfade(true)
                     .build(),
                 contentDescription = product.name,
                 modifier = Modifier.size(100.dp),

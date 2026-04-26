@@ -9,6 +9,7 @@ import com.amazonqa.shared.utils.AppStrings
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import io.qameta.allure.android.runners.AllureAndroidJUnit4
 import org.junit.runner.RunWith
 
 /**
@@ -21,7 +22,7 @@ import org.junit.runner.RunWith
  *   ./gradlew :androidApp:connectedDebugAndroidTest \
  *     -Pandroid.testInstrumentationRunnerArguments.class=com.amazonqa.android.features.orders.OrderInstrumentedTests
  */
-@RunWith(AndroidJUnit4::class)
+@RunWith(AllureAndroidJUnit4::class)
 class OrderInstrumentedTests {
 
     @get:Rule

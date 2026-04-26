@@ -136,7 +136,19 @@ Essa configuração define as dimensões de tela simulada pelo Robolectric duran
 
 > **Nota:** `robolectric.graphicsMode=NATIVE` pode ser habilitado para captura real de bitmaps. No projeto atual, a captura de screenshot é feita via `captureToImage()` com tratamento de exceção para ambientes sem suporte nativo.
 
+### Relatórios Allure (Instrumentados)
+
+Diferente dos testes unitários que geram resultados localmente, os testes instrumentados geram arquivos `.json` dentro do dispositivo Android.
+
+**Fluxo de geração:**
+1. Execute os testes no emulador: `./gradlew :androidApp:connectedDebugAndroidTest`
+2. Extraia os resultados: `adb pull /data/data/com.amazonqa.android/files/allure-results ./allure-results`
+3. Gere o HTML: `allure generate ./allure-results -o ./allure-report --clean`
+4. Visualize: `allure open ./allure-report`
+
 ---
+
+## 🛠️ Troubleshooting & Dicas
 
 ## 🧩 Arquitetura: Page Object com `PageHelper`
 

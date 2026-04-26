@@ -63,6 +63,8 @@ compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", versio
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 allure-junit4 = { module = "io.qameta.allure:allure-junit4", version.ref = "allure" }
+allure-kotlin-junit4 = { module = "io.qameta.allure:allure-kotlin-junit4", version = "2.4.0" }
+allure-kotlin-android = { module = "io.qameta.allure:allure-kotlin-android", version = "2.4.0" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 androidx-test-rules  = { module = "androidx.test:rules",  version.ref = "androidx-test" }
 

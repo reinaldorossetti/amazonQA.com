@@ -14,6 +14,7 @@ REM    run-espresso.bat                  -> Todos os testes instrumentados
 REM    run-espresso.bat auth             -> Apenas AuthInstrumentedTests
 REM    run-espresso.bat catalog          -> Apenas CatalogInstrumentedTests
 REM    run-espresso.bat orders           -> Apenas OrderInstrumentedTests
+REM    run-espresso.bat allure           -> Executa tudo, extrai e abre report Allure
 REM
 REM  Relatório HTML gerado em:
 REM    androidApp/build/reports/androidTests/connected/debug/index.html
@@ -55,6 +56,20 @@ if "%SUITE%"=="orders" (
         -Pandroid.testInstrumentationRunnerArguments.class=com.amazonqa.android.features.orders.OrderInstrumentedTests ^
         --info ^
         2>&1
+    goto :end
+)
+
+if "%SUITE%"=="allure" (
+    echo [INFO] Executando TODOS os testes e gerando report Allure...
+    call gradlew.bat :androidApp:connectedDebugAndroidTest --info -x uninstallDebugAndroidTest -x uninstallDebug
+    echo [INFO] Extraindo resultados do dispositivo...
+    adb shell "run-as com.amazonqa.android sh -c 'cp -R files/allure-results /sdcard/Download/'"
+    adb pull /sdcard/Download/allure-results ./allure-results
+    adb shell "rm -rf /sdcard/Download/allure-results"
+    echo [INFO] Gerando relatorio...
+    allure generate ./allure-results -o ./allure-report --clean
+    echo [INFO] Abrindo relatorio...
+    allure open ./allure-report
     goto :end
 )
 
