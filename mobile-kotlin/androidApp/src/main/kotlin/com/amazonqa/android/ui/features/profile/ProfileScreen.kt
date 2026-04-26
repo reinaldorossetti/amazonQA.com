@@ -20,7 +20,7 @@ import com.amazonqa.shared.utils.toBrazilianCurrency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(authState: AuthState, orderViewModel: OrderViewModel, onBack: () -> Unit, onLogout: () -> Unit) {
+fun ProfileScreen(authState: AuthState, orderViewModel: OrderViewModel, onNavigateToAdminProducts: () -> Unit, onBack: () -> Unit, onLogout: () -> Unit) {
     val orderState by orderViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -48,6 +48,18 @@ fun ProfileScreen(authState: AuthState, orderViewModel: OrderViewModel, onBack: 
                 is AuthState.Success -> {
                     Text("Olá, ${authState.user.name}", style = MaterialTheme.typography.headlineSmall)
                     Text(authState.user.email, color = Color.Gray)
+                    
+                    if (authState.user.role == "admin") {
+                        Spacer(Modifier.height(16.dp))
+                        Button(
+                            onClick = onNavigateToAdminProducts,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
+                        ) {
+                            Text("Administrar Produtos", color = Color.Black)
+                        }
+                    }
+
                     Spacer(Modifier.height(32.dp))
                     Text("Seus Pedidos", fontWeight = FontWeight.Bold)
                     

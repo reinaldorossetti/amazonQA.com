@@ -14,4 +14,20 @@ class ProductRepository(private val api: ApiClient) {
     suspend fun getProductById(id: Int): Product {
         return api.client.get("/api/products/$id").body()
     }
+
+    suspend fun createProduct(product: Product): Product {
+        return api.client.post("/api/products") {
+            setBody(product)
+        }.body()
+    }
+
+    suspend fun updateProduct(id: Int, product: Product): Product {
+        return api.client.put("/api/products/$id") {
+            setBody(product)
+        }.body()
+    }
+
+    suspend fun deleteProduct(id: Int) {
+        api.client.delete("/api/products/$id")
+    }
 }

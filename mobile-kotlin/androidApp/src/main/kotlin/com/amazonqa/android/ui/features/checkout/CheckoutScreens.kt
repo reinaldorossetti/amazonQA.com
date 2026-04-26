@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amazonqa.android.ui.theme.*
@@ -90,7 +91,10 @@ fun CheckoutScreen(
                 Surface(
                     color = Color(0xFFFFF1F0),
                     shape = RoundedCornerShape(4.dp),
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
+                        .testTag("login_error_message"),
                     border = androidx.compose.foundation.BorderStroke(1.dp, Color.Red.copy(alpha = 0.5f))
                 ) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {

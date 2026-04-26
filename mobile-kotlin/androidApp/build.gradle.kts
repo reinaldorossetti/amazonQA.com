@@ -14,6 +14,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes { getByName("release") { isMinifyEnabled = false } }
@@ -24,6 +25,15 @@ android {
     }
 
     buildFeatures { compose = true }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all { test ->
+            test.systemProperty(
+                "allure.results.directory",
+                layout.buildDirectory.dir("allure-results").get().asFile.absolutePath
+            )
+        }
+    }
 }
 
 dependencies {
@@ -37,4 +47,20 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.coil.compose)
     implementation(libs.zxing)
+
+    // ── Testes unitários (Robolectric/JVM) ────────────────────────────────
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.espresso.core)
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.allure.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    // ── Testes instrumentados (Espresso no Emulador) ───────────────────────
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
 }

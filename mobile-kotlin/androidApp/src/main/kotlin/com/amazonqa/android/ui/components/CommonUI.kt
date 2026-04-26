@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,7 +36,7 @@ fun AmazonHeader(
             Image(
                     painter = painterResource(id = com.amazonqa.android.R.drawable.logo),
                     contentDescription = "Amazon Logo",
-                    modifier = Modifier.height(40.dp).width(110.dp),
+                    modifier = Modifier.height(40.dp).width(110.dp).testTag("amazon_header_logo"),
                     contentScale = ContentScale.Fit
             )
 
@@ -51,7 +53,7 @@ fun AmazonHeader(
                     Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.White)
                 }
 
-                Box {
+                Box(modifier = Modifier.testTag("cart_icon_button")) {
                     IconButton(onClick = onCartClick) {
                         Icon(
                                 Icons.Default.ShoppingCart,
@@ -61,7 +63,7 @@ fun AmazonHeader(
                     }
                     if (cartItemCount > 0) {
                         Surface(
-                                shape = androidx.compose.foundation.shape.CircleShape,
+                                shape = CircleShape,
                                 color = AmazonOrange,
                                 modifier = Modifier.align(Alignment.TopEnd).size(18.dp)
                         ) {
@@ -70,7 +72,7 @@ fun AmazonHeader(
                                     color = Color.White,
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.wrapContentSize(Alignment.Center)
+                                    modifier = Modifier.wrapContentSize(Alignment.Center).testTag("cart_badge_count")
                             )
                         }
                     }

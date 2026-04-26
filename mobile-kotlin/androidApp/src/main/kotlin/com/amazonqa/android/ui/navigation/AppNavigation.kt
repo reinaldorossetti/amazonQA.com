@@ -73,12 +73,20 @@ fun AppNavigation(
             paymentMethod = lastPaymentMethod,
             onContinue = { currentScreen = "catalog" }
         )
+        "admin_products" -> {
+            val adminProductsViewModel = remember { com.amazonqa.shared.presentation.AdminProductsViewModel(com.amazonqa.shared.data.repository.ProductRepository(com.amazonqa.shared.data.network.ApiClient())) }
+            com.amazonqa.android.ui.features.admin.AdminProductsScreen(
+                viewModel = adminProductsViewModel,
+                onNavigateBack = { currentScreen = "profile" }
+            )
+        }
         "profile" -> ProfileScreen(
             authState = authState,
             orderViewModel = orderViewModel,
+            onNavigateToAdminProducts = { currentScreen = "admin_products" },
             onBack = { currentScreen = "catalog" },
             onLogout = { 
-                // In a real app we would call viewModel.logout()
+                loginViewModel.logout()
                 currentScreen = "login" 
             }
         )

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amazonqa.android.R
@@ -50,7 +51,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(AppStrings.loginEmail) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("login_email_field"),
                 shape = RectangleShape,
                 colors =
                         OutlinedTextFieldDefaults.colors(
@@ -67,7 +68,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(AppStrings.loginPassword) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("login_password_field"),
                 shape = RectangleShape,
                 visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
                 trailingIcon = {
