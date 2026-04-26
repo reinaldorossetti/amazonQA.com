@@ -20,7 +20,7 @@ const translations = {
     totalE2ETests: "Total de testes E2E",
     manual: "Manual",
     automation: "Automação",
-    financialSavings: "Economia Mensal por execução:",
+    financialSavings: "Economia Mensal (Total):",
     totalExecuted: "Total de testes executados",
     totalFailures: "Total de Falhas",
     totalSuccess: "Total de Sucesso",
@@ -128,7 +128,7 @@ const translations = {
     totalE2ETests: "Total E2E tests",
     manual: "Manual",
     automation: "Automation",
-    financialSavings: "Monthly Savings per execution:",
+    financialSavings: "Monthly Savings (Total):",
     totalExecuted: "Total tests executed",
     totalFailures: "Total Failures",
     totalSuccess: "Total Success",
@@ -603,11 +603,12 @@ function computeQAEfficiencyFromData(data) {
   const flakinessValue = totalE2E > 0 ? +(flakyTests / totalE2E * 100) : 0;
 
   // Automation ROI heuristic: hours per E2E test (manual vs automated)
-  const manualPerTest = 0.137; // ~8.2 minutes
-  const autoPerTest = 0.0068;  // ~0.41 minutes
-  const manualHours = +(totalE2E * manualPerTest).toFixed(1);
-  const automationHours = +(totalE2E * autoPerTest).toFixed(1);
-  const savedHours = +(manualHours - automationHours).toFixed(1);
+  // New Rules: Manual = 3min, Auto = 0.2min, Parallelism = 2
+  const manualPerTest = 3 / 60;   // 0.05h
+  const autoPerTest = (0.2 / 60) / 2; // 0.001666h (parallelized)
+  const manualHours = +(totalE2E * manualPerTest).toFixed(2);
+  const automationHours = +(totalE2E * autoPerTest).toFixed(2);
+  const savedHours = +(manualHours - automationHours).toFixed(2);
 
   // Extended heuristics for new fields
   const escapedToProduction = 0; // default for heuristic
@@ -670,8 +671,13 @@ function renderQAEfficiency(data) {
   const coverage = eff.testAutomationCoverage || { automated: 0, manual: 0, coveragePercent: 0 };
   const mttr = eff.mttr || { meanTimeToRepair: 0 };
   
+  const count = window.totalExecutionsCount || 1;
   const hourlyRate = roi.hourlyRate || 60;
-  const financialSavings = roi.savedHours * hourlyRate;
+  
+  const totalSavedHours = +(roi.savedHours * count).toFixed(1);
+  const totalManualHours = +(roi.manualHours * count).toFixed(1);
+  const totalAutomationHours = +(roi.automationHours * count).toFixed(1);
+  const financialSavings = totalSavedHours * hourlyRate;
   
   const flakinessValue = flaky.value || (flaky.totalE2E > 0 ? (flaky.flakyTests / flaky.totalE2E) * 100 : 0);
 
@@ -690,11 +696,12 @@ function renderQAEfficiency(data) {
 
     <div class="metric highlight success">
       <small>${t.automationROI}</small>
-      <strong>${roi.savedHours}h</strong>
-      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${t.manual}: ${roi.manualHours}h | ${t.automation}: ${roi.automationHours}h</p>
+      <strong>${totalSavedHours}h</strong>
+      <p style="font-size:0.7rem; margin-top:4px; opacity:0.7">${t.manual}: ${totalManualHours}h | ${t.automation}: ${totalAutomationHours}h</p>
       <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); font-size:0.85rem;">
         <div style="color:var(--ok); margin-bottom:4px;">💰 ${t.financialSavings}</div>
         <div style="font-size:1.4rem; font-weight:800; color:#4ade80;">R$ ${financialSavings.toLocaleString('pt-BR')}</div>
+        <small style="opacity:0.6; font-size:0.65rem;">(Base: R$ ${hourlyRate}/h × ${count} exec.)</small>
       </div>
     </div>
 
@@ -780,6 +787,7 @@ async function loadDynamicMetrics() {
     if (datesRes.ok) {
       const dates = await datesRes.json();
       if (Array.isArray(dates) && dates.length > 0) {
+        window.totalExecutionsCount = dates.length;
         const listEl = document.getElementById('historyList');
         const sidebar = document.getElementById('historySidebar');
         if (listEl && sidebar) {
@@ -904,6 +912,12 @@ async function loadDynamicMetrics() {
           });
 
           // Select first item by default
+          // Exposed helper to reset view to latest
+          window.selectLatestHistoryItem = () => {
+            const first = listEl.querySelector('.history-item');
+            if (first) first.click();
+          };
+
           const first = listEl.querySelector('.history-item');
           if (first) first.click();
           return;

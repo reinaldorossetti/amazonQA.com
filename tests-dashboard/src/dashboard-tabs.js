@@ -14,6 +14,11 @@ function initTabs() {
       btn.classList.add('active');
       const panel = document.getElementById(`panel-${btn.dataset.tab}`);
       if (panel) panel.classList.add('active');
+
+      // Rule: Reset to latest when clicking Metrics tab
+      if (btn.dataset.tab === 'metrics' && typeof window.selectLatestHistoryItem === 'function') {
+        window.selectLatestHistoryItem();
+      }
     });
   });
 }

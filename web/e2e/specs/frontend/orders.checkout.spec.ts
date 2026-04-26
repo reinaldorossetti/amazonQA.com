@@ -140,4 +140,99 @@ test.describe('Frontend Checkout with Orders API', () => {
     await expect(page).toHaveURL('/cart');
     await expect(page.locator('body')).toContainText(/Falha ao criar pedido|Erro ao processar checkout/i);
   });
+
+  test('deve exibir erro quando a API retornar 400 (Carrinho vazio) ao criar pedido', async ({ page, waitForPageLoad }) => {
+    const cartPage = new CartPage(page);
+
+    await page.route('**/api/orders', async (route) => {
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Carrinho vazio ou payload inválido' }),
+      });
+    });
+
+    await setAuthenticatedUser(page, {
+      id: 702,
+      name: 'Empty',
+      lastName: 'Cart',
+      email: 'empty.cart@example.com',
+      personType: 'PF',
+    });
+
+    await cartPage.openCartWithOneItem(waitForPageLoad);
+    await cartPage.clickProceedToCheckout();
+
+    await expect(page).toHaveURL('/cart');
+    await expect(page.locator('body')).toContainText(/Carrinho vazio ou payload inválido/i);
+  });
+
+  test('deve exibir erro quando o pagamento falhar (400)', async ({ page, waitForPageLoad }) => {
+    const cartPage = new CartPage(page);
+
+    await page.route('**/api/orders', async (route) => {
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({ id: 99, order_number: 'ORD-ERR-001', grand_total: 100 }),
+      });
+    });
+
+    await page.route('**/api/orders/99/payments', async (route) => {
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'ID inválido, método inválido, valor inválido ou maior que saldo' }),
+      });
+    });
+
+    await setAuthenticatedUser(page, {
+      id: 703,
+      name: 'Pay',
+      lastName: 'Error',
+      email: 'pay.error@example.com',
+      personType: 'PF',
+    });
+
+    await cartPage.openCartWithOneItem(waitForPageLoad);
+    await cartPage.clickProceedToCheckout();
+    await expect(page).toHaveURL('/payments');
+
+    await page.getByRole('button', { name: /Pagar agora|Pay now/i }).click();
+    await expect(page.locator('body')).toContainText(/ID inválido, método inválido, valor inválido ou maior que saldo/i);
+  });
+
+  test('deve exibir erro quando o pedido não for encontrado ao tentar pagar (404)', async ({ page, waitForPageLoad }) => {
+    const cartPage = new CartPage(page);
+
+    await page.route('**/api/orders', async (route) => {
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({ id: 404, order_number: 'ORD-404', grand_total: 100 }),
+      });
+    });
+
+    await page.route('**/api/orders/404/payments', async (route) => {
+      await route.fulfill({
+        status: 404,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Pedido não encontrado' }),
+      });
+    });
+
+    await setAuthenticatedUser(page, {
+      id: 704,
+      name: 'Not',
+      lastName: 'Found',
+      email: 'not.found@example.com',
+      personType: 'PF',
+    });
+
+    await cartPage.openCartWithOneItem(waitForPageLoad);
+    await cartPage.clickProceedToCheckout();
+    
+    await page.getByRole('button', { name: /Pagar agora|Pay now/i }).click();
+    await expect(page.locator('body')).toContainText(/Pedido não encontrado/i);
+  });
 });

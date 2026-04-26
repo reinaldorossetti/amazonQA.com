@@ -74,7 +74,7 @@ O dashboard não utiliza um banco de dados tradicional; ele consome artefatos de
 
 1.  **Parsing de JUnit (XML):** O dashboard lê arquivos `junit.xml` gerados pelo Vitest e Playwright para extrair contagens de testes e status.
 2.  **Scraping de Cobertura (HTML):** Extrai métricas de cobertura diretamente do `index.html` gerado pelo Vitest (Istanbul/v8).
-3.  **Histórico via JSON:** Armazena snapshots diários na pasta `/history` em formato JSON para permitir a navegação retroativa. O dashboard deve listar os últimos 7 snapshots, exibindo a **Data e Hora** da execução. Os itens devem estar em ordem decrescente (do mais recente para o mais antigo). Ao clicar na aba de "Métricas CI", o dashboard deve carregar e selecionar automaticamente o snapshot mais recente.
+3.  **Histórico via JSON:** Armazena snapshots diários na pasta `/history` em formato JSON para permitir a navegação retroativa. O dashboard deve listar os últimos **7 snapshots** (limite configurado para cálculos de ROI acumulado e exibição), exibindo a **Data e Hora** da execução. Os itens devem estar em ordem decrescente (do mais recente para o mais antigo). Ao clicar na aba de "Métricas CI", o dashboard deve carregar e selecionar automaticamente o snapshot mais recente.
 4.  **Cache-Busting:** Todas as requisições de dados utilizam um parâmetro de timestamp (`?t=...`) para garantir que o navegador não exiba dados obsoletos após uma nova execução da pipeline.
 5.  **Fallback:** Caso os arquivos XML não estejam disponíveis (ex: erro na pipeline antes da geração dos artefatos), o dashboard tenta carregar um arquivo `dashboard-metrics.json` ou exibe valores zerados com um alerta ao usuário.
 
@@ -95,7 +95,7 @@ O dashboard não utiliza um banco de dados tradicional; ele consome artefatos de
 ## 6. Checklist
 - Navigate to http://localhost:8080/dashboard.html
 - Click on "Métricas CI"
-- Verify 5 execution entries in the sidebar (displaying Date and Time)
+- Verify 7 execution entries in the sidebar (displaying Date and Time)
 
 MenuExecuções Recentes
 Selecione uma execução para carregar métricas dessa data.
