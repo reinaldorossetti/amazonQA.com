@@ -66,3 +66,4 @@ unit-tests-web/*.json
 /tests-dashboard/history/*.*
 /tests-dashboard/scratch/*.*
 /tests-dashboard/unit-tests-web/*.*
+/allure-report
