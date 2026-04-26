@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QA Dashboard | Relatórios de Testes</title>
     <meta name="description" content="Painel central de relatórios, métricas e visão da pirâmide de testes do projeto." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="dashboard-styles.css" />
+    <link rel="stylesheet" href="assets/css/dashboard-styles.css" />
   </head>
   <body>
     <main class="container">
@@ -19,7 +20,7 @@
           <div class="meta" id="generatedAt"></div>
         </div>
         <div class="header-actions">
-          <button id="langToggle" class="lang-btn" aria-label="Alterar idioma / Change language">
+          <button id="langToggle" class="lang-btn" aria-label="Alterar idioma / Change language" onclick="toggleLanguage()">
             <span class="lang-icon">🌐</span>
             <span id="langText">PT</span>
           </button>
@@ -139,7 +140,7 @@
               <h2 data-i18n="recentExecutions">Execuções Recentes</h2>
               <p class="muted" data-i18n="selectDate">Selecione uma data para ver os detalhes daquela execução.</p>
               <ul class="history-list" id="historyList">
-                <!-- Preenchido via dashboard-metrics.js -->
+                <!-- Preenchido via src/dashboard-metrics.js -->
               </ul>
               <div class="sidebar-foot muted" data-i18n="showingLast7">Mostrando últimas 7 execuções</div>
             </aside>
@@ -158,8 +159,8 @@
               <!-- Eficiência de QA -->
               <div class="card">
                 <span class="section-label" data-i18n="qaEfficiency">🚀 Eficiência</span>
-                <h2 data-i18n="qaEfficiency">Eficiência de QA</h2>
-                <p class="muted" data-i18n="impactMetrics">Métricas de impacto e retorno do processo de qualidade.</p>
+                <h2 data-i18n="qaEfficiencyTitle">Eficiência de QA</h2>
+                <p class="muted" data-i18n="qaEfficiencyDesc">Métricas de impacto e retorno do processo de qualidade.</p>
                 <div class="metrics-grid" id="qaEfficiencyGrid"></div>
               </div>
 
@@ -174,7 +175,7 @@
               <div class="card">
                 <span class="section-label" data-i18n="coverageWeb">📊 Cobertura</span>
                 <h2 data-i18n="coverageWeb">Cobertura Web (Vitest)</h2>
-                <p class="muted" data-i18n="coverageWeb">Percentual de código coberto pelos testes unitários.</p>
+                <p class="muted" data-i18n="covStatementsDesc">Percentual de código coberto pelos testes unitários.</p>
                 <div id="coverageGrid" class="section-content"></div>
               </div>
 
@@ -202,14 +203,14 @@
       </footer>
     </main>
 
-    <!-- ── Feature Modules (load order matters) ─────── -->
-    <!-- ── Feature Modules ─────────────────────────────── -->
-    <!-- v2 cache-bust: increment when deploying updated JS -->
-    <!-- <script src="dashboard-metrics-data.js?v=2"></script> -->
-    <script src="dashboard-utils.js?v=2"></script>
-    <script src="dashboard-tabs.js?v=2"></script>
-    <script src="dashboard-summary.js?v=2"></script>
-    <script src="dashboard-reports.js?v=2"></script>
-    <script src="dashboard-metrics.js?v=9"></script>
+    <!-- ── Feature Modules (ordem de carregamento importa) ── -->
+    <!-- Fallback de dados para ambientes sem CI ────────── -->
+    <script src="assets/data/dashboard-metrics-data.js?v=3"></script>
+    <!-- Core utilities e constantes ────────────────────── -->
+    <script src="src/dashboard-utils.js?v=3"></script>
+    <script src="src/dashboard-tabs.js?v=3"></script>
+    <script src="src/dashboard-summary.js?v=3"></script>
+    <script src="src/dashboard-reports.js?v=3"></script>
+    <script src="src/dashboard-metrics.js?v=3"></script>
   </body>
 </html>

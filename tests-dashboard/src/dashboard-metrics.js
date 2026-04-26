@@ -581,10 +581,23 @@ function computeQAEfficiencyFromData(data) {
   const automationHours = +(totalE2E * autoPerTest).toFixed(1);
   const savedHours = +(manualHours - automationHours).toFixed(1);
 
+  // Extended heuristics for new fields
+  const escapedToProduction = 0; // default for heuristic
+  const detectedInQA = bugs;
+  const leakageRate = bugs > 0 ? +(escapedToProduction / (escapedToProduction + bugs) * 100).toFixed(1) : 0;
+  
+  const automated = totalE2E;
+  const manual = Math.round(totalE2E * 0.15); // guess 15% manual
+  const totalTestCases = automated + manual;
+  const coveragePercent = totalTestCases > 0 ? +(automated / totalTestCases * 100).toFixed(1) : 0;
+
   return {
     defectDensity: { bugs, kloc, value: defectValue },
     automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60 },
-    flakiness: { flakyTests, totalE2E, value: flakinessValue }
+    flakiness: { flakyTests, totalE2E, value: flakinessValue },
+    defectLeakage: { escapedToProduction, detectedInQA, leakageRate },
+    testAutomationCoverage: { automated, manual, coveragePercent, totalTestCases },
+    mttr: { meanTimeToRepair: 0 }
   };
 }
 
@@ -616,11 +629,7 @@ function computeAndUpdateGrandTotals(data) {
 }
 
 function renderQAEfficiency(data) {
-  const eff = data?.qaEfficiency ?? {
-    defectDensity: { bugs: 0, kloc: 0, value: 0 },
-    automationROI: { manualHours: 0, automationHours: 0, savedHours: 0, hourlyRate: 60 },
-    flakiness: { flakyTests: 0, totalE2E: 0, value: 0 }
-  };
+  const eff = data?.qaEfficiency ?? computeQAEfficiencyFromData(data);
 
   const grid = document.getElementById('qaEfficiencyGrid');
   if (!grid) return;

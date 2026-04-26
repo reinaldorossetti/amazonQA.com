@@ -16,10 +16,10 @@ jobs:
     name: Unit Tests (Web & Backend)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
 
@@ -95,7 +95,7 @@ jobs:
             web/pacts
           if-no-files-found: warn
 
-  # ── E2E Tests (usando docker-compose.yml completo) ──────────────────
+  # ── E2E Tests ───────────────────────────────────────────────────────
   e2e:
     name: E2E (${{ matrix.project }})
     runs-on: ubuntu-latest
@@ -106,7 +106,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22 }
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
 
       - name: Install Playwright
         working-directory: web
@@ -134,7 +137,7 @@ jobs:
           xvfb-run --auto-servernum npx playwright test --project=${{ matrix.project }}
 
       - name: Container logs (on failure)
-        if: always()
+        if: failure()
         run: |
           echo "=== Docker Compose Logs ==="
           docker compose logs --tail=100
@@ -169,17 +172,20 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
-        with: { path: tests-dashboard }
+        with:
+          path: tests-dashboard
 
       - uses: actions/setup-node@v4
-        with: { node-version: 22 }
+        with:
+          node-version: 22
 
       - name: Build report bundle
         run: |
           mkdir -p tests-dashboard/swagger
           if [ -d docs/swagger ]; then cp -r docs/swagger/* tests-dashboard/swagger/ || true; fi
-          
+
       - name: Restore history from gh-pages
         if: always()
         continue-on-error: true
@@ -188,11 +194,11 @@ jobs:
           git fetch origin gh-pages --depth=1
           git checkout origin/gh-pages -- tests-dashboard/history || echo "No previous history found on gh-pages."
           ls -R tests-dashboard/history || true
-      
-      - name: Generate dashboard metrics
+
+      - name: Generate dashboard metrics (with qaEfficiency)
         if: always()
         run: |
-          echo "Running dashboard generator to emit dashboard-metrics.json and history snapshots"
+          echo "Running dashboard generator..."
           node ./tests-dashboard/generate-dashboard-metrics.js || true
 
       - name: Show generated files
@@ -202,7 +208,15 @@ jobs:
           ls -la tests-dashboard/history || true
           echo '--- latest-scan.json ---'
           cat tests-dashboard/history/latest-scan.json || true
-          
+          echo '--- qaEfficiency snapshot (latest) ---'
+          LATEST=$(ls tests-dashboard/history/*.json 2>/dev/null | sort -r | head -n1)
+          if [ -n "$LATEST" ]; then
+            node -e "
+              const d = require('./' + process.argv[1]);
+              console.log(JSON.stringify(d.qaEfficiency, null, 2));
+            " "$LATEST" || true
+          fi
+
       - uses: peaceiris/actions-gh-pages@v4
         id: deploy
         with:

@@ -247,6 +247,52 @@ function readE2EJunitStats() {
   return statsByProject;
 }
 
+function computeQAEfficiency(data) {
+  const uw = data?.unit?.web ?? {};
+  const ub = data?.unit?.backend ?? {};
+  const e2eTotals = data?.e2e?.totals ?? {};
+  
+  const totalE2E = parseIntSafe(e2eTotals.tests) || Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + parseIntSafe(p.tests), 0);
+  
+  const uwF = parseIntSafe(uw.failures) + parseIntSafe(uw.errors);
+  const ubF = parseIntSafe(ub.failures) + parseIntSafe(ub.errors);
+  const e2eF = parseIntSafe(e2eTotals.failures) + parseIntSafe(e2eTotals.errors);
+  const allFails = uwF + ubF + e2eF;
+
+  const linesTotal = parseIntSafe(uw?.coverage?.lines?.total);
+  const kloc = linesTotal > 0 ? Math.max(0.1, +(linesTotal / 1000).toFixed(1)) : 0;
+  const bugs = allFails > 0 ? Math.max(1, Math.round(allFails / 10)) : 0;
+  const defectValue = kloc > 0 ? +(bugs / kloc).toFixed(2) : 0;
+
+  const flakyFromProjects = Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + parseIntSafe(p.flaky || 0), 0);
+  const flakyTests = flakyFromProjects || 0;
+  const flakinessValue = totalE2E > 0 ? +(flakyTests / totalE2E * 100) : 0;
+
+  const manualPerTest = 0.137;
+  const autoPerTest = 0.0068;
+  const manualHours = +(totalE2E * manualPerTest).toFixed(1);
+  const automationHours = +(totalE2E * autoPerTest).toFixed(1);
+  const savedHours = +(manualHours - automationHours).toFixed(1);
+
+  const escapedToProduction = 0;
+  const detectedInQA = bugs;
+  const leakageRate = bugs > 0 ? +(escapedToProduction / (escapedToProduction + bugs) * 100).toFixed(1) : 0;
+  
+  const automated = totalE2E;
+  const manual = Math.round(totalE2E * 0.15);
+  const totalTestCases = automated + manual;
+  const coveragePercent = totalTestCases > 0 ? +(automated / totalTestCases * 100).toFixed(1) : 0;
+
+  return {
+    defectDensity: { bugs, kloc, value: defectValue },
+    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60 },
+    flakiness: { flakyTests, totalE2E, value: flakinessValue },
+    defectLeakage: { escapedToProduction, detectedInQA, leakageRate },
+    testAutomationCoverage: { automated, manual, coveragePercent, totalTestCases },
+    mttr: { meanTimeToRepair: 0 }
+  };
+}
+
 function createMetrics() {
   let webUnitJunitPath = [
     path.join(REPORTS_DIR, 'unit-tests-web', 'junit.xml'), // Caminho prioritário
@@ -394,7 +440,7 @@ function createMetrics() {
     scanRoots
   };
 
-  return {
+  const result = {
     generatedAt: new Date().toISOString(),
     source: 'github-actions-artifacts',
     unit: {
@@ -437,6 +483,10 @@ function createMetrics() {
     },
     scan: scanInfo
   };
+  
+  result.qaEfficiency = computeQAEfficiency(result);
+  
+  return result;
 }
 
 function run() {
@@ -523,8 +573,12 @@ function run() {
   // If there is an embedded fallback JSON in dashboard-metrics-data.js, try to
   // extract its generatedAt and include as a candidate date (useful for demo data).
   try {
-    const fallbackPath = path.join(REPORTS_DIR, 'dashboard-metrics-data.js');
-    if (fs.existsSync(fallbackPath)) {
+    // Try new path (assets/data/) first, then old root path for backwards-compat
+    const fallbackPath = [
+      path.join(REPORTS_DIR, 'assets', 'data', 'dashboard-metrics-data.js'),
+      path.join(REPORTS_DIR, 'dashboard-metrics-data.js')
+    ].find(p => fs.existsSync(p));
+    if (fallbackPath) {
       const content = fs.readFileSync(fallbackPath, 'utf8');
       // Try to extract a JS-assigned object: window.DASHBOARD_METRICS_FALLBACK = { ... };
       const m = content.match(/window\.DASHBOARD_METRICS_FALLBACK\s*=\s*({[\s\S]*?})\s*;/);
@@ -541,8 +595,6 @@ function run() {
             if (!dateSet.has(gen)) {
               dateSet.add(gen);
               const updated = Array.from(dateSet).sort((a, b) => b.localeCompare(a)).slice(0, 7);
-              // Update frontend label logic via updated if foot exists
-              // if (foot) foot.textContent = 'Mostrando últimas 7 execuções';
               fs.writeFileSync(path.join(HISTORY_DIR, 'dates.json'), `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
               console.log(`Included fallback generatedAt date: ${gen}`);
             }
