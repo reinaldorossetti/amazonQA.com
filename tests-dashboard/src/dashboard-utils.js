@@ -13,6 +13,7 @@ const reportsBaseUrl = new URL('./', window.location.href).href;
 
 const REPORTS = [
   { title: 'E2E - Frontend Chromium',    type: 'E2E',                   description: 'Fluxos ponta a ponta no Chromium.',                                           href: `${reportsBaseUrl}playwright-report-frontend-chromium/` },
+  { title: 'E2E - Frontend Webkit',      type: 'E2E',                   description: 'Fluxos ponta a ponta no Safari/Webkit.',                                      href: `${reportsBaseUrl}playwright-report-frontend-webkit/` },
   { title: 'E2E - Frontend Edge',        type: 'E2E',                   description: 'Fluxos ponta a ponta no Edge.',                                               href: `${reportsBaseUrl}playwright-report-frontend-edge/` },
   { title: 'Integração - API',           type: 'Integração/Contrato',   description: 'Cenários de integração da API.',                                              href: `${reportsBaseUrl}playwright-report-api/` },
   { title: 'Contrato - Pact',            type: 'Integração/Contrato',   description: 'Validação de contrato consumidor/provedor.',                                  href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json` },
@@ -34,6 +35,7 @@ const TEST_SUMMARY_ITEMS = [
 
 const E2E_PROJECT_LABELS = {
   'frontend-chromium': 'E2E Frontend Chromium',
+  'frontend-webkit':   'E2E Frontend Webkit',
   'frontend-edge':     'E2E Frontend Edge',
   'api':               'Integração API'
 };
@@ -45,6 +47,7 @@ const UNIT_PROJECT_LABELS = {
 
 const PLAYWRIGHT_REPORT_SOURCES = {
   'frontend-chromium': `${reportsBaseUrl}playwright-report-frontend-chromium/`,
+  'frontend-webkit':   `${reportsBaseUrl}playwright-report-frontend-webkit/`,
   'frontend-edge':     `${reportsBaseUrl}playwright-report-frontend-edge/`,
   'api':               `${reportsBaseUrl}playwright-report-api/`
 };

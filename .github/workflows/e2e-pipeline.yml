@@ -102,7 +102,7 @@ jobs:
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      matrix: { project: [frontend-chromium, frontend-edge, api] }
+      matrix: { project: [frontend-chromium, frontend-webkit, frontend-edge, api] }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

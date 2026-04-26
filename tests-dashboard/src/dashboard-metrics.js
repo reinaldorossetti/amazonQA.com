@@ -496,7 +496,7 @@ function renderE2EBars(data) {
   const el = document.getElementById('e2eBars');
   if (!el) return;
   el.innerHTML =
-    ['api', 'frontend-chromium', 'frontend-edge'].map(k => {
+    ['api', 'frontend-chromium', 'frontend-webkit', 'frontend-edge'].map(k => {
       const p = e2eP[k];
       if (!p) return '';
       return renderBarRow(
@@ -936,6 +936,7 @@ async function loadDynamicMetrics() {
     e2e: {
       'api':               `${reportsBaseUrl}e2e-junit-api/junit-report.xml`,
       'frontend-chromium': `${reportsBaseUrl}e2e-junit-frontend-chromium/junit-report.xml`,
+      'frontend-webkit':   `${reportsBaseUrl}e2e-junit-frontend-webkit/junit-report.xml`,
       'frontend-edge':     `${reportsBaseUrl}e2e-junit-frontend-edge/junit-report.xml`
     }
   };
