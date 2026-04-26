@@ -29,12 +29,12 @@ Os testes cobrem as principais funcionalidades do aplicativo Android de forma is
 
 | Métrica | Valor |
 |---------|-------|
-| **Total de testes** | 25 |
+| **Total de testes** | 47 (26 Unit + 21 Instrumented) |
 | **Taxa de aprovação** | 100% ✅ |
-| **Tempo médio de execução** | ~60s |
-| **Telas cobertas** | 6 telas |
-| **Classes de teste** | 4 |
-| **Screenshots gerados** | 25 (1 por teste) |
+| **Tempo médio de execução** | ~3 min (Total) |
+| **Telas cobertas** | Todas (Auth, Catalog, Cart, Checkout, Profile, Admin) |
+| **Classes de teste** | 9 (5 Unit + 4 Instrumented) |
+| **Screenshots gerados** | 47 (1 por teste) |
 
 ---
 
@@ -596,12 +596,13 @@ androidApp/build/reports/androidTests/connected/debug/index.html
 | Aspecto | Robolectric (JVM) | Espresso (Emulador) |
 |---------|-------------------|----------------------|
 | **Onde roda** | JVM local (sem emulador) | Emulador/dispositivo real |
-| **Velocidade** | ~60s (25 testes) | ~2-5min (depende do emulador) |
+| **Velocidade** | ~60s (26 testes) | ~2 min (21 testes) |
 | **Fidelidade** | Simulação Android | Comportamento real |
 | **Comando** | `testDebugUnitTest` | `connectedDebugAndroidTest` |
 | **Screenshot** | `captureToImage()` | `captureToImage()` |
 | **CI/CD** | ✅ (sem emulador) | Requer emulador/AVD no CI |
 | **Backend** | Mock (ApiClient real) | ✅ Requer servidor em `10.0.2.2:3001` |
+| **Passagem** | **26/26** ✅ | **21/21** ✅ |
 
 ---
 

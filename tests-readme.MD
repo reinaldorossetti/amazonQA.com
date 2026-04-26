@@ -58,6 +58,11 @@ As ferramentas foram escolhidas buscando sinergia com o frontend em Vite e paral
 - **Playwright Oficial (@playwright/test):** Motor central cross-browser corporativo para simular navegação em Chromium, WebKit e Firefox.
 - **@faker-js/faker:** Geração de massa de dados imprevisível ou pseudo-randômica para cadastro (garante robustez do sistema, prevenindo hardcodes).
 
+### Nível Mobile (Android)
+- **JUnit 4 & Robolectric:** Execução de testes de UI na JVM com fidelidade ao runtime Android.
+- **Espresso & Compose Test:** Interação real com a árvore semântica do Jetpack Compose.
+- **Allure JUnit4:** Geração de relatórios detalhados para a suíte mobile.
+
 ---
 
 ## ⚡ Vitest no Projeto (Deep Dive)
@@ -129,6 +134,13 @@ npm run dev                # Vite subindo servidor DEV na porta 5174.
 # Para validar tudo de uma vez
 npm run test:unit
 npm run test:e2e
+```
+
+### Mobile (Android)
+```bash
+cd mobile-kotlin
+./gradlew :androidApp:testDebugUnitTest # Unitários UI (Robolectric)
+./gradlew :androidApp:connectedDebugAndroidTest # Instrumentados (Espresso)
 ```
 
 ---

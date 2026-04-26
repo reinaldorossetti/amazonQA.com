@@ -202,8 +202,7 @@ Frontend React + Vite, com foco em:
 - suíte de testes unitários, contrato (Pact) e E2E (Playwright).
 
 ### 3) Mobile (`/mobile-kotlin`)
-
-Aplicação Kotlin Multiplatform (KMM) para Android (módulo `androidApp`) com lógica compartilhada no módulo `shared`. Veja `mobile-kotlin/README.md` para detalhes de build, execução e diagramas da arquitetura.
+Aplicações Kotlin Multiplatform (KMM) para Android com lógica compartilhada no módulo `shared`. Conta com uma suíte de **47 testes automatizados** (Robolectric + Espresso) com 100% de aprovação. Veja `mobile-kotlin/README.md` para detalhes.
 
 ---
 
@@ -262,6 +261,12 @@ cd mobile-kotlin
 
 # Run shared unit tests
 ./gradlew :shared:test
+
+# Run Android unit tests (Robolectric)
+./gradlew :androidApp:testDebugUnitTest
+
+# Run Android instrumented tests (Espresso)
+./gradlew :androidApp:connectedDebugAndroidTest
 ```
 Se necessário, ajuste a URL base do emulador (ex.: `http://10.0.2.2:3001`) conforme descrito em `mobile-kotlin/README.md`.
 

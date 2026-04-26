@@ -103,10 +103,30 @@ A interface do Android foi projetada seguindo o padrão de **Vertical Slices** d
 ./gradlew :androidApp:installDebug
 ```
 
-**Rodar Testes Unitários:**
+**Rodar Testes Unitários (JVM/Robolectric):**
 ```powershell
-./gradlew :shared:test
+./gradlew :androidApp:testDebugUnitTest
 ```
+
+**Rodar Testes Instrumentados (Espresso/Emulador):**
+```powershell
+./gradlew :androidApp:connectedDebugAndroidTest
+```
+
+---
+
+## 🧪 Qualidade e Automação de Testes
+
+O projeto mobile conta com uma suíte robusta de testes automatizados, dividida em duas camadas principais para garantir estabilidade e performance:
+
+| Tipo | Ferramenta | Qtd | Descrição |
+| :--- | :--- | :--- | :--- |
+| **Unitários de UI** | Robolectric + Compose | 26 | Testes rápidos rodando na JVM (sem emulador). |
+| **Instrumentados** | Espresso + Emulador | 21 | Validação real em dispositivo, incluindo integração com backend. |
+| **Total** | | **47** | **100% de aprovação ✅** |
+
+> [!TIP]
+> Para uma documentação detalhada de cada teste, fluxos cobertos e como gerar relatórios Allure, consulte o [📱 README de Testes](readme-tests.MD).
 
 ---
 
