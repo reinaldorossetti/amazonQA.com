@@ -253,7 +253,7 @@ npm install
 npm run dev
 ```
 
-#### 4. Subir o app mobile (opcional)
+#### 4. Subir o app mobile (git bash)
 ```bash
 cd mobile-kotlin && ./gradlew clean assembleDebug
 # Build and install on emulator (Android)

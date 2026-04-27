@@ -20,6 +20,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalFocusManager
@@ -80,10 +82,10 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
         )
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(AppStrings.loginPassword) },
-                modifier = Modifier.fillMaxWidth().testTag("login_password_field"),
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(AppStrings.loginPassword) },
+            modifier = Modifier.fillMaxWidth().testTag("login_password_field").semantics { contentDescription = "login_password_field" },
                 shape = RoundedCornerShape(8.dp),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -121,7 +123,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
 
         Button(
                 onClick = { viewModel.login(email, password) },
-                modifier = Modifier.fillMaxWidth().height(48.dp).testTag("login_submit_button"),
+            modifier = Modifier.fillMaxWidth().height(48.dp).testTag("login_submit_button").semantics { contentDescription = "login_submit_button" },
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
         ) {
@@ -451,11 +453,11 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                     )
                     Spacer(Modifier.height(12.dp))
 
-                    OutlinedTextField(
+                        OutlinedTextField(
                             value = password,
                             onValueChange = { password = it },
                             label = { Text("Senha *") },
-                            modifier = Modifier.fillMaxWidth().testTag("register_password_field"),
+                            modifier = Modifier.fillMaxWidth().testTag("register_password_field").semantics { contentDescription = "register_password_field" },
                             shape = RoundedCornerShape(8.dp),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
@@ -489,11 +491,11 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                     )
                     Spacer(Modifier.height(12.dp))
 
-                    OutlinedTextField(
+                        OutlinedTextField(
                             value = confirmPassword,
                             onValueChange = { confirmPassword = it },
                             label = { Text("Confirmar Senha *") },
-                            modifier = Modifier.fillMaxWidth().testTag("register_confirm_password_field"),
+                            modifier = Modifier.fillMaxWidth().testTag("register_confirm_password_field").semantics { contentDescription = "register_confirm_password_field" },
                             shape = RoundedCornerShape(8.dp),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
@@ -703,7 +705,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                                     }
                                 }
                             },
-                            modifier = Modifier.weight(1f).height(56.dp).testTag("register_submit_button"),
+                            modifier = Modifier.weight(1f).height(56.dp).testTag("register_submit_button").semantics { contentDescription = "register_submit_button" },
                             colors = ButtonDefaults.buttonColors(containerColor = AmazonYellow),
                             shape = RoundedCornerShape(8.dp)
                         ) {
