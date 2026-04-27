@@ -229,19 +229,33 @@ function readE2EJunitStats() {
 
   for (const { dir: artifactDir, name } of candidateDirs) {
     const projectName = name.replace(/^e2e-junit-/, '');
-    if (statsByProject[projectName]) continue; // avoid duplicates, first wins
+    if (statsByProject[projectName] && statsByProject[projectName].tests > 0) continue;
 
-    const candidates = [
-      path.join(artifactDir, 'junit-report.xml'),
-      path.join(artifactDir, 'web', 'junit-report.xml'),
-    ];
+    const xmlFiles = fs.readdirSync(artifactDir).filter(f => f.endsWith('.xml'));
+    let totalStats = { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown' };
+    let sourceFiles = [];
 
-    const junitPath = candidates.find((p) => fs.existsSync(p));
-    const xml = junitPath ? safeRead(junitPath) : null;
-    statsByProject[projectName] = {
-      ...parseJUnit(xml),
-      sourceFile: junitPath ? path.relative(ROOT, junitPath).replace(/\\/g, '/') : null,
-    };
+    for (const f of xmlFiles) {
+      const fullPath = path.join(artifactDir, f);
+      const xml = safeRead(fullPath);
+      const stats = parseJUnit(xml);
+      if (stats.tests > 0) {
+        totalStats.tests += stats.tests;
+        totalStats.failures += stats.failures;
+        totalStats.errors += stats.errors;
+        totalStats.skipped += stats.skipped;
+        totalStats.passed += stats.passed;
+        sourceFiles.push(path.relative(ROOT, fullPath).replace(/\\/g, '/'));
+      }
+    }
+
+    if (totalStats.tests > 0) {
+      totalStats.status = (totalStats.failures === 0 && totalStats.errors === 0) ? 'passed' : 'failed';
+      statsByProject[projectName] = {
+        ...totalStats,
+        sourceFile: sourceFiles.join('; '),
+      };
+    }
   }
 
   return statsByProject;

@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.testTag
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.amazonqa.android.ui.theme.*
@@ -49,7 +50,7 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             if (items.isEmpty()) {
                 Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Text("Seu carrinho está vazio")
+                    Text("Seu carrinho está vazio", modifier = Modifier.testTag("empty_cart_message"))
                 }
             } else {
                 LazyColumn(modifier = Modifier.weight(1f)) {
@@ -83,11 +84,11 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
                                     }
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    IconButton(onClick = { viewModel.removeFromCart(item.product.id) }) {
+                                    IconButton(onClick = { viewModel.removeFromCart(item.product.id) }, modifier = Modifier.testTag("cart_remove_button_${item.product.id}")) {
                                         Icon(Icons.Default.Delete, contentDescription = null, tint = Color.Red)
                                     }
-                                    Text("${item.quantity}", modifier = Modifier.padding(horizontal = 8.dp))
-                                    IconButton(onClick = { viewModel.addToCart(item.product) }) {
+                                    Text("${item.quantity}", modifier = Modifier.padding(horizontal = 8.dp).testTag("cart_quantity_${item.product.id}"))
+                                    IconButton(onClick = { viewModel.addToCart(item.product) }, modifier = Modifier.testTag("cart_add_button_${item.product.id}")) {
                                         Icon(Icons.Default.Add, contentDescription = null, tint = Color.Green)
                                     }
                                 }
@@ -105,7 +106,7 @@ fun CartScreen(viewModel: CartViewModel, onBack: () -> Unit, onCheckout: () -> U
                         Spacer(Modifier.height(16.dp))
                         Button(
                             onClick = onCheckout,
-                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                            modifier = Modifier.fillMaxWidth().height(48.dp).testTag("cart_checkout_button"),
                             colors = ButtonDefaults.buttonColors(containerColor = AmazonYellow),
                             shape = RoundedCornerShape(8.dp)
                         ) {

@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.amazonqa.shared.domain.models.Product
 import com.amazonqa.shared.presentation.AdminProductsState
@@ -45,7 +46,7 @@ fun AdminProductsScreen(
             FloatingActionButton(onClick = {
                 editingProduct = null
                 showDialog = true
-            }) {
+            }, modifier = Modifier.testTag("admin_add_product_fab")) {
                 Icon(Icons.Default.Add, contentDescription = "Novo Produto")
             }
         }
@@ -104,10 +105,10 @@ fun ProductAdminItem(product: Product, onEdit: () -> Unit, onDelete: () -> Unit)
                 Text(text = "Cat: ${product.category ?: "N/A"}", style = MaterialTheme.typography.bodySmall)
             }
             Row {
-                IconButton(onClick = onEdit) {
+                IconButton(onClick = onEdit, modifier = Modifier.testTag("admin_edit_button_${product.id}")) {
                     Icon(Icons.Default.Edit, contentDescription = "Editar")
                 }
-                IconButton(onClick = onDelete) {
+                IconButton(onClick = onDelete, modifier = Modifier.testTag("admin_delete_button_${product.id}")) {
                     Icon(Icons.Default.Delete, contentDescription = "Deletar", tint = MaterialTheme.colorScheme.error)
                 }
             }
@@ -134,13 +135,13 @@ fun ProductDialog(
         title = { Text(if (initialProduct == null) "Novo Produto" else "Editar Produto") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Nome") }, singleLine = true)
-                OutlinedTextField(value = priceStr, onValueChange = { priceStr = it }, label = { Text("Preço") }, singleLine = true)
-                OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Categoria") }, singleLine = true)
-                OutlinedTextField(value = manufacturer, onValueChange = { manufacturer = it }, label = { Text("Fabricante") }, singleLine = true)
-                OutlinedTextField(value = shippingStr, onValueChange = { shippingStr = it }, label = { Text("Frete") }, singleLine = true)
-                OutlinedTextField(value = image, onValueChange = { image = it }, label = { Text("URL Imagem") }, singleLine = true)
-                OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Descrição") })
+                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Nome") }, singleLine = true, modifier = Modifier.testTag("admin_product_name_field"))
+                OutlinedTextField(value = priceStr, onValueChange = { priceStr = it }, label = { Text("Preço") }, singleLine = true, modifier = Modifier.testTag("admin_product_price_field"))
+                OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Categoria") }, singleLine = true, modifier = Modifier.testTag("admin_product_category_field"))
+                OutlinedTextField(value = manufacturer, onValueChange = { manufacturer = it }, label = { Text("Fabricante") }, singleLine = true, modifier = Modifier.testTag("admin_product_manufacturer_field"))
+                OutlinedTextField(value = shippingStr, onValueChange = { shippingStr = it }, label = { Text("Frete") }, singleLine = true, modifier = Modifier.testTag("admin_product_shipping_field"))
+                OutlinedTextField(value = image, onValueChange = { image = it }, label = { Text("URL Imagem") }, singleLine = true, modifier = Modifier.testTag("admin_product_image_field"))
+                OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Descrição") }, modifier = Modifier.testTag("admin_product_description_field"))
             }
         },
         confirmButton = {
@@ -156,7 +157,7 @@ fun ProductDialog(
                     description = description.ifEmpty { null }
                 )
                 onSave(p, initialProduct != null)
-            }) {
+            }, modifier = Modifier.testTag("admin_product_save_button")) {
                 Text("Salvar")
             }
         },

@@ -20,6 +20,7 @@ const REPORTS = [
   { title: 'Unit Web - Coverage',        type: 'Unidade',               description: 'Cobertura e status dos testes unitários do frontend web (Vitest).',          href: `${reportsBaseUrl}unit-tests-web/coverage/index.html` },
   { title: 'Unit Web - JUnit XML',       type: 'Unidade',               description: 'Saída bruta de execução dos testes unitários do web.',                       href: `${reportsBaseUrl}unit-tests-web/junit.xml` },
   { title: 'Unit Backend-ts - JUnit XML',type: 'Unidade',               description: 'Saída bruta de execução dos testes unitários do backend-ts.',                href: `${reportsBaseUrl}unit-tests-backend/junit.xml` },
+  { title: 'Mobile Android (All Tests)', type: 'Mobile',                description: 'Resultados consolidados dos testes unitários (Robolectric) e instrumentados (Espresso).', href: `${reportsBaseUrl}e2e-junit-mobile-android/` },
   { title: 'Swagger API',                type: 'Documentação',          description: 'Documentação interativa dos endpoints.',                                      href: `${reportsBaseUrl}swagger/index.html` }
 ];
 
@@ -37,12 +38,14 @@ const E2E_PROJECT_LABELS = {
   'frontend-chromium': 'E2E Frontend Chromium',
   'frontend-webkit':   'E2E Frontend Webkit',
   'frontend-edge':     'E2E Frontend Edge',
-  'api':               'Integração API'
+  'api':               'Integração API',
+  'mobile-android':    'Mobile Android (Unit + UI)'
 };
 
 const UNIT_PROJECT_LABELS = {
   'web':     'Unit Web (Vitest)',
-  'backend': 'Unit Backend-ts (Vitest)'
+  'backend': 'Unit Backend-ts (Vitest)',
+  'mobile-android': 'Mobile Android (Unit)'
 };
 
 const PLAYWRIGHT_REPORT_SOURCES = {

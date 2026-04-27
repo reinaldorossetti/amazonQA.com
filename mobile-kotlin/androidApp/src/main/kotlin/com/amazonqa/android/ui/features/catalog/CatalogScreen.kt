@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.testTag
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.amazonqa.android.ui.components.AmazonHeader
@@ -59,7 +60,7 @@ fun CatalogScreen(
             when (val s = state) {
                 is CatalogState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center), color = AmazonOrange)
                 is CatalogState.Success -> {
-                    LazyColumn(Modifier.fillMaxSize()) {
+                    LazyColumn(Modifier.fillMaxSize().testTag("catalog_list")) {
                         items(s.products) { product ->
                             ProductCard(product, onAddToCart = { cartViewModel.addToCart(product) })
                         }
@@ -74,7 +75,7 @@ fun CatalogScreen(
 @Composable
 fun ProductCard(product: Product, onAddToCart: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier.fillMaxWidth().padding(8.dp).testTag("product_card_${product.id}"),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(4.dp),
@@ -99,7 +100,7 @@ fun ProductCard(product: Product, onAddToCart: () -> Unit) {
                     onClick = onAddToCart,
                     colors = ButtonDefaults.buttonColors(containerColor = AmazonYellow),
                     shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.height(36.dp).padding(bottom = 0.dp),
+                    modifier = Modifier.height(36.dp).padding(bottom = 0.dp).testTag("add_to_cart_button_${product.id}"),
                     contentPadding = PaddingValues(horizontal = 12.dp)
                 ) {
                     Text("Adicionar ao carrinho", color = Color.Black, fontSize = 12.sp)

@@ -430,6 +430,8 @@ function renderMetricCards(data) {
     <div class="metric"><small>${t.apiFailures}</small><strong>${apiF}</strong></div>
     <div class="metric"><small>${t.e2eExecuted}</small><strong>${totalE2E}</strong></div>
     <div class="metric"><small>${t.e2eFailures}</small><strong>${totalE2EF}</strong></div>
+    <div class="metric"><small>Mobile executados</small><strong>${safeNumber(e2eP['mobile-android']?.tests)}</strong></div>
+    <div class="metric"><small>Falhas Mobile</small><strong>${safeNumber(e2eP['mobile-android']?.failures) + safeNumber(e2eP['mobile-android']?.errors)}</strong></div>
     <div class="metric"><small>${t.covStatements}</small><strong>${formatPercent(uw?.coverage?.statements?.percent)}</strong></div>
     <div class="metric"><small>${t.covLines}</small><strong>${formatPercent(uw?.coverage?.lines?.percent)}</strong></div>
   `;
@@ -465,6 +467,7 @@ function renderDonutCharts(data, metrics) {
         ${renderDonut(t.unitBackend,  ubP,   ubT,       '#34d399')}
         ${renderDonut(t.integrationApi, Math.max(apiT - apiF - safeNumber(api.skipped), 0), apiT, '#f59e0b')}
         ${renderDonut(t.e2eFrontend,  Math.max(e2eFP, 0), totalE2E, '#ef4444')}
+        ${renderDonut('Mobile Android', Math.max(safeNumber(e2eP['mobile-android']?.passed), 0), safeNumber(e2eP['mobile-android']?.tests), '#8b5cf6')}
       </div>
     </section>
   `;
@@ -496,7 +499,7 @@ function renderE2EBars(data) {
   const el = document.getElementById('e2eBars');
   if (!el) return;
   el.innerHTML =
-    ['api', 'frontend-chromium', 'frontend-webkit', 'frontend-edge'].map(k => {
+    Object.keys(E2E_PROJECT_LABELS).map(k => {
       const p = e2eP[k];
       if (!p) return '';
       return renderBarRow(
@@ -518,7 +521,8 @@ function renderUnitBars(data) {
 
   const projects = [
     { label: UNIT_PROJECT_LABELS['web'],     p: uw },
-    { label: UNIT_PROJECT_LABELS['backend'], p: ub }
+    { label: UNIT_PROJECT_LABELS['backend'], p: ub },
+    { label: UNIT_PROJECT_LABELS['mobile-android'], p: e2eP['mobile-android'] || {} }
   ];
 
   el.innerHTML = projects.map(proj => {

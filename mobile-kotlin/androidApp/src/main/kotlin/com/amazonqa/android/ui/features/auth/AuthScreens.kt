@@ -49,7 +49,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
         Image(
                 painter = painterResource(id = com.amazonqa.android.R.drawable.logo),
                 contentDescription = "Amazon Logo",
-                modifier = Modifier.height(60.dp).fillMaxWidth(),
+                modifier = Modifier.height(60.dp).fillMaxWidth().testTag("login_logo"),
                 contentScale = ContentScale.Fit
         )
         Spacer(Modifier.height(48.dp))
@@ -121,7 +121,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
 
         Button(
                 onClick = { viewModel.login(email, password) },
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier.fillMaxWidth().height(48.dp).testTag("login_submit_button"),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
         ) {
@@ -134,11 +134,11 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
 
         Spacer(Modifier.height(16.dp))
 
-        TextButton(onClick = onNavigateToRegister) {
+        TextButton(onClick = onNavigateToRegister, modifier = Modifier.testTag("login_register_button")) {
             Text(AppStrings.loginRegister, color = AmazonBlueLink)
         }
 
-        TextButton(onClick = onSkip) { Text(AppStrings.loginSkip, color = AmazonBlueLink) }
+        TextButton(onClick = onSkip, modifier = Modifier.testTag("login_skip_button")) { Text(AppStrings.loginSkip, color = AmazonBlueLink) }
 
         if (state is AuthState.Error) {
             Spacer(Modifier.height(16.dp))
@@ -146,7 +146,8 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                     text = (state as AuthState.Error).message,
                     color = Color.Red,
                     fontSize = 14.sp,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    modifier = Modifier.testTag("login_error_message")
             )
         }
 
@@ -211,7 +212,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
         // Dark Header
         Surface(
-                modifier = Modifier.fillMaxWidth().height(60.dp),
+                modifier = Modifier.fillMaxWidth().height(60.dp).testTag("register_header"),
                 color = Color(0xFF232F3E),
                 shape = RectangleShape
         ) {
@@ -293,7 +294,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                                 modifier =
                                         Modifier.weight(1f).fillMaxHeight().clickable {
                                             isPessoaFisica = true
-                                        },
+                                        }.testTag("register_tab_pf"),
                                 color = if (isPessoaFisica) Color(0xFF232F3E) else Color.Transparent,
                                 shape = RectangleShape
                         ) {
@@ -321,7 +322,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                                 modifier =
                                         Modifier.weight(1f).fillMaxHeight().clickable {
                                             isPessoaFisica = false
-                                        },
+                                        }.testTag("register_tab_pj"),
                                 color = if (!isPessoaFisica) Color(0xFF232F3E) else Color.Transparent,
                                 shape = RectangleShape
                         ) {
