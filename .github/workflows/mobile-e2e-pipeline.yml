@@ -4,21 +4,25 @@ on:
   push:
     branches: [main]
     paths:
-      - 'mobile/**'
+      - 'mobile-kotlin/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'mobile-kotlin/**'
 
 permissions:
-  contents: read
+  contents: write
+  pages: write
+  id-token: write
+  checks: write
 
 jobs:
   mobile-e2e-android:
-    name: Mobile E2E (Android + Detox)
+    name: Mobile E2E (Android)
     runs-on: ubuntu-latest
-    timeout-minutes: 70
+    timeout-minutes: 60
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ecommerce
-      EXPO_PUBLIC_API_BASE_URL: http://10.0.2.2:3001/api
-      E2E_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
-      E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
 
     steps:
       - name: Checkout
@@ -29,72 +33,23 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: |
-            mobile/package-lock.json
-            server-ts/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 22
           cache: gradle
 
-      - name: Install mobile dependencies
-        working-directory: mobile
-        run: npm install
-
-      - name: Install backend dependencies
-        working-directory: server-ts
-        run: npm install
-
-      - name: Setup PostgreSQL
-        uses: tj-actions/install-postgresql@v3
-        with:
-          postgresql-version: 17
-
-      - name: Configure PostgreSQL database
+      - name: Start Backend Stack (Docker Compose)
         run: |
-          sudo systemctl start postgresql
-          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-          sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'ecommerce'" | grep -q 1 || sudo -u postgres createdb ecommerce
+          docker compose up -d postgres server-ts
+          # Wait for backend readiness
+          timeout 60s bash -c 'until curl -fsS http://localhost:3001/api/products; do sleep 2; done'
 
-      - name: Wait for PostgreSQL readiness
-        run: |
-          for i in {1..60}; do
-            if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d ecommerce; then
-              echo "PostgreSQL pronto para conexões."
-              exit 0
-            fi
-            echo "Aguardando PostgreSQL ficar pronto..."
-            sleep 2
-          done
-          echo "PostgreSQL não ficou pronto no tempo esperado."
-          exit 1
-
-      - name: Seed backend database
-        working-directory: server-ts
-        run: npm run seed
-
-      - name: Start backend (Next.js) in background
-        working-directory: server-ts
-        run: |
-          nohup npm run dev > ../backend-mobile.log 2>&1 &
-          echo $! > ../backend-mobile.pid
-          echo "Backend PID: $(cat ../backend-mobile.pid)"
-
-      - name: Wait for backend readiness
-        run: |
-          for i in {1..90}; do
-            if curl -fsS http://127.0.0.1:3001/api/products >/dev/null; then
-              echo "Backend pronto para testes mobile."
-              exit 0
-            fi
-            echo "Aguardando backend ficar pronto..."
-            sleep 2
-          done
-          echo "Backend não ficou pronto no tempo esperado."
-          exit 1
+      - name: Run Unit Tests (Robolectric)
+        working-directory: mobile-kotlin
+        run: ./gradlew :androidApp:testDebugUnitTest --continue
 
       - name: Enable KVM for Android emulator
         run: |
@@ -102,7 +57,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run Detox E2E on Android emulator
+      - name: Run Instrumented Tests (Espresso)
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -112,25 +67,81 @@ jobs:
           disable-animations: true
           script: |
             adb reverse tcp:3001 tcp:3001 || true
-            npm --prefix mobile run e2e:build:android
-            npm --prefix mobile run e2e:test:android:headless
+            cd mobile-kotlin
+            ./gradlew :androidApp:connectedDebugAndroidTest --continue
 
-      - name: Upload mobile e2e artifacts and logs
+      - name: Prepare Test Results for Dashboard
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/e2e-junit-mobile-android
+          # Collect Unit Tests results
+          cp mobile-kotlin/androidApp/build/test-results/testDebugUnitTest/*.xml tests-dashboard/e2e-junit-mobile-android/ 2>/dev/null || true
+          # Collect Instrumented Tests results
+          cp mobile-kotlin/androidApp/build/outputs/androidTest-results/connected/*.xml tests-dashboard/e2e-junit-mobile-android/ 2>/dev/null || true
+          # Rename if they have generic names to avoid collisions (though they usually are unique)
+          ls -R tests-dashboard/e2e-junit-mobile-android/
+
+      - name: Upload Test Results Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mobile-e2e-artifacts
-          path: |
-            backend-mobile.log
-            mobile/artifacts
-            mobile/android/app/build/reports
-            mobile/android/app/build/outputs/apk
-            mobile/android/app/build/outputs/androidTest-apk
+          name: e2e-junit-mobile-android
+          path: tests-dashboard/e2e-junit-mobile-android/
           if-no-files-found: warn
 
-      - name: Stop backend process
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-screenshots
+          path: mobile-kotlin/androidApp/build/reports/screenshots/
+          if-no-files-found: ignore
+
+      - name: Stop Backend Stack
+        if: always()
+        run: docker compose down
+
+  deploy-dashboard:
+    name: Deploy Dashboard
+    needs: [mobile-e2e-android]
+    runs-on: ubuntu-latest
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: tests-dashboard
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build report bundle
+        run: |
+          mkdir -p tests-dashboard/swagger
+          if [ -d docs/swagger ]; then cp -r docs/swagger/* tests-dashboard/swagger/ || true; fi
+
+      - name: Restore history from gh-pages
+        if: always()
+        continue-on-error: true
+        run: |
+          git fetch origin gh-pages --depth=1
+          git checkout origin/gh-pages -- tests-dashboard/history || echo "No previous history found."
+
+      - name: Generate dashboard metrics
         if: always()
         run: |
-          if [ -f backend-mobile.pid ]; then
-            kill $(cat backend-mobile.pid) || true
-          fi
+          node ./tests-dashboard/generate-dashboard-metrics.js || true
+
+      - uses: peaceiris/actions-gh-pages@v4
+        id: deploy
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: tests-dashboard
+          publish_branch: gh-pages
+          destination_dir: tests-dashboard
+          keep_files: true
