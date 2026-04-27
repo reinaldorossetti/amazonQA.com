@@ -66,3 +66,31 @@ export async function PUT(request: Request): Promise<Response> {
     return NextResponse.json({ error: 'Failed to update authenticated user address' }, { status: 500 });
   }
 }
+
+export async function GET(request: Request): Promise<Response> {
+  try {
+    const authResult = authenticateRequest(request);
+    if (!authResult.ok) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 });
+    }
+
+    const { userId } = authResult.auth;
+
+    const result = await query(
+      `SELECT address_zip, address_street, address_number, address_complement,
+              address_neighborhood, address_city, address_state
+       FROM users
+       WHERE id = $1`,
+      [userId]
+    );
+
+    if (!result.rows.length) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(result.rows[0]);
+  } catch (error: unknown) {
+    console.error('[GET /api/users/me/address]', getErrorMessage(error));
+    return NextResponse.json({ error: 'Failed to fetch authenticated user address' }, { status: 500 });
+  }
+}

@@ -6,17 +6,22 @@ import com.amazonqa.android.ui.features.catalog.*
 import com.amazonqa.android.ui.features.cart.*
 import com.amazonqa.android.ui.features.checkout.*
 import com.amazonqa.android.ui.features.profile.*
+import com.amazonqa.android.ui.features.account.AccountScreen
 import com.amazonqa.shared.presentation.*
 
 @Composable
 fun AppNavigation(
-    loginViewModel: LoginViewModel, 
+    loginViewModel: LoginViewModel,
     catalogViewModel: CatalogViewModel,
     cartViewModel: CartViewModel,
-    orderViewModel: OrderViewModel
+    orderViewModel: OrderViewModel,
+    apiClient: com.amazonqa.shared.data.network.ApiClient
 ) {
     var currentScreen by remember { mutableStateOf("login") }
     val authState by loginViewModel.state.collectAsState()
+        var drawerOpen by remember { mutableStateOf(false) }
+    // Account ViewModel shared for account related screens (reuse main ApiClient so auth token is shared)
+    val accountViewModel = remember { com.amazonqa.shared.presentation.AccountViewModel(com.amazonqa.shared.data.repository.UserRepository(apiClient)) }
     
     // Sucess checkout state cache
     var lastOrderItems by remember { mutableStateOf(listOf<com.amazonqa.shared.domain.models.CartItem>()) }
@@ -50,7 +55,8 @@ fun AppNavigation(
             onLogout = { 
                 loginViewModel.logout()
                 currentScreen = "login" 
-            }
+            },
+            onMenuOpen = { drawerOpen = true }
         )
         "cart" -> CartScreen(
             viewModel = cartViewModel,
@@ -90,5 +96,35 @@ fun AppNavigation(
                 currentScreen = "login" 
             }
         )
+            "account" -> AccountScreen(
+                authState = authState,
+                accountViewModel = accountViewModel,
+                onOrdersClick = { currentScreen = "profile" },
+                onEditProfile = { currentScreen = "edit_profile" },
+                onEditAddress = { currentScreen = "edit_address" },
+                onCartClick = { currentScreen = "cart" },
+                onBack = { currentScreen = "catalog" },
+                onLogout = { loginViewModel.logout(); currentScreen = "login" }
+            )
+        "edit_profile" -> {
+            com.amazonqa.android.ui.features.account.EditProfileScreen(
+                accountViewModel = accountViewModel,
+                onBack = { currentScreen = "account" }
+            )
+        }
+        "edit_address" -> {
+            com.amazonqa.android.ui.features.account.EditAddressScreen(
+                accountViewModel = accountViewModel,
+                onBack = { currentScreen = "account" }
+            )
+        }
     }
+
+        // Simple drawer behaviour: if drawerOpen is true navigate to account and close drawer
+        LaunchedEffect(drawerOpen) {
+            if (drawerOpen) {
+                drawerOpen = false
+                currentScreen = "account"
+            }
+        }
 }

@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent { 
             AmazonQATheme { 
-                AppNavigation(loginViewModel, catalogViewModel, cartViewModel, orderViewModel) 
+                AppNavigation(loginViewModel, catalogViewModel, cartViewModel, orderViewModel, apiClient)
             } 
         }
     }

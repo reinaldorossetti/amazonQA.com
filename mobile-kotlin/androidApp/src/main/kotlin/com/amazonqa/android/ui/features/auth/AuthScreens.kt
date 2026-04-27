@@ -22,6 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import com.amazonqa.android.R
 import com.amazonqa.android.ui.theme.*
 import com.amazonqa.shared.presentation.*
@@ -32,6 +38,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     val state by viewModel.state.collectAsState()
 
     Column(
@@ -52,7 +59,15 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                 onValueChange = { email = it },
                 label = { Text(AppStrings.loginEmail) },
                 modifier = Modifier.fillMaxWidth().testTag("login_email_field"),
-                shape = RectangleShape,
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
                 colors =
                         OutlinedTextFieldDefaults.colors(
                                 focusedTextColor = Color.White,
@@ -69,7 +84,18 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
                 onValueChange = { password = it },
                 label = { Text(AppStrings.loginPassword) },
                 modifier = Modifier.fillMaxWidth().testTag("login_password_field"),
-                shape = RectangleShape,
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { 
+                        focusManager.clearFocus()
+                        viewModel.login(email, password) 
+                    }
+                ),
                 visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -96,7 +122,7 @@ fun LoginScreen(viewModel: LoginViewModel, onNavigateToRegister: () -> Unit, onS
         Button(
                 onClick = { viewModel.login(email, password) },
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                shape = RectangleShape,
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = AmazonOrange)
         ) {
             if (state is AuthState.Loading) {
@@ -143,6 +169,7 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
     var isPessoaFisica by remember { mutableStateOf(true) }
     var showErrors by remember { mutableStateOf(false) }
 
+    val focusManager = LocalFocusManager.current
     val state by viewModel.state.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
@@ -288,6 +315,9 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                             label = { Text("Nome *") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                             isError = showErrors && firstName.isBlank(),
                             supportingText = if (showErrors && firstName.isBlank()) {
                                 { Text("Campo obrigatório", color = Color.Red) }
@@ -300,6 +330,9 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                             label = { Text("Sobrenome *") },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                             isError = showErrors && lastName.isBlank(),
                             supportingText = if (showErrors && lastName.isBlank()) {
                                 { Text("Campo obrigatório", color = Color.Red) }
@@ -314,6 +347,12 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text(if (isPessoaFisica) "CPF *" else "CNPJ *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                         isError = showErrors && cpf.isBlank(),
                         supportingText = {
                             if (showErrors && cpf.isBlank()) {
@@ -331,6 +370,12 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Email *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                         isError = showErrors && email.isBlank(),
                         supportingText = if (showErrors && email.isBlank()) {
                             { Text("Campo obrigatório", color = Color.Red) }
@@ -344,6 +389,12 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Telefone / WhatsApp *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Phone,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                         isError = showErrors && phone.isBlank(),
                         supportingText = {
                             if (showErrors && phone.isBlank()) {
@@ -361,6 +412,12 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Senha *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Next) }),
                         isError = showErrors && (password.isBlank() || password.length < 8),
                         visualTransformation =
                                 if (passwordVisible)
@@ -393,6 +450,14 @@ fun RegisterScreen(viewModel: LoginViewModel, onBack: () -> Unit) {
                         label = { Text("Confirmar Senha *") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(onDone = { 
+                            focusManager.clearFocus()
+                        }),
                         isError = showErrors && (confirmPassword.isBlank() || confirmPassword != password),
                         visualTransformation =
                                 if (confirmPasswordVisible)

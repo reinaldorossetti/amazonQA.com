@@ -22,10 +22,11 @@ import com.amazonqa.android.ui.theme.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmazonHeader(
-        cartItemCount: Int,
-        onProfileClick: () -> Unit,
-        onCartClick: () -> Unit,
-        onLogout: () -> Unit
+    cartItemCount: Int,
+    onMenuClick: () -> Unit,
+    onProfileClick: () -> Unit,
+    onCartClick: () -> Unit,
+    onLogout: () -> Unit
 ) {
     Surface(color = AmazonDark, shadowElevation = 4.dp) {
         Row(
@@ -33,12 +34,18 @@ fun AmazonHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                    painter = painterResource(id = com.amazonqa.android.R.drawable.logo),
-                    contentDescription = "Amazon Logo",
-                    modifier = Modifier.height(40.dp).width(110.dp).testTag("amazon_header_logo"),
-                    contentScale = ContentScale.Fit
-            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = onMenuClick) {
+            Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
+        }
+
+        Image(
+            painter = painterResource(id = com.amazonqa.android.R.drawable.logo),
+            contentDescription = "Amazon Logo",
+            modifier = Modifier.height(40.dp).width(110.dp).testTag("amazon_header_logo"),
+            contentScale = ContentScale.Fit
+        )
+        }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onLogout) {

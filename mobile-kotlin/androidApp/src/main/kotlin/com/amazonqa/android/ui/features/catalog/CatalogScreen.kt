@@ -33,7 +33,8 @@ fun CatalogScreen(
     orderViewModel: OrderViewModel,
     onNavigateToCart: () -> Unit,
     onNavigateToProfile: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onMenuOpen: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val cartItems by cartViewModel.items.collectAsState()
@@ -46,7 +47,8 @@ fun CatalogScreen(
     Scaffold(
         topBar = { 
             AmazonHeader(
-                cartItemCount = cartCount, 
+                cartItemCount = cartCount,
+                onMenuClick = onMenuOpen,
                 onProfileClick = onNavigateToProfile,
                 onCartClick = onNavigateToCart,
                 onLogout = onLogout

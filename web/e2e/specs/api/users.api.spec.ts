@@ -385,6 +385,58 @@ test.describe('API Users', () => {
     expect(payload.error).toBe('No address fields to update');
   });
 
+  test('deve retornar 200 ao consultar GET /users/me/address com usuário autenticado', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+
+    // Popula o endereço para garantir a validação do GET
+    await request.put('users/me/address', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+      data: { address_city: 'Rio de Janeiro', address_zip: '20000-000' },
+    });
+
+    const response = await request.get('users/me/address', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(response.status()).toBe(200);
+    const payload = await response.json();
+    expect(payload.address_city).toBe('Rio de Janeiro');
+    expect(payload.address_zip).toBe('20000-000');
+    expect(payload).toHaveProperty('address_street');
+    expect(payload).toHaveProperty('address_number');
+    expect(payload).toHaveProperty('address_complement');
+    expect(payload).toHaveProperty('address_neighborhood');
+    expect(payload).toHaveProperty('address_state');
+  });
+
+  test('deve retornar 401 ao consultar GET /users/me/address sem autenticação', async ({ request }) => {
+    const response = await request.get('users/me/address');
+    expect(response.status()).toBe(401);
+  });
+
+  test('deve retornar 404 ao consultar GET /users/me/address com token de usuário inexistente', async ({ request }) => {
+    const auth = await createUserAndLogin(request);
+
+    // Força a remoção do usuário via admin para o ID não ser mais encontrado
+    const adminToken = await loginAsAdminAndGetToken(request);
+    const deleteRes = await request.delete(`users/${auth.id}`, {
+      headers: { Authorization: `Bearer ${adminToken}` },
+    });
+    expect(deleteRes.status()).toBe(200);
+
+    // Usa o token válido de um usuário que acabou de ser deletado
+    const response = await request.get('users/me/address', {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    expect(response.status()).toBe(404);
+  });
+
+  // Nota: O erro 500 (Erro Interno) está documentado no Swagger, mas não foi 
+  // implementado em teste E2E pois exigiria indisponibilidade forçada do Banco de Dados
+  // o que corromperia a execução dos outros testes da suíte em paralelo.
+
+
   test('deve retornar 403 ao deletar usuário sem ser admin', async ({ request }) => {
     const auth = await createUserAndLogin(request);
     const response = await request.delete(`users/${auth.id}`, {
@@ -465,12 +517,12 @@ test.describe('API Users', () => {
   test('deve retornar 403 ao tentar atualizar perfil de outro usuário', async ({ request }) => {
     const userA = await createUserAndLogin(request);
     const userB = await createUserAndLogin(request);
-    
+
     const response = await request.put(`users/${userB.id}`, {
       headers: { Authorization: `Bearer ${userA.token}` },
       data: { first_name: 'Hack Attempt' },
     });
-    
+
     expect(response.status()).toBe(403);
   });
 });

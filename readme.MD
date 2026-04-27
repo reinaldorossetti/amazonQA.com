@@ -255,7 +255,7 @@ npm run dev
 
 #### 4. Subir o app mobile (opcional)
 ```bash
-cd mobile-kotlin
+cd mobile-kotlin && ./gradlew clean assembleDebug
 # Build and install on emulator (Android)
 ./gradlew :androidApp:installDebug
 
@@ -396,3 +396,4 @@ O comando `npm run build` executa `db:reset` automaticamente antes de compilar.
 ## ℹ️ Observação para Windows PowerShell
 
 Se houver bloqueio por `ExecutionPolicy` ao usar `npm`, execute via `npm.cmd`.
+

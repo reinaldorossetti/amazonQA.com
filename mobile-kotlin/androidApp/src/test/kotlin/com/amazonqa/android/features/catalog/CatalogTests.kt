@@ -36,7 +36,8 @@ class CatalogTests {
                 orderViewModel = orderViewModel,
                 onNavigateToCart = {},
                 onNavigateToProfile = {},
-                onLogout = {}
+                onLogout = {},
+                onMenuOpen = {}
             )
         }
     }
