@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import io.qameta.allure.Allure
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import io.github.serpro69.kfaker.Faker
 
 /**
  * Utilitário global para testes de UI com Compose e Espresso semantics.
@@ -17,6 +18,7 @@ import java.io.ByteArrayOutputStream
  * - Captura de screenshot com anexo automático ao Allure Report
  */
 class PageHelper(private val composeTestRule: ComposeContentTestRule) {
+    private val faker = Faker()
 
     // ─────────────────────────────────────────────
     // Ações de Input
@@ -42,6 +44,39 @@ class PageHelper(private val composeTestRule: ComposeContentTestRule) {
 
     fun clickContentDescription(desc: String) {
         composeTestRule.onNodeWithContentDescription(desc).performClick()
+    }
+
+    // ─────────────────────────────────────────────
+    // Geração de Dados Randômicos
+    // ─────────────────────────────────────────────
+
+    fun generateRandomFirstName() = faker.name.firstName()
+    fun generateRandomLastName() = faker.name.lastName()
+    fun generateRandomEmail() = "${faker.name.firstName().lowercase()}@${faker.internet.domain()}"
+    fun generateRandomPhone() = "(11) 9${faker.random.nextInt(1000, 9999)}-${faker.random.nextInt(1000, 9999)}"
+
+    fun generateValidCPF(): String {
+        val num = (1..9).map { (0..9).random() }.toMutableList()
+        fun digit(n: List<Int>): Int {
+            val d = (n.indices.sumOf { n[it] * (n.size + 1 - it) } % 11)
+            return if (d < 2) 0 else 11 - d
+        }
+        num.add(digit(num))
+        num.add(digit(num))
+        return num.joinToString("")
+    }
+
+    fun generateValidCNPJ(): String {
+        val num = (1..12).map { (0..9).random() }.toMutableList()
+        fun digit(n: List<Int>, weights: IntArray): Int {
+            val d = (n.indices.sumOf { n[it] * weights[it] } % 11)
+            return if (d < 2) 0 else 11 - d
+        }
+        val w1 = intArrayOf(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
+        val w2 = intArrayOf(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
+        num.add(digit(num, w1))
+        num.add(digit(num, w2))
+        return num.joinToString("")
     }
 
     // ─────────────────────────────────────────────

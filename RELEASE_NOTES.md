@@ -39,9 +39,7 @@ Confira os destaques do que fizemos:
 
 ### 🎨 Design Premium & Novo Branding
 - Lançamos um **novo ícone de aplicativo Premium** destacando as diretrizes de QA e a identidade visual "Amazon".
-- Reformulação das telas de Autenticação (Login e Criar Conta): 
-  - Adotamos um formato com bordas mais afiadas e limpas (`RectangleShape`) em vez de cantos arredondados, de acordo com o design original.
-  - **Cabeçalho otimizado**: Reduzimos o tamanho do header pela metade e removemos textos desnecessários (como "tester.com"), entregando um visual mais polido e direto ao ponto.
+🛠️ Otimização de UI: Refinamos o cabeçalho das telas de autenticação para um visual mais limpo e direto ao ponto.
 
 ### 🛡️ Segurança na Criação de Contas
 - **Validação Client-Side Ativa**: Adicionamos validação inteligente na tela de "Criar Conta". Agora, tentativas de cadastro com campos vazios disparam mensagens de erro claras e amigáveis diretamente na UI antes mesmo de bater na API.

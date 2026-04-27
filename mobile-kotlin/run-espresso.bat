@@ -63,9 +63,10 @@ if "%SUITE%"=="allure" (
     echo [INFO] Executando TODOS os testes e gerando report Allure...
     call gradlew.bat :androidApp:connectedDebugAndroidTest --info -x uninstallDebugAndroidTest -x uninstallDebug
     echo [INFO] Extraindo resultados do dispositivo...
-    adb shell "run-as com.amazonqa.android sh -c 'cp -R files/allure-results /sdcard/Download/'"
-    adb pull /sdcard/Download/allure-results ./allure-results
-    adb shell "rm -rf /sdcard/Download/allure-results"
+    adb exec-out "run-as com.amazonqa.android tar -c -C files allure-results" > allure-results.tar
+    if not exist allure-results mkdir allure-results
+    tar -xf allure-results.tar -C allure-results --strip-components=1
+    del allure-results.tar
     echo [INFO] Gerando relatorio...
     allure generate ./allure-results -o ./allure-report --clean
     echo [INFO] Abrindo relatorio...

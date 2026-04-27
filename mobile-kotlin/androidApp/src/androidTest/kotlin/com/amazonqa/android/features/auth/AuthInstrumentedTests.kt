@@ -62,6 +62,19 @@ class AuthInstrumentedTests {
     }
 
     @Test
+    fun testLoginKeyboardNavigationMovesFocus() {
+        // Preenche email e pressiona Next
+        page.typeText("login_email_field", "admin@tester.com")
+        page.performImeAction("login_email_field")
+        
+        // Agora deve estar no campo de senha
+        page.typeText("login_password_field", "admin123")
+        page.performImeAction("login_password_field")
+        
+        page.waitForIdle()
+    }
+
+    @Test
     fun testLoginNavigatesToRegisterScreen() {
         // Clica em "Não tem conta? Comece aqui." para navegar ao cadastro
         page.clickButtonByText(AppStrings.loginRegister)

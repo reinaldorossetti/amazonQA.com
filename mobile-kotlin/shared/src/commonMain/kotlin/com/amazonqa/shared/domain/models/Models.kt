@@ -87,11 +87,23 @@ data class Product(
 
 @Serializable
 data class RegisterRequest(
+    val person_type: String,
     val first_name: String,
     val last_name: String,
     val email: String,
+    val phone: String? = null,
     val password: String,
-    val role: String? = "user"
+    val cpf: String? = null,
+    val cnpj: String? = null,
+    val company_name: String? = null,
+    val address_zip: String? = null,
+    val address_street: String? = null,
+    val address_number: String? = null,
+    val address_complement: String? = null,
+    val address_neighborhood: String? = null,
+    val address_city: String? = null,
+    val address_state: String? = null,
+    val residence_proof_filename: String? = null
 )
 
 @Serializable

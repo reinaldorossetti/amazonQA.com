@@ -65,4 +65,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.allure.kotlin.junit4)
     androidTestImplementation(libs.allure.kotlin.android)
+    
+    // Random Data Generation
+    testImplementation(libs.faker)
+    androidTestImplementation(libs.faker)
 }

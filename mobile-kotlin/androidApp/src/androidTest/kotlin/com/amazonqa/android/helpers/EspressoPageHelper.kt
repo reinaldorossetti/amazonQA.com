@@ -4,6 +4,11 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.amazonqa.android.MainActivity
+import io.github.serpro69.kfaker.Faker
+import androidx.compose.ui.graphics.asAndroidBitmap
+import io.qameta.allure.kotlin.Allure
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 /**
  * Page Object helper para testes instrumentados (Espresso + Compose UI Test).
@@ -17,6 +22,7 @@ import com.amazonqa.android.MainActivity
 class EspressoPageHelper(
     private val rule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
 ) {
+    private val faker = Faker()
 
     // ─────────────────────────────────────────────
     // Ações de Input
@@ -25,7 +31,7 @@ class EspressoPageHelper(
     fun typeText(testTag: String, text: String) {
         val node = rule.onNodeWithTag(testTag)
         try { node.performScrollTo() } catch (_: Throwable) {}
-        node.performTextInput(text)
+        node.performTextReplacement(text)
     }
 
     fun clickButtonByText(text: String) {
@@ -42,6 +48,43 @@ class EspressoPageHelper(
 
     fun clickContentDescription(desc: String) {
         rule.onNodeWithContentDescription(desc).performClick()
+    }
+
+    fun performImeAction(testTag: String) {
+        rule.onNodeWithTag(testTag).performImeAction()
+    }
+
+    // ─────────────────────────────────────────────
+    // Geração de Dados Randômicos
+    // ─────────────────────────────────────────────
+
+    fun generateRandomFirstName() = faker.name.firstName()
+    fun generateRandomLastName() = faker.name.lastName()
+    fun generateRandomEmail() = "${faker.name.firstName().lowercase()}@${faker.internet.domain()}"
+    fun generateRandomPhone() = "(11) 9${faker.random.nextInt(1000, 9999)}-${faker.random.nextInt(1000, 9999)}"
+
+    fun generateValidCPF(): String {
+        val num = (1..9).map { (0..9).random() }.toMutableList()
+        fun digit(n: List<Int>): Int {
+            val d = (n.indices.sumOf { n[it] * (n.size + 1 - it) } % 11)
+            return if (d < 2) 0 else 11 - d
+        }
+        num.add(digit(num))
+        num.add(digit(num))
+        return num.joinToString("")
+    }
+
+    fun generateValidCNPJ(): String {
+        val num = (1..12).map { (0..9).random() }.toMutableList()
+        fun digit(n: List<Int>, weights: IntArray): Int {
+            val d = (n.indices.sumOf { n[it] * weights[it] } % 11)
+            return if (d < 2) 0 else 11 - d
+        }
+        val w1 = intArrayOf(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
+        val w2 = intArrayOf(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
+        num.add(digit(num, w1))
+        num.add(digit(num, w2))
+        return num.joinToString("")
     }
 
     // ─────────────────────────────────────────────
@@ -63,12 +106,37 @@ class EspressoPageHelper(
         rule.onNodeWithTag(testTag).assertIsDisplayed()
     }
 
+    fun assertTextEquals(testTag: String, expectedText: String) {
+        rule.onNodeWithTag(testTag).assertTextEquals(expectedText)
+    }
+
     fun assertDoesNotExistByText(text: String) {
         rule.onAllNodesWithText(text, ignoreCase = true).assertCountEquals(0)
     }
 
     fun assertDoesNotExistByTag(testTag: String) {
         rule.onAllNodesWithTag(testTag).assertCountEquals(0)
+    }
+
+    /** Tira screenshot da tela atual e anexa ao Allure Report */
+    fun takeScreenshot(fileName: String) {
+        rule.waitForIdle()
+        try {
+            val bitmap = rule.onRoot().captureToImage().asAndroidBitmap()
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, baos)
+            val pngBytes = baos.toByteArray()
+
+            Allure.attachment(
+                name = fileName,
+                type = "image/png",
+                content = ByteArrayInputStream(pngBytes),
+                fileExtension = "png"
+            )
+            println("Screenshot captured and attached: $fileName")
+        } catch (e: Throwable) {
+            println("Failed to capture screenshot: ${e.message}")
+        }
     }
 
     // ─────────────────────────────────────────────

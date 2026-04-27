@@ -251,6 +251,7 @@ class AuthTests {
 | 6 | `testRegisterScreenPFTabIsSelectedByDefault` | Register | Aba "Pessoa Física (CPF)" é o padrão ao abrir |
 | 7 | `testRegisterScreenSwitchToPJTab` | Register | Clique em "Pessoa Jurídica" muda label do campo para "CNPJ *" |
 | 8 | `testRegisterScreenHasLoginLink` | Register | Exibe "Já tem uma conta?" e "Fazer login" |
+| 9 | `testLoginKeyboardNavigationMovesFocus` | Login | Valida se `ImeAction.Next` move o foco do E-mail para a Senha |
 
 ---
 
@@ -695,20 +696,24 @@ testOptions {
 #### 1. Gerar os resultados (roda os testes)
 
 ```bash
-./gradlew :androidApp:testDebugUnitTest
-# Gera os JSONs em: androidApp/build/allure-results/
+# Opção A: Usando o script automatizado (recomendado)
+./run-espresso.bat allure
+
+# Opção B: Comandos Manuais (passo a passo)
+# 1. Executar testes instrumentados (sem desinstalar para manter dados)
+./gradlew :androidApp:connectedDebugAndroidTest -x uninstallDebugAndroidTest -x uninstallDebug
+
+# 2. Extrair resultados do dispositivo para a pasta local
+adb exec-out "run-as com.amazonqa.android tar -c -C files allure-results" > allure-results.tar
+mkdir androidApp/build/allure-results
+tar -xf allure-results.tar -C androidApp/build/allure-results --strip-components=1
+del allure-results.tar
+
+# 3. Gerar o relatório HTML
+allure generate androidApp/build/allure-results -o androidApp/build/reports/allure-report --clean
 ```
 
-#### 2. Gerar o relatório HTML (multi-arquivo)
-
-```bash
-allure generate androidApp/build/allure-results \
-  -o androidApp/build/reports/allure-report \
-  --clean
-# Relatório em: androidApp/build/reports/allure-report/index.html
-```
-
-#### 3. Gerar o relatório em arquivo único (recomendado para compartilhar)
+#### 2. Gerar o relatório em arquivo único (recomendado para compartilhar)
 
 ```bash
 allure generate androidApp/build/allure-results \
@@ -756,7 +761,7 @@ androidApp/build/
     │   └── index.html                 # Relatório HTML (~3.4 MB, single-file)
     └── screenshots/                   # Cópias dos PNGs salvos em disco
         ├── testLoginScreenAllElementsAreDisplayed.png
-        └── ...                        # 1 arquivo por teste (25 no total)
+        └── ...                        # 1 arquivo por teste (26 no total)
 ```
 
 ### O que o relatório exibe

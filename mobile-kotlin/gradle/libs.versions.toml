@@ -20,6 +20,7 @@ espresso-core = "3.5.1"
 robolectric = "4.12.1"
 allure = "2.27.0"
 androidx-test = "1.5.0"
+faker = "1.16.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin-test" }
@@ -67,6 +68,7 @@ allure-kotlin-junit4 = { module = "io.qameta.allure:allure-kotlin-junit4", versi
 allure-kotlin-android = { module = "io.qameta.allure:allure-kotlin-android", version = "2.4.0" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 androidx-test-rules  = { module = "androidx.test:rules",  version.ref = "androidx-test" }
+faker = { module = "io.github.serpro69:kotlin-faker", version.ref = "faker" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

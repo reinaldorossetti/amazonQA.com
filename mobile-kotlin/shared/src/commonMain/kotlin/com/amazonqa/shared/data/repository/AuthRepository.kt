@@ -2,6 +2,7 @@ package com.amazonqa.shared.data.repository
 
 import com.amazonqa.shared.data.network.ApiClient
 import com.amazonqa.shared.domain.models.LoginRequest
+import com.amazonqa.shared.domain.models.RegisterRequest
 import com.amazonqa.shared.domain.models.AuthResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -18,10 +19,10 @@ class AuthRepository(private val api: ApiClient) {
         return response
     }
 
-    suspend fun register(userData: Map<String, String>): AuthResponse {
+    suspend fun register(request: RegisterRequest): AuthResponse {
         val response: AuthResponse = api.client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
-            setBody(userData)
+            setBody(request)
         }.body()
         api.authToken = response.accessToken
         return response
