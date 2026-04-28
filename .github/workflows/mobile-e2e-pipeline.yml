@@ -133,7 +133,7 @@ jobs:
         continue-on-error: true
         run: |
           git fetch origin gh-pages --depth=1
-          git checkout origin/gh-pages -- tests-dashboard/history || echo "No previous history found."
+          git checkout origin/gh-pages -- tests-dashboard/reports/history || echo "No previous history found."
 
       - name: Generate dashboard metrics
         if: always()

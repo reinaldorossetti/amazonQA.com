@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites id="" name="" tests="50" failures="2" skipped="0" errors="0" time="130.0">
+  <testsuite name="frontend-edge" timestamp="2026-04-28T14:00:00" hostname="localhost" tests="50" failures="2" skipped="0" time="130.0" errors="0">
+    <testcase name="should load home" classname="home.spec.ts" time="3.0"/>
+    <testcase name="should fail on edge" classname="home.spec.ts" time="3.0">
+      <failure message="Simulated failure" type="AssertionError">Expected true but got false</failure>
+    </testcase>
+    <testcase name="another failure" classname="home.spec.ts" time="3.0">
+      <failure message="Simulated failure 2" type="AssertionError">Expected true but got false</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

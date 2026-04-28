@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = process.cwd();
-const REPORTS_DIR = path.join(ROOT, 'tests-dashboard');
+const REPORTS_DIR = path.join(ROOT, 'tests-dashboard', 'reports');
 const OUTPUT_FILE = path.join(REPORTS_DIR, 'dashboard-metrics.json');
 
 function safeRead(filePath) {

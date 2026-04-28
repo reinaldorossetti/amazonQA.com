@@ -9,7 +9,7 @@ const safePercent = (p, t) => t <= 0 ? 0 : Math.max(0, Math.min(100, (p / t) * 1
 const formatPercent = v => typeof v !== 'number' || Number.isNaN(v) ? 'N/D' : `${v.toFixed(1)}%`;
 
 /* ── Reports Data ────────────────────────────────── */
-const reportsBaseUrl = new URL('./', window.location.href).href;
+const reportsBaseUrl = new URL('./reports/', window.location.href).href;
 
 const REPORTS = [
   { title: 'E2E - Frontend Chromium',    type: 'E2E',                   description: 'Fluxos ponta a ponta no Chromium.',                                           href: `${reportsBaseUrl}playwright-report-frontend-chromium/` },

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
-const HISTORY_DIR = path.join(ROOT, 'tests-dashboard', 'history');
+const HISTORY_DIR = path.join(ROOT, 'tests-dashboard', 'reports', 'history');
 
 function safeReadJSON(p) {
   try { return JSON.parse(fs.readFileSync(p,'utf8')); } catch(e) { return null; }

@@ -177,4 +177,4 @@ O Emulador Android usa um IP específico para acessar o `localhost` da sua máqu
 
 ---
 
-**Link Útil**: [Regras de Negócio Oficiais](https://reinaldorossetti.github.io/tester.com/regras-do-sistema.html)
+**Link Útil**: [Regras de Negócio Oficiais](https://github.com/reinaldorossetti/amazonQA.com/blob/main/regras-do-sistema.md)

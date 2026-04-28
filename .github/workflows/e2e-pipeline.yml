@@ -192,8 +192,8 @@ jobs:
         run: |
           echo "Fetching previous history from gh-pages branch..."
           git fetch origin gh-pages --depth=1
-          git checkout origin/gh-pages -- tests-dashboard/history || echo "No previous history found on gh-pages."
-          ls -R tests-dashboard/history || true
+          git checkout origin/gh-pages -- tests-dashboard/reports/history || echo "No previous history found on gh-pages."
+          ls -R tests-dashboard/reports/history || true
 
       - name: Generate dashboard metrics (with qaEfficiency)
         if: always()
@@ -205,11 +205,11 @@ jobs:
         if: always()
         run: |
           ls -la tests-dashboard || true
-          ls -la tests-dashboard/history || true
+          ls -la tests-dashboard/reports/history || true
           echo '--- latest-scan.json ---'
-          cat tests-dashboard/history/latest-scan.json || true
+          cat tests-dashboard/reports/history/latest-scan.json || true
           echo '--- qaEfficiency snapshot (latest) ---'
-          LATEST=$(ls tests-dashboard/history/*.json 2>/dev/null | sort -r | head -n1)
+          LATEST=$(ls tests-dashboard/reports/history/*.json 2>/dev/null | sort -r | head -n1)
           if [ -n "$LATEST" ]; then
             node -e "
               const d = require('./' + process.argv[1]);

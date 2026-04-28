@@ -51,7 +51,7 @@ O sistema suporta dois tipos de cadastro:
 | **Pessoa Física (PF)** | CPF | — |
 | **Pessoa Jurídica (PJ)** | CNPJ | Razão Social (obrigatória) |
 
-O tipo é selecionado via toggle na interface. Por padrão: `PF`.
+O tipo é selecionado via toggle na interface. Por padrão: `PF`. Os dados do CPF e CNPJ devem ser validados.
 
 ---
 

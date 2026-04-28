@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites id="" name="" tests="50" failures="0" skipped="0" errors="0" time="120.0">
+  <testsuite name="frontend-chromium" timestamp="2026-04-28T14:00:00" hostname="localhost" tests="50" failures="0" skipped="0" time="120.0" errors="0">
+    <testcase name="should login" classname="login.spec.ts" time="2.5"/>
+    <!-- Simulated passed tests -->
+  </testsuite>
+</testsuites>

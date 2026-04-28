@@ -63,7 +63,7 @@ dates.json
 history/*.json
 history/
 unit-tests-web/*.json
-/tests-dashboard/history/*.*
+/tests-dashboard/reports/history/*.*
 /tests-dashboard/scratch/*.*
-/tests-dashboard/unit-tests-web/*.*
+/tests-dashboard/reports/unit-tests-web/*.*
 /allure-report

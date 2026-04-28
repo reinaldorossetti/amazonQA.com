@@ -7,6 +7,7 @@
     "dashboard-api": "node ./tests-dashboard/api-server.js"
   },
   "dependencies": {
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.3",
+    "better-sqlite3": "^8.1.0"
   }
 }

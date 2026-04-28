@@ -13,8 +13,12 @@ tests-dashboard/
 │
 ├── index.html                       # Entry point do dashboard (publicado no gh-pages)
 ├── generate-dashboard-metrics.js    # Script Node.js executado pela esteira CI
-├── api-server.js                    # Servidor local para desenvolvimento
+├── api-server.js                    # Servidor local (API e SQLite interface)
+├── sqlite_writer.py                 # Fallback para escrita no banco SQLite
 ├── server.bat                       # Helper Windows para iniciar o servidor local
+│
+├── db/                              # Banco de dados SQLite
+│   └── dashboard.sqlite3            # Base de dados central de métricas
 │
 ├── src/                             # Código-fonte JavaScript do dashboard
 │   ├── dashboard-utils.js           # Helpers matemáticos, constantes e render utils
@@ -29,22 +33,12 @@ tests-dashboard/
 │   └── data/
 │       └── dashboard-metrics-data.js # Fallback de dados para ambientes sem CI
 │
-├── history/                         # Snapshots gerados pela esteira (não editar manualmente)
-│   ├── dates.json                   # Lista das últimas 7 execuções (índice do sidebar)
-│   ├── latest-scan.json             # Debug: caminhos descobertos pela última execução da CI
-│   ├── qa-efficiency-metrics.json   # Referência completa de estrutura de métricas de QA
-│   └── YYYY-MM-DD-HHhMMm.json       # Snapshot por execução (gerado automaticamente)
-│
-├── docs/                            # Documentação do projeto
-│   ├── README.md                    # Este arquivo
-│   └── RULES.md                     # Regras e decisões de arquitetura do dashboard
-│
-├── scripts/                         # Scripts auxiliares e utilitários
-│   ├── generate-failure-report.js
-│   └── get-test-stats.js
-│
-└── prompts/                         # Prompts de contexto para assistentes de IA
-    └── METRICAS_SUGERIDAS.md
+├── reports/                         # Artefatos coletados e gerados (ignorado pelo git)
+│   ├── dashboard-metrics.json       # JSON consolidado da última execução
+│   ├── history/                     # Snapshots e lista de datas de execução
+│   ├── e2e-junit-*/                 # Pastas com JUnit de Playwright (Chromium, Edge, etc.)
+│   ├── unit-tests-*/                # Pastas com JUnit de testes unitários
+│   └── coverage/                    # Relatórios de cobertura LCOV/HTML
 ```
 
 > **Nota:** Os diretórios abaixo são gerados pela CI e **não devem ser commitados**:
@@ -56,6 +50,12 @@ tests-dashboard/
 
 ### 1. Inicie o servidor estático (da raiz do repo):
 ```bash
+# gerar métricas
+node ./tests-dashboard/generate-dashboard-metrics.js
+
+# servir o dashboard em http://localhost:8080
+npx http-server tests-dashboard -p 8080
+# ou (Python 3)
 python -m http.server 8000
 # ou (Windows)
 tests-dashboard/server.bat
@@ -149,9 +149,50 @@ Acompanha o progresso da digitalização dos testes.
 
 ---
 
+## 🏗️ Arquitetura de Dados e Lógica de Geração
+
+O ecossistema do dashboard funciona através de um processo de descoberta automática (auto-discovery) de artefatos de testes.
+
+### Fluxograma de Dados
+
+```mermaid
+graph TD
+    A[Execução de Testes CI/CD] --> B{Geração de Artefatos}
+    B -->|Unit Web| C[reports/unit-tests-web/junit.xml]
+    B -->|Unit Backend| D[reports/unit-tests-backend/junit.xml]
+    B -->|E2E Playwright| E[reports/e2e-junit-*/junit-report.xml]
+    B -->|Coverage| F[reports/unit-tests-web/coverage/index.html]
+
+    C & D & E & F --> G[generate-dashboard-metrics.js]
+    
+    G --> H[reports/dashboard-metrics.json]
+    G --> I[Snapshots em reports/history/*.json]
+    G --> J[sqlite_writer.py]
+    
+    J --> K[(db/dashboard.sqlite3)]
+    
+    K --> L[api-server.js :3030]
+    L --> M[Dashboard UI]
+    H -.->|Fallback| M
+```
+
+### 🔍 Lógica de Descoberta (Auto-Discovery)
+
+1.  **Testes Unitários**: O script busca arquivos `junit.xml` ou `unit-report.xml` em pastas específicas como `unit-tests-web` e `unit-tests-backend`.
+2.  **Testes E2E (Playwright)**:
+    *   O dashboard **não** analisa mais o HTML do Playwright diretamente.
+    *   Ele busca por pastas que seguem o padrão `reports/e2e-junit-<projeto>/`.
+    *   Dentro de cada pasta, ele lê o arquivo `junit-report.xml`.
+    *   O nome do projeto no dashboard é derivado do sufixo da pasta (ex: `e2e-junit-chromium` vira o projeto `chromium`).
+3.  **Persistência Híbrida**:
+    *   **JSON**: Mantém a compatibilidade com o dashboard estático.
+    *   **SQLite**: Permite consultas complexas e histórico robusto. Se o `better-sqlite3` falhar por problemas de drivers nativos, o sistema utiliza automaticamente um script Python (`sqlite_writer.py`) como fallback transparente.
+
 ## 📝 Notas Técnicas
 
-- O dashboard é **100% estático** — não precisa de backend em produção.
-- O `assets/data/dashboard-metrics-data.js` é o **fallback** carregado primeiro; se a CI gerou novos dados eles sobrescrevem via fetch do JSON de histórico.
-- O versionamento de cache (`?v=3`) nos scripts garante que o browser não use versões antigas.
-- `latest-scan.json` é o principal aliado para debugar falhas de geração na CI.
+- **API de Dados**: O dashboard tenta buscar dados em `http://localhost:3030/api/db-metrics`. Se a API não estiver rodando, ele usa o `reports/dashboard-metrics.json` como fallback.
+- **Internacionalização**: Suporte total a PT-BR e EN via `src/i18n.js`.
+- **Debug**: O arquivo `latest-scan.json` (em `history`) detalha exatamente quais caminhos foram varridos e o que foi encontrado (ou não).
+- **Extensibilidade**: Para adicionar um novo projeto E2E, basta que a esteira de CI crie uma nova pasta `e2e-junit-NOME` com seu respectivo XML.
+
+---

@@ -519,6 +519,7 @@ function renderUnitBars(data) {
   const el = document.getElementById('unitBars');
   if (!el) return;
 
+  const e2eP = data?.e2e?.byProject ?? {};
   const projects = [
     { label: UNIT_PROJECT_LABELS['web'],     p: uw },
     { label: UNIT_PROJECT_LABELS['backend'], p: ub },
@@ -785,7 +786,21 @@ async function loadDynamicMetrics() {
   }
 
   try {
-    // Best-effort: trigger server-side generator so that today's snapshot exists
+    // 1. Try to fetch the latest metrics directly from the local API (which reads from SQLite)
+    try {
+      const apiRes = await fetch('http://localhost:3030/api/db-metrics', { mode: 'cors', cache: 'no-store' });
+      if (apiRes.ok) {
+        const dbData = await apiRes.json();
+        renderDynamicMetrics(dbData);
+        renderCIBadge(dbData);
+        // If we got DB data, we've already rendered the main view. 
+        // We'll still load the dates below to populate the historical sidebar.
+      }
+    } catch (e) {
+      console.log('Local API (SQLite) not available or failed, falling back to static JSON files.', e);
+    }
+
+    // 2. Best-effort: trigger server-side generator so that today's snapshot exists
     try { await triggerGenerateIfAvailable(2000); } catch {}
     const datesRes = await fetch(cacheUrl(`${reportsBaseUrl}history/dates.json`), { cache: 'no-store' });
     if (datesRes.ok) {
@@ -915,15 +930,65 @@ async function loadDynamicMetrics() {
             listEl.appendChild(li);
           });
 
-          // Select first item by default
+          // Select first available item by default.
+          // If a snapshot failed to load, try the next one instead of showing zeros.
           // Exposed helper to reset view to latest
           window.selectLatestHistoryItem = () => {
             const first = listEl.querySelector('.history-item');
             if (first) first.click();
           };
 
-          const first = listEl.querySelector('.history-item');
-          if (first) first.click();
+          // Prefer the first snapshot that already has metrics loaded from the parallel fetch.
+          let selected = false;
+          for (const snap of snapshots) {
+            if (snap.metrics) {
+              const li = listEl.querySelector(`.history-item[data-date="${snap.date}"]`);
+              if (li) {
+                // trigger the same click handler to render and set UI state
+                li.click();
+                selected = true;
+                break;
+              }
+            }
+          }
+
+          // If none of the pre-fetched snapshots had metrics, try to fetch them sequentially
+          if (!selected) {
+            for (const snap of snapshots) {
+              try {
+                const ok = await fetchAndRenderHistoric(snap.date);
+                if (ok) {
+                  const li = listEl.querySelector(`.history-item[data-date="${snap.date}"]`);
+                  if (li) {
+                    // Update visual state without triggering a second fetch
+                    document.querySelectorAll('.history-item').forEach(e => {
+                      e.classList.remove('active');
+                      e.classList.remove('disabled');
+                      e.setAttribute('aria-disabled', 'false');
+                      e.tabIndex = 0;
+                    });
+                    document.querySelectorAll('.history-item').forEach(e => {
+                      if (e !== li) {
+                        e.classList.add('disabled');
+                        e.setAttribute('aria-disabled', 'true');
+                      }
+                    });
+                    li.classList.add('active');
+                  }
+                  selected = true;
+                  break;
+                }
+              } catch (err) {
+                // ignore and try next date
+              }
+            }
+          }
+
+          // Final fallback: select the first item (may show zeros if nothing could be loaded)
+          if (!selected) {
+            const first = listEl.querySelector('.history-item');
+            if (first) first.click();
+          }
           return;
         }
       }

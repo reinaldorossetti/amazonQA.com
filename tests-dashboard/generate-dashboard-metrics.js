@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const REPORTS_DIR = __dirname;
+const REPORTS_DIR = path.join(__dirname, 'reports');
 const ROOT = fs.existsSync(path.join(__dirname, '..', 'package.json'))
   ? path.join(__dirname, '..')
   : process.cwd();
@@ -350,11 +350,20 @@ function createMetrics() {
       console.log(`Discovered backend JUnit at: ${path.relative(ROOT, found)}`);
       backendUnitJunitPath = found;
     } else {
-      // try to find any junit that looks like backend
+      // try to find any junit that looks like backend across scan roots
       const candidates = [];
-      recursiveFind(rd, (name, full) => /junit.*\.xml$/i.test(name) && /backend|service|api/i.test(full), 5, candidates);
+      for (const rd of scanRoots) {
+        try {
+          recursiveFind(rd, (name, full) => /junit.*\.xml$/i.test(name) && /backend|service|api/i.test(full), 5, candidates);
+        } catch (e) {
+          // ignore failures for individual roots
+        }
+      }
       const pick = findMostRecent(candidates);
-      if (pick) { backendUnitJunitPath = pick; console.log(`Discovered backend JUnit (fallback) at: ${path.relative(ROOT, pick)}`); }
+      if (pick) {
+        backendUnitJunitPath = pick;
+        console.log(`Discovered backend JUnit (fallback) at: ${path.relative(ROOT, pick)}`);
+      }
     }
   }
   if (!webUnitCoveragePath) {
@@ -530,6 +539,140 @@ function run() {
   fs.writeFileSync(historyFile, `${JSON.stringify(metrics, null, 2)}\n`, 'utf8');
   console.log(`Wrote history snapshot: ${path.relative(ROOT, historyFile)}`);
 
+  // Persist metrics into SQLite DB (best-effort). This allows the dashboard to
+  // query executions from a structured database instead of relying on filesystem JSON.
+  try {
+    const Database = require('better-sqlite3');
+    const DB_DIR = path.join(__dirname, 'db');
+    if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
+    const dbPath = path.join(DB_DIR, 'dashboard.sqlite3');
+    const db = new Database(dbPath);
+
+    // Ensure schema (idempotent)
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS test_executions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id TEXT UNIQUE,
+        generated_at TEXT,
+        source TEXT,
+        total_tests INTEGER DEFAULT 0,
+        total_failures INTEGER DEFAULT 0,
+        total_errors INTEGER DEFAULT 0,
+        total_skipped INTEGER DEFAULT 0,
+        total_passed INTEGER DEFAULT 0,
+
+        unit_web_tests INTEGER DEFAULT 0,
+        unit_web_failures INTEGER DEFAULT 0,
+        unit_web_errors INTEGER DEFAULT 0,
+        unit_web_skipped INTEGER DEFAULT 0,
+        unit_web_passed INTEGER DEFAULT 0,
+        unit_web_cov_statements REAL,
+        unit_web_cov_lines REAL,
+
+        unit_backend_tests INTEGER DEFAULT 0,
+        unit_backend_failures INTEGER DEFAULT 0,
+        unit_backend_errors INTEGER DEFAULT 0,
+        unit_backend_skipped INTEGER DEFAULT 0,
+        unit_backend_passed INTEGER DEFAULT 0,
+
+        e2e_totals_tests INTEGER DEFAULT 0,
+        e2e_totals_failures INTEGER DEFAULT 0,
+        e2e_totals_errors INTEGER DEFAULT 0,
+        e2e_totals_skipped INTEGER DEFAULT 0,
+        e2e_totals_passed INTEGER DEFAULT 0,
+
+        qa_efficiency_json TEXT,
+        metadata_json TEXT
+      );
+    `);
+
+    const insert = db.prepare(`
+      INSERT INTO test_executions (
+        run_id, generated_at, source,
+        total_tests, total_failures, total_errors, total_skipped, total_passed,
+        unit_web_tests, unit_web_failures, unit_web_errors, unit_web_skipped, unit_web_passed,
+        unit_web_cov_statements, unit_web_cov_lines,
+        unit_backend_tests, unit_backend_failures, unit_backend_errors, unit_backend_skipped, unit_backend_passed,
+        e2e_totals_tests, e2e_totals_failures, e2e_totals_errors, e2e_totals_skipped, e2e_totals_passed,
+        qa_efficiency_json, metadata_json
+      ) VALUES (
+        @run_id, @generated_at, @source,
+        @total_tests, @total_failures, @total_errors, @total_skipped, @total_passed,
+        @uw_tests, @uw_failures, @uw_errors, @uw_skipped, @uw_passed,
+        @uw_cov_statements, @uw_cov_lines,
+        @ub_tests, @ub_failures, @ub_errors, @ub_skipped, @ub_passed,
+        @e2e_tests, @e2e_failures, @e2e_errors, @e2e_skipped, @e2e_passed,
+        @qa_json, @meta_json
+      )
+      ON CONFLICT(run_id) DO UPDATE SET
+        generated_at=excluded.generated_at,
+        total_tests=excluded.total_tests,
+        total_failures=excluded.total_failures,
+        total_errors=excluded.total_errors,
+        total_skipped=excluded.total_skipped,
+        total_passed=excluded.total_passed,
+        qa_efficiency_json=excluded.qa_efficiency_json,
+        metadata_json=excluded.metadata_json;
+    `);
+
+    const runRecord = {
+      run_id: fullId,
+      generated_at: metrics.generatedAt || new Date().toISOString(),
+      source: metrics.source || 'github-actions-artifacts',
+      total_tests: (metrics.unit?.totals?.tests || 0) + (metrics.e2e?.totals?.tests || 0),
+      total_failures: (metrics.unit?.totals?.failures || 0) + (metrics.e2e?.totals?.failures || 0),
+      total_errors: (metrics.unit?.totals?.errors || 0) + (metrics.e2e?.totals?.errors || 0),
+      total_skipped: (metrics.unit?.totals?.skipped || 0) + (metrics.e2e?.totals?.skipped || 0),
+      total_passed: (metrics.unit?.totals?.passed || 0) + (metrics.e2e?.totals?.passed || 0),
+
+      uw_tests: metrics.unit?.web?.tests || 0,
+      uw_failures: metrics.unit?.web?.failures || 0,
+      uw_errors: metrics.unit?.web?.errors || 0,
+      uw_skipped: metrics.unit?.web?.skipped || 0,
+      uw_passed: metrics.unit?.web?.passed || 0,
+      uw_cov_statements: metrics.unit?.web?.coverage?.statements?.percent || null,
+      uw_cov_lines: metrics.unit?.web?.coverage?.lines?.percent || null,
+
+      ub_tests: metrics.unit?.backend?.tests || 0,
+      ub_failures: metrics.unit?.backend?.failures || 0,
+      ub_errors: metrics.unit?.backend?.errors || 0,
+      ub_skipped: metrics.unit?.backend?.skipped || 0,
+      ub_passed: metrics.unit?.backend?.passed || 0,
+
+      e2e_tests: metrics.e2e?.totals?.tests || 0,
+      e2e_failures: metrics.e2e?.totals?.failures || 0,
+      e2e_errors: metrics.e2e?.totals?.errors || 0,
+      e2e_skipped: metrics.e2e?.totals?.skipped || 0,
+      e2e_passed: metrics.e2e?.totals?.passed || 0,
+
+      qa_json: JSON.stringify(metrics.qaEfficiency || {}),
+      meta_json: JSON.stringify(metrics.scan || {})
+    };
+
+    insert.run(runRecord);
+    db.close();
+    console.log(`Wrote metrics to SQLite DB at ${path.relative(ROOT, dbPath)}`);
+  } catch (e) {
+    console.warn('Failed to write metrics to SQLite DB:', e && e.message);
+  }
+
+  // As a fallback (and to avoid native Node addons), try to use the Python
+  // writer (sqlite_writer.py) which uses the Python stdlib sqlite3 module.
+  try {
+    const child = require('node:child_process');
+    const py = process.env.PYTHON || 'python';
+    const writer = path.join(__dirname, 'sqlite_writer.py');
+    if (fs.existsSync(writer)) {
+      const args = [writer, historyFile, path.join(__dirname, 'db', 'dashboard.sqlite3')];
+      const res = child.spawnSync(py, args, { stdio: 'inherit', timeout: 20000 });
+      if (res.error) {
+        console.warn('Failed to run python sqlite writer:', res.error && res.error.message);
+      }
+    }
+  } catch (err) {
+    /* ignore python fallback errors */
+  }
+
   // Write a latest-scan.json with the discovery details (useful for CI debugging)
   try {
     const latestScanPath = path.join(HISTORY_DIR, 'latest-scan.json');
@@ -664,7 +807,8 @@ function run() {
     for (const d of extraDirs.concat(e2eDirs)) {
       try {
         if (!fs.existsSync(d) || !fs.statSync(d).isDirectory()) continue;
-        const found = fs.readdirSync(d).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
+        // Accept both date-only (YYYY-MM-DD.json) and timestamped snapshots (YYYY-MM-DD-HHhMMm.json)
+        const found = fs.readdirSync(d).filter(f => /^(\d{4}-\d{2}-\d{2}(?:-\d{2}h\d{2}m)?)\.json$/.test(f));
         for (const f of found) {
           const src = path.join(d, f);
           const dst = path.join(HISTORY_DIR, f);
