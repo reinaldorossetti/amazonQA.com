@@ -14,7 +14,6 @@ tests-dashboard/
 ├── index.html                       # Entry point do dashboard (publicado no gh-pages)
 ├── generate-dashboard-metrics.js    # Script Node.js executado pela esteira CI
 ├── api-server.js                    # Servidor local (API e SQLite interface)
-├── sqlite_writer.py                 # Fallback para escrita no banco SQLite
 ├── server.bat                       # Helper Windows para iniciar o servidor local
 │
 ├── db/                              # Banco de dados SQLite
@@ -42,7 +41,7 @@ tests-dashboard/
 ```
 
 > **Nota:** Os diretórios abaixo são gerados pela CI e **não devem ser commitados**:
-> `unit-tests-web/`, `unit-tests-backend/`, `e2e-junit-*/`, `playwright-report-*/`
+> `reports/unit-tests-web/`, `reports/unit-tests-backend/`, `reports/e2e-junit-*/`, `reports/playwright-report-*/`
 
 ---
 
@@ -55,8 +54,7 @@ node ./tests-dashboard/generate-dashboard-metrics.js
 
 # servir o dashboard em http://localhost:8080
 npx http-server tests-dashboard -p 8080
-# ou (Python 3)
-python -m http.server 8000
+
 # ou (Windows)
 tests-dashboard/server.bat
 ```
@@ -83,13 +81,13 @@ O arquivo `.github/workflows/e2e-pipeline.yml` executa os seguintes jobs em para
 |---|---|
 | `unit` | Roda testes unitários Web (Vitest) e Backend-ts, faz upload dos artefatos |
 | `contract` | Roda testes de contrato Pact, faz upload dos pacts gerados |
-| `e2e` | Roda testes E2E Playwright em matrix (chromium, edge, api), faz upload do JUnit e HTML report |
+| `e2e` | Roda testes E2E Playwright em matrix (chromium, webkit, edge, api), faz upload do JUnit e HTML report |
 | `deploy` | Baixa todos os artefatos, restaura histórico do gh-pages, executa o gerador e publica |
 
 ### O que o `generate-dashboard-metrics.js` produz:
 
 - `dashboard-metrics.json` — dados da execução mais recente
-- `history/YYYY-MM-DD-HHhMMm.json` — snapshot completo, incluindo seção `qaEfficiency`
+- `history/YYYY-MM-DD-HHhMMmSSs.json` — snapshot completo, incluindo seção `qaEfficiency`
 - `history/dates.json` — índice com as últimas **7 execuções** (limite configurado do sidebar)
 - `history/latest-scan.json` — metadados de debug da CI
 
@@ -102,6 +100,7 @@ As métricas exibidas no dashboard são calculadas automaticamente com base nos 
 ### 1. Automation ROI (Economia de Automação)
 Calcula a economia financeira e de tempo baseada no histórico de execuções.
 - **Fórmula**: `(Tempo Manual - Tempo Automático) × Nº de Execuções × Valor da Hora`
+- **Escopo do cálculo**: considera **somente testes E2E Web + API** (`frontend-chromium`, `frontend-webkit`, `frontend-edge`, `api`). **Não considera testes unitários** e não inclui `mobile-android`.
 - **Pesos**:
     - Tempo Manual: **3 min** (0.05h) por teste E2E.
     - Tempo Automático: **0.2 min** (0.0033h) por teste E2E (considerando **2 execuções em paralelo**).
@@ -112,7 +111,7 @@ Calcula a economia financeira e de tempo baseada no histórico de execuções.
 
 🧮 Validação do Cálculo (Cenário: 250 Testes)
 Considerando os pesos atuais do sistema:
-Regras: Somente considere os testes e2e para esse calculo, não considere testes unitarios.
+Regra: considere somente os testes E2E Web + API no cálculo; não considere testes unitários.
 
 Esforço Manual: 250 testes × 3 min = 750 min → 12.5 horas
 Esforço Automatizado: 250 testes × 0.2 min = 50 min → 0.83 horas
@@ -167,9 +166,7 @@ graph TD
     
     G --> H[reports/dashboard-metrics.json]
     G --> I[Snapshots em reports/history/*.json]
-    G --> J[sqlite_writer.py]
-    
-    J --> K[(db/dashboard.sqlite3)]
+    G --> K[(db/dashboard.sqlite3)]
     
     K --> L[api-server.js :3030]
     L --> M[Dashboard UI]
@@ -186,13 +183,13 @@ graph TD
     *   O nome do projeto no dashboard é derivado do sufixo da pasta (ex: `e2e-junit-chromium` vira o projeto `chromium`).
 3.  **Persistência Híbrida**:
     *   **JSON**: Mantém a compatibilidade com o dashboard estático.
-    *   **SQLite**: Permite consultas complexas e histórico robusto. Se o `better-sqlite3` falhar por problemas de drivers nativos, o sistema utiliza automaticamente um script Python (`sqlite_writer.py`) como fallback transparente.
+    *   **SQLite**: Permite consultas complexas e histórico robusto (`test_executions` + `e2e_results`).
 
 ## 📝 Notas Técnicas
 
 - **API de Dados**: O dashboard tenta buscar dados em `http://localhost:3030/api/db-metrics`. Se a API não estiver rodando, ele usa o `reports/dashboard-metrics.json` como fallback.
 - **Internacionalização**: Suporte total a PT-BR e EN via `src/i18n.js`.
 - **Debug**: O arquivo `latest-scan.json` (em `history`) detalha exatamente quais caminhos foram varridos e o que foi encontrado (ou não).
-- **Extensibilidade**: Para adicionar um novo projeto E2E, basta que a esteira de CI crie uma nova pasta `e2e-junit-NOME` com seu respectivo XML.
+- **Extensibilidade**: Para adicionar um novo projeto E2E, basta que a esteira de CI crie uma nova pasta `reports/e2e-junit-NOME` com seu respectivo XML.
 
 ---

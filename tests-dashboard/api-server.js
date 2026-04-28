@@ -130,9 +130,13 @@ const server = http.createServer(async (req, res) => {
       }
 
       // Fallback to JSON files
-      const dateStr = new Date().toISOString().slice(0, 10);
-      const historyFile = path.join(HISTORY_DIR, `${dateStr}.json`);
-      if (fs.existsSync(historyFile)) {
+      const latestHistory = fs.existsSync(HISTORY_DIR)
+        ? fs.readdirSync(HISTORY_DIR)
+          .filter((f) => /^(\d{4}-\d{2}-\d{2}(?:-\d{2}h\d{2}m(?:\d{2}s)?)?)\.json$/.test(f))
+          .sort((a, b) => b.localeCompare(a))[0]
+        : null;
+      const historyFile = latestHistory ? path.join(HISTORY_DIR, latestHistory) : null;
+      if (historyFile && fs.existsSync(historyFile)) {
         const content = fs.readFileSync(historyFile, 'utf8');
         res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
         return res.end(content);

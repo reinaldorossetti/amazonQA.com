@@ -580,6 +580,12 @@ function getZeroMetrics(dateStr) {
   };
 }
 
+function getRoiEligibleE2ETotal(data) {
+  const byProject = data?.e2e?.byProject || {};
+  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api'];
+  return roiProjects.reduce((sum, key) => sum + safeNumber(byProject[key]?.tests), 0);
+}
+
 /**
  * Compute a best-effort QA efficiency object from available runtime data.
  * Uses heuristics when exact values are not present in snapshots.
@@ -590,6 +596,7 @@ function computeQAEfficiencyFromData(data) {
   const e2eTotals = data?.e2e?.totals ?? {};
 
   const totalE2E = safeNumber(e2eTotals.tests) || Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + safeNumber(p.tests), 0);
+  const roiE2E = getRoiEligibleE2ETotal(data);
 
   const uwF = safeNumber(uw.failures) + safeNumber(uw.errors);
   const ubF = safeNumber(ub.failures) + safeNumber(ub.errors);
@@ -611,8 +618,8 @@ function computeQAEfficiencyFromData(data) {
   // New Rules: Manual = 3min, Auto = 0.2min, Parallelism = 2
   const manualPerTest = 3 / 60;   // 0.05h
   const autoPerTest = (0.2 / 60) / 2; // 0.001666h (parallelized)
-  const manualHours = +(totalE2E * manualPerTest).toFixed(2);
-  const automationHours = +(totalE2E * autoPerTest).toFixed(2);
+  const manualHours = +(roiE2E * manualPerTest).toFixed(2);
+  const automationHours = +(roiE2E * autoPerTest).toFixed(2);
   const savedHours = +(manualHours - automationHours).toFixed(2);
 
   // Extended heuristics for new fields
@@ -627,7 +634,7 @@ function computeQAEfficiencyFromData(data) {
 
   return {
     defectDensity: { bugs, kloc, value: defectValue },
-    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60 },
+    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60, roiEligibleE2E: roiE2E },
     flakiness: { flakyTests, totalE2E, value: flakinessValue },
     defectLeakage: { escapedToProduction, detectedInQA, leakageRate },
     testAutomationCoverage: { automated, manual, coveragePercent, totalTestCases },
@@ -839,7 +846,7 @@ async function loadDynamicMetrics() {
             const dateDisplay = (() => {
               try { 
                 // Prioritize parsing the ID if it matches the new format YYYY-MM-DD-HHhMMm
-                const idMatch = snap.date.match(/^(\d{4}-\d{2}-\d{2})-(\d{2})h(\d{2})m$/);
+                const idMatch = snap.date.match(/^(\d{4}-\d{2}-\d{2})-(\d{2})h(\d{2})m(?:\d{2}s)?$/);
                 if (idMatch) {
                   const [_, datePart, hour, min] = idMatch;
                   const [y, m, d] = datePart.split('-');

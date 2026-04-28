@@ -64,6 +64,7 @@ function migrate() {
       skipped INTEGER DEFAULT 0,
       flaky INTEGER DEFAULT 0,
       source_file TEXT,
+      UNIQUE(execution_id, project),
       FOREIGN KEY (execution_id) REFERENCES test_executions(id) ON DELETE CASCADE
     );
   `);

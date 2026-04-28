@@ -200,6 +200,12 @@ function parsePlaywrightSummaryFromHTML(html) {
   return { tests, passed: passed ?? Math.max(0, tests - failures - skipped - flaky), failures, errors: 0, skipped, flaky, status };
 }
 
+function getRoiEligibleE2ETotal(data) {
+  const byProject = data?.e2e?.byProject || {};
+  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api'];
+  return roiProjects.reduce((sum, key) => sum + parseIntSafe(byProject[key]?.tests), 0);
+}
+
 
 function readE2EJunitStats() {
   const statsByProject = {};
@@ -218,12 +224,14 @@ function readE2EJunitStats() {
     }
   }
 
-  // New flat layout: scan REPORTS_DIR for directories matching e2e-junit-*
-  if (fs.existsSync(REPORTS_DIR)) {
-    const flat = fs.readdirSync(REPORTS_DIR, { withFileTypes: true })
+  // Flat layout in both tests-dashboard/reports and tests-dashboard root
+  const flatRoots = [REPORTS_DIR, __dirname];
+  for (const flatRoot of flatRoots) {
+    if (!fs.existsSync(flatRoot)) continue;
+    const flat = fs.readdirSync(flatRoot, { withFileTypes: true })
       .filter((e) => e.isDirectory() && e.name.startsWith('e2e-junit-'));
     for (const entry of flat) {
-      candidateDirs.push({ dir: path.join(REPORTS_DIR, entry.name), name: entry.name });
+      candidateDirs.push({ dir: path.join(flatRoot, entry.name), name: entry.name });
     }
   }
 
@@ -267,6 +275,7 @@ function computeQAEfficiency(data) {
   const e2eTotals = data?.e2e?.totals ?? {};
   
   const totalE2E = parseIntSafe(e2eTotals.tests) || Object.values(data?.e2e?.byProject || {}).reduce((s, p) => s + parseIntSafe(p.tests), 0);
+  const roiE2E = getRoiEligibleE2ETotal(data);
   
   const uwF = parseIntSafe(uw.failures) + parseIntSafe(uw.errors);
   const ubF = parseIntSafe(ub.failures) + parseIntSafe(ub.errors);
@@ -282,11 +291,12 @@ function computeQAEfficiency(data) {
   const flakyTests = flakyFromProjects || 0;
   const flakinessValue = totalE2E > 0 ? +(flakyTests / totalE2E * 100) : 0;
 
-  const manualPerTest = 0.137;
-  const autoPerTest = 0.0068;
-  const manualHours = +(totalE2E * manualPerTest).toFixed(1);
-  const automationHours = +(totalE2E * autoPerTest).toFixed(1);
-  const savedHours = +(manualHours - automationHours).toFixed(1);
+  // ROI must consider only E2E Web + API (excludes unit and mobile)
+  const manualPerTest = 3 / 60;
+  const autoPerTest = (0.2 / 60) / 2;
+  const manualHours = +(roiE2E * manualPerTest).toFixed(2);
+  const automationHours = +(roiE2E * autoPerTest).toFixed(2);
+  const savedHours = +(manualHours - automationHours).toFixed(2);
 
   const escapedToProduction = 0;
   const detectedInQA = bugs;
@@ -299,7 +309,7 @@ function computeQAEfficiency(data) {
 
   return {
     defectDensity: { bugs, kloc, value: defectValue },
-    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60 },
+    automationROI: { manualHours, automationHours, savedHours, hourlyRate: 60, roiEligibleE2E: roiE2E },
     flakiness: { flakyTests, totalE2E, value: flakinessValue },
     defectLeakage: { escapedToProduction, detectedInQA, leakageRate },
     testAutomationCoverage: { automated, manual, coveragePercent, totalTestCases },
@@ -530,7 +540,8 @@ function run() {
   const dateStr = now.toISOString().slice(0, 10);
   const hour = String(now.getHours()).padStart(2, '0');
   const min = String(now.getMinutes()).padStart(2, '0');
-  const fullId = `${dateStr}-${hour}h${min}m`;
+  const sec = String(now.getSeconds()).padStart(2, '0');
+  const fullId = `${dateStr}-${hour}h${min}m${sec}s`;
   
   const HISTORY_DIR = path.join(REPORTS_DIR, 'history');
   if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
@@ -568,6 +579,8 @@ function run() {
         unit_web_passed INTEGER DEFAULT 0,
         unit_web_cov_statements REAL,
         unit_web_cov_lines REAL,
+        unit_web_cov_functions REAL,
+        unit_web_cov_branches REAL,
 
         unit_backend_tests INTEGER DEFAULT 0,
         unit_backend_failures INTEGER DEFAULT 0,
@@ -585,13 +598,29 @@ function run() {
         metadata_json TEXT
       );
     `);
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS e2e_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        execution_id INTEGER,
+        project TEXT,
+        tests INTEGER DEFAULT 0,
+        passed INTEGER DEFAULT 0,
+        failures INTEGER DEFAULT 0,
+        errors INTEGER DEFAULT 0,
+        skipped INTEGER DEFAULT 0,
+        flaky INTEGER DEFAULT 0,
+        source_file TEXT,
+        UNIQUE(execution_id, project),
+        FOREIGN KEY (execution_id) REFERENCES test_executions(id) ON DELETE CASCADE
+      );
+    `);
 
     const insert = db.prepare(`
       INSERT INTO test_executions (
         run_id, generated_at, source,
         total_tests, total_failures, total_errors, total_skipped, total_passed,
         unit_web_tests, unit_web_failures, unit_web_errors, unit_web_skipped, unit_web_passed,
-        unit_web_cov_statements, unit_web_cov_lines,
+        unit_web_cov_statements, unit_web_cov_lines, unit_web_cov_functions, unit_web_cov_branches,
         unit_backend_tests, unit_backend_failures, unit_backend_errors, unit_backend_skipped, unit_backend_passed,
         e2e_totals_tests, e2e_totals_failures, e2e_totals_errors, e2e_totals_skipped, e2e_totals_passed,
         qa_efficiency_json, metadata_json
@@ -599,7 +628,7 @@ function run() {
         @run_id, @generated_at, @source,
         @total_tests, @total_failures, @total_errors, @total_skipped, @total_passed,
         @uw_tests, @uw_failures, @uw_errors, @uw_skipped, @uw_passed,
-        @uw_cov_statements, @uw_cov_lines,
+        @uw_cov_statements, @uw_cov_lines, @uw_cov_functions, @uw_cov_branches,
         @ub_tests, @ub_failures, @ub_errors, @ub_skipped, @ub_passed,
         @e2e_tests, @e2e_failures, @e2e_errors, @e2e_skipped, @e2e_passed,
         @qa_json, @meta_json
@@ -611,6 +640,25 @@ function run() {
         total_errors=excluded.total_errors,
         total_skipped=excluded.total_skipped,
         total_passed=excluded.total_passed,
+        unit_web_tests=excluded.unit_web_tests,
+        unit_web_failures=excluded.unit_web_failures,
+        unit_web_errors=excluded.unit_web_errors,
+        unit_web_skipped=excluded.unit_web_skipped,
+        unit_web_passed=excluded.unit_web_passed,
+        unit_web_cov_statements=excluded.unit_web_cov_statements,
+        unit_web_cov_lines=excluded.unit_web_cov_lines,
+        unit_web_cov_functions=excluded.unit_web_cov_functions,
+        unit_web_cov_branches=excluded.unit_web_cov_branches,
+        unit_backend_tests=excluded.unit_backend_tests,
+        unit_backend_failures=excluded.unit_backend_failures,
+        unit_backend_errors=excluded.unit_backend_errors,
+        unit_backend_skipped=excluded.unit_backend_skipped,
+        unit_backend_passed=excluded.unit_backend_passed,
+        e2e_totals_tests=excluded.e2e_totals_tests,
+        e2e_totals_failures=excluded.e2e_totals_failures,
+        e2e_totals_errors=excluded.e2e_totals_errors,
+        e2e_totals_skipped=excluded.e2e_totals_skipped,
+        e2e_totals_passed=excluded.e2e_totals_passed,
         qa_efficiency_json=excluded.qa_efficiency_json,
         metadata_json=excluded.metadata_json;
     `);
@@ -632,6 +680,8 @@ function run() {
       uw_passed: metrics.unit?.web?.passed || 0,
       uw_cov_statements: metrics.unit?.web?.coverage?.statements?.percent || null,
       uw_cov_lines: metrics.unit?.web?.coverage?.lines?.percent || null,
+      uw_cov_functions: metrics.unit?.web?.coverage?.functions?.percent || null,
+      uw_cov_branches: metrics.unit?.web?.coverage?.branches?.percent || null,
 
       ub_tests: metrics.unit?.backend?.tests || 0,
       ub_failures: metrics.unit?.backend?.failures || 0,
@@ -649,28 +699,41 @@ function run() {
       meta_json: JSON.stringify(metrics.scan || {})
     };
 
-    insert.run(runRecord);
+    const row = insert.run(runRecord);
+    let executionId = row.lastInsertRowid;
+    if (!executionId) {
+      const existing = db.prepare('SELECT id FROM test_executions WHERE run_id = ?').get(fullId);
+      executionId = existing?.id;
+    }
+
+    if (executionId) {
+      const insertE2E = db.prepare(`
+        INSERT INTO e2e_results (
+          execution_id, project, tests, passed, failures, errors, skipped, flaky, source_file
+        ) VALUES (
+          @execution_id, @project, @tests, @passed, @failures, @errors, @skipped, @flaky, @source_file
+        );
+      `);
+      const clearE2E = db.prepare('DELETE FROM e2e_results WHERE execution_id = ?');
+      clearE2E.run(executionId);
+      for (const [project, p] of Object.entries(metrics.e2e?.byProject || {})) {
+        insertE2E.run({
+          execution_id: executionId,
+          project,
+          tests: parseIntSafe(p?.tests),
+          passed: parseIntSafe(p?.passed),
+          failures: parseIntSafe(p?.failures),
+          errors: parseIntSafe(p?.errors),
+          skipped: parseIntSafe(p?.skipped),
+          flaky: parseIntSafe(p?.flaky),
+          source_file: p?.sourceFile || null,
+        });
+      }
+    }
     db.close();
     console.log(`Wrote metrics to SQLite DB at ${path.relative(ROOT, dbPath)}`);
   } catch (e) {
     console.warn('Failed to write metrics to SQLite DB:', e && e.message);
-  }
-
-  // As a fallback (and to avoid native Node addons), try to use the Python
-  // writer (sqlite_writer.py) which uses the Python stdlib sqlite3 module.
-  try {
-    const child = require('node:child_process');
-    const py = process.env.PYTHON || 'python';
-    const writer = path.join(__dirname, 'sqlite_writer.py');
-    if (fs.existsSync(writer)) {
-      const args = [writer, historyFile, path.join(__dirname, 'db', 'dashboard.sqlite3')];
-      const res = child.spawnSync(py, args, { stdio: 'inherit', timeout: 20000 });
-      if (res.error) {
-        console.warn('Failed to run python sqlite writer:', res.error && res.error.message);
-      }
-    }
-  } catch (err) {
-    /* ignore python fallback errors */
   }
 
   // Write a latest-scan.json with the discovery details (useful for CI debugging)
@@ -689,7 +752,7 @@ function run() {
   // Collect date files from HISTORY_DIR, plus any snapshots that may exist in
   // unit-tests-web, unit-tests-backend and e2e-junit-* folders so the UI can
   // present a complete list even if some snapshots live outside history/.
-  const datePattern = /^(\d{4}-\d{2}-\d{2})(-\d{2}h\d{2}m)?\.json$/;
+  const datePattern = /^(\d{4}-\d{2}-\d{2})(-\d{2}h\d{2}m(?:\d{2}s)?)?\.json$/;
   const dateSet = new Set();
 
   // from history dir
@@ -807,8 +870,8 @@ function run() {
     for (const d of extraDirs.concat(e2eDirs)) {
       try {
         if (!fs.existsSync(d) || !fs.statSync(d).isDirectory()) continue;
-        // Accept both date-only (YYYY-MM-DD.json) and timestamped snapshots (YYYY-MM-DD-HHhMMm.json)
-        const found = fs.readdirSync(d).filter(f => /^(\d{4}-\d{2}-\d{2}(?:-\d{2}h\d{2}m)?)\.json$/.test(f));
+        // Accept both date-only and timestamped snapshots with optional seconds.
+        const found = fs.readdirSync(d).filter(f => /^(\d{4}-\d{2}-\d{2}(?:-\d{2}h\d{2}m(?:\d{2}s)?)?)\.json$/.test(f));
         for (const f of found) {
           const src = path.join(d, f);
           const dst = path.join(HISTORY_DIR, f);
