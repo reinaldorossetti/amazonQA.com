@@ -2,6 +2,7 @@ package com.amazonqa.android.features.auth
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
 import com.amazonqa.android.MainActivity
 import com.amazonqa.android.helpers.EspressoPageHelper
 import com.amazonqa.shared.utils.AppStrings
@@ -138,11 +139,11 @@ class UserRegistrationInstrumentedTests {
         page.typeText("register_cep_field", testCep)
         
         // 3. Aguarda o preenchimento automático (API ViaCEP)
+        // Aguarda até que o campo rua seja preenchido com o texto esperado
         page.waitUntil(15000) {
             try {
-                val node = composeRule.onNodeWithTag("register_street_field").fetchSemanticsNodes().firstOrNull()
-                val text = node?.config?.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.EditableText)?.text
-                !text.isNullOrBlank()
+                page.assertTextEquals("register_street_field", "Avenida Paulista")
+                true
             } catch (e: Exception) {
                 false
             }

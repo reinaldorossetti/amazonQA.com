@@ -363,7 +363,7 @@ test.describe('Cart and Checkout', () => {
 
     const distinctItemsLocator = page.locator('[data-element-id="cart-summary-total-items"]');
     await expect(distinctItemsLocator).toBeVisible();
-    await expect(distinctItemsLocator).toHaveText('Itens(3)');
+    await expect(distinctItemsLocator).toHaveText('Itens (3)');
     const subtotalTextLocator = page.locator('[data-element-id="cart-summary-subtotal"]');
     await expect(subtotalTextLocator).toContainText('Subtotal (4 items)');
   });
@@ -372,7 +372,7 @@ test.describe('Cart and Checkout', () => {
     const catalogPage = new CatalogPage(page);
     const navComponent = new NavComponent(page);
     await catalogPage.goToCatalog();
-    
+
     // Add product 1 (shipping_cost = 0)
     await catalogPage.getAddToCartButtonLocator().nth(0).click();
     await navComponent.clickCartButton();
@@ -380,7 +380,7 @@ test.describe('Cart and Checkout', () => {
     const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
     await expect(shippingLocator).toBeVisible();
     await expect(shippingLocator).toContainText(/Grátis|Free/i);
-    
+
     await expect(page.getByText(/Your order qualifies for FREE Shipping/i)).toBeVisible();
   });
 

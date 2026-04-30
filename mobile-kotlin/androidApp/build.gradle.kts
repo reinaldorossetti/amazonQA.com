@@ -70,3 +70,14 @@ dependencies {
     testImplementation(libs.faker)
     androidTestImplementation(libs.faker)
 }
+
+// Detox harness-only toggle: when -PdetoxHarnessOnly=true, use empty androidTest sourceSet
+val detoxHarnessOnly = project.findProperty("detoxHarnessOnly")?.toString() == "true"
+
+if (detoxHarnessOnly) {
+    println("Detox harness-only build enabled: using empty androidTest sources")
+    // Redirect androidTest sources to minimal empty folders so the assembled androidTest APK
+    // contains only the instrumentation harness and no instrumented tests.
+    android.sourceSets.getByName("androidTest").java.srcDirs("src/androidTest-empty/kotlin")
+    android.sourceSets.getByName("androidTest").res.srcDirs("src/androidTest-empty/res")
+}

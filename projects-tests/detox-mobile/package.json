@@ -1,0 +1,96 @@
+{
+  "name": "detox-mobile",
+  "version": "0.1.0",
+  "author": "Reinaldo M R Junior",
+  "private": true,
+  "scripts": {
+    "android:build": "cd ../../mobile-kotlin && (./gradlew :androidApp:assembleDebug :androidApp:assembleDebugAndroidTest -PdetoxHarnessOnly=true -DtestBuildType=debug || gradlew.bat :androidApp:assembleDebug :androidApp:assembleDebugAndroidTest -PdetoxHarnessOnly=true -DtestBuildType=debug)",
+    "android:build:instrumented": "cd ../../mobile-kotlin && (./gradlew :androidApp:assembleDebug :androidApp:assembleDebugAndroidTest -DtestBuildType=debug || gradlew.bat :androidApp:assembleDebug :androidApp:assembleDebugAndroidTest -DtestBuildType=debug)",
+    "detox:build": "npx detox build --configuration android.emu.debug",
+    "detox:test": "npx detox test --configuration android.emu.debug",
+    "detox:run:auth": "npx detox test --configuration android.emu.debug spec/auth.spec.js --loglevel trace",
+    "test": "npm run detox:test"
+  },
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "detox": {
+    "testRunner": {
+      "jest": {
+        "setupTimeout": 600000
+      }
+    },
+    "apps": {
+      "android.debug": {
+        "type": "android.apk",
+        "binaryPath": "./app/apk/androidApp-debug-androidTest.apk",
+        "testBinaryPath": "./app/apk/androidApp-debug-androidTest.apk",
+        "package": "com.amazonqa.android",
+        "testPackage": "com.amazonqa.android.test"
+      }
+    },
+    "devices": {
+      "emulator": {
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_8a"
+        }
+      },
+      "attached": {
+        "type": "android.attached",
+        "device": {
+          "adbName": "emulator-5554"
+        }
+      }
+    },
+    "configurations": {
+      "android.emu.debug": {
+        "device": "attached",
+        "app": "android.debug",
+        "build": "echo \"APK already installed, skipping build\""
+      },
+      "android.emu.release": {
+        "device": "attached",
+        "app": "android.debug",
+        "build": "echo \"APK already installed, skipping build\""
+      }
+    },
+    "behavior": {
+      "init": {
+        "reinstallApp": false,
+        "exposeGlobals": true
+      },
+      "launchApp": "auto",
+      "cleanup": {
+        "shutdownDevice": false
+      }
+    }
+  },
+  "jest": {
+    "testRunner": "jest-circus/runner",
+    "testEnvironment": "detox/runners/jest/testEnvironment",
+    "testTimeout": 600000,
+    "maxWorkers": 1,
+    "verbose": true,
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "./test-results",
+          "outputName": "junit.xml"
+        }
+      ]
+    ]
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "detox": "^20.51.0",
+    "jest": "^29.7.0",
+    "jest-environment-node": "^30.3.0",
+    "jest-junit": "^17.0.0"
+  }
+}
