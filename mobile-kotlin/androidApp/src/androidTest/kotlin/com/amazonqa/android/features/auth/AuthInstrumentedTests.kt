@@ -4,7 +4,10 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.amazonqa.android.MainActivity
 import com.amazonqa.android.helpers.EspressoPageHelper
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import com.amazonqa.shared.utils.AppStrings
+import com.amazonqa.android.screens.ScreenAuth
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,11 +27,27 @@ class AuthInstrumentedTests {
     @get:Rule
     val composeRule = createAndroidComposeRule<MainActivity>()
 
+    @get:Rule
+    val screenshotOnFailure = object : TestWatcher() {
+        override fun failed(e: Throwable?, description: Description) {
+            try {
+                val helper = EspressoPageHelper(composeRule)
+                val name = "${description.className}_${description.methodName}"
+                helper.takeScreenshot(name)
+                println("Screenshot captured for failed test: $name")
+            } catch (t: Throwable) {
+                println("Failed to capture screenshot on test failure: ${t.message}")
+            }
+        }
+    }
+
     private lateinit var page: EspressoPageHelper
+    private lateinit var auth: ScreenAuth
 
     @Before
     fun setup() {
         page = EspressoPageHelper(composeRule)
+        auth = ScreenAuth(page)
         // Aguarda a MainActivity carregar completamente
         page.waitForIdle()
     }
@@ -37,91 +56,91 @@ class AuthInstrumentedTests {
     // LOGIN SCREEN
     // ─────────────────────────────────────────────────────────────────────────
 
+    /**
+     * A app inicia na LoginScreen — verifica elementos principais (ATDD)
+     */
     @Test
     fun testLoginScreenAllElementsAreDisplayed() {
-        // A app inicia na LoginScreen — verifica elementos principais
-        page.assertIsDisplayedByText(AppStrings.loginEmail)      // "E-mail ou Telefone"
-        page.assertIsDisplayedByText(AppStrings.loginPassword)   // "Senha"
-        page.assertIsDisplayedByText(AppStrings.loginContinue)   // "Continuar"
-        page.assertIsDisplayedByText(AppStrings.loginSkip)       // "Entrar como visitante"
+        auth.assertLoginScreenIsDisplayed()
     }
 
+    /**
+     * Verifica que não há mensagens de erro inicialmente na tela de login
+     */
     @Test
     fun testLoginScreenDoesNotShowErrorInitially() {
-        page.assertDoesNotExistByText("E-mail ou senha incorretos.")
-        page.assertDoesNotExistByText("Erro de conexão")
+        auth.assertNoInitialErrorMessages()
     }
 
+    /**
+     * Clicar em Continuar sem preencher não causa crash; a tela de login permanece visível
+     */
     @Test
     fun testLoginContinueButtonIsClickable() {
-        // Clica em Continuar sem preencher — não deve crashar
-        page.clickButtonByText(AppStrings.loginContinue)
-        page.waitForIdle()
-        // LoginScreen ainda deve estar visível (campos obrigatórios vazios)
-        page.assertIsDisplayedByText(AppStrings.loginEmail)
+        auth.clickContinue()
+        // Apenas verifica que o campo de e-mail permanece visível (comportamento original)
+        auth.assertEmailFieldIsDisplayed()
     }
 
+    /**
+     * Preenche os campos de login e verifica navegação de foco via IME actions
+     */
     @Test
     fun testLoginKeyboardNavigationMovesFocus() {
-        // Preenche email e pressiona Next
-        page.typeText("login_email_field", "admin@tester.com")
-        page.performImeAction("login_email_field")
-        
-        // Agora deve estar no campo de senha
-        page.typeText("login_password_field", "admin123")
-        page.performImeAction("login_password_field")
-        
+        auth.fillLoginForm("admin@tester.com", "admin123")
         page.waitForIdle()
     }
 
+    /**
+     * Ao clicar em 'Não tem conta? Comece aqui.' navega para a tela de cadastro
+     */
     @Test
     fun testLoginNavigatesToRegisterScreen() {
-        // Clica em "Não tem conta? Comece aqui." para navegar ao cadastro
-        page.clickButtonByText(AppStrings.loginRegister)
-        page.waitForIdle()
-        // Após navegar, o formulário de cadastro deve aparecer
-        page.assertIsDisplayedByText("Nome *")
+        auth.navigateToRegister()
+        auth.assertRegisterFormDisplayed()
     }
 
     // ─────────────────────────────────────────────────────────────────────────
     // REGISTER SCREEN  (navega a partir da LoginScreen)
     // ─────────────────────────────────────────────────────────────────────────
 
-    private fun navigateToRegister() {
-        page.clickButtonByText(AppStrings.loginRegister)
-        page.waitForIdle()
-    }
+    // Navegação para registro agora encapsulada em ScreenAuth
 
+    /**
+     * O formulário de cadastro exibe os campos obrigatórios (Nome, Sobrenome, CPF, Email, Senha)
+     */
     @Test
     fun testRegisterScreenLabelsAreDisplayed() {
-        navigateToRegister()
-        page.assertIsDisplayedByText("Nome *")
-        page.assertIsDisplayedByText("Sobrenome *")
-        page.assertIsDisplayedByText("CPF *")
-        page.assertIsDisplayedByText("Email *")
-        page.assertIsDisplayedByText("Senha *")
+        auth.navigateToRegister()
+        auth.assertRegisterFormDisplayed()
     }
 
+    /**
+     * Aba 'Pessoa Física (CPF)' é selecionada por padrão no cadastro
+     */
     @Test
     fun testRegisterScreenPFTabIsSelectedByDefault() {
-        navigateToRegister()
-        page.assertIsDisplayedByText("Pessoa Física (CPF)")
-        page.assertIsDisplayedByText("CPF *")
+        auth.navigateToRegister()
+        auth.assertRegisterPFTabIsSelectedByDefault()
     }
 
+    /**
+     * Alternando para 'Pessoa Jurídica (CNPJ)' exibe o campo CNPJ
+     */
     @Test
     fun testRegisterScreenSwitchToPJTab() {
-        navigateToRegister()
-        page.clickButtonByText("Pessoa Jurídica (CNPJ)")
-        page.waitForIdle()
-        page.assertIsDisplayedByText("CNPJ *")
+        auth.navigateToRegister()
+        auth.switchToPJTab()
+        auth.assertCnpjFieldDisplayed()
     }
 
+    /**
+     * Ao avançar sem preencher, devem ser exibidos erros de validação 'Campo obrigatório'
+     */
     @Test
     fun testRegisterScreenValidationShowsErrors() {
-        navigateToRegister()
-        page.clickButtonByText("Próximo: Endereço")
-        page.waitForIdle()
-        page.assertIsDisplayedByText("Campo obrigatório")
+        auth.navigateToRegister()
+        auth.clickNextAddress()
+        auth.assertRegisterValidationShowsErrors()
     }
 }

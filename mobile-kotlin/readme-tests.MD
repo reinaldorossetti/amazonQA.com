@@ -473,6 +473,8 @@ androidApp/build/reports/screenshots/
 ```bash
 ./gradlew :androidApp:testDebugUnitTest --continue
 # Relatório em: androidApp/build/reports/tests/testDebugUnitTest/index.html
+
+./gradlew :androidApp:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.amazonqa.android.features.auth.AuthInstrumentedTests
 ```
 
 ---
@@ -817,3 +819,9 @@ Resultado no relatório:
 ---
 
 *Documentação gerada em 26/04/2026 — AmazonQA Mobile Tests v1.0*
+
+https://developer.android.com/studio/test/other-testing-tools/espresso-test-recorder?hl=pt-br
+
+Project Structure
+To ensure that the project is scalable and easy to maintain, I adopted a modular structure, organizing tests into specific folders. Here’s an example of how the project is structured:
+
