@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -24,7 +26,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
     testOptions {
         unitTests.isIncludeAndroidResources = true
         unitTests.all { test ->
@@ -57,7 +59,9 @@ dependencies {
     testImplementation(libs.allure.junit4)
     debugImplementation(libs.compose.ui.test.manifest)
 
-    // ── Testes instrumentados (Espresso no Emulador) ───────────────────────
+    // Detox E2E (androidTest APK must include native bridge — version aligned with npm `detox`)
+    androidTestImplementation("com.wix:detox:20.51.0")
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.compose.ui.test.junit4)
@@ -76,8 +80,21 @@ val detoxHarnessOnly = project.findProperty("detoxHarnessOnly")?.toString() == "
 
 if (detoxHarnessOnly) {
     println("Detox harness-only build enabled: using empty androidTest sources")
-    // Redirect androidTest sources to minimal empty folders so the assembled androidTest APK
-    // contains only the instrumentation harness and no instrumented tests.
-    android.sourceSets.getByName("androidTest").java.srcDirs("src/androidTest-empty/kotlin")
-    android.sourceSets.getByName("androidTest").res.srcDirs("src/androidTest-empty/res")
+    // Replace (do not append) androidTest roots: `srcDirs` only *adds* paths, so the default
+    // `src/androidTest/kotlin` would still compile all Espresso/Compose tests into the test APK.
+    val emptyKotlin = layout.projectDirectory.dir("src/androidTest-empty/kotlin")
+    val emptyRes = layout.projectDirectory.dir("src/androidTest-empty/res")
+    android.sourceSets.getByName("androidTest").apply {
+        java.setSrcDirs(listOf(emptyKotlin))
+        res.setSrcDirs(listOf(emptyRes))
+    }
+    // Kotlin Android keeps `src/androidTest/kotlin` wired into compile*AndroidTestKotlin separately
+    // from the AGP `java` SourceDirectorySet — exclude real tests so only `androidTest-empty` is compiled.
+    tasks.withType<KotlinCompile>().configureEach {
+        if (!name.contains("AndroidTest", ignoreCase = true)) return@configureEach
+        exclude {
+            val p = it.file.invariantSeparatorsPath
+            p.contains("/src/androidTest/kotlin/") && !p.contains("/src/androidTest-empty/")
+        }
+    }
 }

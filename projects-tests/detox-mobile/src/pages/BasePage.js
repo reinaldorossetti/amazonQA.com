@@ -3,7 +3,7 @@
  */
 class BasePage {
   TIMEOUT_DEFAULT = 35000;
-  async swipeUntilVisible(matcher, timeout = 5000, scrollAmount = 200) {
+  async swipeUntilVisible(matcher, timeout = TIMEOUT_DEFAULT, scrollAmount = 200) {
     // Try a plain wait first
     try {
       await waitFor(element(matcher)).toBeVisible().withTimeout(timeout);

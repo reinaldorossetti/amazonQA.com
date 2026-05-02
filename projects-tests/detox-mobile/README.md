@@ -8,11 +8,15 @@ Pré-requisitos
 - Android SDK (platform-tools, emulator)
 - Um AVD configurado (por exemplo `Pixel_8a`) ou dispositivo Android conectado
 - Java/Gradle disponíveis no PATH (ou use o `gradlew` do projeto)
+- **`npm install` neste diretório antes de `npm run android:build`**: o `mobile-kotlin` resolve `com.wix:detox` a partir de `node_modules/detox/Detox-android` (AAR do mesmo pacote npm do Detox).
 
 Estrutura relevante
 - `src/pages/` — Page Objects (Login, Register, Catalog, Cart, Checkout, Base)
 - `spec/` — Specs de teste (auth.spec.js, catalog.spec.js, orders.spec.js)
-- `package.json` — scripts: `android:build`, `detox:build`, `detox:test`
+- `app/apk/` — cópias locais dos APKs usados pelo Detox (geradas por `npm run android:build` ou `npm run android:copy-apk`)
+- `scripts/copy-apks.js` — copia os APKs do Gradle para `app/apk/`
+- `npm run android:install` — instala app + APK de instrumentação no dispositivo/emulador via `adb` (use depois do `android:build`; `-t` no test APK para pacotes `testOnly`)
+- `package.json` / `.detoxrc.js` — `binaryPath` → `./app/apk/androidApp-debug.apk` e `testBinaryPath` → `./app/apk/androidApp-debug-androidTest.apk`
 
 Comandos rápidos
 1) Instalar dependências (dentro deste folder):
@@ -24,7 +28,7 @@ npm install
 
 2) Construir o app e o test-APK (usa o gradle wrapper do projeto `mobile-kotlin`).
 
-Use **`npm run android:build`** para Detox: o projeto compila com **`-PdetoxHarnessOnly=true`**, assim o APK de `androidTest` **não** inclui os testes Espresso/JUnit de `androidTest/kotlin/` (caso contrário o `AndroidJUnitRunner` dispara **todos** os testes instrumentados e parece que “rode tudo”, mesmo você tendo passado só `spec/auth.spec.js` no Detox/Jest).
+Use **`npm run android:build`** para Detox: o projeto compila com **`-PdetoxHarnessOnly=true`**, assim o APK de `androidTest` **não** inclui os testes Espresso/JUnit de `androidTest/kotlin/`, mas **inclui** a classe `DetoxTest` e a dependência nativa `com.wix:detox`, que abrem o WebSocket com o runner Node (sem isso, `launchApp` falha esperando a mensagem `"ready"`). Se os testes Espresso estivessem no mesmo APK, o `AndroidJUnitRunner` dispararia todos e pareceria que “rodou tudo”, mesmo com só `spec/auth.spec.js` no Jest.
 
 Para builds **com** a suíte instrumentada Espresso (Android Studio/`gradlew connectedDebugAndroidTest`), use `npm run android:build:instrumented`. Para Detox:
 
@@ -32,13 +36,38 @@ Para builds **com** a suíte instrumentada Espresso (Android Studio/`gradlew con
 npm run android:build
 ```
 
-3) Build do Detox (registro/validação do APK apontado no config):
+Isso compila no `mobile-kotlin` e, ao final, executa **`npm run android:copy-apk`**, preenchendo `app/apk/` com:
+
+- `androidApp-debug.apk` — app principal (debug)
+- `androidApp-debug-androidTest.apk` — APK de instrumentação (para Detox use o build com `-PdetoxHarnessOnly=true`)
+
+Para copiar manualmente a partir de um build Gradle já feito (sem rodar o Gradle de novo):
+
+```bash
+npm run android:copy-apk
+```
+
+3) Instalar os APKs no emulador ou dispositivo (com `adb` no PATH e **um** alvo em `adb devices`; use `adb -s <serial> install …` se houver vários):
+
+```bash
+npm run android:install
+```
+
+Ou compile e instale em sequência:
+
+```bash
+npm run android:prepare
+```
+
+Com `reinstallApp: true` no `package.json`, o Detox também reinstala a partir de `app/apk/` ao iniciar os testes; o passo manual acima continua útil para conferir instalação sem rodar a suíte.
+
+4) Build do Detox (registro/validação do APK apontado no config):
 
 ```bash
 npm run detox:build
 ```
 
-4) Rodar os testes Detox:
+5) Rodar os testes Detox:
 
 ```bash
 npm run detox:test
@@ -65,6 +94,20 @@ emulator -avd Pixel_8a &
 # ou via AVD Manager (Android Studio)
 ```
 
+- Boot “limpo” e aceleração por GPU (sem restaurar snapshot da última sessão; substitua `Pixel_8a` pelo seu AVD):
+
+```bash
+emulator -avd Pixel_8a -no-snapshot-load -gpu host
+```
+
+Para apagar dados do emulador **uma vez** ao subir (wipe completo, útil quando o estado corrompe testes):
+
+```bash
+emulator -avd Pixel_8a -wipe-data -no-snapshot-load -gpu host
+```
+
+No Windows, se `-gpu host` falhar ou travar, tente `-gpu angle_indirect` ou `-gpu swiftshader_indirect` (mais lento, porém estável).
+
 - Listar dispositivos via ADB:
 
 ```bash
@@ -81,9 +124,12 @@ adb -s emulator-5554 uninstall com.amazonqa.android || true
 adb -s emulator-5554 uninstall com.amazonqa.android.test || true
 ```
 
-- APKs gerados:
+- APKs gerados pelo Gradle:
   - App: `mobile-kotlin/androidApp/build/outputs/apk/debug/androidApp-debug.apk`
   - Test APK: `mobile-kotlin/androidApp/build/outputs/apk/androidTest/debug/androidApp-debug-androidTest.apk`
+- APKs que o Detox usa (cópia neste projeto):
+  - `projects-tests/detox-mobile/app/apk/androidApp-debug.apk`
+  - `projects-tests/detox-mobile/app/apk/androidApp-debug-androidTest.apk`
 
 - Se os testes não conseguem conectar ao app (app desconecta/timeout):
   - Verifique se `assembleAndroidTest` foi bem-sucedido
