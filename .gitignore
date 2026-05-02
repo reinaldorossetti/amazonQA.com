@@ -68,3 +68,4 @@ unit-tests-web/*.json
 /tests-dashboard/reports/unit-tests-web/*.*
 /allure-report
 tests-dashboard/reports/
+/artifacts/
