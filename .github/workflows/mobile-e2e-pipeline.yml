@@ -3,8 +3,6 @@ name: Mobile E2E Pipeline
 on:
   push:
     branches: [main]
-    paths:
-      - 'mobile-kotlin/**'
 
 permissions:
   contents: write
