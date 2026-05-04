@@ -69,3 +69,5 @@ unit-tests-web/*.json
 /allure-report
 tests-dashboard/reports/
 /artifacts/
+*.apk
+projects-tests/detox-mobile/app/apk/
