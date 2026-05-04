@@ -21,6 +21,8 @@ const REPORTS = [
   { title: 'Unit Web - JUnit XML',       type: 'Unidade',               description: 'Saída bruta de execução dos testes unitários do web.',                       href: `${reportsBaseUrl}unit-tests-web/junit.xml` },
   { title: 'Unit Backend-ts - JUnit XML',type: 'Unidade',               description: 'Saída bruta de execução dos testes unitários do backend-ts.',                href: `${reportsBaseUrl}unit-tests-backend/junit.xml` },
   { title: 'Mobile Android (All Tests)', type: 'Mobile',                description: 'Resultados consolidados dos testes unitários (Robolectric) e instrumentados (Espresso).', href: `${reportsBaseUrl}e2e-junit-mobile-android/` },
+  { title: 'Mobile Android - Allure HTML', type: 'Mobile',              description: 'Relatório visual Allure dos testes mobile (unitários e instrumentados).',    href: `${reportsBaseUrl}mobile-allure-report/index.html` },
+  { title: 'Mobile Android - Allure Raw', type: 'Mobile',               description: 'Arquivos brutos do Allure (JSON/attachments) para auditoria e reprocessamento.', href: `${reportsBaseUrl}mobile-allure-results/` },
   { title: 'Swagger API',                type: 'Documentação',          description: 'Documentação interativa dos endpoints.',                                      href: `${reportsBaseUrl}swagger/index.html` }
 ];
 
