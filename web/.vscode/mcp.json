@@ -1,5 +1,17 @@
 {
   "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chrome",
+        "--test-id-attribute",
+        "data-element-id"
+      ]
+    },
     "playwright-test": {
       "type": "stdio",
       "command": "npx",
