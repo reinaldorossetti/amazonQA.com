@@ -125,4 +125,12 @@ describe('Cart Component', () => {
     await user.click(screen.getByRole('link', { name: /cart.continue_shopping/i }));
     expect(screen.getByText('cart.order_summary')).toBeInTheDocument();
   });
+
+  it('TC_CART_011: botão limpar carrinho chama setCartItems com array vazio', async () => {
+    const user = userEvent.setup();
+    const setCartItems = vi.fn();
+    renderWithRouter(<Cart cartItems={sampleItems} setCartItems={setCartItems} />);
+    await user.click(screen.getByRole('button', { name: /cart.clear_cart/i }));
+    expect(setCartItems).toHaveBeenCalledWith([]);
+  });
 });

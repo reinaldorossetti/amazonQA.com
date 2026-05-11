@@ -194,7 +194,7 @@ let html = `<!DOCTYPE html>
     }
 
     .no-failures svg {
-      width: 64px;
+      width: 70px;
       height: 64px;
       margin-bottom: 15px;
     }

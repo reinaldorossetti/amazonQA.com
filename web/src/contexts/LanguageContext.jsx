@@ -36,6 +36,7 @@ const translations = {
     "cart.free": "Grátis",
     "cart.total": "Total",
     "cart.continue_shopping": "Continuar comprando",
+    "cart.clear_cart": "Limpar carrinho",
 
     // Cart Item
     "cart_item.qty": "Qtd:",
@@ -148,6 +149,7 @@ const translations = {
     "cart.free": "Free",
     "cart.total": "Total",
     "cart.continue_shopping": "Continue shopping",
+    "cart.clear_cart": "Clear cart",
 
     // Cart Item
     "cart_item.qty": "Qty:",

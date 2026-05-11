@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import RemoveShoppingCartOutlinedIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 import CheckoutButton from "./CheckoutButton";
@@ -33,6 +34,7 @@ const Cart = ({
 
   const shippingTotal = safeCartItems.reduce((sum, item) => sum + (item.shipping_cost || 0) * item.quantity, 0);
   const grandTotal = totalPrice + shippingTotal;
+  const handleClearCart = () => setCartItems([]);
 
   return (
     <Container maxWidth="xl" sx={{ mt: 3, mb: 8, px: { xs: 2, md: 4 } }}>
@@ -84,16 +86,27 @@ const Cart = ({
                   Price
                 </Typography>
               </Box>
-              <Button
-                component={Link}
-                to="/"
-                variant="text"
-                color="secondary"
-                startIcon={<ArrowBackIcon />}
-                sx={{ mb: 1, px: 0 }}
-              >
-                {t("cart.continue_shopping")}
-              </Button>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+                <Button
+                  component={Link}
+                  to="/"
+                  variant="text"
+                  color="secondary"
+                  startIcon={<ArrowBackIcon />}
+                  sx={{ px: 1.5 }}
+                >
+                  {t("cart.continue_shopping")}
+                </Button>
+                <Button
+                  data-element-id="cart-clear-cart-btn"
+                  variant="text"
+                  startIcon={<RemoveShoppingCartOutlinedIcon />}
+                  onClick={handleClearCart}
+                  sx={{ px: 1.5 }}
+                >
+                  {t("cart.clear_cart")}
+                </Button>
+              </Box>
               <Divider sx={{ mb: 2, borderColor: "#D5D9D9" }} />
 
               <List disablePadding>
