@@ -103,15 +103,8 @@ public class LoginPageAction extends BasePage {
 
   public void validatedErrorAlertVisible(String message) {
     LOGGER.info(() -> "Validating error alert text equals expected message: " + message);
-    assertEquals(errorAlertText(), message);
-  }
-
-  public String errorAlertText() {
-    var alertWait = new WebDriverWait(driver, Duration.ofSeconds(30));
-    alertWait.until(ExpectedConditions.visibilityOfElementLocated(ERROR_ALERT_LOCATOR));
-    String text = driver.findElement(ERROR_ALERT_LOCATOR).getText();
-    LOGGER.info(() -> "Error alert text: " + text);
-    return text;
+    isVisible(driver.findElement(ERROR_ALERT_LOCATOR));
+    assertTextsVisible(message);
   }
 
 }

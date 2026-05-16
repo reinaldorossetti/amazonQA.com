@@ -96,15 +96,34 @@ jobs:
 
       - name: Generate Allure report
         if: always()
+        continue-on-error: true
         working-directory: projects-tests/selenium-e2e
-        run: ./mvnw allure:report -q
+        run: |
+          mkdir -p target/allure-results
+          ./mvnw allure:report
 
-      - name: Copy Allure report to tests-dashboard
+      - name: Prepare Allure report for dashboard
         if: always()
         run: |
-          mkdir -p tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
-          cp -r projects-tests/selenium-e2e/target/site/allure-maven/. \
-            tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
+          DEST="tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}"
+          REPORT="projects-tests/selenium-e2e/target/site/allure-maven"
+          mkdir -p "$DEST"
+          if [ -d "$REPORT" ] && [ "$(ls -A "$REPORT")" ]; then
+            cp -r "$REPORT/." "$DEST/"
+            echo "Allure report copied to $DEST"
+          else
+            cat > "$DEST/index.html" <<'EOF'
+          <!doctype html>
+          <html lang="en">
+          <head><meta charset="UTF-8"><title>Selenium Allure Report</title></head>
+          <body style="font-family:sans-serif;padding:2rem">
+            <h2>Selenium E2E — Allure Report</h2>
+            <p>No test results were generated in this run.</p>
+          </body>
+          </html>
+          EOF
+            echo "Fallback index.html written to $DEST"
+          fi
 
       - name: Upload Surefire reports
         if: always()
@@ -152,28 +171,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Chrome Allure report
+      - name: Download all Selenium artifacts
         uses: actions/download-artifact@v4
         with:
-          name: selenium-allure-report-chrome
-          path: tests-dashboard/reports/selenium-allure-report-chrome
+          path: tests-dashboard/reports
         continue-on-error: true
 
-      - name: Download Firefox Allure report
-        uses: actions/download-artifact@v4
-        with:
-          name: selenium-allure-report-firefox
-          path: tests-dashboard/reports/selenium-allure-report-firefox
-        continue-on-error: true
+      - name: Reorganize report directories
+        run: |
+          # download-artifact@v4 sem name cria subpastas com o nome do artefato.
+          # Os reports já chegam em tests-dashboard/reports/selenium-allure-report-{browser}/
+          for browser in chrome firefox; do
+            DEST="tests-dashboard/reports/selenium-allure-report-${browser}"
+            mkdir -p "$DEST"
+            echo "Contents of $DEST:"
+            ls "$DEST" || echo "(empty)"
+          done
 
-      - name: Restore history from gh-pages
+      - name: Restore Allure history from gh-pages
         continue-on-error: true
         run: |
           git fetch origin gh-pages --depth=1
-          git checkout origin/gh-pages -- tests-dashboard/reports/selenium-allure-report-chrome/history \
-            || echo "No previous chrome history found."
-          git checkout origin/gh-pages -- tests-dashboard/reports/selenium-allure-report-firefox/history \
-            || echo "No previous firefox history found."
+          for browser in chrome firefox; do
+            git checkout origin/gh-pages \
+              -- "tests-dashboard/reports/selenium-allure-report-${browser}/history" \
+              || echo "No previous history for ${browser}"
+          done
 
       - name: Deploy to GitHub Pages
         id: deploy

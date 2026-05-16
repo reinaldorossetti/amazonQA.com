@@ -8,6 +8,8 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class WebDriverFactory {
 
@@ -34,6 +36,10 @@ public final class WebDriverFactory {
     if (chromeBinary != null && !chromeBinary.isBlank()) {
       options.setBinary(chromeBinary);
     }
+    options.addArguments("--lang=pt-BR");
+    Map<String, Object> prefs = new HashMap<>();
+    prefs.put("intl.accept_languages", "pt-BR,pt,en-US,en");
+    options.setExperimentalOption("prefs", prefs);
     if (TestEnvironment.headless()) {
       options.addArguments("--headless=false", "--disable-gpu", "--window-size=1920,1080");
     }
@@ -44,6 +50,7 @@ public final class WebDriverFactory {
   private static FirefoxOptions firefoxOptions() {
     WebDriverManager.firefoxdriver().setup();
     FirefoxOptions options = new FirefoxOptions();
+    options.addPreference("intl.accept_languages", "pt-BR,pt,en-US,en");
     if (TestEnvironment.headless()) {
       options.addArguments("-headless");
     }
@@ -53,6 +60,10 @@ public final class WebDriverFactory {
   private static EdgeOptions edgeOptions() {
     WebDriverManager.edgedriver().setup();
     EdgeOptions options = new EdgeOptions();
+    options.addArguments("--lang=pt-BR");
+    Map<String, Object> prefs = new HashMap<>();
+    prefs.put("intl.accept_languages", "pt-BR,pt,en-US,en");
+    options.setExperimentalOption("prefs", prefs);
     if (TestEnvironment.headless()) {
       options.addArguments("--headless=new", "--disable-gpu", "--window-size=1920,1080");
     }
