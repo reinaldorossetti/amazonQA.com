@@ -78,17 +78,17 @@ jobs:
         env:
           browser: ${{ matrix.browser }}
           headless: "true"
-          base.url: http://127.0.0.1:5174
-          login.email: ${{ secrets.SELENIUM_LOGIN_EMAIL }}
-          login.password: ${{ secrets.SELENIUM_LOGIN_PASSWORD }}
+          BASE_URL: http://127.0.0.1:5174
+          LOGIN_EMAIL: ${{ secrets.SELENIUM_LOGIN_EMAIL }}
+          LOGIN_PASSWORD: ${{ secrets.SELENIUM_LOGIN_PASSWORD }}
         run: |
           chmod +x mvnw
           ./mvnw clean test \
             -Dbrowser="${browser}" \
             -Dheadless="${headless}" \
-            -Dbase.url="${base.url}" \
-            -Dlogin.email="${login.email}" \
-            -Dlogin.password="${login.password}"
+            -Dbase.url="${BASE_URL}" \
+            -Dlogin.email="${LOGIN_EMAIL}" \
+            -Dlogin.password="${LOGIN_PASSWORD}"
 
       - name: Generate Allure report
         if: always()

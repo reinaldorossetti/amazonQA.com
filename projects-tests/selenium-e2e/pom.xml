@@ -31,7 +31,7 @@
     <!-- Passed through Surefire, so CI can override: -Dbrowser=firefox -Dheadless=true -->
     <browser>chrome</browser>
     <headless>true</headless>
-    <base.url>http://localhost:5174</base.url>
+    <base.url>http://127.0.0.1:5174</base.url>
     <datafaker.version>2.5.4</datafaker.version>
   </properties>
 

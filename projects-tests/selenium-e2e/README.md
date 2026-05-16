@@ -166,7 +166,7 @@ Esse comando:
 |-------------|---------|-----------|
 | `browser` | `-Dbrowser=chrome` | `chrome`, `firefox` (ou `ff`), `edge` (ou `msedge`) |
 | `headless` | `-Dheadless=true` | `true`/`false` |
-| `base.url` | `-Dbase.url=http://localhost:5174` | URL da SPA |
+| `base.url` | `-Dbase.url=http://127.0.0.1:5174` | URL da SPA |
 | `login.email` / `login.password` | `-Dlogin.email=u@mail.com -Dlogin.password='Secret1!'` | Necessários para o teste feliz de login (`@EnabledIf`) |
 
 Exemplo combinado:

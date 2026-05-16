@@ -11,7 +11,17 @@ public final class TestEnvironment {
   private TestEnvironment() {}
 
   public static String baseUrl() {
-    return System.getProperty("base.url", "http://localhost:5174").replaceAll("/$", "");
+    String baseUrl = System.getProperty("BASE_URL");
+    if (baseUrl == null || baseUrl.isBlank()) {
+      baseUrl = System.getProperty("base.url");
+    }
+    if (baseUrl == null || baseUrl.isBlank()) {
+      baseUrl = System.getenv("BASE_URL");
+    }
+    if (baseUrl == null || baseUrl.isBlank()) {
+      baseUrl = "http://127.0.0.1:5174";
+    }
+    return baseUrl.replaceAll("/$", "");
   }
 
   public static boolean headless() {
@@ -35,11 +45,25 @@ public final class TestEnvironment {
   }
 
   public static String loginEmail() {
-    return System.getProperty("login.email");
+    String email = System.getProperty("LOGIN_EMAIL");
+    if (email == null || email.isBlank()) {
+      email = System.getProperty("login.email");
+    }
+    if (email == null || email.isBlank()) {
+      email = System.getenv("LOGIN_EMAIL");
+    }
+    return email;
   }
 
   public static String loginPassword() {
-    return System.getProperty("login.password");
+    String password = System.getProperty("LOGIN_PASSWORD");
+    if (password == null || password.isBlank()) {
+      password = System.getProperty("login.password");
+    }
+    if (password == null || password.isBlank()) {
+      password = System.getenv("LOGIN_PASSWORD");
+    }
+    return password;
   }
 
   public static boolean hasLoginCredentials() {
