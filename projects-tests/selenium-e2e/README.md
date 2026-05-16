@@ -13,6 +13,8 @@ Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object**. O
 | **Navegador** | Chrome, Firefox ou Edge instalados (drivers resolvidos via **WebDriverManager**) |
 | **Aplicação** | Front-end acessível na URL base (padrão `http://localhost:5174`, como no Playwright do monorepo) |
 
+> **Locale:** o `WebDriverFactory` força **pt-BR** nos browsers (Chrome/Edge/Firefox) para garantir textos em português.
+
 ### Instalar e configurar o Java 23
 
 1. Instale um **JDK 23** (por exemplo [Eclipse Temurin](https://adoptium.net/) ou a distribuição da sua empresa).
@@ -72,6 +74,7 @@ selenium-e2e/
 └── target/                    # gerado pelo Maven (ignorado no Git)
     ├── allure-results/        # resultados crus após os testes
     └── site/allure-maven/     # relatório HTML após allure:report
+allure-report/                 # relatório HTML gerado via Allure CLI (opcional)
 ```
 
 A cache do relatório **Allure 3** usada pelo plugin pode aparecer também em `.allure/` (também ignorada no `.gitignore` deste módulo).
@@ -262,6 +265,19 @@ mvn compile -Daether.connector.https.securityMode=insecure
    ```
 
    Windows: `.\mvnw.cmd allure:serve`
+
+4. **Allure CLI (opção direta, fora do Maven)**
+
+    Gere o relatório e suba um servidor local:
+
+    ```bash
+    allure generate allure-results -o allure-report --clean
+    allure open allure-report
+    ```
+
+    O servidor informa a URL local (ex.: `http://127.0.0.1:58xxx`).
+
+> **Screenshots:** o projeto anexa imagens automaticamente **antes de cada teste** e ao final de validações de login (`validatedLoginPage` e `validatedLoginInPage`). Essas imagens aparecem no Allure.
 
 O plugin **Allure Maven 3.x** usa por defeito o **runtime Allure 3** (Node empacregado pela cache sob `.allure/`). Para fixar uma versão concreta do CLI de relatório, consulte [Allure Maven](https://github.com/allure-framework/allure-maven) (`reportVersion`, etc.).
 

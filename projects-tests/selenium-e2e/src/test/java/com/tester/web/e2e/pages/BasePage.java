@@ -1,8 +1,11 @@
 package com.tester.web.e2e.pages;
 
+import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +13,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tester.web.e2e.config.TestEnvironment;
+
+import io.qameta.allure.Allure;
 
 public abstract class BasePage {
 
@@ -67,5 +72,12 @@ public abstract class BasePage {
     field.click();
     field.clear();
     field.sendKeys(text);
+  }
+
+  protected void attachScreenshot(String name) {
+    if (driver instanceof TakesScreenshot takesScreenshot) {
+      byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
+      Allure.addAttachment(name, "image/png", new ByteArrayInputStream(screenshot), ".png");
+    }
   }
 }

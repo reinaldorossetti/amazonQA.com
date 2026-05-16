@@ -94,35 +94,31 @@ jobs:
             -Dlogin.email="${LOGIN_EMAIL}" \
             -Dlogin.password="${LOGIN_PASSWORD}"
 
+      - name: Install Allure CLI
+        if: always()
+        run: npm install -g allure-commandline@2.34.0 --save-dev
+
       - name: Generate Allure report
         if: always()
-        continue-on-error: true
-        working-directory: projects-tests/selenium-e2e
         run: |
-          mkdir -p target/allure-results
-          ./mvnw allure:report
-
-      - name: Prepare Allure report for dashboard
-        if: always()
-        run: |
+          RESULTS="projects-tests/selenium-e2e/target/allure-results"
           DEST="tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}"
-          REPORT="projects-tests/selenium-e2e/target/site/allure-maven"
-          mkdir -p "$DEST"
-          if [ -d "$REPORT" ] && [ "$(ls -A "$REPORT")" ]; then
-            cp -r "$REPORT/." "$DEST/"
-            echo "Allure report copied to $DEST"
+          mkdir -p "$RESULTS" "$DEST"
+          if [ "$(ls -A "$RESULTS" 2>/dev/null)" ]; then
+            allure generate "$RESULTS" -o "$DEST" --clean
+            echo "Allure report generated at $DEST"
           else
             cat > "$DEST/index.html" <<'EOF'
           <!doctype html>
           <html lang="en">
           <head><meta charset="UTF-8"><title>Selenium Allure Report</title></head>
           <body style="font-family:sans-serif;padding:2rem">
-            <h2>Selenium E2E — Allure Report</h2>
+            <h2>Selenium E2E — Allure Report (${{ matrix.browser }})</h2>
             <p>No test results were generated in this run.</p>
           </body>
           </html>
           EOF
-            echo "Fallback index.html written to $DEST"
+            echo "No results found — fallback page written to $DEST"
           fi
 
       - name: Upload Surefire reports
