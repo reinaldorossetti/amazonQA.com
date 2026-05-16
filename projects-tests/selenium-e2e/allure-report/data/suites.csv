@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","3848","Invalid credentials show the API error alert","","2026-05-16","broken","2026-05-16","","com.tester.web.e2e.tests.LoginFeatureTest","com.tester.web.e2e.tests.LoginFeatureTest","invalidCredentialsShowErrorAlert"
+"","4556","Successful login redirects to the account area and shows the user greeting","","2026-05-16","passed","2026-05-16","","com.tester.web.e2e.tests.LoginFeatureTest","com.tester.web.e2e.tests.LoginFeatureTest","successfulLoginRedirectsToAccountArea"
+"","3840","Submitting with empty password shows the same validation alert","","2026-05-16","passed","2026-05-16","","com.tester.web.e2e.tests.LoginFeatureTest","com.tester.web.e2e.tests.LoginFeatureTest","emptyPasswordShowsValidationAlert"
+"","3807","Submitting empty fields shows client-side validation on the alert","","2026-05-16","passed","2026-05-16","","com.tester.web.e2e.tests.LoginFeatureTest","com.tester.web.e2e.tests.LoginFeatureTest","emptyFieldsShowValidationAlert"
