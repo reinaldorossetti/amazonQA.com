@@ -1,0 +1,128 @@
+name: Selenium E2E Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "selenium-e2e/**"
+      - "web/**"
+      - "server-ts/**"
+      - "docker-compose.yml"
+      - ".github/workflows/selenium-e2e-pipeline.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "selenium-e2e/**"
+      - "web/**"
+      - "server-ts/**"
+      - "docker-compose.yml"
+      - ".github/workflows/selenium-e2e-pipeline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selenium-e2e:
+    name: Selenium E2E (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Setup Java 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 23
+          cache: maven
+
+      - name: Setup Chrome
+        if: matrix.browser == 'chrome'
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Setup Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@v1
+
+      - name: Install web dependencies
+        working-directory: web
+        run: npm install
+
+      - name: Start application stack
+        run: docker compose up -d --build
+
+      - name: Wait for backend readiness
+        working-directory: web
+        run: npx wait-on --timeout 120000 http://127.0.0.1:3001/api/products
+
+      - name: Wait for frontend readiness
+        working-directory: web
+        run: npx wait-on --timeout 120000 http://127.0.0.1:5174
+
+      - name: Run Selenium login tests
+        working-directory: selenium-e2e
+        env:
+          browser: ${{ matrix.browser }}
+          headless: "true"
+          base.url: http://127.0.0.1:5174
+          login.email: ${{ secrets.SELENIUM_LOGIN_EMAIL }}
+          login.password: ${{ secrets.SELENIUM_LOGIN_PASSWORD }}
+        run: |
+          chmod +x mvnw
+          ./mvnw clean test \
+            -Dbrowser="${browser}" \
+            -Dheadless="${headless}" \
+            -Dbase.url="${base.url}" \
+            -Dlogin.email="${login.email}" \
+            -Dlogin.password="${login.password}"
+
+      - name: Generate Allure report
+        if: always()
+        working-directory: selenium-e2e
+        run: ./mvnw allure:report
+
+      - name: Upload Surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-surefire-${{ matrix.browser }}
+          path: selenium-e2e/target/surefire-reports/
+          if-no-files-found: warn
+
+      - name: Upload Allure raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-allure-results-${{ matrix.browser }}
+          path: selenium-e2e/target/allure-results/
+          if-no-files-found: warn
+
+      - name: Upload Allure HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-allure-report-${{ matrix.browser }}
+          path: selenium-e2e/target/site/allure-maven/
+          if-no-files-found: warn
+
+      - name: Container logs (on failure)
+        if: failure()
+        run: docker compose logs --tail=200
+
+      - name: Stop application stack
+        if: always()
+        run: docker compose down

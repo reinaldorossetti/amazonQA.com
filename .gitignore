@@ -71,3 +71,4 @@ tests-dashboard/reports/
 /artifacts/
 *.apk
 projects-tests/detox-mobile/app/apk/
+temurin-jdk-25-windows-x64.zip
