@@ -1,14 +1,16 @@
 package com.tester.web.e2e.tests;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import com.tester.web.e2e.pages.LoginPageAction;
 import com.tester.web.e2e.support.LoginTestData;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 @Epic("Web UI")
 @Feature("Login")
@@ -34,8 +36,8 @@ class LoginFeatureTest extends AbstractUiTest {
       "Criar sua conta"
     };
     loginPage.validatedLoginPage(loginPageTexts);
-    loginPage.loginAction("reinaldo.rossetti@outlook.com", "qualidade2026@QA", true);
-    loginPage.validatedLoginInPage();
+    loginPage.loginAction(LoginTestData.VALID_EMAIL, LoginTestData.VALID_PASSWORD, true);
+    loginPage.validatedLoginInPage("Olá, Reinaldo");
   }
 
   @Test
@@ -43,7 +45,7 @@ class LoginFeatureTest extends AbstractUiTest {
   @DisplayName("Invalid credentials show the API error alert")
   void invalidCredentialsShowErrorAlert() {
     loginPage.loginAction(LoginTestData.SAMPLE_VALID_EMAIL, LoginTestData.WRONG_PASSWORD, true);
-    loginPage.validatedErrorAlertVisible("Expected error alert to be visible after invalid credentials.");
+    loginPage.validatedErrorAlertVisible("Preencha e-mail e senha.");
   }
 
   @Test

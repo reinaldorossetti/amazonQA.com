@@ -1,6 +1,7 @@
 package com.tester.web.e2e.pages;
 
-import com.tester.web.e2e.config.TestEnvironment;
+import java.util.logging.Logger;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -8,8 +9,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.tester.web.e2e.config.TestEnvironment;
+
 public abstract class BasePage {
 
+  protected static final Logger LOGGER = Logger.getLogger(BasePage.class.getName());
   protected final WebDriver driver;
   protected final WebDriverWait wait;
 
@@ -43,13 +47,20 @@ public abstract class BasePage {
       shortWait.until(ExpectedConditions.visibilityOf(element));
       return true;
     } catch (TimeoutException e) {
-      System.out.println("TimeoutException: " + e);
+      LOGGER.warning(() -> "Timeout while waiting for element visibility: " + e.getMessage());
       return false;
     }
   }
 
   protected void waitForUrlContaining(String path) {
     wait.until(ExpectedConditions.urlContains(path));
+  }
+
+  protected void assertTextsVisible(String... texts) {
+    for (String text : texts) {
+      wait.until(ExpectedConditions.visibilityOfElementLocated(
+          By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
+    }
   }
 
   void fill(WebElement field, String text) {

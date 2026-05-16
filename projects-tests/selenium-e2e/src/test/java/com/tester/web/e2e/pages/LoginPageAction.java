@@ -1,10 +1,10 @@
 package com.tester.web.e2e.pages;
 
-import com.tester.web.e2e.config.TestEnvironment;
 import java.time.Duration;
-import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,8 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.tester.web.e2e.config.TestEnvironment;
 
 /**
  * Login screen — selectors aligned with {@code web/e2e/pages/LoginPage.ts}.
@@ -23,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * annotations; here only the {@code @FindBy} branch applies).
  */
 public class LoginPageAction extends BasePage {
-
-  private static final Logger LOGGER = Logger.getLogger(LoginPageAction.class.getName());
 
   /** Element {@code id} values — kept for callers and documentation. */
   public static final String EMAIL_INPUT = "login-email";
@@ -42,9 +39,6 @@ public class LoginPageAction extends BasePage {
 
   @FindBy(id = PASSWORD_INPUT)
   private WebElement passwordInput;
-
-  @FindBy(id = SUBMIT_BUTTON)
-  private WebElement submitButton;
 
   @FindBy(id = CREATE_ACCOUNT_BUTTON)
   private WebElement createAccountButton;
@@ -78,8 +72,9 @@ public class LoginPageAction extends BasePage {
 
   public void submit() {
     LOGGER.fine("Submitting login form.");
-    wait.until(ExpectedConditions.elementToBeClickable(submitButton));
-    submitButton.click();
+    WebElement clickableSubmitButton =
+        wait.until(ExpectedConditions.elementToBeClickable(By.id(SUBMIT_BUTTON)));
+    clickableSubmitButton.click();
   }
 
   /**
@@ -94,32 +89,16 @@ public class LoginPageAction extends BasePage {
     }
   }
 
-  public void validatedLoginInPage() {
+  public void validatedLoginInPage(String... texts) {
     LOGGER.info("Validating login success page.");
     waitForUrlContaining("/minha-conta");
     assertTrue(new NavBarComponent(driver).isUserGreetingVisible());
+    assertTextsVisible(texts);
   }
 
   public void validatedLoginPage(String... texts) {
     LOGGER.info(() -> "Validating login page texts count: " + texts.length);
-    for (String text : texts) {
-      wait.until(ExpectedConditions.visibilityOfElementLocated(
-          By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
-    }
-  }
-
-  public boolean isErrorAlertVisible() {
-    try {
-      var alertWait = new WebDriverWait(driver, Duration.ofSeconds(30));
-      alertWait.until(ExpectedConditions.visibilityOfElementLocated(ERROR_ALERT_LOCATOR));
-      boolean result = true;
-      LOGGER.info(() -> "Error alert visible: " + result);
-      return result;
-    } catch (TimeoutException e) {
-      boolean result = false;
-      LOGGER.info(() -> "Error alert visible: " + result);
-      return result;
-    }
+    assertTextsVisible(texts);
   }
 
   public void validatedErrorAlertVisible(String message) {

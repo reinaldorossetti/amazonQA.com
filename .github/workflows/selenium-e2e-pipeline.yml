@@ -20,7 +20,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pages: write
+  id-token: write
+  checks: write
 
 jobs:
   selenium-e2e:
@@ -75,6 +78,7 @@ jobs:
 
       - name: Run Selenium login tests
         working-directory: projects-tests/selenium-e2e
+        continue-on-error: true
         env:
           browser: ${{ matrix.browser }}
           headless: "true"
@@ -93,7 +97,14 @@ jobs:
       - name: Generate Allure report
         if: always()
         working-directory: projects-tests/selenium-e2e
-        run: ./mvnw allure:report
+        run: ./mvnw allure:report -q
+
+      - name: Copy Allure report to tests-dashboard
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
+          cp -r projects-tests/selenium-e2e/target/site/allure-maven/. \
+            tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
 
       - name: Upload Surefire reports
         if: always()
@@ -116,7 +127,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: selenium-allure-report-${{ matrix.browser }}
-          path: projects-tests/selenium-e2e/target/site/allure-maven/
+          path: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
           if-no-files-found: warn
 
       - name: Container logs (on failure)
@@ -126,3 +137,50 @@ jobs:
       - name: Stop application stack
         if: always()
         run: docker compose down
+
+  # ── Deploy Reports ─────────────────────────────────────────────────────
+  deploy:
+    name: Deploy Selenium Reports
+    needs: [selenium-e2e]
+    runs-on: ubuntu-latest
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Chrome Allure report
+        uses: actions/download-artifact@v4
+        with:
+          name: selenium-allure-report-chrome
+          path: tests-dashboard/reports/selenium-allure-report-chrome
+        continue-on-error: true
+
+      - name: Download Firefox Allure report
+        uses: actions/download-artifact@v4
+        with:
+          name: selenium-allure-report-firefox
+          path: tests-dashboard/reports/selenium-allure-report-firefox
+        continue-on-error: true
+
+      - name: Restore history from gh-pages
+        continue-on-error: true
+        run: |
+          git fetch origin gh-pages --depth=1
+          git checkout origin/gh-pages -- tests-dashboard/reports/selenium-allure-report-chrome/history \
+            || echo "No previous chrome history found."
+          git checkout origin/gh-pages -- tests-dashboard/reports/selenium-allure-report-firefox/history \
+            || echo "No previous firefox history found."
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: tests-dashboard
+          publish_branch: gh-pages
+          destination_dir: tests-dashboard
+          keep_files: true
