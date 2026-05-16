@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "selenium-e2e/**"
+      - "projects-tests/selenium-e2e/**"
       - "web/**"
       - "server-ts/**"
       - "docker-compose.yml"
@@ -12,7 +12,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "selenium-e2e/**"
+      - "projects-tests/selenium-e2e/**"
       - "web/**"
       - "server-ts/**"
       - "docker-compose.yml"
@@ -74,7 +74,7 @@ jobs:
         run: npx wait-on --timeout 120000 http://127.0.0.1:5174
 
       - name: Run Selenium login tests
-        working-directory: selenium-e2e
+        working-directory: projects-tests/selenium-e2e
         env:
           browser: ${{ matrix.browser }}
           headless: "true"
@@ -92,7 +92,7 @@ jobs:
 
       - name: Generate Allure report
         if: always()
-        working-directory: selenium-e2e
+        working-directory: projects-tests/selenium-e2e
         run: ./mvnw allure:report
 
       - name: Upload Surefire reports
@@ -100,7 +100,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: selenium-surefire-${{ matrix.browser }}
-          path: selenium-e2e/target/surefire-reports/
+          path: projects-tests/selenium-e2e/target/surefire-reports/
           if-no-files-found: warn
 
       - name: Upload Allure raw results
@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: selenium-allure-results-${{ matrix.browser }}
-          path: selenium-e2e/target/allure-results/
+          path: projects-tests/selenium-e2e/target/allure-results/
           if-no-files-found: warn
 
       - name: Upload Allure HTML report
@@ -116,7 +116,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: selenium-allure-report-${{ matrix.browser }}
-          path: selenium-e2e/target/site/allure-maven/
+          path: projects-tests/selenium-e2e/target/site/allure-maven/
           if-no-files-found: warn
 
       - name: Container logs (on failure)
