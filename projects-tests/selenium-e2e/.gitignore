@@ -2,3 +2,4 @@ target/
 .allure/
 .jdk/
 .certs/
+allure-results/

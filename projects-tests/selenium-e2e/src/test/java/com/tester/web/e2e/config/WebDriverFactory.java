@@ -35,7 +35,7 @@ public final class WebDriverFactory {
       options.setBinary(chromeBinary);
     }
     if (TestEnvironment.headless()) {
-      options.addArguments("--headless=new", "--disable-gpu", "--window-size=1920,1080");
+      options.addArguments("--headless=false", "--disable-gpu", "--window-size=1920,1080");
     }
     options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
     return options;

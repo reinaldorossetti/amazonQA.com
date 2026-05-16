@@ -1,5 +1,6 @@
 package com.tester.web.e2e.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -14,6 +15,6 @@ public class NavBarComponent extends BasePage {
   }
 
   public boolean isUserGreetingVisible() {
-    return isDisplayed(USER_GREETING);
+    return isVisible(driver.findElement(By.id(USER_GREETING)));
   }
 }

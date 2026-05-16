@@ -1,7 +1,6 @@
 package com.tester.web.e2e.pages;
 
 import com.tester.web.e2e.config.TestEnvironment;
-import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -35,18 +34,27 @@ public abstract class BasePage {
   }
 
   protected void clickTestId(String testId) {
-    WebElement element = waitVisible(testId);
     wait.until(ExpectedConditions.elementToBeClickable(byTestId(testId))).click();
   }
 
-  protected boolean isDisplayed(String testId) {
+  protected boolean isVisible(WebElement element) {
     try {
-      WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-      shortWait.until(ExpectedConditions.visibilityOfElementLocated(byTestId(testId)));
+      WebDriverWait shortWait = new WebDriverWait(driver, TestEnvironment.defaultWait());
+      shortWait.until(ExpectedConditions.visibilityOf(element));
       return true;
     } catch (TimeoutException e) {
       System.out.println("TimeoutException: " + e);
       return false;
     }
+  }
+
+  protected void waitForUrlContaining(String path) {
+    wait.until(ExpectedConditions.urlContains(path));
+  }
+
+  void fill(WebElement field, String text) {
+    field.click();
+    field.clear();
+    field.sendKeys(text);
   }
 }

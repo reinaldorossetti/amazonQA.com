@@ -25,7 +25,7 @@ public final class TestEnvironment {
   }
 
   public static boolean headless() {
-    return Boolean.parseBoolean(System.getProperty("headless", "true"));
+    return Boolean.parseBoolean(System.getProperty("headless", "false"));
   }
 
   public static Duration defaultWait() {
@@ -52,6 +52,11 @@ public final class TestEnvironment {
     if (email == null || email.isBlank()) {
       email = System.getenv("LOGIN_EMAIL");
     }
+    if (email == null || email.isBlank()) {
+      throw new IllegalStateException(
+          "Login email not configured. Provide it via: "
+              + "-Dlogin.email=user@example.com or env var LOGIN_EMAIL");
+    }
     return email;
   }
 
@@ -63,12 +68,21 @@ public final class TestEnvironment {
     if (password == null || password.isBlank()) {
       password = System.getenv("LOGIN_PASSWORD");
     }
+    if (password == null || password.isBlank()) {
+      throw new IllegalStateException(
+          "Login password not configured. Provide it via: "
+              + "-Dlogin.password=secret or env var LOGIN_PASSWORD");
+    }
     return password;
   }
 
   public static boolean hasLoginCredentials() {
-    String email = loginEmail();
-    String password = loginPassword();
-    return email != null && !email.isBlank() && password != null && !password.isBlank();
+    try {
+      loginEmail();
+      loginPassword();
+      return true;
+    } catch (IllegalStateException e) {
+      return false;
+    }
   }
 }
