@@ -114,7 +114,6 @@ jobs:
       - name: Copy Allure report to dashboard
         if: always()
         run: |
-          mkdir -p tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
           cp -r projects-tests/selenium-e2e/allure-report/. \
             tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
 
@@ -126,59 +125,16 @@ jobs:
           path: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
           if-no-files-found: warn
 
-      - name: Upload Surefire reports
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Deploy Allure report to gh-pages
+        if: always() && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: selenium-surefire-${{ matrix.browser }}
-          path: projects-tests/selenium-e2e/target/surefire-reports/
-          if-no-files-found: warn
-
-      - name: Container logs (on failure)
-        if: failure()
-        run: docker compose logs --tail=200
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./allure-report
+          destination_dir: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
+          keep_files: true
 
       - name: Stop application stack
         if: always()
         run: docker compose down
-
-  # ── Deploy Reports ─────────────────────────────────────────────────────
-  deploy:
-    name: Deploy Selenium Reports
-    needs: [selenium-e2e]
-    runs-on: ubuntu-latest
-    if: always() && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download all Selenium artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: tests-dashboard/reports
-        continue-on-error: true
-
-      - name: Reorganize report directories
-        run: |
-          # download-artifact@v4 sem name cria subpastas com o nome do artefato.
-          # Os reports já chegam em tests-dashboard/reports/selenium-allure-report-{browser}/
-          for browser in chrome firefox; do
-            DEST="tests-dashboard/reports/selenium-allure-report-${browser}"
-            mkdir -p "$DEST"
-            echo "Contents of $DEST:"
-            ls "$DEST" || echo "(empty)"
-          done
-
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: tests-dashboard
-          publish_branch: gh-pages
-          destination_dir: tests-dashboard
-          keep_files: true
