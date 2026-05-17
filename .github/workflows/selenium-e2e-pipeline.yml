@@ -101,20 +101,23 @@ jobs:
       - name: Generate Allure report
         if: always()
         working-directory: projects-tests/selenium-e2e
-        run: allure generate target/allure-results -o target/allure-report --clean
+        run: allure generate ./allure-results -o ./allure-report --clean
+        continue-on-error: true
 
       - name: List Allure report files
         if: always()
         working-directory: projects-tests/selenium-e2e
         run: |
-          ls -la target/allure-report
+          ls -la ./
+          ls -la ./allure-results
           ls -la target/allure-results
+        continue-on-error: true
 
       - name: Copy Allure report to dashboard
         if: always()
         run: |
           mkdir -p tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
-          cp -r projects-tests/selenium-e2e/target/allure-report/. \
+          cp -r projects-tests/selenium-e2e/allure-report/. \
             tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
 
       - name: Upload Allure HTML report
