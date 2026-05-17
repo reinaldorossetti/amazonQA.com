@@ -102,8 +102,13 @@ jobs:
         if: always()
         working-directory: projects-tests/selenium-e2e
         run: allure generate target/allure-results -o target/allure-report --clean
-        ls -la target/allure-report
-        ls -la target/allure-results
+
+      - name: List Allure report files
+        if: always()
+        working-directory: projects-tests/selenium-e2e
+        run: |
+          ls -la target/allure-report
+          ls -la target/allure-results
 
       - name: Copy Allure report to dashboard
         if: always()
