@@ -3,6 +3,7 @@ package com.tester.web.e2e.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -22,7 +23,10 @@ public final class WebDriverFactory {
   private static final String HEADLESS_CHROME = "--headless=new";
   private static final String HEADLESS_EDGE = "--headless=new";
   private static final String DISABLE_GPU_ARGUMENT = "--disable-gpu";
-  private static final String WINDOW_SIZE_ARGUMENT = "--window-size=1920,1080";
+  private static final int HD_WIDTH = 1920;
+  private static final int HD_HEIGHT = 1080;
+  private static final String WINDOW_SIZE_ARGUMENT =
+      "--window-size=" + HD_WIDTH + "," + HD_HEIGHT;
 
   /** Prevents instantiation of this factory class. */
   private WebDriverFactory() {}
@@ -36,7 +40,7 @@ public final class WebDriverFactory {
   public static WebDriver create(BrowserName browser) {
     WebDriver driver = createDriver(browser);
     configureTimeouts(driver);
-    driver.manage().window().maximize();
+    configureWindowSize(driver);
     return driver;
   }
 
@@ -54,8 +58,9 @@ public final class WebDriverFactory {
     }
     options.addArguments(LANGUAGE_ARGUMENT);
     applyChromePreferences(options);
+    options.addArguments(WINDOW_SIZE_ARGUMENT);
     if (TestEnvironment.headless()) {
-      options.addArguments(HEADLESS_CHROME, DISABLE_GPU_ARGUMENT, WINDOW_SIZE_ARGUMENT);
+      options.addArguments(HEADLESS_CHROME, DISABLE_GPU_ARGUMENT);
     }
     options.addArguments(NO_SANDBOX_ARGUMENT, DISABLE_DEV_SHM_ARGUMENT);
     return options;
@@ -91,8 +96,9 @@ public final class WebDriverFactory {
     EdgeOptions options = new EdgeOptions();
     options.addArguments(LANGUAGE_ARGUMENT);
     applyEdgePreferences(options);
+    options.addArguments(WINDOW_SIZE_ARGUMENT);
     if (TestEnvironment.headless()) {
-      options.addArguments(HEADLESS_EDGE, DISABLE_GPU_ARGUMENT, WINDOW_SIZE_ARGUMENT);
+      options.addArguments(HEADLESS_EDGE, DISABLE_GPU_ARGUMENT);
     }
     options.addArguments(NO_SANDBOX_ARGUMENT, DISABLE_DEV_SHM_ARGUMENT);
     return options;
@@ -126,6 +132,11 @@ public final class WebDriverFactory {
     driver.manage().timeouts().implicitlyWait(TestEnvironment.implicitWait());
     driver.manage().timeouts().pageLoadTimeout(TestEnvironment.pageLoadTimeout());
     driver.manage().timeouts().scriptTimeout(TestEnvironment.scriptTimeout());
+  }
+
+  /** Sets the browser viewport to Full HD (1920x1080). */
+  private static void configureWindowSize(WebDriver driver) {
+    driver.manage().window().setSize(new Dimension(HD_WIDTH, HD_HEIGHT));
   }
 
   /**
