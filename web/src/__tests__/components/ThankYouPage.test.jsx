@@ -17,7 +17,13 @@ vi.mock('react-router-dom', async () => {
 });
 
 vi.mock('../../contexts/LanguageContext', () => ({
-  useLanguage: () => ({ t: (key, params = {}) => (params.total ? `Total: R$ ${params.total}` : key) }),
+  useLanguage: () => ({
+    t: (key, params = {}) => {
+      if (params.total) return `Total: R$ ${params.total}`;
+      if (params.method) return `Forma de pagamento: ${params.method}`;
+      return key;
+    },
+  }),
 }));
 
 describe('ThankYouPage Component', () => {
@@ -79,6 +85,7 @@ describe('ThankYouPage Component', () => {
     expect(screen.getByText('Mouse')).toBeInTheDocument();
     expect(screen.getByText('Teclado')).toBeInTheDocument();
     expect(screen.getByText('Total: R$ 200.00')).toBeInTheDocument();
+    expect(screen.getByText('Forma de pagamento: PIX + Boleto')).toBeInTheDocument();
   });
 
   it('TC_TY_002: renderiza blocos PIX e boleto com metadados', () => {

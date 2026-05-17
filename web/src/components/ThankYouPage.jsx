@@ -28,6 +28,16 @@ const ThankYouPage = ({ clearCart = () => {} }) => {
   const items = location.state?.cartItems ?? [];
   const order = location.state?.order ?? null;
   const payments = Array.isArray(order?.payments) ? order.payments : [];
+  const paymentMethodLabels = {
+    credit: "Crédito",
+    debit: "Débito",
+    pix: "PIX",
+    boleto: "Boleto",
+  };
+  const paymentMethod = payments
+    .map((payment) => paymentMethodLabels[payment?.method] || payment?.method)
+    .filter(Boolean)
+    .join(" + ");
   const pixPayment = payments.find((p) => p?.method === "pix");
   const pix = pixPayment?.metadata ?? null;
   const boletoPayment = payments.find((p) => p?.method === "boleto");
@@ -197,6 +207,14 @@ const ThankYouPage = ({ clearCart = () => {} }) => {
                 {t("thank_you.total", { total: totalPrice.toFixed(2) })}
               </Typography>
             </Box>
+          </Box>
+        )}
+
+        {paymentMethod && (
+          <Box id="thank-you-payment-method" sx={{ width: "100%", mb: 4, textAlign: "right" }}>
+            <Typography variant="subtitle1" color="text.secondary">
+              {t("thank_you.payment_method", { method: paymentMethod })}
+            </Typography>
           </Box>
         )}
 

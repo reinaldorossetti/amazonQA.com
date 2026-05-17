@@ -1,3 +1,10 @@
 {
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.test.config": [
+        {
+            "name": "IDE visible Selenium",
+            "vmArgs": ["-Dheadless=false"]
+        }
+    ],
+    "java.test.defaultConfig": "IDE visible Selenium"
 }

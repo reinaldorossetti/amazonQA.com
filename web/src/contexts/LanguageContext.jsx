@@ -62,6 +62,7 @@ const translations = {
     "thank_you.unit_price": "Preço Un.",
     "thank_you.table_total": "Total",
     "thank_you.total": "Total: R$ {total}",
+    "thank_you.payment_method": "Forma de pagamento: {method}",
     "thank_you.back": "Voltar ao Catálogo",
     "thank_you.boleto.title": "Boleto gerado",
     "thank_you.boleto.mock_notice": "Este boleto é mockado para testes e não possui validade bancária real.",
@@ -175,6 +176,7 @@ const translations = {
     "thank_you.unit_price": "Unit Price",
     "thank_you.table_total": "Total",
     "thank_you.total": "Total: ${total}", // changed R$ to $ assuming this might be expected, but let's stick to R$ since formatting might be complex. Actually let's use R$ for parity right now to keep currency formatting simple and not change numbers.
+    "thank_you.payment_method": "Payment method: {method}",
     "thank_you.back": "Back to Catalog",
     "thank_you.boleto.title": "Generated boleto",
     "thank_you.boleto.mock_notice": "This boleto is mocked for tests and has no real bank validity.",

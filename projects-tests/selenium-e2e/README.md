@@ -297,7 +297,7 @@ Os seletores e fluxos espelham a app em **`web/`** e o exemplo Playwright em **`
 
 ### O papel de cada classe
 
-- **`LoginFeatureTest`**: testes de alto nível (cenários). Orquestra as ações e validações do login.
-- **`LoginPageAction`**: implementa as ações e validações do fluxo de login (ex.: preencher campos, enviar, validar telas).
+- **`LoginFeatureTest`**: testes de alto nível (cenários). Orquestra as ações e validações do login, deve ter somente a lógica do teste, sem click e select.
+- **`LoginPageAction`**: implementa as ações e validações do fluxo de login (ex.: preencher campos, enviar, validar telas). Aqui vai fazer as ações de click, select entre outras.
 - **`LoginPageElements`**: guarda os elementos e seletores da tela de login (Page Elements).
 - **`BasePage`**: utilitários comuns para páginas (esperas, asserts de texto, helpers de Selenium e screenshots). 

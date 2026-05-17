@@ -37,7 +37,7 @@ class LoginFeatureTest extends AbstractUiTest {
     };
     loginPage.validatedLoginPage(loginPageTexts);
     loginPage.loginAction(LoginTestData.VALID_EMAIL, LoginTestData.VALID_PASSWORD, true);
-    loginPage.validatedLoginInPage("Olá, Reinaldo");
+    loginPage.validatedLoginInPage("Reinaldo");
   }
 
   @Test

@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
@@ -72,6 +74,30 @@ public abstract class BasePage {
     field.click();
     field.clear();
     field.sendKeys(text);
+  }
+
+  protected void moveFocusToElement(WebElement element) {
+    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+      javascriptExecutor.executeScript(
+          "arguments[0].scrollIntoView({block: 'center', inline: 'center'});"
+              + "if (typeof arguments[0].focus === 'function') { arguments[0].focus({preventScroll: true}); }",
+          element);
+    }
+  }
+
+  protected void clickElementWithFocus(WebElement element) {
+    moveFocusToElement(element);
+    try {
+      wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    } catch (ElementClickInterceptedException exception) {
+      LOGGER.warning(() -> "Native click intercepted, falling back to JavaScript click: "
+          + exception.getMessage());
+      if (driver instanceof JavascriptExecutor javascriptExecutor) {
+        javascriptExecutor.executeScript("arguments[0].click();", element);
+      } else {
+        throw exception;
+      }
+    }
   }
 
   protected void attachScreenshot(String name) {
