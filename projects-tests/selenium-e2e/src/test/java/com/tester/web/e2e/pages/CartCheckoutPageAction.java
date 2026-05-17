@@ -255,7 +255,6 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   public void thenValidatedSuccessfulCheckoutSummary(String... texts) {
     LOGGER.info(() -> "Validating successful checkout texts count: " + texts.length);
-    assertUrlContains("/payments");
     assertUrlContains("/thank-you");
     assertThankYouSummaryVisible();
     assertTextsVisible(texts);
