@@ -67,11 +67,16 @@ public final class WebDriverFactory {
    * @return configured FirefoxOptions
    */
   private static FirefoxOptions firefoxOptions() {
-    WebDriverManager.firefoxdriver().setup();
     FirefoxOptions options = new FirefoxOptions();
+    String firefoxBinary = System.getenv("FIREFOX_BIN");
+    if (firefoxBinary != null && !firefoxBinary.isBlank()) {
+      options.setBinary(firefoxBinary);
+    } else {
+      WebDriverManager.firefoxdriver().setup();
+    }
     options.addPreference("intl.accept_languages", ACCEPT_LANGUAGES);
     if (TestEnvironment.headless()) {
-      options.addArguments("-headless");
+      options.addArguments("--headless");
     }
     return options;
   }

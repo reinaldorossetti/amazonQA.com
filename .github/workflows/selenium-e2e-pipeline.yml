@@ -25,40 +25,27 @@ permissions:
   checks: write
 
 jobs:
-  selenium-e2e:
-    name: Selenium E2E (${{ matrix.browser }})
+  selenium-e2e-chrome:
+    name: Selenium E2E (Chrome)
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chrome, firefox]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
 
-      - name: Setup Java 23
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 23
           cache: maven
 
-      - name: Setup Chrome
-        if: matrix.browser == 'chrome'
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Setup Firefox
-        if: matrix.browser == 'firefox'
-        uses: browser-actions/setup-firefox@v1
+      - uses: browser-actions/setup-chrome@v1
 
       - name: Install web dependencies
         working-directory: web
@@ -75,11 +62,11 @@ jobs:
         working-directory: web
         run: npx wait-on --timeout 120000 http://127.0.0.1:5174
 
-      - name: Run Selenium login tests
+      - name: Run Selenium tests
         working-directory: projects-tests/selenium-e2e
         continue-on-error: true
         env:
-          browser: ${{ matrix.browser }}
+          browser: chrome
           headless: "true"
           BASE_URL: http://127.0.0.1:5174
           LOGIN_EMAIL: ${{ secrets.SELENIUM_LOGIN_EMAIL }}
@@ -110,7 +97,99 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: projects-tests/selenium-e2e/allure-report
-          destination_dir: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
+          destination_dir: tests-dashboard/reports/selenium-allure-report-chrome
+          keep_files: true
+
+      - name: Stop application stack
+        if: always()
+        run: docker compose down
+
+  selenium-e2e-firefox:
+    name: Selenium E2E (Firefox)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 23
+          cache: maven
+
+      - name: Setup Firefox
+        id: setup-firefox
+        uses: browser-actions/setup-firefox@v1
+
+      - uses: browser-actions/setup-geckodriver@v1
+
+      - name: Verify Firefox on Linux
+        run: |
+          FIREFOX="${{ steps.setup-firefox.outputs.firefox-path }}"
+          test -n "$FIREFOX" && test -x "$FIREFOX"
+          "$FIREFOX" --version
+          command -v geckodriver
+          geckodriver --version
+
+      - name: Install web dependencies
+        working-directory: web
+        run: npm install
+
+      - name: Start application stack
+        run: docker compose up -d --build
+
+      - name: Wait for backend readiness
+        working-directory: web
+        run: npx wait-on --timeout 120000 http://127.0.0.1:3001/api/products
+
+      - name: Wait for frontend readiness
+        working-directory: web
+        run: npx wait-on --timeout 120000 http://127.0.0.1:5174
+
+      - name: Run Selenium tests
+        working-directory: projects-tests/selenium-e2e
+        continue-on-error: true
+        env:
+          browser: firefox
+          FIREFOX_BIN: ${{ steps.setup-firefox.outputs.firefox-path }}
+          headless: "true"
+          BASE_URL: http://127.0.0.1:5174
+          LOGIN_EMAIL: ${{ secrets.SELENIUM_LOGIN_EMAIL }}
+          LOGIN_PASSWORD: ${{ secrets.SELENIUM_LOGIN_PASSWORD }}
+        run: |
+          chmod +x mvnw
+          ./mvnw clean test \
+            -Dbrowser="${browser}" \
+            -Dheadless="${headless}" \
+            -Dbase.url="${BASE_URL}" \
+            -Dlogin.email="${LOGIN_EMAIL}" \
+            -Dlogin.password="${LOGIN_PASSWORD}"
+
+      - name: Install Allure CLI
+        if: always()
+        run: npm install -g allure-commandline@2.34.0
+
+      - name: Generate Allure report
+        if: always()
+        working-directory: projects-tests/selenium-e2e
+        run: allure generate ./allure-results -o ./allure-report --clean
+        continue-on-error: true
+
+      - name: Publish Allure report to gh-pages
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: projects-tests/selenium-e2e/allure-report
+          destination_dir: tests-dashboard/reports/selenium-allure-report-firefox
           keep_files: true
 
       - name: Stop application stack
