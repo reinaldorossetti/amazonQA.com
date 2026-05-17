@@ -103,36 +103,14 @@ jobs:
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
 
-      - name: List Allure report files
-        if: always()
-        working-directory: projects-tests/selenium-e2e
-        run: |
-          ls -la ./
-          ls -la ./allure-results
-        continue-on-error: true
-
-      - name: Copy Allure report to dashboard
-        if: always()
-        run: |
-          cp -r projects-tests/selenium-e2e/allure-report/. \
-            tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
-
-      - name: Upload Allure HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: selenium-allure-report-${{ matrix.browser }}
-          path: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
-          if-no-files-found: warn
-
-      - name: Deploy Allure report to gh-pages
-        if: always() && github.event_name == 'push'
+      - name: Publish Allure report to gh-pages
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./allure-report
-          destination_dir: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
+          publish_dir: projects-tests/selenium-e2e/allure-report
+          destination_dir: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
           keep_files: true
 
       - name: Stop application stack
