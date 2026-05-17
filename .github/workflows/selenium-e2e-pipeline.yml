@@ -17,7 +17,6 @@ on:
       - "server-ts/**"
       - "docker-compose.yml"
       - ".github/workflows/selenium-e2e-pipeline.yml"
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -110,7 +109,6 @@ jobs:
         run: |
           ls -la ./
           ls -la ./allure-results
-          ls -la target/allure-results
         continue-on-error: true
 
       - name: Copy Allure report to dashboard
@@ -149,7 +147,7 @@ jobs:
     name: Deploy Selenium Reports
     needs: [selenium-e2e]
     runs-on: ubuntu-latest
-    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: always() && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
