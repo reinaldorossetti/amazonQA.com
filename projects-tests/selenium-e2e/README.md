@@ -286,3 +286,18 @@ O plugin **Allure Maven 3.x** usa por defeito o **runtime Allure 3** (Node empac
 ## Ligação ao front-end do monorepo
 
 Os seletores e fluxos espelham a app em **`web/`** e o exemplo Playwright em **`web/e2e`** (mesmos `data-testid`, rota `/login`, redirecionamento para `/minha-conta`). Garanta que o servidor de desenvolvimento da web está no ar na `base.url` configurada antes de executar os testes.
+
+---
+
+## Mapeamento de fluxo (Login)
+
+**Fluxo principal:**
+
+`LoginFeatureTest.java` ➜ `LoginPageAction.java` ➜ `LoginPageElements.java` ➜ `BasePage.java`
+
+### O papel de cada classe
+
+- **`LoginFeatureTest`**: testes de alto nível (cenários). Orquestra as ações e validações do login.
+- **`LoginPageAction`**: implementa as ações e validações do fluxo de login (ex.: preencher campos, enviar, validar telas).
+- **`LoginPageElements`**: guarda os elementos e seletores da tela de login (Page Elements).
+- **`BasePage`**: utilitários comuns para páginas (esperas, asserts de texto, helpers de Selenium e screenshots). 

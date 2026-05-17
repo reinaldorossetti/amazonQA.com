@@ -96,46 +96,21 @@ jobs:
 
       - name: Install Allure CLI
         if: always()
-        run: npm install -g allure-commandline@2.34.0 --save-dev
+        run: npm install -g allure-commandline@2.34.0
 
       - name: Generate Allure report
         if: always()
+        working-directory: projects-tests/selenium-e2e
+        run: allure generate target/allure-results -o target/allure-report --clean
+        ls -la target/allure-report
+        ls -la target/allure-results
+
+      - name: Copy Allure report to dashboard
+        if: always()
         run: |
-          RESULTS="projects-tests/selenium-e2e/target/allure-results"
-          DEST="tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}"
-          mkdir -p "$RESULTS" "$DEST"
-          if [ "$(ls -A "$RESULTS" 2>/dev/null)" ]; then
-            allure generate "$RESULTS" -o "$DEST" --clean
-            echo "Allure report generated at $DEST"
-          else
-            cat > "$DEST/index.html" <<'EOF'
-          <!doctype html>
-          <html lang="en">
-          <head><meta charset="UTF-8"><title>Selenium Allure Report</title></head>
-          <body style="font-family:sans-serif;padding:2rem">
-            <h2>Selenium E2E — Allure Report (${{ matrix.browser }})</h2>
-            <p>No test results were generated in this run.</p>
-          </body>
-          </html>
-          EOF
-            echo "No results found — fallback page written to $DEST"
-          fi
-
-      - name: Upload Surefire reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: selenium-surefire-${{ matrix.browser }}
-          path: projects-tests/selenium-e2e/target/surefire-reports/
-          if-no-files-found: warn
-
-      - name: Upload Allure raw results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: selenium-allure-results-${{ matrix.browser }}
-          path: projects-tests/selenium-e2e/target/allure-results/
-          if-no-files-found: warn
+          mkdir -p tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}
+          cp -r projects-tests/selenium-e2e/target/allure-report/. \
+            tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
 
       - name: Upload Allure HTML report
         if: always()
@@ -143,6 +118,14 @@ jobs:
         with:
           name: selenium-allure-report-${{ matrix.browser }}
           path: tests-dashboard/reports/selenium-allure-report-${{ matrix.browser }}/
+          if-no-files-found: warn
+
+      - name: Upload Surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-surefire-${{ matrix.browser }}
+          path: projects-tests/selenium-e2e/target/surefire-reports/
           if-no-files-found: warn
 
       - name: Container logs (on failure)
@@ -182,16 +165,6 @@ jobs:
             mkdir -p "$DEST"
             echo "Contents of $DEST:"
             ls "$DEST" || echo "(empty)"
-          done
-
-      - name: Restore Allure history from gh-pages
-        continue-on-error: true
-        run: |
-          git fetch origin gh-pages --depth=1
-          for browser in chrome firefox; do
-            git checkout origin/gh-pages \
-              -- "tests-dashboard/reports/selenium-allure-report-${browser}/history" \
-              || echo "No previous history for ${browser}"
           done
 
       - name: Deploy to GitHub Pages
