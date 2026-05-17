@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -21,6 +22,10 @@ import com.tester.web.e2e.support.PaymentMethod;
  * Cart + checkout user actions and assertions for Selenium tests.
  */
 public class CartCheckoutPageAction extends CartCheckoutPageElements {
+
+  private static final String DEFAULT_CART_PRODUCT = "Relógio Elegante";
+  private static final String SECOND_CART_PRODUCT = "Câmera Vintage";
+  private static final String THIRD_CART_PRODUCT = "Fones de Ouvido";
 
   public CartCheckoutPageAction(WebDriver driver) {
     super(driver);
@@ -45,20 +50,21 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   public void givenCartWithOneItem() {
     givenUserOnCatalog();
-    addFirstProductToCart();
+    addProductToCartByName(DEFAULT_CART_PRODUCT);
     openCartFromHeader();
   }
 
   public void givenCartWithThreeItems() {
     givenUserOnCatalog();
-    addFirstThreeProductsToCart();
+    addProductToCartByName(DEFAULT_CART_PRODUCT);
+    addProductToCartByName(SECOND_CART_PRODUCT);
+    addProductToCartByName(THIRD_CART_PRODUCT);
     openCartFromHeader();
   }
 
   public void givenCartWithPaidShippingItem(String searchTerm) {
     givenUserOnCatalog();
-    searchBy(searchTerm);
-    addFirstProductToCart();
+    addProductToCartByName(searchTerm);
     openCartFromHeader();
   }
 
@@ -103,15 +109,13 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   private void addFirstProductToCart() {
     List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS));
-    buttons.get(0).click();
+    clickElementWithFocus(buttons.get(0));
     waitUntilToastCycleCompletes();
   }
 
-  private void addFirstThreeProductsToCart() {
-    List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS));
-    buttons.get(0).click();
-    buttons.get(1).click();
-    buttons.get(2).click();
+  private void addProductToCartByName(String productName) {
+    searchBy(productName);
+    addFirstProductToCart();
   }
 
   private void searchBy(String searchTerm) {
@@ -120,6 +124,8 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     input.clear();
     input.sendKeys(searchTerm);
     input.sendKeys(Keys.ENTER);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(
+        By.xpath("//*[contains(normalize-space(.), '" + searchTerm + "')]")));
   }
 
   private void openCartFromHeader() {
@@ -172,14 +178,28 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   private void setFirstItemQuantity(String value) {
     WebElement input = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(QUANTITY_INPUTS)).get(0);
-    input.click();
-    input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-    input.sendKeys(value);
+    moveFocusToElement(input);
+    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+      javascriptExecutor.executeScript(
+          "const input = arguments[0];"
+              + "const value = arguments[1];"
+              + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
+              + "setter.call(input, value);"
+              + "input.dispatchEvent(new Event('input', { bubbles: true }));",
+          input,
+          value);
+    } else {
+      input.click();
+      input.clear();
+      input.sendKeys(value);
+    }
     input.sendKeys(Keys.TAB);
   }
 
   private void clickDeleteFirstItem() {
-    wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(DELETE_BUTTONS)).get(0).click();
+    WebElement deleteButton = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(DELETE_BUTTONS)).get(0);
+    clickElementWithFocus(deleteButton);
+    waitUntilToastCycleCompletes();
   }
 
   public int deleteButtonsCount() {

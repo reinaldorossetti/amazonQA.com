@@ -29,6 +29,7 @@ const Product = ({ product = {}, onAddToCart = () => {} }) => {
     description: product.description ?? "",
     category: product.category ?? "Geral",
     price: Number.isFinite(product.price) ? product.price : 0,
+    shipping_cost: Number.isFinite(product.shipping_cost) ? product.shipping_cost : 0,
     originalPrice: Number.isFinite(product.originalPrice) ? product.originalPrice : null,
     discountPercentage: Number.isFinite(product.discountPercentage)
       ? product.discountPercentage

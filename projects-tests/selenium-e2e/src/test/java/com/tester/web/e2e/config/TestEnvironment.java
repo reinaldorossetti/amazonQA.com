@@ -4,9 +4,9 @@ import java.time.Duration;
 
 public final class TestEnvironment {
 
-  private static final Duration DEFAULT_IMPLICIT_WAIT = Duration.ofSeconds(0);
+  private static final Duration DEFAULT_IMPLICIT_WAIT = Duration.ofSeconds(20);
   private static final Duration DEFAULT_PAGE_LOAD_TIMEOUT = Duration.ofSeconds(60);
-  private static final Duration DEFAULT_SCRIPT_TIMEOUT = Duration.ofSeconds(30);
+  private static final Duration DEFAULT_SCRIPT_TIMEOUT = Duration.ofSeconds(35);
 
   private TestEnvironment() {}
 

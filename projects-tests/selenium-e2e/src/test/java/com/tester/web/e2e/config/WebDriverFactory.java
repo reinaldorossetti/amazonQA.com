@@ -19,7 +19,7 @@ public final class WebDriverFactory {
   private static final String ACCEPT_LANGUAGES = "pt-BR,pt,en-US,en";
   private static final String NO_SANDBOX_ARGUMENT = "--no-sandbox";
   private static final String DISABLE_DEV_SHM_ARGUMENT = "--disable-dev-shm-usage";
-  private static final String HEADLESS_CHROME = "--headless=false";
+  private static final String HEADLESS_CHROME = "--headless=new";
   private static final String HEADLESS_EDGE = "--headless=new";
   private static final String DISABLE_GPU_ARGUMENT = "--disable-gpu";
   private static final String WINDOW_SIZE_ARGUMENT = "--window-size=1920,1080";
