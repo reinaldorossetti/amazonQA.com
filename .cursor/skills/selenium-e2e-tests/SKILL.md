@@ -121,3 +121,4 @@ The project uses `src/test/resources/junit-platform.properties` for JUnit parall
 - Do not change config of the project.
 - Do not change the test assertions, for the test to pass, it must always follow the business rule.
 - Do not make complex tests, keep your tests simple and functions short. Always prefer to use the functions from BasePage.java.
+- Do not use cucumber in the tests.
