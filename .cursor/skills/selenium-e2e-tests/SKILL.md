@@ -45,14 +45,14 @@ class CartCheckoutFeatureTest extends AbstractUiTest {
     cartCheckout.givenLoggedInUser(LoginTestData.VALID_EMAIL, LoginTestData.VALID_PASSWORD, "Olá, Reinaldo");
   }
 
-  @Test
-  @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS04 should update quantity, total and badge for a valid positive value")
-  void validQuantityUpdatesInputTotalAndBadge() {
+  @ParameterizedTest(name = "{displayName}: {0}")
+  @EnumSource(PaymentMethod.class)
+  @Severity(SeverityLevel.CRITICAL)
+  @DisplayName("TS01 authenticated user should complete checkout with payment method")
+  void authenticatedUserCompletesCheckoutAndSeesThankYouSummary(PaymentMethod paymentMethod) {
     cartCheckout.givenCartWithOneItem();
-    cartCheckout.assertQuantityEquals("1");
-    cartCheckout.whenUpdateFirstItemQuantity("3");
-    cartCheckout.assertQuantityEquals("3");
+    cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(paymentMethod);
+    cartCheckout.thenValidatedSuccessfulCheckoutSummary(paymentMethod, successfulCheckout);
   }
 }
 ```
@@ -113,8 +113,11 @@ The project uses `src/test/resources/junit-platform.properties` for JUnit parall
 
 ## Do Not
 
-- Do not place Selenium `click`, `sendKeys`, raw `By`, waits, or JavaScript in test classes.
+- Do not place Selenium `click`,`findElement`, `sendKeys`, raw `By`, waits, or JavaScript in test classes.
 - Do not use mocked authentication for checkout tests that require real login unless the user explicitly asks.
 - Do not add dead/commented code.
 - Do not introduce `Thread.sleep`; use explicit waits.
 - Do not make tests depend on API ordering. Use deterministic product lookup/setup.
+- Do not change config of the project.
+- Do not change the test assertions, for the test to pass, it must always follow the business rule.
+- Do not make complex tests, keep your tests simple and functions short. Always prefer to use the functions from BasePage.java.
