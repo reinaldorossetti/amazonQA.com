@@ -114,12 +114,17 @@ public final class ApiClient {
   }
 
   public static CreatedUser registerUser(String email, String password, String firstName, String lastName) {
+    String cpf = TestDataGenerator.validCpf();
     String body =
         """
-        {"first_name":"%s","last_name":"%s","email":"%s","password":"%s","person_type":"PF"}
+        {"first_name":"%s","last_name":"%s","email":"%s","password":"%s","person_type":"PF","cpf":"%s"}
         """
             .formatted(
-                escapeJson(firstName), escapeJson(lastName), escapeJson(email), escapeJson(password));
+                escapeJson(firstName),
+                escapeJson(lastName),
+                escapeJson(email),
+                escapeJson(password),
+                escapeJson(cpf));
     HttpResponse<String> response = post(apiBaseUrl() + "/users/register", body, null);
     if (response.statusCode() != 201) {
       throw new IllegalStateException("Register failed with HTTP " + response.statusCode());
