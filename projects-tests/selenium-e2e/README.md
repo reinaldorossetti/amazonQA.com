@@ -2,7 +2,7 @@
 
 Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`, bytecode alvo **23**) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
 
-**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Requisitos](#requisitos) · [Referências](#-referências-do-projeto) · [Estrutura](#-estrutura-de-pastas) · [Executar testes](#executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#allure-report)
+**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Referências](#-referências-do-projeto)
 
 ## ☕ Introdução ao Java 23
 
@@ -118,25 +118,42 @@ cd projects-tests/selenium-e2e
 .\mvnw.cmd test -Dtest=JavaModernFeaturesTest
 ```
 
-| Recurso | Desde | Classe principal |
-|---------|-------|------------------|
-| `record` | 16/17 | `BrowserName`, `TestDataGenerator.UserData`, `ApiClient.LoginResponse` |
-| Switch expression | 14/17 | `BrowserName.fromSystemProperty` |
-| Text blocks | 15+ | `JsonPayloads` |
-| `formatted()` | 15+ | `Selectors`, `JsonPayloads` |
-| Pattern matching | 16+ | `BasePage`, `AbstractUiTest` |
-| `HttpClient` | 11+ | `ApiClient` |
+- **record** — Java 16/17: `BrowserName`, `TestDataGenerator.UserData`, `ApiClient.LoginResponse`
+- **Switch expression** — Java 14/17: `BrowserName.fromSystemProperty`
+- **Text blocks** — Java 15+: `JsonPayloads`
+- **formatted()** — Java 15+: `Selectors`, `JsonPayloads`
+- **Pattern matching** — Java 16+: `BasePage`, `AbstractUiTest`
+- **HttpClient** — Java 11+: `ApiClient`
 
 ---
 
-## Requisitos
+## 🗂️ Visão geral das features
 
-| Item | Detalhe |
-|------|---------|
-| **JDK** | **23** para executar (`java -version`). Compilação: `release=21`, target `23`. |
-| **Maven** | Opcional se usar o **Maven Wrapper** (`mvnw` / `mvnw.cmd`) |
-| **Navegador** | Chrome, Firefox ou Edge instalados (drivers resolvidos via **WebDriverManager**) |
-| **Aplicação** | Front-end acessível na URL base (padrão `http://localhost:5174`, como no Playwright do monorepo) |
+Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions.
+
+- 🔐 **Login** — `LoginFeatureTest`: login válido, credenciais inválidas, campos vazios
+- 📝 **Register** — `RegisterFeatureTest`: cadastro PF, validações, e-mail duplicado
+- 🌐 **Register + Language** — `RegisterLanguageFeatureTest`: cadastro, toggle PT/EN persistente
+- 🛍️ **Catalog** — `CatalogFeatureTest`: listagem, busca, categoria, empty state, detalhes
+- 📦 **Product Details** — `ProductDetailsFeatureTest`: dados do produto, add to cart, ID inválido
+- 🛒 **Cart & Checkout** — `CartCheckoutFeatureTest`: checkout autenticado, quantidades, frete, thank-you
+- 💳 **Payments** — `PaymentsCardBrandsFeatureTest`: bandeiras de cartão, detecção por BIN
+- 🔁 **Real Purchase Flow** — `RealPurchaseFlowFeatureTest`: registro API → login → checkout real
+- 🛡️ **Security** — `SecurityFeatureTest`: rotas protegidas, guest checkout, logout
+- 👑 **Admin** — `AdminManagementFeatureTest`: admin lista/exclui produtos e usuários via API+UI
+- 🎧 **Support Products** — `SupportProductsFeatureTest`: CRUD de produtos pelo perfil suporte
+
+**Apoio:** `ApiClient` (REST), `AuthSessionHelper` (sessão no `localStorage`), Allure (screenshots).
+
+---
+
+## ✅ Requisitos
+
+- **JDK** — Java 23 para executar (`java -version`). Compilação: `release=21`, target `23`
+- **Maven** — Opcional se usar o Maven Wrapper (`mvnw` / `mvnw.cmd`)
+- **Navegador** — Chrome, Firefox ou Edge instalados (drivers resolvidos via WebDriverManager)
+- **Aplicação** — API (`server-ts`) em `http://127.0.0.1:3001` e SPA em `http://127.0.0.1:5174`
+- **Seed** — `npm run seed` em `server-ts/` (admin, suporte, usuário normal)
 
 > **Locale:** o `WebDriverFactory` força **pt-BR** nos browsers (Chrome/Edge/Firefox) para garantir textos em português.
 
@@ -161,66 +178,57 @@ cd projects-tests/selenium-e2e
 
 ---
 
-## 📚 Referências do projeto
+## 🚗 WebDriverManager
 
-Bibliotecas, plugins e documentação oficial usados em `projects-tests/selenium-e2e`.
+O [WebDriverManager](https://bonigarcia.dev/webdrivermanager/) (Bonigarcia) baixa e sincroniza **ChromeDriver**, **GeckoDriver** e **EdgeDriver** com o browser instalado.
 
-### Stack principal
+**No projeto:** `WebDriverFactory` chama `WebDriverManager.chromedriver().setup()` (e equivalentes) antes de criar o driver.
 
-| Tecnologia | Versão | Papel no projeto | Referência |
-|------------|--------|------------------|------------|
-| **Java (JDK)** | 21 release / 23 target | Linguagem e runtime | [Adoptium](https://adoptium.net/) · [Java docs](https://docs.oracle.com/en/java/) |
-| **Selenium Java** | 4.44.0 | Automação WebDriver (Chrome, Firefox, Edge) | [selenium.dev](https://www.selenium.dev/documentation/) · [Maven Central](https://central.sonatype.com/artifact/org.seleniumhq.selenium/selenium-java) |
-| **JUnit Jupiter** | 5.11.4 | Runner, parametrização, paralelismo, assumptions | [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/) |
-| **Maven Surefire** | 3.5.5 | Execução dos testes no build | [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/) |
-| **Maven Wrapper** | 3.3.4 | Build reproduzível sem Maven global | [Maven Wrapper](https://maven.apache.org/wrapper/) |
+```java
+WebDriverManager.chromedriver().setup();
+return new ChromeDriver(chromeOptions());
+```
 
-### Automação e dados
+- `-Dbrowser=chrome` — padrão: Chrome headless ou headed
+- `-Dbrowser=firefox` — CI Firefox: usa `FIREFOX_BIN` quando definido
+- `-Dheadless=true` — padrão no `pom.xml`: `--headless=new` (Chrome/Edge)
 
-| Tecnologia | Versão | Papel no projeto | Referência |
-|------------|--------|------------------|------------|
-| **WebDriverManager** | 6.3.4 | Download/sync automático de ChromeDriver, GeckoDriver, EdgeDriver | [bonigarcia.dev/wdm](https://bonigarcia.dev/webdrivermanager/) · [GitHub](https://github.com/bonigarcia/webdrivermanager) |
-| **Datafaker** | 2.5.4 | Massa de dados pt-BR (`TestDataGenerator`) | [datafaker.net](https://www.datafaker.net/) · [GitHub](https://github.com/datafaker-net/datafaker) |
-| **dotenv-java** | 3.2.0 | Carrega `.env` do módulo (`EnvFileLoader`) | [GitHub](https://github.com/cdimascio/dotenv-java) |
+---
 
-### Relatórios
+## 🔐 dotenv-java
 
-| Tecnologia | Versão | Papel no projeto | Referência |
-|------------|--------|------------------|------------|
-| **Allure JUnit 5** | 2.34.0 | `@Epic`, `@Feature`, screenshots, steps | [docs.qameta.io/allure](https://docs.qameta.io/allure/) |
-| **Allure Maven Plugin** | 3.0.1 | `allure:report` / `allure:serve` local | [allure-maven](https://github.com/allure-framework/allure-maven) |
-| **Allure CLI** | 2.34.0 | Geração de HTML na CI | [Allure Report](https://github.com/allure-framework/allure2) |
-| **AspectJ Weaver** | 1.9.25.1 | Integração `@Step` com Surefire | [Eclipse AspectJ](https://www.eclipse.org/aspectj/) |
+O [dotenv-java](https://github.com/cdimascio/dotenv-java) carrega `projects-tests/selenium-e2e/.env` em `System.setProperty` no startup de `AbstractUiTest`.
 
-### Monorepo (espelhado nos testes)
+**Chaves principais:** `BASE_URL`, `API_BASE_URL`, `LOGIN_*`, `E2E_ADMIN_*`, `E2E_SUPPORT_*`, `SEED_*`.
 
-| Área | Caminho | Referência |
-|------|---------|------------|
-| **SPA React** | `web/` | Front-end testado (rotas, `id`, `data-testid`) |
-| **API REST** | `server-ts/` | Seed users, login, CRUD via `ApiClient` |
-| **Specs Playwright** | `web/e2e/` | Cenários de referência para paridade Selenium |
-| **Docker Compose** | `docker-compose.yml` | Stack local e CI (web + API + DB) |
+Valores entre aspas no `.env` são normalizados (`"senha@QA"` → `senha@QA`). O loader sobe diretórios a partir do CWD (IDE ou Maven).
 
-### Arquivos de configuração
+---
 
-| Arquivo | Conteúdo |
-|---------|----------|
-| `pom.xml` | Dependências, Surefire, Allure, propriedades `-Dbrowser`, `-Dheadless` |
-| `.env` | Credenciais locais (`LOGIN_*`, `SEED_*`, `E2E_*`, `API_BASE_URL`) |
-| `src/test/resources/junit-platform.properties` | Paralelismo JUnit, autodetection Allure |
-| `.github/workflows/selenium-e2e-pipeline.yml` | Esteira CI (Chrome + Firefox) |
+## 🎲 Datafaker
+
+O [Datafaker](https://www.datafaker.net/) gera massa de dados **pt-BR** em `TestDataGenerator`:
+
+```java
+private static final Faker FAKER = new Faker(new Locale("pt", "BR"));
+
+public static UserData randomUser() { /* nome, e-mail, senha */ }
+public static String validCpf() { /* CPF com dígitos verificadores */ }
+```
+
+Usado em `RegisterFeatureTest`, `RealPurchaseFlowFeatureTest`, `AdminManagementFeatureTest` e registro via `ApiClient`.
 
 ---
 
 ## 📁 Estrutura de pastas
 
 ```
-selenium-e2e/
+projects-tests/selenium-e2e/
 ├── pom.xml
 ├── mvnw / mvnw.cmd           # Maven Wrapper
 ├── scripts/prepare_env.py    # provisiona JDK/truststore (cross-platform)
 ├── .mvn/wrapper/             # JAR + propriedades do wrapper
-├── .gitignore
+├── .env                          # credenciais locais (gitignored)
 ├── src/
 │   ├── main/java/com/tester/web/e2e/
 │   │   └── package-info.java
@@ -242,30 +250,78 @@ A cache do relatório **Allure 3** usada pelo plugin pode aparecer também em `.
 
 ---
 
-## Executar todos os testes (“global”)
+## ⚙️ Configuração (`.env`)
 
-O Maven Wrapper (`mvnw` / `mvnw.cmd`) fica **somente** em `selenium-e2e/`. Na raíz do repositório `tester.com` **não existe** `mvnw` — por isso `./mvnw` ou `mvnw.cmd` sem caminho falham.
+Arquivo em `projects-tests/selenium-e2e/.env` (não versionado). Alinhado ao seed de `server-ts/`:
+
+```env
+BASE_URL=http://127.0.0.1:5174
+API_BASE_URL=http://127.0.0.1:3001/api
+
+LOGIN_EMAIL=reinaldo.rossetti@outlook.com
+LOGIN_PASSWORD=qualidade2026@QA
+
+E2E_ADMIN_EMAIL=reiload@gmail.com
+E2E_ADMIN_PASSWORD=rei2026@QA
+
+E2E_SUPPORT_EMAIL=suporte@tester.com
+E2E_SUPPORT_PASSWORD=suporte2026@QA
+```
+
+Antes dos testes:
+
+```bash
+cd server-ts && npm run seed && npm run dev
+# em outro terminal:
+cd projects-tests/selenium-e2e && ./mvnw clean test
+```
+
+---
+
+## ⚡ Execução paralela (JUnit)
+
+Configuração em `src/test/resources/junit-platform.properties`:
+
+- `parallel.enabled` = `true` — ativa paralelismo
+- `mode.classes.default` = `concurrent` — classes em paralelo
+- `mode.default` = `concurrent` — métodos globais (UI usa `@Execution(SAME_THREAD)`)
+- `config.strategy` = `fixed` — pool fixo
+- `fixed.parallelism` = `4` — até 4 threads
+
+`AbstractUiTest` usa `@Execution(SAME_THREAD)` — cada classe Selenium executa métodos em sequência (1 `WebDriver` por `@Test`).
+
+Desabilitar para debug:
+
+```powershell
+.\mvnw.cmd test "-Djunit.jupiter.execution.parallel.enabled=false"
+```
+
+---
+
+## ▶️ Executar todos os testes (“global”)
+
+O Maven Wrapper fica em **`projects-tests/selenium-e2e/`**. Na raiz do repo `tester.com` use o caminho completo.
 
 ### Windows (recomendado)
 
 **PowerShell** — na pasta do módulo:
 
 ```powershell
-cd selenium-e2e
+cd projects-tests/selenium-e2e
 .\mvnw.cmd clean test
 ```
 
 **CMD** — na pasta do módulo:
 
 ```bat
-cd selenium-e2e
+cd projects-tests\selenium-e2e
 mvnw.cmd clean test
 ```
 
 **Da raíz do repo** (PowerShell ou CMD), sem `cd`:
 
 ```bat
-selenium-e2e\mvnw.cmd clean test
+projects-tests\selenium-e2e\mvnw.cmd clean test
 ```
 
 > No PowerShell use `.\mvnw.cmd` (com `.\`). Só `mvnw.cmd` pode não ser encontrado.
@@ -275,48 +331,44 @@ selenium-e2e\mvnw.cmd clean test
 Na pasta do módulo:
 
 ```bash
-cd selenium-e2e
+cd projects-tests/selenium-e2e
 ./mvnw clean test
 ```
 
-Da raíz do repo:
+Da raiz do repo:
 
 ```bash
-./selenium-e2e/mvnw clean test
-# ou
-./selenium-e2e/mvnw.cmd clean test
+./projects-tests/selenium-e2e/mvnw clean test
 ```
 
 ### Linux / macOS
 
 ```bash
-cd selenium-e2e
-chmod +x mvnw    # apenas na primeira vez, se precisar
+cd projects-tests/selenium-e2e
+chmod +x mvnw
 ./mvnw clean test
 ```
 
 ### Maven instalado no sistema
 
 ```bash
-mvn -f selenium-e2e/pom.xml clean test
+mvn -f projects-tests/selenium-e2e/pom.xml clean test
 ```
 
 ### Problemas comuns no Windows
 
-| Sintoma | Causa | Solução |
-|---------|--------|---------|
-| `bash: ./mvnw: No such file or directory` | Comando na **raíz** do repo | `cd selenium-e2e` ou use `selenium-e2e\mvnw.cmd` |
-| `mvnw.cmd: command not found` (Git Bash) | Sem `cd` e sem `.\` / caminho | `./selenium-e2e/mvnw.cmd clean test` |
-| `JAVA_HOME is set to an invalid directory` | `JAVA_HOME` com pasta que não existe | Corrija o `JAVA_HOME` para apontar para um JDK 23 válido |
-| `PKIX path building failed` ao baixar do Maven Central | Certificado corporativo/SSL no Java truststore | Importe o certificado da empresa no truststore do Java usado pelo Maven e/ou configure `~/.m2/settings.xml` corporativo |
+- `bash: ./mvnw: No such file or directory` — causa: comando na **raiz** do repo. Solução: `cd projects-tests/selenium-e2e`
+- `mvnw.cmd: command not found` (Git Bash) — causa: sem caminho completo. Solução: `./projects-tests/selenium-e2e/mvnw.cmd clean test`
+- `JAVA_HOME is set to an invalid directory` — causa: `JAVA_HOME` com pasta que não existe. Solução: corrija o `JAVA_HOME` para apontar para um JDK 23 válido
+- `PKIX path building failed` ao baixar do Maven Central — causa: certificado corporativo/SSL no Java truststore. Solução: importe o certificado da empresa no truststore do Java usado pelo Maven e/ou configure `~/.m2/settings.xml` corporativo
 
 ### TLS/PKIX sem permissão de administrador (Windows/Linux)
 
 Se você não consegue alterar o `cacerts` global, use o truststore local do projeto via script Python:
 
 ```bat
-cd selenium-e2e
-mvnw.cmd clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174" "-Dlogin.email=teste@example.com" "-Dlogin.password=SenhaForte123"
+cd projects-tests\selenium-e2e
+mvnw.cmd clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174"
 ```
 
 Esse comando:
@@ -326,65 +378,35 @@ Esse comando:
 
 ### Propriedades úteis (linha de comando / CI)
 
-| Propriedade | Exemplo | Descrição |
-|-------------|---------|-----------|
-| `browser` | `-Dbrowser=chrome` | `chrome`, `firefox` (ou `ff`), `edge` (ou `msedge`) |
-| `headless` | `-Dheadless=true` | `true`/`false` |
-| `base.url` | `-Dbase.url=http://127.0.0.1:5174` | URL da SPA |
-| `login.email` / `login.password` | `-Dlogin.email=u@mail.com -Dlogin.password='Secret1!'` | Necessários para o teste feliz de login (`@EnabledIf`) |
+- `browser` — exemplo: `-Dbrowser=chrome`. Descrição: `chrome`, `firefox` (ou `ff`), `edge` (ou `msedge`)
+- `headless` — exemplo: `-Dheadless=true`. Descrição: `true`/`false`
+- `base.url` — exemplo: `-Dbase.url=http://127.0.0.1:5174`. Descrição: URL da SPA
+- `login.email` / `login.password` — exemplo: `-Dlogin.email=u@mail.com -Dlogin.password='Secret1!'`. Descrição: necessários para o teste feliz de login (`@EnabledIf`)
 
 Exemplo combinado:
 
 ```bash
-# dentro de selenium-e2e/
-./mvnw clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174" "-Dlogin.email=teste@example.com" "-Dlogin.password=SenhaForte123"
+cd projects-tests/selenium-e2e
+./mvnw clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174"
 ```
 
-Windows (PowerShell, dentro de `selenium-e2e`):
+Windows (PowerShell):
 
 ```powershell
-.\mvnw.cmd clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174" "-Dlogin.email=teste@example.com" "-Dlogin.password=SenhaForte123"
+cd projects-tests/selenium-e2e
+.\mvnw.cmd clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0.1:5174"
 ```
 
 ---
 
-## Executar por feature (classe ou método)
-
-### Toda a feature **Login**
-
-```bash
-cd selenium-e2e
-./mvnw test -Dtest=LoginFeatureTest
-```
-
-Windows:
+## 🎯 Executar por feature (classe ou método)
 
 ```powershell
-cd selenium-e2e
-.\mvnw.cmd test -Dtest=LoginFeatureTest
+cd projects-tests/selenium-e2e
+.\mvnw.cmd test -Dtest=CartCheckoutFeatureTest
+.\mvnw.cmd test -Dtest=SupportProductsFeatureTest
+.\mvnw.cmd test -Dtest=LoginFeatureTest#successfulLoginRedirectsToAccountArea
 ```
-
-Ou da raíz do repo:
-
-```bash
-mvn -f selenium-e2e/pom.xml test -Dtest=LoginFeatureTest
-```
-
-### Um cenário específico (método de teste)
-
-Use o formato `NomeDaClasse#nomeDoMetodo`:
-
-```bash
-./mvnw test -Dtest=LoginFeatureTest#invalidCredentialsShowErrorAlert
-```
-
-Windows:
-
-```powershell
-.\mvnw.cmd test -Dtest=LoginFeatureTest#invalidCredentialsShowErrorAlert
-```
-
-Outros métodos em `LoginFeatureTest`: `successfulLoginRedirectsToAccountArea`, `emptyFieldsShowValidationAlert`, `emptyPasswordShowsValidationAlert`.
 
 > O filtro `-Dtest=…` usa a convenção do **Maven Surefire** sobre o nome simples da classe (sem pacote).
 
@@ -415,10 +437,8 @@ Dispara em **push** e **pull request** para `main`, quando há alterações em:
 
 ### Jobs (paralelos)
 
-| Job | Browser | Timeout |
-|-----|---------|---------|
-| `selenium-e2e-chrome` | Chrome headless | 45 min |
-| `selenium-e2e-firefox` | Firefox headless + geckodriver | 45 min |
+- `selenium-e2e-chrome` — Chrome headless, timeout 45 min
+- `selenium-e2e-firefox` — Firefox headless + geckodriver, timeout 45 min
 
 ### Fluxo de cada job
 
@@ -449,15 +469,13 @@ flowchart TD
 
 ### Variáveis e secrets na CI
 
-| Nome | Origem | Uso |
-|------|--------|-----|
-| `SELENIUM_LOGIN_EMAIL` | GitHub Secret | Login nos testes autenticados |
-| `SELENIUM_LOGIN_PASSWORD` | GitHub Secret | Senha do usuário de teste |
-| `GITHUB_TOKEN` | Actions (automático) | geckodriver + publish gh-pages |
-| `browser` | env do job | `chrome` ou `firefox` |
-| `headless` | env do job | `"true"` |
-| `BASE_URL` | env do job | `http://127.0.0.1:5174` |
-| `FIREFOX_BIN` | output do setup-firefox | Caminho do Firefox (job Firefox) |
+- `SELENIUM_LOGIN_EMAIL` — GitHub Secret — login nos testes autenticados
+- `SELENIUM_LOGIN_PASSWORD` — GitHub Secret — senha do usuário de teste
+- `GITHUB_TOKEN` — Actions (automático) — geckodriver + publish gh-pages
+- `browser` — env do job — `chrome` ou `firefox`
+- `headless` — env do job — `"true"`
+- `BASE_URL` — env do job — `http://127.0.0.1:5174`
+- `FIREFOX_BIN` — output do setup-firefox — caminho do Firefox (job Firefox)
 
 Comando equivalente ao da esteira (Chrome):
 
@@ -473,26 +491,25 @@ cd projects-tests/selenium-e2e
 
 ### Relatórios publicados
 
-| Destino | Caminho |
-|---------|---------|
-| Repo (cópia local no workspace) | `tests-dashboard/reports/selenium-allure-report-chrome/` |
-| Repo (cópia local no workspace) | `tests-dashboard/reports/selenium-allure-report-firefox/` |
-| GitHub Pages (`gh-pages`) | `tests-dashboard/reports/selenium-allure-report-chrome/` |
-| GitHub Pages (`gh-pages`) | `tests-dashboard/reports/selenium-allure-report-firefox/` |
+- Repo (cópia local no workspace) — `tests-dashboard/reports/selenium-allure-report-chrome/`
+- Repo (cópia local no workspace) — `tests-dashboard/reports/selenium-allure-report-firefox/`
+- GitHub Pages (`gh-pages`) — `tests-dashboard/reports/selenium-allure-report-chrome/`
+- GitHub Pages (`gh-pages`) — `tests-dashboard/reports/selenium-allure-report-firefox/`
 
 > Os testes usam `continue-on-error: true` — a pipeline gera relatório Allure mesmo com falhas. Verifique o status do job no GitHub Actions.
 
 ---
 
-## Allure Report
+## 📊 Allure Report
 
-1. Rode os testes para gerar `target/allure-results/`:
+Relatório online: [https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/selenium-allure-report-chrome/](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/selenium-allure-report-chrome/)
 
-   ```bash
-   cd selenium-e2e && ./mvnw clean test
+1. Rode os testes para gerar `allure-results/`:
+
+   ```powershell
+   cd projects-tests/selenium-e2e
+   .\mvnw.cmd clean test
    ```
-
-   Windows: `.\mvnw.cmd clean test`
 
 2. **Gerar HTML estático**
 
@@ -531,9 +548,31 @@ O plugin **Allure Maven 3.x** usa por defeito o **runtime Allure 3** (Node empac
 
 ---
 
-## Ligação ao front-end do monorepo
+## 🌐 Ligação ao front-end do monorepo
 
 Os seletores e fluxos espelham a app em **`web/`** e o exemplo Playwright em **`web/e2e`** (mesmos `data-testid`, rota `/login`, redirecionamento para `/minha-conta`). Garanta que o servidor de desenvolvimento da web está no ar na `base.url` configurada antes de executar os testes.
+
+---
+
+## 🧩 Padrão Page Object
+
+Fluxo: `*FeatureTest` → `*PageAction` → `*PageElements` → `BasePage`
+
+- **FeatureTest** — Cenário de negócio (`given` / `when` / `thenValidated`). Exemplo: `SupportProductsFeatureTest`
+- **PageAction** — Clicks, waits, validações, screenshots. Exemplo: `CartCheckoutPageAction`
+- **PageElements** — Seletores estáveis (`id`, `data-testid`). Exemplo: `LoginPageElements`
+- **BasePage** — Toast, focus, `assertTextsVisible`. Exemplo: `BasePage`
+
+Exemplo compacto (sem linhas vazias entre passos):
+
+```java
+void supportShouldOpenCreateProductModal() {
+  supportProducts.whenOpenNewProductModal();
+  supportProducts.thenValidatedCreateProductDialogVisible();
+}
+```
+
+Skill do repositório: `.cursor/skills/selenium-e2e-tests/SKILL.md`
 
 ---
 
@@ -548,4 +587,45 @@ Os seletores e fluxos espelham a app em **`web/`** e o exemplo Playwright em **`
 - **`LoginFeatureTest`**: testes de alto nível (cenários). Orquestra as ações e validações do login, deve ter somente a lógica do teste, sem click e select.
 - **`LoginPageAction`**: implementa as ações e validações do fluxo de login (ex.: preencher campos, enviar, validar telas). Aqui vai fazer as ações de click, select entre outras.
 - **`LoginPageElements`**: guarda os elementos e seletores da tela de login (Page Elements).
-- **`BasePage`**: utilitários comuns para páginas (esperas, asserts de texto, helpers de Selenium e screenshots). 
+- **`BasePage`**: utilitários comuns para páginas (esperas, asserts de texto, helpers de Selenium e screenshots).
+
+---
+
+## 📚 Referências do projeto
+
+Bibliotecas, plugins e documentação oficial usados em `projects-tests/selenium-e2e`.
+
+### Stack principal
+
+- **Java (JDK)** — 21 release / 23 target — Linguagem e runtime — [Adoptium](https://adoptium.net/) · [Java docs](https://docs.oracle.com/en/java/)
+- **Selenium Java** — 4.44.0 — Automação WebDriver (Chrome, Firefox, Edge) — [selenium.dev](https://www.selenium.dev/documentation/) · [Maven Central](https://central.sonatype.com/artifact/org.seleniumhq.selenium/selenium-java)
+- **JUnit Jupiter** — 5.11.4 — Runner, parametrização, paralelismo, assumptions — [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
+- **Maven Surefire** — 3.5.5 — Execução dos testes no build — [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)
+- **Maven Wrapper** — 3.3.4 — Build reproduzível sem Maven global — [Maven Wrapper](https://maven.apache.org/wrapper/)
+
+### Automação e dados
+
+- **WebDriverManager** — 6.3.4 — Download/sync automático de ChromeDriver, GeckoDriver, EdgeDriver — [bonigarcia.dev/wdm](https://bonigarcia.dev/webdrivermanager/) · [GitHub](https://github.com/bonigarcia/webdrivermanager)
+- **Datafaker** — 2.5.4 — Massa de dados pt-BR (`TestDataGenerator`) — [datafaker.net](https://www.datafaker.net/) · [GitHub](https://github.com/datafaker-net/datafaker)
+- **dotenv-java** — 3.2.0 — Carrega `.env` do módulo (`EnvFileLoader`) — [GitHub](https://github.com/cdimascio/dotenv-java)
+
+### Relatórios
+
+- **Allure JUnit 5** — 2.34.0 — `@Epic`, `@Feature`, screenshots, steps — [docs.qameta.io/allure](https://docs.qameta.io/allure/)
+- **Allure Maven Plugin** — 3.0.1 — `allure:report` / `allure:serve` local — [allure-maven](https://github.com/allure-framework/allure-maven)
+- **Allure CLI** — 2.34.0 — Geração de HTML na CI — [Allure Report](https://github.com/allure-framework/allure2)
+- **AspectJ Weaver** — 1.9.25.1 — Integração `@Step` com Surefire — [Eclipse AspectJ](https://www.eclipse.org/aspectj/)
+
+### Monorepo (espelhado nos testes)
+
+- **SPA React** — `web/` — Front-end testado (rotas, `id`, `data-testid`)
+- **API REST** — `server-ts/` — Seed users, login, CRUD via `ApiClient`
+- **Specs Playwright** — `web/e2e/` — Cenários de referência para paridade Selenium
+- **Docker Compose** — `docker-compose.yml` — Stack local e CI (web + API + DB)
+
+### Arquivos de configuração
+
+- `pom.xml` — Dependências, Surefire, Allure, propriedades `-Dbrowser`, `-Dheadless`
+- `.env` — Credenciais locais (`LOGIN_*`, `SEED_*`, `E2E_*`, `API_BASE_URL`)
+- `src/test/resources/junit-platform.properties` — Paralelismo JUnit, autodetection Allure
+- `.github/workflows/selenium-e2e-pipeline.yml` — Esteira CI (Chrome + Firefox)
