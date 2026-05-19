@@ -1,21 +1,21 @@
 # 🧪 Selenium UI E2E (`selenium-e2e`)
 
-Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`, bytecode alvo **23**) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
+Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
 
-**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Referências](#-referências-do-projeto)
+**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Referências](#-referências-do-projeto)
 
 ## ☕ Introdução ao Java 23
 
 O **Java 23** (OpenJDK, setembro/2024) é a JVM recomendada para **executar** esta suite. Trás runtime atualizado, melhor desempenho em I/O (browser, HTTP) e suporte às bibliotecas atuais (Selenium 4.44, JUnit 5.11).
 
-O código-fonte usa API estável desde o **Java 17** (`record`, switch expressions, text blocks, pattern matching) — sem preview features. Instale o **JDK 23**, configure `JAVA_HOME` e rode os testes normalmente.
+O código-fonte compila com **`maven.compiler.release=21`**. Para usar `release=23`, o **próprio processo Maven** precisa rodar em JDK 23 (não basta ter JDK 23 instalado se o `java`/`javac` efetivo for 21). Há **um recurso específico do Java 21** no código (`List.getFirst()`); Java 22 e 23 não têm APIs exclusivas no projeto.
 
 ```bash
 java -version
 # openjdk version "23.x" ...
 ```
 
-> O Java **21** é a referência LTS de compilação (`release=21` no `pom.xml`); o **23** é a JVM de execução recomendada.
+> Compilação: **Java 21** (`release=21`). Execução recomendada: **JDK 23** (`java -version` deve apontar para 23 ao rodar os testes).
 
 ---
 
@@ -127,6 +127,46 @@ cd projects-tests/selenium-e2e
 
 ---
 
+## ☕ Recursos Java 21, 22 e 23 no projeto
+
+Resumo honesto do que o código **realmente usa** (não apenas o que o JDK suporta).
+
+### Java 21 — em uso
+
+Baseline de compilação: `maven.compiler.release=21` no `pom.xml`.
+
+- **`List.getFirst()`** — API de **Sequenced Collections** (Java 21) em `CatalogPageAction.whenAddFirstProductToCart()`:
+
+```java
+wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS))
+    .getFirst();
+```
+
+- **Demais construções modernas** (`record`, switch expression, text blocks, `formatted()`, pattern matching em `instanceof`/`catch`) compilam no release 21, mas são de releases anteriores (14–17) — ver seção [Recursos Java 17+](#-recursos-java-17--exemplos-no-código).
+
+### Java 22 — não utilizado
+
+Nenhuma API ou sintaxe exclusiva do Java 22 aparece no código, por exemplo:
+
+- Unnamed variables (`_`)
+- Stream Gatherers
+- Foreign Function & Memory API
+
+### Java 23 — runtime recomendado
+
+- **JDK 23** é a JVM recomendada para **executar** os testes (local e CI GitHub Actions).
+- **Compilação** usa `release=21` — o código não exige APIs exclusivas do Java 23.
+- **Nenhum recurso exclusivo do Java 23** é usado no código-fonte.
+
+### Resumo
+
+- **Compila com:** Java 21 (`release=21`) — requer JDK ≥ 21 no processo Maven
+- **Executa com:** Java 23 (recomendado)
+- **API 21+ no código:** `getFirst()` em `CatalogPageAction`
+- **API 22/23 no código:** nenhuma exclusiva hoje
+
+---
+
 ## 🗂️ Visão geral das features
 
 Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions.
@@ -149,8 +189,8 @@ Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão
 
 ## ✅ Requisitos
 
-- **JDK** — Java 23 para executar (`java -version`). Compilação: `release=21`, target `23`
-- **Maven** — Opcional se usar o Maven Wrapper (`mvnw` / `mvnw.cmd`)
+- **JDK** — **21+** para compilar (Maven usa o JDK do processo; `release=21`). **23** recomendado para executar os testes
+- **Maven** — **4.0.0-rc-5** (obrigatório para `maven-compiler-plugin` 4.x). Use o **Maven Wrapper** (`mvnw` / `mvnw.cmd`) em `projects-tests/selenium-e2e/` — não precisa instalar Maven globalmente
 - **Navegador** — Chrome, Firefox ou Edge instalados (drivers resolvidos via WebDriverManager)
 - **Aplicação** — API (`server-ts`) em `http://127.0.0.1:3001` e SPA em `http://127.0.0.1:5174`
 - **Seed** — `npm run seed` em `server-ts/` (admin, suporte, usuário normal)
@@ -357,6 +397,8 @@ mvn -f projects-tests/selenium-e2e/pom.xml clean test
 
 ### Problemas comuns no Windows
 
+- `No such property: maven.mainClass` — causa: Maven Wrapper com Maven 4.0.0-beta-5 a rc-4 sem a propriedade de bootstrap. Solução: atualize o repo (`.mvn/jvm.config`, `mvnw` com `-Dmaven.mainClass=org.apache.maven.cling.MavenCling`, wrapper em **4.0.0-rc-5**) e rode de `projects-tests/selenium-e2e/` com `.\mvnw.cmd` ou `./mvnw`
+- `No enum constant SourceVersion.RELEASE_23` — causa: `release=23` no `pom.xml`, mas o **Maven está rodando em JDK 21 ou 22** (`java -version`). Solução: use `release=21` (padrão do projeto) **ou** configure IDE/terminal para executar Maven com JDK 23
 - `bash: ./mvnw: No such file or directory` — causa: comando na **raiz** do repo. Solução: `cd projects-tests/selenium-e2e`
 - `mvnw.cmd: command not found` (Git Bash) — causa: sem caminho completo. Solução: `./projects-tests/selenium-e2e/mvnw.cmd clean test`
 - `JAVA_HOME is set to an invalid directory` — causa: `JAVA_HOME` com pasta que não existe. Solução: corrija o `JAVA_HOME` para apontar para um JDK 23 válido
@@ -601,6 +643,8 @@ Bibliotecas, plugins e documentação oficial usados em `projects-tests/selenium
 - **Selenium Java** — 4.44.0 — Automação WebDriver (Chrome, Firefox, Edge) — [selenium.dev](https://www.selenium.dev/documentation/) · [Maven Central](https://central.sonatype.com/artifact/org.seleniumhq.selenium/selenium-java)
 - **JUnit Jupiter** — 5.11.4 — Runner, parametrização, paralelismo, assumptions — [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
 - **Maven Surefire** — 3.5.5 — Execução dos testes no build — [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)
+- **Maven Compiler Plugin** — 4.0.0-beta-4 — Compilação Java 21 (`release=21`; `release=23` exige Maven rodando em JDK 23) — [Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/)
+- **Apache Maven** — 4.0.0-rc-5 — Versão fixada no Maven Wrapper (`.mvn/wrapper/maven-wrapper.properties`)
 - **Maven Wrapper** — 3.3.4 — Build reproduzível sem Maven global — [Maven Wrapper](https://maven.apache.org/wrapper/)
 
 ### Automação e dados
