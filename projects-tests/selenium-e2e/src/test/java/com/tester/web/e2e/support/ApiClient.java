@@ -30,12 +30,7 @@ public final class ApiClient {
   }
 
   public static LoginResponse login(String email, String password) {
-    String body =
-        """
-        {"email":"%s","password":"%s"}
-        """
-            .formatted(escapeJson(email), escapeJson(password));
-    HttpResponse<String> response = post(apiBaseUrl() + "/users/login", body, null);
+    HttpResponse<String> response = postLogin(apiBaseUrl() + "/users/login", email, password);
     if (response.statusCode() != 200) {
       throw new IllegalStateException("Login failed with HTTP " + response.statusCode());
     }
@@ -43,13 +38,40 @@ public final class ApiClient {
   }
 
   public static Optional<LoginResponse> tryLoginSupport() {
-    return tryLoginWithRole(
-        new String[][] {
-          {EnvConfig.get("SEED_SUPPORT_EMAIL"), EnvConfig.get("SEED_SUPPORT_PASSWORD")},
-          {EnvConfig.get("E2E_SUPPORT_EMAIL"), EnvConfig.get("E2E_SUPPORT_PASSWORD")},
-          {EnvConfig.get("SUPPORT_EMAIL"), EnvConfig.get("SUPPORT_PASSWORD")},
-        },
-        LoginResponse::support);
+    return tryLoginWithRole(supportCredentialPairs(), LoginResponse::support);
+  }
+
+  public static String describeSupportLoginFailure() {
+    StringBuilder message =
+        new StringBuilder("Support login unavailable. API: ")
+            .append(apiBaseUrl())
+            .append(". Env: ")
+            .append(EnvFileLoader.loadedEnvPath())
+            .append(".");
+
+    boolean credentialsConfigured = false;
+    for (String[] pair : supportCredentialPairs()) {
+      if (pair[0] == null || pair[0].isBlank() || pair[1] == null || pair[1].isBlank()) {
+        continue;
+      }
+      credentialsConfigured = true;
+      message.append(" ").append(describeCredentialAttempt(pair[0], pair[1], LoginResponse::support));
+    }
+
+    if (!credentialsConfigured) {
+      message.append(
+          " Missing SEED_SUPPORT_*, E2E_SUPPORT_* or SUPPORT_* in projects-tests/selenium-e2e/.env.");
+      message.append(" Seed user: suporte@tester.com (run server-ts seed if needed).");
+    }
+    return message.toString();
+  }
+
+  private static String[][] supportCredentialPairs() {
+    return new String[][] {
+      {EnvConfig.get("E2E_SUPPORT_EMAIL"), EnvConfig.get("E2E_SUPPORT_PASSWORD")},
+      {EnvConfig.get("SEED_SUPPORT_EMAIL"), EnvConfig.get("SEED_SUPPORT_PASSWORD")},
+      {EnvConfig.get("SUPPORT_EMAIL"), EnvConfig.get("SUPPORT_PASSWORD")},
+    };
   }
 
   public static Optional<LoginResponse> tryLoginAdmin() {
@@ -83,7 +105,12 @@ public final class ApiClient {
   private static Optional<LoginResponse> tryLoginWithRole(
       String email, String password, Predicate<LoginResponse> roleCheck) {
     try {
-      LoginResponse session = login(email, password);
+      HttpResponse<String> response =
+          postLogin(apiBaseUrl() + "/users/login", email, password);
+      if (response.statusCode() != 200) {
+        return Optional.empty();
+      }
+      LoginResponse session = parseLoginResponse(response.body(), email);
       if (roleCheck.test(session)) {
         return Optional.of(session);
       }
@@ -91,6 +118,33 @@ public final class ApiClient {
     } catch (IllegalStateException exception) {
       return Optional.empty();
     }
+  }
+
+  private static String describeCredentialAttempt(
+      String email, String password, Predicate<LoginResponse> roleCheck) {
+    try {
+      HttpResponse<String> response =
+          postLogin(apiBaseUrl() + "/users/login", email, password);
+      if (response.statusCode() != 200) {
+        return email + ": HTTP " + response.statusCode() + ".";
+      }
+      LoginResponse session = parseLoginResponse(response.body(), email);
+      if (roleCheck.test(session)) {
+        return email + ": login OK but role check failed unexpectedly.";
+      }
+      return email + ": authenticated but missing support role " + session.roles() + ".";
+    } catch (IllegalStateException exception) {
+      return email + ": " + exception.getMessage() + ".";
+    }
+  }
+
+  private static HttpResponse<String> postLogin(String url, String email, String password) {
+    String body =
+        """
+        {"email":"%s","password":"%s"}
+        """
+            .formatted(escapeJson(email), escapeJson(password));
+    return post(url, body, null);
   }
 
   public static Optional<LoginResponse> tryLogin(String email, String password) {

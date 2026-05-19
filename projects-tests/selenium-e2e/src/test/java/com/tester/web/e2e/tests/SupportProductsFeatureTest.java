@@ -29,7 +29,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
     supportSession =
         ApiClient.tryLoginSupport()
             .orElse(null);
-    Assumptions.assumeTrue(supportSession != null, "Support login unavailable");
+    Assumptions.assumeTrue(supportSession != null, ApiClient::describeSupportLoginFailure);
     AuthSessionHelper.setAuthenticatedSession(driver, supportSession);
     supportProducts.givenSupportOnProductsPage();
   }
