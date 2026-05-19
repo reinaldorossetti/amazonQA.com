@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -132,21 +131,6 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     waitUntilToastIsGone();
     wait.until(ExpectedConditions.elementToBeClickable(NAV_CART_BUTTON)).click();
     wait.until(ExpectedConditions.urlContains("/cart"));
-  }
-
-  private void waitUntilToastCycleCompletes() {
-    try {
-      new WebDriverWait(driver, Duration.ofSeconds(2))
-          .until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
-    } catch (TimeoutException ignored) {
-      LOGGER.fine("No toast appeared after cart action.");
-    }
-    waitUntilToastIsGone();
-  }
-
-  private void waitUntilToastIsGone() {
-    new WebDriverWait(driver, Duration.ofSeconds(5))
-        .until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
   }
 
   private void proceedToCheckout() {
@@ -307,11 +291,9 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   public void assertFreeShippingBannerHidden() {
-    assertFalse(isVisible(By.xpath("//*[contains(normalize-space(.), 'FREE Shipping')]")));
-  }
-
-  private boolean isVisible(By locator) {
-    return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
+    assertFalse(
+        isVisible(
+            By.xpath("//*[contains(normalize-space(.), 'FREE Shipping')]"), Duration.ZERO));
   }
 
   public void assertPageTextsVisible(String... texts) {

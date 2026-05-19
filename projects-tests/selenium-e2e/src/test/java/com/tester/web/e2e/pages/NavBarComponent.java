@@ -4,14 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Top navigation — aligned with {@code web/e2e/pages/NavComponent.ts}.
@@ -31,7 +28,6 @@ public class NavBarComponent extends BasePage {
   private static final By LANGUAGE_TOGGLE_LOCATOR = By.id(LANGUAGE_TOGGLE);
   private static final By LOGOUT_BUTTON_LOCATOR = By.id(LOGOUT_BUTTON);
   private static final By SEARCH_INPUT_LOCATOR = By.id(SEARCH_INPUT);
-  private static final By TOAST_BODY = By.cssSelector(".Toastify__toast-body");
 
   public NavBarComponent(WebDriver driver) {
     super(driver);
@@ -51,7 +47,9 @@ public class NavBarComponent extends BasePage {
   }
 
   public void whenOpenCart() {
-    wait.until(ExpectedConditions.elementToBeClickable(CART_BUTTON_LOCATOR)).click();
+    waitUntilToastIsGone();
+    WebElement cartButton = wait.until(ExpectedConditions.elementToBeClickable(CART_BUTTON_LOCATOR));
+    clickElementWithFocus(cartButton);
     waitForUrlContaining("/cart");
   }
 
@@ -63,11 +61,6 @@ public class NavBarComponent extends BasePage {
     waitUntilToastIsGone();
     WebElement logout = wait.until(ExpectedConditions.visibilityOfElementLocated(LOGOUT_BUTTON_LOCATOR));
     clickElementWithFocus(logout);
-  }
-
-  private void waitUntilToastIsGone() {
-    new WebDriverWait(driver, Duration.ofSeconds(5))
-        .until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
   }
 
   public void whenOpenAccountFromGreeting() {

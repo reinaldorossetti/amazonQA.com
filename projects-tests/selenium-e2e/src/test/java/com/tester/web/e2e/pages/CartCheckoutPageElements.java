@@ -43,7 +43,6 @@ public class CartCheckoutPageElements extends BasePage {
 
   protected static final By FREE_SHIPPING_BANNER =
       By.xpath("//*[contains(normalize-space(.), 'FREE Shipping')]");
-  protected static final By TOAST_BODY = By.cssSelector(".Toastify__toast-body");
 
   public CartCheckoutPageElements(WebDriver driver) {
     super(driver);

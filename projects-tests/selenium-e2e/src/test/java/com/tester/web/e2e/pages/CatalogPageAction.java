@@ -46,6 +46,7 @@ public class CatalogPageAction extends CatalogPageElements {
   public void whenAddFirstProductToCart() {
     clickElementWithFocus(
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS)).getFirst());
+    waitUntilToastCycleCompletes();
   }
 
   public void assertProductImageVisible(int productId) {

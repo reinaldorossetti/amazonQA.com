@@ -1,6 +1,7 @@
 package com.tester.web.e2e.pages;
 
 import java.io.ByteArrayInputStream;
+import java.time.Duration;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
@@ -21,6 +22,9 @@ import io.qameta.allure.Allure;
 public abstract class BasePage {
 
   protected static final Logger LOGGER = Logger.getLogger(BasePage.class.getName());
+  protected static final By TOAST_BODY = By.cssSelector(".Toastify__toast-body");
+  private static final Duration DEFAULT_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(5);
+  private static final Duration MAX_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(10);
   protected final WebDriver driver;
   protected final WebDriverWait wait;
 
@@ -56,6 +60,58 @@ public abstract class BasePage {
     } catch (TimeoutException e) {
       LOGGER.warning(() -> "Timeout while waiting for element visibility: " + e.getMessage());
       return false;
+    }
+  }
+
+  protected boolean isVisible(By locator) {
+    return isVisible(locator, DEFAULT_IS_VISIBLE_TIMEOUT);
+  }
+
+  protected boolean isVisible(By locator, Duration timeout) {
+    Duration effectiveTimeout = capVisibleTimeout(timeout);
+    if (effectiveTimeout.isZero()) {
+      return driver.findElements(locator).stream().anyMatch(WebElement::isDisplayed);
+    }
+    try {
+      new WebDriverWait(driver, effectiveTimeout)
+          .until(ExpectedConditions.visibilityOfElementLocated(locator));
+      return true;
+    } catch (TimeoutException exception) {
+      return false;
+    }
+  }
+
+  protected boolean isVisible(By locator, long timeoutSeconds) {
+    return isVisible(locator, Duration.ofSeconds(timeoutSeconds));
+  }
+
+  private static Duration capVisibleTimeout(Duration timeout) {
+    if (timeout == null || timeout.isNegative()) {
+      return DEFAULT_IS_VISIBLE_TIMEOUT;
+    }
+    if (timeout.compareTo(MAX_IS_VISIBLE_TIMEOUT) > 0) {
+      return MAX_IS_VISIBLE_TIMEOUT;
+    }
+    return timeout;
+  }
+
+  protected void waitUntilToastIsGone() {
+    if (isVisible(TOAST_BODY, Duration.ZERO)) {
+      wait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+      return;
+    }
+    try {
+      new WebDriverWait(driver, DEFAULT_IS_VISIBLE_TIMEOUT)
+          .until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
+      wait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+    } catch (TimeoutException exception) {
+      LOGGER.fine("No toast to dismiss.");
+    }
+  }
+
+  protected void waitUntilToastCycleCompletes() {
+    if (isVisible(TOAST_BODY)) {
+      waitUntilToastIsGone();
     }
   }
 
