@@ -1,0 +1,240 @@
+package com.tester.web.e2e.support;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public final class ApiClient {
+
+  private static final HttpClient HTTP =
+      HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
+
+  private ApiClient() {}
+
+  public static String apiBaseUrl() {
+    String url = System.getenv("API_BASE_URL");
+    if (url == null || url.isBlank()) {
+      url = System.getProperty("API_BASE_URL");
+    }
+    if (url == null || url.isBlank()) {
+      url = "http://127.0.0.1:3001/api";
+    }
+    return url.replaceAll("/$", "");
+  }
+
+  public static LoginResponse login(String email, String password) {
+    String body =
+        """
+        {"email":"%s","password":"%s"}
+        """
+            .formatted(escapeJson(email), escapeJson(password));
+    HttpResponse<String> response = post(apiBaseUrl() + "/users/login", body, null);
+    if (response.statusCode() != 200) {
+      throw new IllegalStateException("Login failed with HTTP " + response.statusCode());
+    }
+    return parseLoginResponse(response.body(), email);
+  }
+
+  public static Optional<LoginResponse> tryLoginSupport() {
+    String email = firstNonBlank(
+        System.getenv("SEED_SUPPORT_EMAIL"), System.getProperty("SEED_SUPPORT_EMAIL"), "suporte@tester.com");
+    String password = firstNonBlank(
+        System.getenv("SEED_SUPPORT_PASSWORD"),
+        System.getProperty("SEED_SUPPORT_PASSWORD"),
+        "suporte2026@QA");
+    return tryLogin(email, password);
+  }
+
+  public static Optional<LoginResponse> tryLoginAdmin() {
+    String[][] pairs = {
+      {System.getenv("E2E_ADMIN_EMAIL"), System.getenv("E2E_ADMIN_PASSWORD")},
+      {System.getenv("SEED_ADMIN_EMAIL"), System.getenv("SEED_ADMIN_PASSWORD")},
+      {System.getenv("ADMIN_EMAIL"), System.getenv("ADMIN_PASSWORD")},
+      {System.getProperty("E2E_ADMIN_EMAIL"), System.getProperty("E2E_ADMIN_PASSWORD")},
+      {System.getProperty("SEED_ADMIN_EMAIL"), System.getProperty("SEED_ADMIN_PASSWORD")},
+    };
+
+    for (String[] pair : pairs) {
+      if (pair[0] != null && !pair[0].isBlank() && pair[1] != null && !pair[1].isBlank()) {
+        Optional<LoginResponse> response = tryLogin(pair[0], pair[1]);
+        if (response.isPresent()) {
+          return response;
+        }
+      }
+    }
+    return Optional.empty();
+  }
+
+  public static Optional<LoginResponse> tryLogin(String email, String password) {
+    try {
+      return Optional.of(login(email, password));
+    } catch (IllegalStateException exception) {
+      return Optional.empty();
+    }
+  }
+
+  public static CreatedProduct createProduct(String accessToken, String name) {
+    String suffix = String.valueOf(System.currentTimeMillis());
+    String body =
+        """
+        {"name":"%s","price":129.9,"category":"E2E-%s","description":"Produto criado via API para teste Selenium"}
+        """
+            .formatted(escapeJson(name), suffix);
+    HttpResponse<String> response = post(apiBaseUrl() + "/products", body, accessToken);
+    if (response.statusCode() != 201) {
+      throw new IllegalStateException("Create product failed with HTTP " + response.statusCode());
+    }
+    return new CreatedProduct(readInt(response.body(), "id"), readString(response.body(), "name", name));
+  }
+
+  public static CreatedUser registerUser(String email, String password, String firstName, String lastName) {
+    String body =
+        """
+        {"first_name":"%s","last_name":"%s","email":"%s","password":"%s","person_type":"PF"}
+        """
+            .formatted(
+                escapeJson(firstName), escapeJson(lastName), escapeJson(email), escapeJson(password));
+    HttpResponse<String> response = post(apiBaseUrl() + "/users/register", body, null);
+    if (response.statusCode() != 201) {
+      throw new IllegalStateException("Register failed with HTTP " + response.statusCode());
+    }
+    return new CreatedUser(readInt(response.body(), "id"), readString(response.body(), "email", email));
+  }
+
+  public static void deleteProduct(String accessToken, int productId) {
+    sendDelete(apiBaseUrl() + "/products/" + productId, accessToken);
+  }
+
+  public static void deleteUser(String accessToken, int userId) {
+    sendDelete(apiBaseUrl() + "/users/" + userId, accessToken);
+  }
+
+  public static int getProductStatus(int productId) {
+    try {
+      HttpRequest request =
+          HttpRequest.newBuilder()
+              .uri(URI.create(apiBaseUrl() + "/products/" + productId))
+              .timeout(Duration.ofSeconds(15))
+              .GET()
+              .build();
+      return HTTP.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
+    } catch (Exception exception) {
+      throw new IllegalStateException("Product lookup failed: " + exception.getMessage(), exception);
+    }
+  }
+
+  private static HttpResponse<String> post(String url, String body, String accessToken) {
+    try {
+      HttpRequest.Builder builder =
+          HttpRequest.newBuilder()
+              .uri(URI.create(url))
+              .header("Content-Type", "application/json")
+              .timeout(Duration.ofSeconds(30))
+              .POST(HttpRequest.BodyPublishers.ofString(body));
+      if (accessToken != null && !accessToken.isBlank()) {
+        builder.header("Authorization", "Bearer " + accessToken);
+      }
+      return HTTP.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+    } catch (Exception exception) {
+      throw new IllegalStateException("POST " + url + " failed: " + exception.getMessage(), exception);
+    }
+  }
+
+  private static void sendDelete(String url, String accessToken) {
+    try {
+      HttpRequest request =
+          HttpRequest.newBuilder()
+              .uri(URI.create(url))
+              .header("Authorization", "Bearer " + accessToken)
+              .timeout(Duration.ofSeconds(30))
+              .DELETE()
+              .build();
+      HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+    } catch (Exception exception) {
+      throw new IllegalStateException("Delete failed: " + exception.getMessage(), exception);
+    }
+  }
+
+  private static LoginResponse parseLoginResponse(String json, String fallbackEmail) {
+    String token = readString(json, "accessToken", "");
+    JsonSection user = readObject(json, "user");
+    return new LoginResponse(
+        token,
+        readInt(user.raw(), "id"),
+        readString(user.raw(), "first_name", ""),
+        readString(user.raw(), "last_name", ""),
+        readString(user.raw(), "email", fallbackEmail),
+        readBoolean(user.raw(), "isAdmin"),
+        readBoolean(user.raw(), "isSupport"));
+  }
+
+  private static JsonSection readObject(String json, String field) {
+    Pattern pattern = Pattern.compile("\"" + field + "\"\\s*:\\s*\\{");
+    Matcher matcher = pattern.matcher(json);
+    if (!matcher.find()) {
+      return new JsonSection("{}");
+    }
+    int start = matcher.end() - 1;
+    int depth = 0;
+    for (int i = start; i < json.length(); i++) {
+      char current = json.charAt(i);
+      if (current == '{') {
+        depth++;
+      } else if (current == '}') {
+        depth--;
+        if (depth == 0) {
+          return new JsonSection(json.substring(start, i + 1));
+        }
+      }
+    }
+    return new JsonSection("{}");
+  }
+
+  private static String readString(String json, String field, String fallback) {
+    Matcher matcher = Pattern.compile("\"" + field + "\"\\s*:\\s*\"([^\"]*)\"").matcher(json);
+    return matcher.find() ? matcher.group(1) : fallback;
+  }
+
+  private static int readInt(String json, String field) {
+    Matcher matcher = Pattern.compile("\"" + field + "\"\\s*:\\s*(\\d+)").matcher(json);
+    return matcher.find() ? Integer.parseInt(matcher.group(1)) : 0;
+  }
+
+  private static boolean readBoolean(String json, String field) {
+    Matcher matcher = Pattern.compile("\"" + field + "\"\\s*:\\s*(true|false)").matcher(json);
+    return matcher.find() && Boolean.parseBoolean(matcher.group(1));
+  }
+
+  private static String escapeJson(String value) {
+    return value.replace("\\", "\\\\").replace("\"", "\\\"");
+  }
+
+  private static String firstNonBlank(String... values) {
+    for (String value : values) {
+      if (value != null && !value.isBlank()) {
+        return value;
+      }
+    }
+    return "";
+  }
+
+  private record JsonSection(String raw) {}
+
+  public record LoginResponse(
+      String accessToken,
+      int userId,
+      String firstName,
+      String lastName,
+      String email,
+      boolean admin,
+      boolean support) {}
+
+  public record CreatedProduct(int id, String name) {}
+
+  public record CreatedUser(int id, String email) {}
+}

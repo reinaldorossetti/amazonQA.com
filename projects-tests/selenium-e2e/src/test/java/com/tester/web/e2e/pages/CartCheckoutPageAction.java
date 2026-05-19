@@ -313,4 +313,8 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   private boolean isVisible(By locator) {
     return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
   }
+
+  public void assertPageTextsVisible(String... texts) {
+    assertTextsVisible(texts);
+  }
 }
