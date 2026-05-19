@@ -90,6 +90,13 @@ jobs:
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
 
+      - name: Copy Allure report to tests-dashboard (Chrome)
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/reports/selenium-allure-report-chrome
+          rm -rf tests-dashboard/reports/selenium-allure-report-chrome/*
+          cp -R projects-tests/selenium-e2e/allure-report/. tests-dashboard/reports/selenium-allure-report-chrome/
+
       - name: Publish Allure report to gh-pages
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
@@ -128,7 +135,12 @@ jobs:
         id: setup-firefox
         uses: browser-actions/setup-firefox@v1
 
-      - uses: browser-actions/setup-geckodriver@v1
+      - name: Setup geckodriver
+        uses: browser-actions/setup-geckodriver@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: geckodriver --version
 
       - name: Verify Firefox on Linux
         run: |
@@ -136,7 +148,6 @@ jobs:
           test -n "$FIREFOX" && test -x "$FIREFOX"
           "$FIREFOX" --version
           command -v geckodriver
-          geckodriver --version
 
       - name: Install web dependencies
         working-directory: web
@@ -181,6 +192,13 @@ jobs:
         working-directory: projects-tests/selenium-e2e
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
+
+      - name: Copy Allure report to tests-dashboard (Firefox)
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/reports/selenium-allure-report-firefox
+          rm -rf tests-dashboard/reports/selenium-allure-report-firefox/*
+          cp -R projects-tests/selenium-e2e/allure-report/. tests-dashboard/reports/selenium-allure-report-firefox/
 
       - name: Publish Allure report to gh-pages
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
