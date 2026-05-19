@@ -38,15 +38,14 @@ class SupportProductsFeatureTest extends AbstractUiTest {
   @Severity(SeverityLevel.CRITICAL)
   @DisplayName("SUP-UI01 support should access product management screen")
   void supportShouldAccessProductManagementScreen() {
-    supportProducts.assertTitleContains("Gestão de Produtos");
-    supportProducts.assertNewProductButtonVisible();
+    supportProducts.thenValidatedProductManagementScreenVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
   @DisplayName("SUP-UI02 support should see loaded products table")
   void supportShouldSeeLoadedProductsTable() {
-    supportProducts.assertTableVisible();
+    supportProducts.thenValidatedProductsTableVisible();
   }
 
   @Test
@@ -59,7 +58,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
       driver.navigate().refresh();
       supportProducts.givenSupportOnProductsPage();
       supportProducts.whenSearch(created.name().split(" ")[0]);
-      supportProducts.assertProductListed(created.name());
+      supportProducts.thenValidatedProductListed(created.name());
     } finally {
       ApiClient.deleteProduct(supportSession.accessToken(), created.id());
     }
@@ -70,7 +69,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
   @DisplayName("SUP-UI04 empty search should show empty message")
   void emptySearchShouldShowEmptyMessage() {
     supportProducts.whenSearch("__inexistente_" + System.currentTimeMillis() + "__");
-    supportProducts.assertEmptyStateVisible();
+    supportProducts.thenValidatedEmptySearchStateVisible();
   }
 
   @Test
@@ -78,7 +77,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
   @DisplayName("SUP-UI05 support should open create product modal")
   void supportShouldOpenCreateProductModal() {
     supportProducts.whenOpenNewProductModal();
-    supportProducts.assertCreateDialogVisible();
+    supportProducts.thenValidatedCreateProductDialogVisible();
   }
 
   @Test
@@ -87,7 +86,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
   void modalShouldValidateRequiredProductName() {
     supportProducts.whenOpenNewProductModal();
     supportProducts.whenSubmitNewProductWithoutName();
-    supportProducts.assertRequiredNameValidationVisible();
+    supportProducts.thenValidatedRequiredNameValidationVisible();
   }
 
   @Test
@@ -100,8 +99,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
       driver.navigate().refresh();
       supportProducts.givenSupportOnProductsPage();
       supportProducts.whenOpenEditProduct(created.id());
-      supportProducts.assertEditDialogVisible();
-      supportProducts.assertEditDialogNamePrefilled(created.name());
+      supportProducts.thenValidatedEditDialogWithPrefilledName(created.name());
       supportProducts.whenCloseDialog();
     } finally {
       ApiClient.deleteProduct(supportSession.accessToken(), created.id());
@@ -116,8 +114,8 @@ class SupportProductsFeatureTest extends AbstractUiTest {
         ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Delete " + System.currentTimeMillis());
     driver.navigate().refresh();
     supportProducts.givenSupportOnProductsPage();
-    supportProducts.assertProductListed(created.name());
+    supportProducts.thenValidatedProductListed(created.name());
     supportProducts.whenDeleteProduct(created.id());
-    supportProducts.assertProductNotListed(created.name());
+    supportProducts.thenValidatedProductNotListed(created.name());
   }
 }

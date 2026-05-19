@@ -59,6 +59,37 @@ class CartCheckoutFeatureTest extends AbstractUiTest {
 
 For permutations, use `@ParameterizedTest` with an enum in `support`, like `PaymentMethod`.
 
+## Test Method Formatting
+
+Keep test methods compact. Do **not** insert blank lines between consecutive flow steps inside a test method.
+
+- No blank lines between `given...`, `when...`, `thenValidated...`, or `validated...` calls in the same method.
+- Follow `CartCheckoutFeatureTest.java`: one statement per line, steps stacked without spacing.
+- One blank line between test methods is fine.
+- Inside `@BeforeEach`, keep setup statements consecutive without blank lines between them.
+- Use a blank line only when separating unrelated blocks in a long test (for example, API setup before UI flow), not between each PageAction call.
+
+Good:
+
+```java
+void supportShouldOpenCreateProductModal() {
+  supportProducts.whenOpenNewProductModal();
+  supportProducts.thenValidatedCreateProductDialogVisible();
+}
+```
+
+Avoid:
+
+```java
+void supportShouldOpenCreateProductModal() {
+
+  supportProducts.whenOpenNewProductModal();
+
+  supportProducts.thenValidatedCreateProductDialogVisible();
+
+}
+```
+
 ## Page Action Rules
 
 Put all browser behavior in `PageAction` classes:

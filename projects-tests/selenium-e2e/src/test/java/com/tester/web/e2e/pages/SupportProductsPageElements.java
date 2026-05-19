@@ -12,6 +12,8 @@ public class SupportProductsPageElements extends BasePage {
   protected static final By TABLE = By.id("support-products-table");
   protected static final By EMPTY = By.id("support-products-empty");
   protected static final By ACCOUNT_MENU = By.id("account-menu-minha-conta-suporte-produtos");
+  protected static final By DIALOG = By.id("support-product-dialog");
+  protected static final By DIALOG_CLOSE = By.id("support-product-dialog-close");
 
   protected SupportProductsPageElements(WebDriver driver) {
     super(driver);

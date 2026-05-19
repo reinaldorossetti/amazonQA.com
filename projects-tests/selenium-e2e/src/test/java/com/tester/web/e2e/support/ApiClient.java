@@ -6,7 +6,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -209,8 +211,9 @@ public final class ApiClient {
   private static LoginResponse parseLoginResponse(String json, String fallbackEmail) {
     String token = readString(json, "accessToken", "");
     JsonSection user = readObject(json, "user");
-    boolean isAdmin = readBoolean(user.raw(), "isAdmin") || hasRole(user.raw(), "admin");
-    boolean isSupport = readBoolean(user.raw(), "isSupport") || hasRole(user.raw(), "support");
+    List<String> roles = readStringList(user.raw(), "roles");
+    boolean isAdmin = readBoolean(user.raw(), "isAdmin") || roles.contains("admin");
+    boolean isSupport = readBoolean(user.raw(), "isSupport") || roles.contains("support");
     return new LoginResponse(
         token,
         readInt(user.raw(), "id"),
@@ -218,11 +221,25 @@ public final class ApiClient {
         readString(user.raw(), "last_name", ""),
         readString(user.raw(), "email", fallbackEmail),
         isAdmin,
-        isSupport);
+        isSupport,
+        roles);
   }
 
-  private static boolean hasRole(String json, String role) {
-    return json.contains("\"" + role + "\"");
+  private static List<String> readStringList(String json, String field) {
+    Matcher matcher = Pattern.compile("\"" + field + "\"\\s*:\\s*\\[([^\\]]*)\\]").matcher(json);
+    if (!matcher.find()) {
+      return List.of();
+    }
+    String inner = matcher.group(1);
+    if (inner == null || inner.isBlank()) {
+      return List.of();
+    }
+    Matcher items = Pattern.compile("\"([^\"]+)\"").matcher(inner);
+    List<String> values = new ArrayList<>();
+    while (items.find()) {
+      values.add(items.group(1));
+    }
+    return values;
   }
 
   private static JsonSection readObject(String json, String field) {
@@ -284,7 +301,8 @@ public final class ApiClient {
       String lastName,
       String email,
       boolean admin,
-      boolean support) {}
+      boolean support,
+      List<String> roles) {}
 
   public record CreatedProduct(int id, String name) {}
 

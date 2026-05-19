@@ -27,7 +27,8 @@ public class SupportProductsPageAction extends SupportProductsPageElements {
   public void givenSupportOnProductsPage() {
     driver.navigate().to(TestEnvironment.baseUrl() + "/");
     nav.whenOpenAccountFromGreeting();
-    wait.until(ExpectedConditions.elementToBeClickable(ACCOUNT_MENU)).click();
+    WebElement supportMenu = wait.until(ExpectedConditions.elementToBeClickable(ACCOUNT_MENU));
+    clickElementWithFocus(supportMenu);
     wait.until(ExpectedConditions.visibilityOfElementLocated(WRAPPER));
   }
 
@@ -42,7 +43,7 @@ public class SupportProductsPageAction extends SupportProductsPageElements {
   }
 
   public void whenSubmitNewProductWithoutName() {
-    WebElement dialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[role='dialog']")));
+    WebElement dialog = wait.until(ExpectedConditions.visibilityOfElementLocated(DIALOG));
     WebElement priceInput = dialog.findElements(By.cssSelector("input")).get(1);
     fill(priceInput, "99.99");
     clickElementWithFocus(
@@ -59,55 +60,55 @@ public class SupportProductsPageAction extends SupportProductsPageElements {
   }
 
   public void whenCloseDialog() {
-    clickElementWithFocus(
-        wait.until(ExpectedConditions.elementToBeClickable(
-            By.cssSelector("[role='dialog'] button[aria-label='close']"))));
+    clickElementWithFocus(wait.until(ExpectedConditions.elementToBeClickable(DIALOG_CLOSE)));
   }
 
-  public void assertTitleContains(String text) {
-    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(TITLE)).getText().contains(text));
-  }
-
-  public void assertNewProductButtonVisible() {
+  public void thenValidatedProductManagementScreenVisible() {
+    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(TITLE)).getText().contains("Gestão de Produtos"));
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(NEW_BUTTON)).isDisplayed());
+    attachScreenshot("thenValidatedProductManagementScreenVisible");
   }
 
-  public void assertTableVisible() {
+  public void thenValidatedProductsTableVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(TABLE)).isDisplayed());
     assertTrue(!driver.findElements(By.cssSelector("#support-products-table tbody tr")).isEmpty());
+    attachScreenshot("thenValidatedProductsTableVisible");
   }
 
-  public void assertProductListed(String name) {
+  public void thenValidatedProductListed(String name) {
     assertTextsVisible(name);
+    attachScreenshot("thenValidatedProductListed");
   }
 
-  public void assertProductNotListed(String name) {
+  public void thenValidatedProductNotListed(String name) {
     wait.until(webDriver -> !webDriver.getPageSource().contains(name));
     assertFalse(driver.getPageSource().contains(name));
+    attachScreenshot("thenValidatedProductNotListed");
   }
 
-  public void assertEmptyStateVisible() {
+  public void thenValidatedEmptySearchStateVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(EMPTY)).isDisplayed());
     assertTextsVisible("Nenhum produto encontrado");
+    attachScreenshot("thenValidatedEmptySearchStateVisible");
   }
 
-  public void assertCreateDialogVisible() {
-    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[role='dialog']"))).isDisplayed());
+  public void thenValidatedCreateProductDialogVisible() {
+    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(DIALOG)).isDisplayed());
     assertTextsVisible("Cadastrar Produto");
+    attachScreenshot("thenValidatedCreateProductDialogVisible");
   }
 
-  public void assertRequiredNameValidationVisible() {
+  public void thenValidatedRequiredNameValidationVisible() {
     assertTextsVisible("obrigatório");
+    attachScreenshot("thenValidatedRequiredNameValidationVisible");
   }
 
-  public void assertEditDialogVisible() {
+  public void thenValidatedEditDialogWithPrefilledName(String name) {
     assertTextsVisible("Editar Produto");
-  }
-
-  public void assertEditDialogNamePrefilled(String name) {
-    WebElement dialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[role='dialog']")));
+    WebElement dialog = wait.until(ExpectedConditions.visibilityOfElementLocated(DIALOG));
     WebElement nameInput = dialog.findElement(By.cssSelector("input"));
     assertEquals(name, nameInput.getAttribute("value"));
+    attachScreenshot("thenValidatedEditDialogWithPrefilledName");
   }
 
   private void acceptAlertIfPresent() {
