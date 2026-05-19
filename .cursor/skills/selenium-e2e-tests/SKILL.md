@@ -122,4 +122,4 @@ The project uses `src/test/resources/junit-platform.properties` for JUnit parall
 - Do not change the test assertions, for the test to pass, it must always follow the business rule.
 - Do not make complex tests, keep your tests simple and functions short. Always prefer to use the functions from BasePage.java.
 - Do not use cucumber in the tests.
-- Do not use assert name on the test classes prefer "then" ou "shouldValidated"
+- Do not use assert name on the test classes, prefer "then" ou "shouldValidate", "thenTheSystemShouldShowAMessage", "validatedLoginInPage"
