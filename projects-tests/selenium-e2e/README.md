@@ -1,6 +1,131 @@
-# Selenium UI E2E (`selenium-e2e`)
+# 🧪 Selenium UI E2E (`selenium-e2e`)
 
-Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object**. O `pom.xml` fixa **Java 23** e integra **Allure Report** e **Datafaker** para massa de dados.
+Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`, bytecode alvo **23**) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
+
+**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Requisitos](#requisitos) · [Referências](#-referências-do-projeto) · [Estrutura](#-estrutura-de-pastas) · [Executar testes](#executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#allure-report)
+
+## ☕ Introdução ao Java 23
+
+O **Java 23** (OpenJDK, setembro/2024) é a JVM recomendada para **executar** esta suite. Trás runtime atualizado, melhor desempenho em I/O (browser, HTTP) e suporte às bibliotecas atuais (Selenium 4.44, JUnit 5.11).
+
+O código-fonte usa API estável desde o **Java 17** (`record`, switch expressions, text blocks, pattern matching) — sem preview features. Instale o **JDK 23**, configure `JAVA_HOME` e rode os testes normalmente.
+
+```bash
+java -version
+# openjdk version "23.x" ...
+```
+
+> O Java **21** é a referência LTS de compilação (`release=21` no `pom.xml`); o **23** é a JVM de execução recomendada.
+
+---
+
+## 🚀 Recursos Java 17+ — exemplos no código
+
+Os exemplos abaixo existem no repositório e são validados por `JavaModernFeaturesTest` (sem WebDriver).
+
+### `record` — DTOs imutáveis
+
+Arquivo: `config/BrowserName.java`, `support/TestDataGenerator.java`
+
+```java
+public record BrowserName(String value) {
+  public static final BrowserName CHROME = new BrowserName("CHROME");
+}
+
+public record UserData(String firstName, String lastName, String email, String password) {}
+```
+
+### Switch expression — mapeamento de browser
+
+Arquivo: `config/BrowserName.java`
+
+```java
+return switch (normalized) {
+  case "CHROME" -> CHROME;
+  case "FIREFOX", "FF" -> FIREFOX;
+  case "EDGE", "MSEDGE" -> EDGE;
+  default -> throw new IllegalArgumentException("Unsupported browser: " + raw);
+};
+```
+
+### Text block + `formatted()` — payloads JSON da API
+
+Arquivo: `support/JsonPayloads.java` (usado por `ApiClient` e `AuthSessionHelper`)
+
+```java
+public static String loginBody(String email, String password) {
+  return """
+      {"email":"%s","password":"%s"}
+      """
+      .formatted(escapeJson(email), escapeJson(password));
+}
+```
+
+### `String.formatted()` — seletores CSS
+
+Arquivo: `support/Selectors.java` (usado por `BasePage.byTestId`)
+
+```java
+public static By byTestId(String testId) {
+  return By.cssSelector("[data-testid='%s']".formatted(testId));
+}
+```
+
+### Pattern matching `instanceof` — cast seguro no WebDriver
+
+Arquivo: `pages/BasePage.java`, `tests/AbstractUiTest.java`
+
+```java
+if (driver instanceof JavascriptExecutor javascriptExecutor) {
+  javascriptExecutor.executeScript("arguments[0].click();", element);
+}
+
+if (driver instanceof TakesScreenshot takesScreenshot) {
+  byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
+}
+```
+
+### Switch com `->` — fluxo de cadastro
+
+Arquivo: `pages/RegisterPageAction.java`
+
+```java
+switch (omitted) {
+  case FIRST_NAME -> {
+    fillField(LAST_NAME, userData.lastName());
+    fillField(EMAIL, userData.email());
+  }
+  case EMAIL -> { /* ... */ }
+}
+```
+
+### `HttpClient` + `Duration` — cliente REST nativo
+
+Arquivo: `support/ApiClient.java`
+
+```java
+private static final HttpClient HTTP =
+    HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1)
+        .connectTimeout(Duration.ofSeconds(15))
+        .build();
+```
+
+### Rodar só os exemplos de linguagem
+
+```powershell
+cd projects-tests/selenium-e2e
+.\mvnw.cmd test -Dtest=JavaModernFeaturesTest
+```
+
+| Recurso | Desde | Classe principal |
+|---------|-------|------------------|
+| `record` | 16/17 | `BrowserName`, `TestDataGenerator.UserData`, `ApiClient.LoginResponse` |
+| Switch expression | 14/17 | `BrowserName.fromSystemProperty` |
+| Text blocks | 15+ | `JsonPayloads` |
+| `formatted()` | 15+ | `Selectors`, `JsonPayloads` |
+| Pattern matching | 16+ | `BasePage`, `AbstractUiTest` |
+| `HttpClient` | 11+ | `ApiClient` |
 
 ---
 
@@ -8,7 +133,7 @@ Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object**. O
 
 | Item | Detalhe |
 |------|---------|
-| **JDK** | **23** (`maven.compiler.release=23`). |
+| **JDK** | **23** para executar (`java -version`). Compilação: `release=21`, target `23`. |
 | **Maven** | Opcional se usar o **Maven Wrapper** (`mvnw` / `mvnw.cmd`) |
 | **Navegador** | Chrome, Firefox ou Edge instalados (drivers resolvidos via **WebDriverManager**) |
 | **Aplicação** | Front-end acessível na URL base (padrão `http://localhost:5174`, como no Playwright do monorepo) |
@@ -36,22 +161,58 @@ Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object**. O
 
 ---
 
-## Ferramentas e versões principais
+## 📚 Referências do projeto
 
-| Tecnologia | Versão no projeto |
-|------------|-------------------|
-| Java | **23** |
-| Selenium Java | **4.28.1** |
-| JUnit Jupiter | **5.11.4** |
-| WebDriverManager | **5.9.3** |
-| Allure JUnit 5 | **2.34.0** (BOM) |
-| Allure Maven Plugin | **3.0.1** |
-| AspectJ Weaver | **1.9.25.1** (Surefire / `@Step`) |
-| Datafaker | **2.5.4** |
+Bibliotecas, plugins e documentação oficial usados em `projects-tests/selenium-e2e`.
+
+### Stack principal
+
+| Tecnologia | Versão | Papel no projeto | Referência |
+|------------|--------|------------------|------------|
+| **Java (JDK)** | 21 release / 23 target | Linguagem e runtime | [Adoptium](https://adoptium.net/) · [Java docs](https://docs.oracle.com/en/java/) |
+| **Selenium Java** | 4.44.0 | Automação WebDriver (Chrome, Firefox, Edge) | [selenium.dev](https://www.selenium.dev/documentation/) · [Maven Central](https://central.sonatype.com/artifact/org.seleniumhq.selenium/selenium-java) |
+| **JUnit Jupiter** | 5.11.4 | Runner, parametrização, paralelismo, assumptions | [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/) |
+| **Maven Surefire** | 3.5.5 | Execução dos testes no build | [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/) |
+| **Maven Wrapper** | 3.3.4 | Build reproduzível sem Maven global | [Maven Wrapper](https://maven.apache.org/wrapper/) |
+
+### Automação e dados
+
+| Tecnologia | Versão | Papel no projeto | Referência |
+|------------|--------|------------------|------------|
+| **WebDriverManager** | 6.3.4 | Download/sync automático de ChromeDriver, GeckoDriver, EdgeDriver | [bonigarcia.dev/wdm](https://bonigarcia.dev/webdrivermanager/) · [GitHub](https://github.com/bonigarcia/webdrivermanager) |
+| **Datafaker** | 2.5.4 | Massa de dados pt-BR (`TestDataGenerator`) | [datafaker.net](https://www.datafaker.net/) · [GitHub](https://github.com/datafaker-net/datafaker) |
+| **dotenv-java** | 3.2.0 | Carrega `.env` do módulo (`EnvFileLoader`) | [GitHub](https://github.com/cdimascio/dotenv-java) |
+
+### Relatórios
+
+| Tecnologia | Versão | Papel no projeto | Referência |
+|------------|--------|------------------|------------|
+| **Allure JUnit 5** | 2.34.0 | `@Epic`, `@Feature`, screenshots, steps | [docs.qameta.io/allure](https://docs.qameta.io/allure/) |
+| **Allure Maven Plugin** | 3.0.1 | `allure:report` / `allure:serve` local | [allure-maven](https://github.com/allure-framework/allure-maven) |
+| **Allure CLI** | 2.34.0 | Geração de HTML na CI | [Allure Report](https://github.com/allure-framework/allure2) |
+| **AspectJ Weaver** | 1.9.25.1 | Integração `@Step` com Surefire | [Eclipse AspectJ](https://www.eclipse.org/aspectj/) |
+
+### Monorepo (espelhado nos testes)
+
+| Área | Caminho | Referência |
+|------|---------|------------|
+| **SPA React** | `web/` | Front-end testado (rotas, `id`, `data-testid`) |
+| **API REST** | `server-ts/` | Seed users, login, CRUD via `ApiClient` |
+| **Specs Playwright** | `web/e2e/` | Cenários de referência para paridade Selenium |
+| **Docker Compose** | `docker-compose.yml` | Stack local e CI (web + API + DB) |
+
+### Arquivos de configuração
+
+| Arquivo | Conteúdo |
+|---------|----------|
+| `pom.xml` | Dependências, Surefire, Allure, propriedades `-Dbrowser`, `-Dheadless` |
+| `.env` | Credenciais locais (`LOGIN_*`, `SEED_*`, `E2E_*`, `API_BASE_URL`) |
+| `src/test/resources/junit-platform.properties` | Paralelismo JUnit, autodetection Allure |
+| `.github/workflows/selenium-e2e-pipeline.yml` | Esteira CI (Chrome + Firefox) |
 
 ---
 
-## Estrutura de pastas
+## 📁 Estrutura de pastas
 
 ```
 selenium-e2e/
@@ -67,7 +228,7 @@ selenium-e2e/
 │       ├── java/com/tester/web/e2e/
 │       │   ├── config/      # Browser, WebDriver factory, propriedades de ambiente
 │       │   ├── pages/       # Page Objects (BasePage, LoginPage, …)
-│       │   ├── support/     # Dados esperados na UI, condições @EnabledIf, etc.
+│       │   ├── support/     # ApiClient, JsonPayloads, Selectors, TestDataGenerator, …
 │       │   └── tests/       # Cenários (ex.: LoginFeatureTest)
 │       └── resources/
 │           └── junit-platform.properties  # auto-detection JUnit extensions (Allure)
@@ -235,6 +396,93 @@ Importe o certificado raiz/intermediário da sua empresa no cacerts desse Java:
 
 mvn compile -Daether.connector.https.securityMode=insecure
 ````
+
+---
+
+## 🔄 Esteira GitHub Actions
+
+Workflow: [`.github/workflows/selenium-e2e-pipeline.yml`](../../.github/workflows/selenium-e2e-pipeline.yml)
+
+### Quando roda
+
+Dispara em **push** e **pull request** para `main`, quando há alterações em:
+
+- `projects-tests/selenium-e2e/**`
+- `web/**`
+- `server-ts/**`
+- `docker-compose.yml`
+- o próprio workflow
+
+### Jobs (paralelos)
+
+| Job | Browser | Timeout |
+|-----|---------|---------|
+| `selenium-e2e-chrome` | Chrome headless | 45 min |
+| `selenium-e2e-firefox` | Firefox headless + geckodriver | 45 min |
+
+### Fluxo de cada job
+
+```mermaid
+flowchart TD
+  A[checkout] --> B[setup Node 22 + Java 23]
+  B --> C[setup browser + driver]
+  C --> D[npm install em web/]
+  D --> E[docker compose up -d --build]
+  E --> F[wait-on API :3001 e SPA :5174]
+  F --> G[mvnw clean test headless]
+  G --> H[allure generate]
+  H --> I[copia p/ tests-dashboard/reports]
+  I --> J[publica gh-pages se push main]
+  J --> K[docker compose down]
+```
+
+1. **Checkout** do repositório.
+2. **Setup:** Node.js 22 (cache npm em `web/`), Java 23 Temurin (cache Maven).
+3. **Browser:** Chrome via `browser-actions/setup-chrome@v1`; Firefox via `setup-firefox@v1` + `setup-geckodriver@latest` (token `GITHUB_TOKEN`).
+4. **Stack:** `docker compose up -d --build` (API + web + banco).
+5. **Readiness:** `wait-on` em `http://127.0.0.1:3001/api/products` e `http://127.0.0.1:5174`.
+6. **Testes:** `./mvnw clean test` em `projects-tests/selenium-e2e` (`continue-on-error: true`).
+7. **Allure:** CLI 2.34.0 → gera `allure-report/`.
+8. **Cópia:** relatório para `tests-dashboard/reports/selenium-allure-report-chrome|firefox/`.
+9. **Publish:** em push na `main`, publica no branch `gh-pages` (`peaceiris/actions-gh-pages@v4`).
+10. **Teardown:** `docker compose down` (sempre, via `if: always()`).
+
+### Variáveis e secrets na CI
+
+| Nome | Origem | Uso |
+|------|--------|-----|
+| `SELENIUM_LOGIN_EMAIL` | GitHub Secret | Login nos testes autenticados |
+| `SELENIUM_LOGIN_PASSWORD` | GitHub Secret | Senha do usuário de teste |
+| `GITHUB_TOKEN` | Actions (automático) | geckodriver + publish gh-pages |
+| `browser` | env do job | `chrome` ou `firefox` |
+| `headless` | env do job | `"true"` |
+| `BASE_URL` | env do job | `http://127.0.0.1:5174` |
+| `FIREFOX_BIN` | output do setup-firefox | Caminho do Firefox (job Firefox) |
+
+Comando equivalente ao da esteira (Chrome):
+
+```bash
+cd projects-tests/selenium-e2e
+./mvnw clean test \
+  -Dbrowser=chrome \
+  -Dheadless=true \
+  -Dbase.url=http://127.0.0.1:5174 \
+  -Dlogin.email="$LOGIN_EMAIL" \
+  -Dlogin.password="$LOGIN_PASSWORD"
+```
+
+### Relatórios publicados
+
+| Destino | Caminho |
+|---------|---------|
+| Repo (cópia local no workspace) | `tests-dashboard/reports/selenium-allure-report-chrome/` |
+| Repo (cópia local no workspace) | `tests-dashboard/reports/selenium-allure-report-firefox/` |
+| GitHub Pages (`gh-pages`) | `tests-dashboard/reports/selenium-allure-report-chrome/` |
+| GitHub Pages (`gh-pages`) | `tests-dashboard/reports/selenium-allure-report-firefox/` |
+
+> Os testes usam `continue-on-error: true` — a pipeline gera relatório Allure mesmo com falhas. Verifique o status do job no GitHub Actions.
+
+---
 
 ## Allure Report
 

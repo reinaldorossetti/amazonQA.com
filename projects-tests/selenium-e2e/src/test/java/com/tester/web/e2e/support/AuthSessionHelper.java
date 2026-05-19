@@ -18,17 +18,14 @@ public final class AuthSessionHelper {
     List<String> roles = resolveRoles(session);
     String rolesJson = toJsonArray(roles);
     String userJson =
-        """
-        {"id":%d,"name":"%s","lastName":"%s","email":"%s","personType":"PF","isAdmin":%s,"isSupport":%s,"roles":%s}
-        """
-            .formatted(
-                session.userId(),
-                escape(session.firstName()),
-                escape(session.lastName()),
-                escape(session.email()),
-                session.admin(),
-                session.support(),
-                rolesJson);
+        JsonPayloads.authUserJson(
+            session.userId(),
+            session.firstName(),
+            session.lastName(),
+            session.email(),
+            session.admin(),
+            session.support(),
+            rolesJson);
 
     driver.get(TestEnvironment.baseUrl());
     if (driver instanceof JavascriptExecutor javascriptExecutor) {
@@ -67,13 +64,9 @@ public final class AuthSessionHelper {
       if (i > 0) {
         builder.append(',');
       }
-      builder.append('"').append(escape(values.get(i))).append('"');
+      builder.append('"').append(JsonPayloads.escapeJson(values.get(i))).append('"');
     }
     builder.append(']');
     return builder.toString();
-  }
-
-  private static String escape(String value) {
-    return value.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 }

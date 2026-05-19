@@ -139,12 +139,7 @@ public final class ApiClient {
   }
 
   private static HttpResponse<String> postLogin(String url, String email, String password) {
-    String body =
-        """
-        {"email":"%s","password":"%s"}
-        """
-            .formatted(escapeJson(email), escapeJson(password));
-    return post(url, body, null);
+    return post(url, JsonPayloads.loginBody(email, password), null);
   }
 
   public static Optional<LoginResponse> tryLogin(String email, String password) {
@@ -157,11 +152,7 @@ public final class ApiClient {
 
   public static CreatedProduct createProduct(String accessToken, String name) {
     String suffix = String.valueOf(System.currentTimeMillis());
-    String body =
-        """
-        {"name":"%s","price":129.9,"category":"E2E-%s","description":"Produto criado via API para teste Selenium"}
-        """
-            .formatted(escapeJson(name), suffix);
+    String body = JsonPayloads.createProductBody(name, suffix);
     HttpResponse<String> response = post(apiBaseUrl() + "/products", body, accessToken);
     if (response.statusCode() != 201) {
       throw new IllegalStateException("Create product failed with HTTP " + response.statusCode());
@@ -171,16 +162,7 @@ public final class ApiClient {
 
   public static CreatedUser registerUser(String email, String password, String firstName, String lastName) {
     String cpf = TestDataGenerator.validCpf();
-    String body =
-        """
-        {"first_name":"%s","last_name":"%s","email":"%s","password":"%s","person_type":"PF","cpf":"%s"}
-        """
-            .formatted(
-                escapeJson(firstName),
-                escapeJson(lastName),
-                escapeJson(email),
-                escapeJson(password),
-                escapeJson(cpf));
+    String body = JsonPayloads.registerUserBody(firstName, lastName, email, password, cpf);
     HttpResponse<String> response = post(apiBaseUrl() + "/users/register", body, null);
     if (response.statusCode() != 201) {
       throw new IllegalStateException("Register failed with HTTP " + response.statusCode());
@@ -334,7 +316,7 @@ public final class ApiClient {
   }
 
   private static String escapeJson(String value) {
-    return value.replace("\\", "\\\\").replace("\"", "\\\"");
+    return JsonPayloads.escapeJson(value);
   }
 
   private static String firstNonBlank(String... values) {

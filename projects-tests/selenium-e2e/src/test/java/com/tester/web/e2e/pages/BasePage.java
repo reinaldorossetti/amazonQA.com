@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.tester.web.e2e.config.TestEnvironment;
+import com.tester.web.e2e.support.Selectors;
 
 import io.qameta.allure.Allure;
 
@@ -34,7 +35,7 @@ public abstract class BasePage {
   }
 
   protected By byTestId(String testId) {
-    return By.cssSelector("[data-testid='%s']".formatted(testId));
+    return Selectors.byTestId(testId);
   }
 
   protected WebElement waitVisible(String testId) {
