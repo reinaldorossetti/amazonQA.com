@@ -1,30 +1,30 @@
 package com.tester.web.e2e.support;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class ApiClient {
 
   private static final HttpClient HTTP =
-      HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
+      HttpClient.newBuilder()
+          .version(HttpClient.Version.HTTP_1_1)
+          .connectTimeout(Duration.ofSeconds(15))
+          .build();
 
   private ApiClient() {}
 
   public static String apiBaseUrl() {
-    String url = System.getenv("API_BASE_URL");
-    if (url == null || url.isBlank()) {
-      url = System.getProperty("API_BASE_URL");
-    }
-    if (url == null || url.isBlank()) {
-      url = "http://127.0.0.1:3001/api";
-    }
-    return url.replaceAll("/$", "");
+    return EnvConfig.get("API_BASE_URL", "http://127.0.0.1:3001/api").replaceAll("/$", "");
   }
 
   public static LoginResponse login(String email, String password) {
@@ -41,33 +41,54 @@ public final class ApiClient {
   }
 
   public static Optional<LoginResponse> tryLoginSupport() {
-    String email = firstNonBlank(
-        System.getenv("SEED_SUPPORT_EMAIL"), System.getProperty("SEED_SUPPORT_EMAIL"), "suporte@tester.com");
-    String password = firstNonBlank(
-        System.getenv("SEED_SUPPORT_PASSWORD"),
-        System.getProperty("SEED_SUPPORT_PASSWORD"),
-        "suporte2026@QA");
-    return tryLogin(email, password);
+    return tryLoginWithRole(
+        new String[][] {
+          {EnvConfig.get("SEED_SUPPORT_EMAIL"), EnvConfig.get("SEED_SUPPORT_PASSWORD")},
+          {EnvConfig.get("E2E_SUPPORT_EMAIL"), EnvConfig.get("E2E_SUPPORT_PASSWORD")},
+          {EnvConfig.get("SUPPORT_EMAIL"), EnvConfig.get("SUPPORT_PASSWORD")},
+        },
+        LoginResponse::support);
   }
 
   public static Optional<LoginResponse> tryLoginAdmin() {
-    String[][] pairs = {
-      {System.getenv("E2E_ADMIN_EMAIL"), System.getenv("E2E_ADMIN_PASSWORD")},
-      {System.getenv("SEED_ADMIN_EMAIL"), System.getenv("SEED_ADMIN_PASSWORD")},
-      {System.getenv("ADMIN_EMAIL"), System.getenv("ADMIN_PASSWORD")},
-      {System.getProperty("E2E_ADMIN_EMAIL"), System.getProperty("E2E_ADMIN_PASSWORD")},
-      {System.getProperty("SEED_ADMIN_EMAIL"), System.getProperty("SEED_ADMIN_PASSWORD")},
-    };
+    return tryLoginWithRole(
+        new String[][] {
+          {EnvConfig.get("E2E_ADMIN_EMAIL"), EnvConfig.get("E2E_ADMIN_PASSWORD")},
+          {EnvConfig.get("SEED_ADMIN_EMAIL"), EnvConfig.get("SEED_ADMIN_PASSWORD")},
+          {EnvConfig.get("ADMIN_EMAIL"), EnvConfig.get("ADMIN_PASSWORD")},
+        },
+        LoginResponse::admin);
+  }
 
-    for (String[] pair : pairs) {
-      if (pair[0] != null && !pair[0].isBlank() && pair[1] != null && !pair[1].isBlank()) {
-        Optional<LoginResponse> response = tryLogin(pair[0], pair[1]);
-        if (response.isPresent()) {
-          return response;
-        }
+  private static Optional<LoginResponse> tryLoginWithRole(
+      String[][] credentialPairs, Predicate<LoginResponse> roleCheck) {
+    Set<String> seenEmails = new LinkedHashSet<>();
+    for (String[] pair : credentialPairs) {
+      if (pair[0] == null || pair[0].isBlank() || pair[1] == null || pair[1].isBlank()) {
+        continue;
+      }
+      if (!seenEmails.add(pair[0].trim().toLowerCase())) {
+        continue;
+      }
+      Optional<LoginResponse> response = tryLoginWithRole(pair[0], pair[1], roleCheck);
+      if (response.isPresent()) {
+        return response;
       }
     }
     return Optional.empty();
+  }
+
+  private static Optional<LoginResponse> tryLoginWithRole(
+      String email, String password, Predicate<LoginResponse> roleCheck) {
+    try {
+      LoginResponse session = login(email, password);
+      if (roleCheck.test(session)) {
+        return Optional.of(session);
+      }
+      return Optional.empty();
+    } catch (IllegalStateException exception) {
+      return Optional.empty();
+    }
   }
 
   public static Optional<LoginResponse> tryLogin(String email, String password) {
@@ -129,19 +150,39 @@ public final class ApiClient {
   }
 
   private static HttpResponse<String> post(String url, String body, String accessToken) {
-    try {
-      HttpRequest.Builder builder =
-          HttpRequest.newBuilder()
-              .uri(URI.create(url))
-              .header("Content-Type", "application/json")
-              .timeout(Duration.ofSeconds(30))
-              .POST(HttpRequest.BodyPublishers.ofString(body));
-      if (accessToken != null && !accessToken.isBlank()) {
-        builder.header("Authorization", "Bearer " + accessToken);
+    HttpRequest.Builder builder =
+        HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("Content-Type", "application/json")
+            .timeout(Duration.ofSeconds(30))
+            .POST(HttpRequest.BodyPublishers.ofString(body));
+    if (accessToken != null && !accessToken.isBlank()) {
+      builder.header("Authorization", "Bearer " + accessToken);
+    }
+    HttpRequest request = builder.build();
+    int maxAttempts = 3;
+    for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        return HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+      } catch (IOException | InterruptedException exception) {
+        if (attempt == maxAttempts) {
+          if (exception instanceof InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+          }
+          throw new IllegalStateException(
+              "POST " + url + " failed: " + exception.getMessage(), exception);
+        }
+        sleepQuietly(250L * attempt);
       }
-      return HTTP.send(builder.build(), HttpResponse.BodyHandlers.ofString());
-    } catch (Exception exception) {
-      throw new IllegalStateException("POST " + url + " failed: " + exception.getMessage(), exception);
+    }
+    throw new IllegalStateException("POST " + url + " failed after retries");
+  }
+
+  private static void sleepQuietly(long millis) {
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException exception) {
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -163,14 +204,20 @@ public final class ApiClient {
   private static LoginResponse parseLoginResponse(String json, String fallbackEmail) {
     String token = readString(json, "accessToken", "");
     JsonSection user = readObject(json, "user");
+    boolean isAdmin = readBoolean(user.raw(), "isAdmin") || hasRole(user.raw(), "admin");
+    boolean isSupport = readBoolean(user.raw(), "isSupport") || hasRole(user.raw(), "support");
     return new LoginResponse(
         token,
         readInt(user.raw(), "id"),
         readString(user.raw(), "first_name", ""),
         readString(user.raw(), "last_name", ""),
         readString(user.raw(), "email", fallbackEmail),
-        readBoolean(user.raw(), "isAdmin"),
-        readBoolean(user.raw(), "isSupport"));
+        isAdmin,
+        isSupport);
+  }
+
+  private static boolean hasRole(String json, String role) {
+    return json.contains("\"" + role + "\"");
   }
 
   private static JsonSection readObject(String json, String field) {

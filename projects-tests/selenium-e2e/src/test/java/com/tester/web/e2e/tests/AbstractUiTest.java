@@ -2,6 +2,7 @@ package com.tester.web.e2e.tests;
 
 import com.tester.web.e2e.config.BrowserName;
 import com.tester.web.e2e.config.WebDriverFactory;
+import com.tester.web.e2e.support.EnvFileLoader;
 import io.qameta.allure.Allure;
 import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +12,10 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractUiTest {
+
+  static {
+    EnvFileLoader.loadIfPresent();
+  }
 
   protected WebDriver driver;
 

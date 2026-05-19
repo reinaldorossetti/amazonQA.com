@@ -26,7 +26,7 @@ Follow the pattern from `CartCheckoutFeatureTest.java`:
 - Selectors live in `src/test/java/com/tester/web/e2e/pages/*PageElements.java`.
 - Test data/enums live in `src/test/java/com/tester/web/e2e/support`.
 - Tests should contain business flow only: `given...`, `when...`, `then...`, and assertion calls.
-- Do not put Selenium clicks, raw locators, waits, JavaScript, scrolling, or form filling directly in test methods.
+- Do not put Selenium clicks, findElement, raw locators, waits, JavaScript, scrolling, or form filling directly in test methods.
 
 ## Test Class Pattern
 
