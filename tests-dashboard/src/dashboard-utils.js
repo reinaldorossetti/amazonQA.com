@@ -18,6 +18,7 @@ const REPORTS = [
   { title: 'E2E - Selenium Chrome',      type: 'E2E',                   description: 'Relatório Allure dos testes Selenium no Chrome.',                              href: `${reportsBaseUrl}selenium-allure-report-chrome/` },
   { title: 'E2E - Selenium Firefox',     type: 'E2E',                   description: 'Relatório Allure dos testes Selenium no Firefox.',                             href: `${reportsBaseUrl}selenium-allure-report-firefox/` },
   { title: 'Integração - API',           type: 'Integração/Contrato',   description: 'Cenários de integração da API.',                                              href: `${reportsBaseUrl}playwright-report-api/` },
+  { title: 'Integração - REST Assured',  type: 'Integração/Contrato',   description: 'Suíte Java REST Assured (espelho dos specs Playwright API).',                 href: `${reportsBaseUrl}rest-assured-allure-report/` },
   { title: 'Contrato - Pact',            type: 'Integração/Contrato',   description: 'Validação de contrato consumidor/provedor.',                                  href: `${reportsBaseUrl}contract-tests/pacts/tester-web-frontend-tester-backend-api.json` },
   { title: 'Unit Web - Coverage',        type: 'Unidade',               description: 'Cobertura e status dos testes unitários do frontend web (Vitest).',          href: `${reportsBaseUrl}unit-tests-web/coverage/index.html` },
   { title: 'Unit Web - JUnit XML',       type: 'Unidade',               description: 'Saída bruta de execução dos testes unitários do web.',                       href: `${reportsBaseUrl}unit-tests-web/junit.xml` },
@@ -42,7 +43,8 @@ const E2E_PROJECT_LABELS = {
   'frontend-chromium': 'E2E Frontend Chromium',
   'frontend-webkit':   'E2E Frontend Webkit',
   'frontend-edge':     'E2E Frontend Edge',
-  'api':               'Integração API',
+  'api':               'Integração API (Playwright)',
+  'api-rest-assured':  'Integração API (REST Assured)',
   'mobile-android':    'Mobile Android (Unit + UI)'
 };
 

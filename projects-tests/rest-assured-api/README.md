@@ -72,6 +72,15 @@ Override de ambiente:
 .\mvnw.cmd test -DbaseUri=http://127.0.0.1:3001 -DbasePath=/api
 ```
 
+## CI (GitHub Actions)
+
+Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml)
+
+- Sobe apenas `postgres` + `server-ts` (`docker compose up -d --build postgres server-ts`)
+- Executa `./mvnw clean test`
+- Publica Allure em `tests-dashboard/reports/rest-assured-allure-report/` (gh-pages)
+- Publica JUnit em `tests-dashboard/reports/api-rest-assured/` para métricas do dashboard
+
 ## Paralelismo
 
 `junit-platform.properties` habilita execução paralela (classes e métodos). Cada teste cria dados únicos (e-mail/CPF) para ser thread-safe.

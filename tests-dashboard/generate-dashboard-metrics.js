@@ -202,7 +202,7 @@ function parsePlaywrightSummaryFromHTML(html) {
 
 function getRoiEligibleE2ETotal(data) {
   const byProject = data?.e2e?.byProject || {};
-  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api'];
+  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api', 'api-rest-assured'];
   return roiProjects.reduce((sum, key) => sum + parseIntSafe(byProject[key]?.tests), 0);
 }
 
@@ -220,23 +220,35 @@ function readE2EJunitStats() {
   if (fs.existsSync(nestedRoot)) {
     const nested = fs.readdirSync(nestedRoot, { withFileTypes: true }).filter((e) => e.isDirectory());
     for (const entry of nested) {
-      candidateDirs.push({ dir: path.join(nestedRoot, entry.name), name: entry.name });
+      candidateDirs.push({
+        dir: path.join(nestedRoot, entry.name),
+        projectName: entry.name.replace(/^e2e-junit-/, ''),
+      });
     }
   }
 
   // Flat layout in both tests-dashboard/reports and tests-dashboard root
   const flatRoots = [REPORTS_DIR, __dirname];
+  const flatReportDirs = ['api-rest-assured'];
   for (const flatRoot of flatRoots) {
     if (!fs.existsSync(flatRoot)) continue;
     const flat = fs.readdirSync(flatRoot, { withFileTypes: true })
       .filter((e) => e.isDirectory() && e.name.startsWith('e2e-junit-'));
     for (const entry of flat) {
-      candidateDirs.push({ dir: path.join(flatRoot, entry.name), name: entry.name });
+      candidateDirs.push({
+        dir: path.join(flatRoot, entry.name),
+        projectName: entry.name.replace(/^e2e-junit-/, ''),
+      });
+    }
+    for (const dirName of flatReportDirs) {
+      const dir = path.join(flatRoot, dirName);
+      if (tryStat(dir)?.isDirectory()) {
+        candidateDirs.push({ dir, projectName: dirName });
+      }
     }
   }
 
-  for (const { dir: artifactDir, name } of candidateDirs) {
-    const projectName = name.replace(/^e2e-junit-/, '');
+  for (const { dir: artifactDir, projectName } of candidateDirs) {
     if (statsByProject[projectName] && statsByProject[projectName].tests > 0) continue;
 
     const xmlFiles = fs.readdirSync(artifactDir).filter(f => f.endsWith('.xml'));
