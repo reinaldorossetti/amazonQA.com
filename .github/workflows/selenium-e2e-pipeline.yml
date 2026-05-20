@@ -24,11 +24,18 @@ permissions:
   id-token: write
   checks: write
 
+concurrency:
+  group: gh-pages-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   selenium-e2e-chrome:
     name: Selenium E2E (Chrome)
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    concurrency:
+      group: gh-pages-${{ github.repository }}
+      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4
@@ -115,6 +122,9 @@ jobs:
     name: Selenium E2E (Firefox)
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    concurrency:
+      group: gh-pages-${{ github.repository }}
+      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4

@@ -10,6 +10,10 @@ permissions:
   id-token: write
   checks: write
 
+concurrency:
+  group: gh-pages-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   # ── Unit Tests ──────────────────────────────────────────────────────
   unit:

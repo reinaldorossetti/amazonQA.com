@@ -7,7 +7,6 @@ on:
       - "projects-tests/rest-assured-api/**"
       - "server-ts/**"
       - "docker-compose.yml"
-      - "tests-dashboard/**"
       - ".github/workflows/rest-assured-api-pipeline.yml"
 
 permissions:
@@ -16,19 +15,30 @@ permissions:
   id-token: write
   checks: write
 
+concurrency:
+  group: gh-pages-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   rest-assured-api:
     name: REST Assured API
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    concurrency:
+      group: gh-pages-${{ github.repository }}
+      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 23
+          java-version: 25
           cache: maven
           cache-dependency-path: projects-tests/rest-assured-api/pom.xml
 
@@ -48,16 +58,7 @@ jobs:
         run: docker compose up -d --build postgres server-ts
 
       - name: Wait for backend readiness
-        run: |
-          for i in $(seq 1 60); do
-            if curl -sf http://127.0.0.1:3001/api/products > /dev/null; then
-              echo "Backend is ready"
-              exit 0
-            fi
-            sleep 2
-          done
-          echo "Backend did not become ready in time"
-          exit 1
+        run: npx --yes wait-on@7.2.0 --timeout 120000 http://127.0.0.1:3001/api/products
 
       - name: Run REST Assured tests
         working-directory: projects-tests/rest-assured-api
@@ -78,19 +79,19 @@ jobs:
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
 
-      - name: Copy reports to tests-dashboard
+      - name: Copy Allure report to tests-dashboard
         if: always()
         run: |
           mkdir -p tests-dashboard/reports/rest-assured-allure-report
-          mkdir -p tests-dashboard/reports/api-rest-assured
           rm -rf tests-dashboard/reports/rest-assured-allure-report/*
+          cp -R projects-tests/rest-assured-api/allure-report/. tests-dashboard/reports/rest-assured-allure-report/
+
+      - name: Copy JUnit reports to tests-dashboard
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/reports/api-rest-assured
           rm -rf tests-dashboard/reports/api-rest-assured/*
-          if [ -d projects-tests/rest-assured-api/allure-report ]; then
-            cp -R projects-tests/rest-assured-api/allure-report/. tests-dashboard/reports/rest-assured-allure-report/
-          fi
-          if [ -d projects-tests/rest-assured-api/target/surefire-reports ]; then
-            cp projects-tests/rest-assured-api/target/surefire-reports/*.xml tests-dashboard/reports/api-rest-assured/ 2>/dev/null || true
-          fi
+          cp projects-tests/rest-assured-api/target/surefire-reports/*.xml tests-dashboard/reports/api-rest-assured/ 2>/dev/null || true
 
       - name: Publish Allure report to gh-pages
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -110,32 +111,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: tests-dashboard/reports/api-rest-assured
           destination_dir: tests-dashboard/reports/api-rest-assured
-          keep_files: true
-
-      - uses: actions/setup-node@v4
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        with:
-          node-version: 22
-
-      - name: Restore history from gh-pages
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        continue-on-error: true
-        run: |
-          git fetch origin gh-pages --depth=1 || true
-          git checkout origin/gh-pages -- tests-dashboard/reports/history || echo "No previous history found on gh-pages."
-
-      - name: Generate dashboard metrics
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: node ./tests-dashboard/generate-dashboard-metrics.js || true
-
-      - name: Publish dashboard metrics to gh-pages
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: tests-dashboard/reports
-          destination_dir: tests-dashboard/reports
           keep_files: true
 
       - name: Stop backend stack

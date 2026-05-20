@@ -3,12 +3,21 @@ name: Mobile E2E Pipeline
 on:
   push:
     branches: [main]
+    paths:
+      - "mobile-kotlin/**"
+      - "server-ts/**"
+      - "docker-compose.yml"
+      - ".github/workflows/mobile-e2e-pipeline.yml"
 
 permissions:
   contents: write
   pages: write
   id-token: write
   checks: write
+
+concurrency:
+  group: gh-pages-${{ github.repository }}
+  cancel-in-progress: false
 
 jobs:
   mobile-e2e-android:

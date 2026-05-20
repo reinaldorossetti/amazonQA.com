@@ -74,12 +74,13 @@ Override de ambiente:
 
 ## CI (GitHub Actions)
 
-Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml)
+Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml) (mesmo padrão do Selenium E2E, sem `web` nem browser)
 
-- Sobe apenas `postgres` + `server-ts` (`docker compose up -d --build postgres server-ts`)
+- Sobe apenas `postgres` + `server-ts`
+- `wait-on` na API (`/api/products`)
 - Executa `./mvnw clean test`
-- Publica Allure em `tests-dashboard/reports/rest-assured-allure-report/` (gh-pages)
-- Publica JUnit em `tests-dashboard/reports/api-rest-assured/` para métricas do dashboard
+- Publica Allure em `tests-dashboard/reports/rest-assured-allure-report/`
+- Publica JUnit em `tests-dashboard/reports/api-rest-assured/` (métricas do dashboard)
 
 ## Paralelismo
 
