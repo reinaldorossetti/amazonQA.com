@@ -72,39 +72,16 @@ jobs:
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
 
-      - name: Copy Allure report to tests-dashboard
-        if: always()
-        run: |
-          mkdir -p tests-dashboard/reports/rest-assured-allure-report
-          rm -rf tests-dashboard/reports/rest-assured-allure-report/*
-          cp -R projects-tests/rest-assured-api/allure-report/. tests-dashboard/reports/rest-assured-allure-report/
-
-      - name: Copy JUnit reports to tests-dashboard
-        if: always()
-        run: |
-          mkdir -p tests-dashboard/reports/api-rest-assured
-          rm -rf tests-dashboard/reports/api-rest-assured/*
-          cp projects-tests/rest-assured-api/target/surefire-reports/*.xml tests-dashboard/reports/api-rest-assured/ 2>/dev/null || true
-
-      - name: Publish Allure report to gh-pages
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: projects-tests/rest-assured-api/allure-report
-          destination_dir: tests-dashboard/reports/rest-assured-allure-report
-          keep_files: true
-
       - name: Publish JUnit reports to gh-pages
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: tests-dashboard/reports/api-rest-assured
+          publish_dir: projects-tests/rest-assured-api/allure-report/
           destination_dir: tests-dashboard/reports/api-rest-assured
           keep_files: true
+        continue-on-error: true
 
       - name: Stop backend stack
         if: always()
