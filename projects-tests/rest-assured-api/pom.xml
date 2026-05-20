@@ -14,6 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
+    <jdk.toolchain.version>26</jdk.toolchain.version>
     <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
     <maven-surefire-plugin>3.5.5</maven-surefire-plugin>
     <maven-wrapper-plugin>3.3.4</maven-wrapper-plugin>
@@ -126,4 +127,37 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>jdk26-toolchain</id>
+      <activation>
+        <file>
+          <exists>.mvn/toolchains.xml</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <jdkToolchain>
+                <version>${jdk.toolchain.version}</version>
+              </jdkToolchain>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <jdkToolchain>
+                <version>${jdk.toolchain.version}</version>
+              </jdkToolchain>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

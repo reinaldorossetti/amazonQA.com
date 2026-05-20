@@ -1,4 +1,6 @@
 target/
+.mvn/toolchains.xml
+.jdk/
 .env
 .allure/
 allure-results/

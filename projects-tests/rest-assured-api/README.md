@@ -1,10 +1,13 @@
 # REST Assured API Tests (`rest-assured-api`)
 
-Testes de API com **REST Assured**, **Java 23**, **JUnit 5** e **Allure**. Espelham a suíte Playwright em `web/e2e/specs/api/`.
+Testes de API com **REST Assured**, **JDK 26**, **JUnit 5** e **Allure**. Espelham a suíte Playwright em `web/e2e/specs/api/`.
+
+Bytecode compilado com **`--release 21`** (`maven.compiler.release`).
 
 ## Requisitos
 
-- **JDK 23** (`java -version`)
+- **JDK 26** para compilar e executar (padrão: `C:\Users\reina\.jdks\openjdk-26.0.1`)
+- `.mvn/toolchains.xml` aponta para esse JDK (copie de `.mvn/toolchains.xml.example` se necessário)
 - API em `http://127.0.0.1:3001` com base path `/api`
 - Seed do backend (`npm run seed` em `server-ts/`)
 - Arquivo `.env` (copie de `.env.example` ou reutilize credenciais do `selenium-e2e`)
@@ -49,8 +52,12 @@ Precedência: `-D` JVM > variável OS > `.env` > default.
 
 ```powershell
 cd projects-tests/rest-assured-api
+
+$env:JAVA_HOME = "C:\Users\reina\.jdks\openjdk-26.0.1"
 .\mvnw.cmd test
 ```
+
+Com `.mvn/toolchains.xml`, o profile `jdk26-toolchain` usa o JDK 26 configurado no arquivo.
 
 Por domínio:
 
