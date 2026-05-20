@@ -9,14 +9,6 @@ on:
       - "server-ts/**"
       - "docker-compose.yml"
       - ".github/workflows/selenium-e2e-pipeline.yml"
-  pull_request:
-    branches: [main]
-    paths:
-      - "projects-tests/selenium-e2e/**"
-      - "web/**"
-      - "server-ts/**"
-      - "docker-compose.yml"
-      - ".github/workflows/selenium-e2e-pipeline.yml"
 
 permissions:
   contents: write
@@ -29,9 +21,6 @@ jobs:
     name: Selenium E2E (Chrome)
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    concurrency:
-      group: gh-pages-${{ github.repository }}
-      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4
