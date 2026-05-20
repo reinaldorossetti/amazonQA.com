@@ -15,10 +15,6 @@ permissions:
   id-token: write
   checks: write
 
-concurrency:
-  group: gh-pages-${{ github.repository }}
-  cancel-in-progress: false
-
 jobs:
   rest-assured-api:
     name: REST Assured API
