@@ -24,9 +24,6 @@ jobs:
     name: REST Assured API
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    concurrency:
-      group: gh-pages-${{ github.repository }}
-      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4

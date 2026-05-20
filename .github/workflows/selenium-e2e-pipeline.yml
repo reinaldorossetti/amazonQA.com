@@ -24,10 +24,6 @@ permissions:
   id-token: write
   checks: write
 
-concurrency:
-  group: gh-pages-${{ github.repository }}
-  cancel-in-progress: false
-
 jobs:
   selenium-e2e-chrome:
     name: Selenium E2E (Chrome)
