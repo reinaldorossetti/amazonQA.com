@@ -1,0 +1,90 @@
+# REST Assured API Tests (`rest-assured-api`)
+
+Testes de API com **REST Assured**, **Java 23**, **JUnit 5** e **Allure**. Espelham a suíte Playwright em `web/e2e/specs/api/`.
+
+## Requisitos
+
+- **JDK 23** (`java -version`)
+- API em `http://127.0.0.1:3001` com base path `/api`
+- Seed do backend (`npm run seed` em `server-ts/`)
+- Arquivo `.env` (copie de `.env.example` ou reutilize credenciais do `selenium-e2e`)
+
+## Estrutura
+
+```
+src/test/java/com/tester/api/
+├── base/           # BaseApiTest, EnvironmentConfig
+├── specs/          # RequestSpecs, ResponseSpecs
+├── client/         # UsersClient, ProductsClient, CartClient, OrdersClient, PaymentsClient
+├── model/
+│   ├── request/    # RegisterUserRequest, ProductRequest, CartAddRequest, ...
+│   └── response/   # ProductResponse, OrderResponse, CartItemResponse, ...
+├── fixture/        # UserFixture, ProductFixture, BrazilianDocuments
+├── support/        # AuthSession, TestFlows, EnvFileLoader
+└── tests/
+    ├── users/          # UsersApiTest (users.api.spec.ts)
+    ├── products/       # ProductsApiTest
+    ├── cart/           # CartApiTest
+    ├── orders/         # OrdersApiTest
+    ├── payments/       # PaymentsApiTest
+    └── supportproducts/ # SupportProductsApiTest
+```
+
+## Configuração `.env`
+
+```dotenv
+BASE_URI=http://127.0.0.1:3001
+BASE_PATH=/api
+
+SEED_ADMIN_EMAIL=admin@tester.com
+SEED_ADMIN_PASSWORD=
+
+SEED_SUPPORT_EMAIL=suporte@tester.com
+SEED_SUPPORT_PASSWORD=suporte2026@QA
+```
+
+Precedência: `-D` JVM > variável OS > `.env` > default.
+
+## Executar
+
+```powershell
+cd projects-tests/rest-assured-api
+.\mvnw.cmd test
+```
+
+Por domínio:
+
+```powershell
+.\mvnw.cmd test -Dtest=UsersApiTest
+.\mvnw.cmd test -Dtest=ProductsApiTest,CartApiTest
+```
+
+Override de ambiente:
+
+```powershell
+.\mvnw.cmd test -DbaseUri=http://127.0.0.1:3001 -DbasePath=/api
+```
+
+## Paralelismo
+
+`junit-platform.properties` habilita execução paralela (classes e métodos). Cada teste cria dados únicos (e-mail/CPF) para ser thread-safe.
+
+## Referência Playwright
+
+| Java | Playwright |
+|------|------------|
+| `UsersApiTest` | `web/e2e/specs/api/users.api.spec.ts` |
+| `ProductsApiTest` | `products.api.spec.ts` |
+| `CartApiTest` | `cart.api.spec.ts` |
+| `OrdersApiTest` | `orders.api.spec.ts` |
+| `PaymentsApiTest` | `payments.api.spec.ts` |
+| `SupportProductsApiTest` | `support-products.api.spec.ts` |
+
+## Stack
+
+- REST Assured 5.5.0
+- JUnit Jupiter 5.11.4
+- Hamcrest 3.0
+- Allure 2.34.0
+- dotenv-java 3.2.0
+- Datafaker 2.5.4
