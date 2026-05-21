@@ -17,11 +17,9 @@ import com.tester.web.e2e.support.EnvFileLoader;
 import io.qameta.allure.Allure;
 
 /**
- * Parallelism ({@code junit-platform.properties}): one feature class at a time
- * ({@code mode.classes.default=same_thread}); up to 3 test methods in parallel within that class
- * ({@code mode.default=concurrent}, {@code fixed.parallelism=3}). Each {@code @Test} gets its own
- * {@link WebDriver} in {@link #openBrowser()}.
- * Do not add {@code @Execution(SAME_THREAD)} on this base class — it forces the whole suite serial.
+ * Parallelism: classes run concurrently ({@code mode.classes.default=concurrent});
+ * methods in the same class run sequentially ({@code mode.default=same_thread}).
+ * Do not add {@code @Execution(SAME_THREAD)} here — it can force the whole suite onto one thread.
  */
 public abstract class AbstractUiTest {
 
@@ -64,8 +62,11 @@ public abstract class AbstractUiTest {
   }
 
   @AfterEach
-  void takesScreenshot() {
+  void closeBrowser() {
     attachScreenshot("After test");
+    if (driver != null) {
+      driver.quit();
+    }
   }
 
   private void attachScreenshot(String name) {
