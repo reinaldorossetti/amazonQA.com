@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
@@ -24,6 +25,7 @@ public abstract class BasePage {
 
   protected static final Logger LOGGER = Logger.getLogger(BasePage.class.getName());
   protected static final By TOAST_BODY = By.cssSelector(".Toastify__toast-body");
+  private static final Duration TOAST_DISMISS_TIMEOUT = Duration.ofSeconds(7);
   private static final Duration DEFAULT_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(5);
   private static final Duration MAX_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(10);
   protected final WebDriver driver;
@@ -43,25 +45,57 @@ public abstract class BasePage {
   }
 
   protected void fillTestId(String testId, String text) {
-    WebElement element = waitVisible(testId);
-    element.click();
-    element.clear();
-    element.sendKeys(text);
+    fill(byTestId(testId), text);
   }
 
   protected void clickTestId(String testId) {
-    wait.until(ExpectedConditions.elementToBeClickable(byTestId(testId))).click();
+    click(byTestId(testId));
   }
 
-  protected boolean isVisible(WebElement element) {
-    try {
-      WebDriverWait shortWait = new WebDriverWait(driver, TestEnvironment.defaultWait());
-      shortWait.until(ExpectedConditions.visibilityOf(element));
-      return true;
-    } catch (TimeoutException e) {
-      LOGGER.warning(() -> "Timeout while waiting for element visibility: " + e.getMessage());
-      return false;
+  protected void click(By locator) {
+    clickOnElement(wait.until(ExpectedConditions.elementToBeClickable(locator)));
+  }
+
+  protected void clickFirst(By locator) {
+    WebElement element =
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst();
+    clickOnElement(wait.until(ExpectedConditions.elementToBeClickable(element)));
+  }
+
+  protected void fill(By locator, String text) {
+    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    LOGGER.fine(
+        () ->
+            String.format(
+                "Filling locator %s with text length: %d", locator, text == null ? 0 : text.length()));
+    click(locator);
+    field.clear();
+    if (text != null && !text.isEmpty()) {
+      field.sendKeys(text);
     }
+  }
+
+  protected void fillAndPressEnter(By locator, String text) {
+    fill(locator, text);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).sendKeys(Keys.ENTER);
+  }
+
+  protected String inputValue(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
+  }
+
+  protected String firstInputValue(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator))
+        .getFirst()
+        .getAttribute("value");
+  }
+
+  protected String textOf(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
+  }
+
+  protected void moveFocusToElement(By locator) {
+    moveFocusToElement(wait.until(ExpectedConditions.presenceOfElementLocated(locator)));
   }
 
   protected boolean isVisible(By locator) {
@@ -74,6 +108,7 @@ public abstract class BasePage {
       return driver.findElements(locator).stream().anyMatch(WebElement::isDisplayed);
     }
     try {
+      moveFocusToElement(locator);
       new WebDriverWait(driver, effectiveTimeout)
           .until(ExpectedConditions.visibilityOfElementLocated(locator));
       return true;
@@ -97,14 +132,14 @@ public abstract class BasePage {
   }
 
   protected void waitUntilToastIsGone() {
+    WebDriverWait toastWait = new WebDriverWait(driver, TOAST_DISMISS_TIMEOUT);
     if (isVisible(TOAST_BODY, Duration.ZERO)) {
-      wait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+      toastWait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
       return;
     }
     try {
-      new WebDriverWait(driver, DEFAULT_IS_VISIBLE_TIMEOUT)
-          .until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
-      wait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+      toastWait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
+      toastWait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
     } catch (TimeoutException exception) {
       LOGGER.fine("No toast to dismiss.");
     }
@@ -127,25 +162,72 @@ public abstract class BasePage {
     }
   }
 
-  void fill(WebElement field, String text) {
-    field.click();
-    field.clear();
-    field.sendKeys(text);
+  protected void assertPageContainsOneOf(String... texts) {
+    String body =
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body"))).getText();
+    for (String text : texts) {
+      if (body.contains(text)) {
+        return;
+      }
+    }
+    throw new AssertionError("Page body did not contain any of: " + String.join(", ", texts));
+  }
+
+  protected void setInputValueWithJs(By locator, String value) {
+    WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    moveFocusToElement(locator);
+    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+      javascriptExecutor.executeScript(
+          "const input = arguments[0];"
+              + "const value = arguments[1];"
+              + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
+              + "setter.call(input, value);"
+              + "input.dispatchEvent(new Event('input', { bubbles: true }));",
+          input,
+          value);
+    } else {
+      fill(locator, value);
+    }
+  }
+
+  protected void setFirstInputValueWithJs(By locator, String value) {
+    WebElement input =
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst();
+    moveFocusToElement(input);
+    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+      javascriptExecutor.executeScript(
+          "const input = arguments[0];"
+              + "const value = arguments[1];"
+              + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
+              + "setter.call(input, value);"
+              + "input.dispatchEvent(new Event('input', { bubbles: true }));",
+          input,
+          value);
+      input.sendKeys(Keys.TAB);
+    } else {
+      fill(locator, value);
+      input.sendKeys(Keys.TAB);
+    }
   }
 
   protected void moveFocusToElement(WebElement element) {
-    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+    if (!(driver instanceof JavascriptExecutor javascriptExecutor)) {
+      return;
+    }
+    try {
       javascriptExecutor.executeScript(
           "arguments[0].scrollIntoView({block: 'center', inline: 'center'});"
               + "if (typeof arguments[0].focus === 'function') { arguments[0].focus({preventScroll: true}); }",
           element);
+    } catch (RuntimeException exception) {
+      LOGGER.warning(() -> "Could not move focus to element: " + exception.getMessage());
     }
   }
 
-  protected void clickElementWithFocus(WebElement element) {
+  private void clickOnElement(WebElement element) {
     moveFocusToElement(element);
     try {
-      wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+      element.click();
     } catch (ElementClickInterceptedException exception) {
       LOGGER.warning(() -> "Native click intercepted, falling back to JavaScript click: "
           + exception.getMessage());

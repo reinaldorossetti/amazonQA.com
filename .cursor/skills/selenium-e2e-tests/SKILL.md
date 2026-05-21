@@ -100,7 +100,9 @@ Put all browser behavior in `PageAction` classes:
 - High-level assertions/validations: `assertCartEmptyStateVisible`, `thenValidatedSuccessfulCheckoutSummary`.
 - Private low-level helpers: `clickDeleteFirstItem`, `selectPaymentMethod`, `waitUntilToastIsGone`.
 
-Use explicit waits from `BasePage.wait` or short local `WebDriverWait`s. For elements hidden by headers/toasts, use existing global helpers such as `moveFocusToElement` and `clickElementWithFocus`.
+Use explicit waits from `BasePage.wait` or short local `WebDriverWait`s. For elements hidden by headers/toasts, use existing global helpers such as `moveFocusToElement(By)`, `click(By)`, `fill(By, String)`, `clickFirst(By)`, and `fillAndPressEnter(By, String)`.
+
+**By-first in Page Actions:** declare every selector as `protected static final By` (or factory methods returning `By`) in `*PageElements`. Page actions must interact only through those `By` constants and `BasePage` helpers — no inline `By.xpath(...)` in actions, no `@FindBy` / `PageFactory`, and no passing `WebElement` between action methods.
 
 ## Page Elements Rules
 
@@ -108,8 +110,9 @@ Keep selectors in `PageElements` classes:
 
 - Prefer stable `id` or `data-element-id` selectors from the React app.
 - Use accessibility/text XPath only when no stable id exists.
-- Keep selectors `protected static final By`.
-- Do not duplicate selectors inside tests.
+- Keep selectors `protected static final By` (or `protected static By name(...)` for dynamic ids/text).
+- Shared nav selectors live in `NavBarElements`; nav behavior in `NavBarComponent`.
+- Do not duplicate selectors inside tests or PageActions.
 
 Example:
 

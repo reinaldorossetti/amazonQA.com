@@ -1,49 +1,51 @@
 package com.tester.web.e2e.pages;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.tester.web.e2e.config.TestEnvironment;
+import com.tester.web.e2e.support.LoginUiCopy;
 
 /**
- * Login screen — selectors aligned with {@code web/e2e/pages/LoginPage.ts}.
- *
- * <p>Uses Selenium {@link PageFactory} + {@link FindBy} for HTML UI, following the same pattern
- * described for browser / WebView in the Appium Java client Page Object docs (cross-platform
- * annotations; here only the {@code @FindBy} branch applies).
+ * Login screen actions — selectors in {@link LoginPageElements}.
  */
 public class LoginPageAction extends LoginPageElements {
 
-  // Constructor
+  private static final int MAX_CREDENTIAL_LENGTH = 30;
+
   public LoginPageAction(WebDriver driver) {
     super(driver);
   }
 
   public void open() {
-    String url = TestEnvironment.baseUrl() + "/login";
+    openWithNextPath(null);
+  }
+
+  public void openWithNextPath(String nextPath) {
+    String path = nextPath == null || nextPath.isBlank() ? "/login" : "/login?next=" + nextPath;
+    String url = TestEnvironment.baseUrl() + path;
     LOGGER.info(() -> "Opening login page: " + url);
     driver.navigate().to(url);
   }
 
   public void fillEmail(String email) {
     LOGGER.fine("Filling email field.");
-    isVisible(emailInput);
-    emailInput.sendKeys(email);
+    isVisible(EMAIL_INPUT);
+    fill(EMAIL_INPUT, email == null ? "" : email);
   }
 
   public void fillPassword(String password) {
     LOGGER.fine("Filling password field.");
-    isVisible(passwordInput);
-    fill(passwordInput, password);
+    isVisible(PASSWORD_INPUT);
+    fill(PASSWORD_INPUT, password);
   }
 
   public void submit() {
     LOGGER.fine("Submitting login form.");
-    WebElement clickableSubmitButton =
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(SUBMIT_BUTTON)));
-    clickableSubmitButton.click();
+    click(SUBMIT_BUTTON);
   }
 
   /**
@@ -74,8 +76,56 @@ public class LoginPageAction extends LoginPageElements {
 
   public void validatedErrorAlertVisible(String message) {
     LOGGER.info(() -> "Validating error alert text equals expected message: " + message);
-    isVisible(driver.findElement(ERROR_ALERT_LOCATOR));
+    moveFocusToElement(ERROR_ALERT);
     assertTextsVisible(message);
   }
 
+  public void thenValidatedRedirectToCartWithGreeting(String firstName) {
+    waitForUrlContaining("/cart");
+    assertTrue(new NavBarComponent(driver).isUserGreetingVisible());
+    assertTextsVisible(firstName);
+    attachScreenshot("validatedLoginRedirectToCart");
+  }
+
+  public void thenValidatedSessionPersistsAfterReload(String firstName) {
+    driver.navigate().refresh();
+    assertTrue(new NavBarComponent(driver).isUserGreetingVisible());
+    assertTextsVisible(firstName);
+    attachScreenshot("validatedSessionAfterReload");
+  }
+
+  public void thenValidatedAccountLayoutVisible(String firstName) {
+    waitForUrlContaining("/minha-conta");
+    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(ACCOUNT_LAYOUT)).isDisplayed());
+    assertTrue(new NavBarComponent(driver).isUserGreetingVisible());
+    assertTextsVisible(firstName);
+    attachScreenshot("validatedAccountLayout");
+  }
+
+  public void thenValidatedStillOnLoginPage() {
+    waitForUrlContaining("/login");
+    attachScreenshot("validatedStillOnLogin");
+  }
+
+  public void thenValidatedInvalidCredentialsError() {
+    moveFocusToElement(ERROR_ALERT);
+    String alertText = textOf(ERROR_ALERT);
+    assertTrue(
+        LoginUiCopy.INVALID_CREDENTIALS.matcher(alertText).find(),
+        () -> "Expected invalid credentials message, got: " + alertText);
+    attachScreenshot("validatedInvalidCredentials");
+  }
+
+  public void thenValidatedEmailPasswordMaxLength(String longPayload) {
+    fillEmail(longPayload);
+    fillPassword(longPayload);
+    String emailValue = inputValue(EMAIL_INPUT);
+    String passwordValue = inputValue(PASSWORD_INPUT);
+    String expected = longPayload.substring(0, Math.min(MAX_CREDENTIAL_LENGTH, longPayload.length()));
+    assertTrue(emailValue.length() <= MAX_CREDENTIAL_LENGTH);
+    assertTrue(passwordValue.length() <= MAX_CREDENTIAL_LENGTH);
+    assertEquals(expected, emailValue);
+    assertEquals(expected, passwordValue);
+    attachScreenshot("validatedCredentialMaxLength");
+  }
 }

@@ -171,6 +171,8 @@ Nenhuma API ou sintaxe exclusiva do Java 22 aparece no código, por exemplo:
 
 Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions.
 
+📋 **Documentação ATDD** (features, fluxos de tela e passo a passo): [docs/ATDD-TESTES.md](docs/ATDD-TESTES.md)
+
 - 🔐 **Login** — `LoginFeatureTest`: login válido, credenciais inválidas, campos vazios
 - 📝 **Register** — `RegisterFeatureTest`: cadastro PF, validações, e-mail duplicado
 - 🌐 **Register + Language** — `RegisterLanguageFeatureTest`: cadastro, toggle PT/EN persistente
@@ -231,7 +233,9 @@ return new ChromeDriver(chromeOptions());
 
 - `-Dbrowser=chrome` — padrão: Chrome headless ou headed
 - `-Dbrowser=firefox` — CI Firefox: usa `FIREFOX_BIN` quando definido
-- `-Dheadless=true` — padrão no `pom.xml`: `--headless=new` (Chrome/Edge)
+- `headless=false` no `.env` — execução local com janela visível (padrão)
+- `-Dheadless=true` — na CI / quando quiser headless; prevalece sobre o `.env`
+- Padrão no `pom.xml`: `headless=false` (Surefire); Chrome/Edge usam `--headless=new` quando `true`
 
 ---
 
@@ -323,12 +327,13 @@ cd projects-tests/selenium-e2e && ./mvnw clean test
 Configuração em `src/test/resources/junit-platform.properties`:
 
 - `parallel.enabled` = `true` — ativa paralelismo
-- `mode.classes.default` = `concurrent` — classes em paralelo
-- `mode.default` = `concurrent` — métodos globais (UI usa `@Execution(SAME_THREAD)`)
-- `config.strategy` = `fixed` — pool fixo
-- `fixed.parallelism` = `4` — até 4 threads
+- `config.strategy` = `fixed` — **2 classes** em paralelo (`fixed.parallelism=2`)
+- `mode.classes.default` = `concurrent` — cada `*FeatureTest` pode rodar ao mesmo tempo (2 browsers)
+- `mode.default` = `same_thread` — métodos **na mesma classe** em sequência (1 `WebDriver` por `@Test`)
 
-`AbstractUiTest` usa `@Execution(SAME_THREAD)` — cada classe Selenium executa métodos em sequência (1 `WebDriver` por `@Test`).
+Não use `@Execution(SAME_THREAD)` em `AbstractUiTest` — isso pode fazer a suíte inteira rodar em **uma única thread** (só 1 browser visível).
+
+CI: manter `fixed.parallelism=2` (padrão do `junit-platform.properties`). Para 3 classes: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3`
 
 Desabilitar para debug:
 

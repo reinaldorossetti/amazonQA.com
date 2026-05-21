@@ -165,6 +165,7 @@ const Login = () => {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              inputProps={{ maxLength: 30 }}
               sx={{ mb: 2 }}
             />
 
@@ -177,6 +178,7 @@ const Login = () => {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              inputProps={{ maxLength: 30 }}
               sx={{ mb: 0.5 }}
               InputProps={{
                 endAdornment: (

@@ -10,6 +10,7 @@ public final class LoginUiCopy {
 
   private LoginUiCopy() {}
 
+  /** API returns English; Login.jsx fallback is Portuguese. */
   public static final Pattern INVALID_CREDENTIALS =
       Pattern.compile("(?i).*credenciais\\s+inválidas.*");
 

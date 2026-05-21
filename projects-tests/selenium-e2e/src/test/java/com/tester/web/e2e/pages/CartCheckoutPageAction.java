@@ -1,16 +1,11 @@
 package com.tester.web.e2e.pages;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -107,8 +102,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   private void addFirstProductToCart() {
-    List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS));
-    clickElementWithFocus(buttons.get(0));
+    clickFirst(ADD_TO_CART_BUTTONS);
     waitUntilToastCycleCompletes();
   }
 
@@ -118,71 +112,45 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   private void searchBy(String searchTerm) {
-    WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(NAV_SEARCH_INPUT));
-    input.click();
-    input.clear();
-    input.sendKeys(searchTerm);
-    input.sendKeys(Keys.ENTER);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(
-        By.xpath("//*[contains(normalize-space(.), '" + searchTerm + "')]")));
+    fillAndPressEnter(NAV_SEARCH_INPUT, searchTerm);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(textContaining(searchTerm)));
   }
 
   private void openCartFromHeader() {
     waitUntilToastIsGone();
-    wait.until(ExpectedConditions.elementToBeClickable(NAV_CART_BUTTON)).click();
+    click(NAV_CART_BUTTON);
     wait.until(ExpectedConditions.urlContains("/cart"));
   }
 
-  private void proceedToCheckout() {
-    wait.until(ExpectedConditions.elementToBeClickable(PROCEED_TO_CHECKOUT_BUTTON)).click();
+  protected void proceedToCheckout() {
+    waitUntilToastIsGone();
+    click(PROCEED_TO_CHECKOUT_BUTTON);
   }
 
-  private void selectPaymentMethod(PaymentMethod paymentMethod) {
-    By paymentMethodOption = By.xpath(
-        "//button[.//*[contains(normalize-space(.), '" + paymentMethod.displayName() + "')]]");
+  protected void selectPaymentMethod(PaymentMethod paymentMethod) {
     waitUntilToastIsGone();
-    WebElement paymentOption = wait.until(ExpectedConditions.visibilityOfElementLocated(paymentMethodOption));
-    clickElementWithFocus(paymentOption);
+    click(paymentMethodOption(paymentMethod.displayName()));
   }
 
   private void clickLoginToCheckout() {
-    wait.until(ExpectedConditions.elementToBeClickable(LOGIN_TO_CHECKOUT_BUTTON)).click();
+    waitUntilToastIsGone();
+    click(LOGIN_TO_CHECKOUT_BUTTON);
   }
 
-  private void clickSubmitPayment(PaymentMethod paymentMethod) {
-    By submitPaymentButton = By.xpath(
-        "//button[contains(normalize-space(.), '" + paymentMethod.submitButtonText() + "')]");
-    WebElement paymentButton = wait.until(ExpectedConditions.visibilityOfElementLocated(submitPaymentButton));
-    clickElementWithFocus(paymentButton);
+  protected void clickSubmitPayment(PaymentMethod paymentMethod) {
+    click(submitPaymentButton(paymentMethod.submitButtonText()));
   }
 
   private void clickBackToCatalog() {
-    wait.until(ExpectedConditions.elementToBeClickable(BACK_TO_CATALOG_BUTTON)).click();
+    click(BACK_TO_CATALOG_BUTTON);
   }
 
   private void setFirstItemQuantity(String value) {
-    WebElement input = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(QUANTITY_INPUTS)).get(0);
-    moveFocusToElement(input);
-    if (driver instanceof JavascriptExecutor javascriptExecutor) {
-      javascriptExecutor.executeScript(
-          "const input = arguments[0];"
-              + "const value = arguments[1];"
-              + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
-              + "setter.call(input, value);"
-              + "input.dispatchEvent(new Event('input', { bubbles: true }));",
-          input,
-          value);
-    } else {
-      input.click();
-      input.clear();
-      input.sendKeys(value);
-    }
-    input.sendKeys(Keys.TAB);
+    setFirstInputValueWithJs(QUANTITY_INPUTS, value);
   }
 
   private void clickDeleteFirstItem() {
-    WebElement deleteButton = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(DELETE_BUTTONS)).get(0);
-    clickElementWithFocus(deleteButton);
+    clickFirst(DELETE_BUTTONS);
     waitUntilToastCycleCompletes();
   }
 
@@ -191,29 +159,27 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   public String firstItemQuantityValue() {
-    return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(QUANTITY_INPUTS))
-        .get(0)
-        .getAttribute("value");
+    return firstInputValue(QUANTITY_INPUTS);
   }
 
   public String cartBadgeText() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(NAV_CART_BADGE)).getText().trim();
+    return textOf(NAV_CART_BADGE);
   }
 
   public String orderTotalText() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(CART_ORDER_TOTAL)).getText();
+    return textOf(CART_ORDER_TOTAL);
   }
 
   public String shippingText() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(CART_SHIPPING)).getText();
+    return textOf(CART_SHIPPING);
   }
 
   public String summaryDistinctItemsText() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(CART_SUMMARY_TOTAL_ITEMS)).getText();
+    return textOf(CART_SUMMARY_TOTAL_ITEMS);
   }
 
   public String summarySubtotalText() {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(CART_SUMMARY_SUBTOTAL)).getText();
+    return textOf(CART_SUMMARY_SUBTOTAL);
   }
 
   public void assertUrlContains(String expectedPath) {
@@ -247,9 +213,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   public void thenValidatedSuccessfulCheckoutSummary(PaymentMethod paymentMethod, String... texts) {
     thenValidatedSuccessfulCheckoutSummary(texts);
-    assertEquals(
-        paymentMethod.confirmationText(),
-        wait.until(ExpectedConditions.visibilityOfElementLocated(THANK_YOU_PAYMENT_METHOD)).getText());
+    assertEquals(paymentMethod.confirmationText(), textOf(THANK_YOU_PAYMENT_METHOD));
   }
 
   public void assertQuantityEquals(String expectedValue) {
@@ -291,9 +255,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   public void assertFreeShippingBannerHidden() {
-    assertFalse(
-        isVisible(
-            By.xpath("//*[contains(normalize-space(.), 'FREE Shipping')]"), Duration.ZERO));
+    assertFalse(isVisible(FREE_SHIPPING_BANNER, Duration.ZERO));
   }
 
   public void assertPageTextsVisible(String... texts) {

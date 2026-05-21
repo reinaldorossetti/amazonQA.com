@@ -9,6 +9,7 @@ public class CatalogPageElements extends BasePage {
   protected static final By CATALOG_EMPTY = By.id("catalog-empty-wrapper");
   protected static final By ADD_TO_CART_BUTTONS =
       By.xpath("//button[contains(normalize-space(.), 'Adicionar ao Carrinho') or contains(normalize-space(.), 'Add to Cart')]");
+  protected static final By CATALOG_PRODUCTS_FOUND_TEXT = By.id("catalog-products-found-text");
 
   protected CatalogPageElements(WebDriver driver) {
     super(driver);
@@ -25,5 +26,9 @@ public class CatalogPageElements extends BasePage {
             + "'] | //div[contains(@class, 'MuiChip-root') and normalize-space(.)='"
             + category
             + "']");
+  }
+
+  protected static By textContaining(String text) {
+    return By.xpath("//*[contains(normalize-space(.), '" + text + "')]");
   }
 }

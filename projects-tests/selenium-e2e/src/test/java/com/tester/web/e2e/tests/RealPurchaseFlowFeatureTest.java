@@ -70,6 +70,40 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
+  @DisplayName("REAL-02 catalog search and checkout with credit card")
+  void catalogSearchCheckoutWithCreditCard() {
+    UserData user = TestDataGenerator.randomUser();
+    String email = "e2e.search.checkout." + System.currentTimeMillis() + "@example.com";
+    CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
+    String searchTerm = ApiClient.firstProductSearchTerm();
+
+    try {
+      loginPage.open();
+      loginPage.loginAction(email, user.password(), true);
+      loginPage.validatedLoginInPage(user.firstName());
+
+      catalog.givenUserOnCatalog();
+      catalog.whenSearchBy(searchTerm);
+      catalog.whenAddFirstProductToCart();
+      nav.assertCartBadgeNotZero();
+      nav.whenOpenCart();
+      cartCheckout.assertUrlContains("/cart");
+
+      cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod.CREDIT);
+      cartCheckout.thenValidatedSuccessfulCheckoutSummary(
+          PaymentMethod.CREDIT,
+          "Obrigado pela sua compra!",
+          "Seu pedido foi processado e já estamos preparando para envio.",
+          "Resumo do Pedido",
+          "Voltar ao Catálogo");
+    } finally {
+      ApiClient.tryLoginAdmin()
+          .ifPresent(admin -> ApiClient.deleteUser(admin.accessToken(), created.id()));
+    }
+  }
+
+  @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("TS03 multiple products checkout with PIX")
   void multipleProductsCheckoutWithPix() {
     UserData user = TestDataGenerator.randomUser();

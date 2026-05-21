@@ -410,7 +410,10 @@ void shouldReturn401ForInvalidCredentials(String email, String password) {
 `src/test/resources/junit-platform.properties`
 
 ```properties
+junit.jupiter.extensions.autodetection.enabled=true
 junit.jupiter.execution.parallel.enabled=true
+junit.jupiter.execution.parallel.config.strategy=fixed
+junit.jupiter.execution.parallel.config.fixed.parallelism=3
 junit.jupiter.execution.parallel.mode.default=concurrent
 junit.jupiter.execution.parallel.mode.classes.default=concurrent
 ```

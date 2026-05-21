@@ -72,6 +72,9 @@ public final class EnvFileLoader {
       if (!overwriteExisting && !isUnset(key)) {
         continue;
       }
+      if (overwriteExisting && preservesCliOverride(key) && !isUnset(key)) {
+        continue;
+      }
       System.setProperty(key, value);
       loadedCount++;
     }
@@ -129,6 +132,11 @@ public final class EnvFileLoader {
       return Path.of(".");
     }
     return null;
+  }
+
+  /** Keys set via {@code -D} on the CLI (e.g. CI {@code -Dheadless=true}) must not be overwritten by .env. */
+  private static boolean preservesCliOverride(String key) {
+    return "headless".equalsIgnoreCase(key) || "browser".equalsIgnoreCase(key);
   }
 
   private static boolean isUnset(String key) {

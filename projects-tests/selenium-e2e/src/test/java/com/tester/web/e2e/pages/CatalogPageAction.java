@@ -3,9 +3,7 @@ package com.tester.web.e2e.pages;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.tester.web.e2e.config.TestEnvironment;
@@ -29,23 +27,19 @@ public class CatalogPageAction extends CatalogPageElements {
     wait.until(
         ExpectedConditions.or(
             ExpectedConditions.visibilityOfElementLocated(CATALOG_EMPTY),
-            ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//*[contains(normalize-space(.), '" + term + "')]"))));
+            ExpectedConditions.visibilityOfElementLocated(textContaining(term))));
   }
 
   public void whenSelectCategory(String category) {
-    wait.until(ExpectedConditions.elementToBeClickable(categoryChip(category))).click();
+    click(categoryChip(category));
   }
 
   public void whenClickProductImage(int productId) {
-    WebElement image =
-        wait.until(ExpectedConditions.elementToBeClickable(productImageWrapper(productId)));
-    clickElementWithFocus(image);
+    click(productImageWrapper(productId));
   }
 
   public void whenAddFirstProductToCart() {
-    clickElementWithFocus(
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS)).getFirst());
+    clickFirst(ADD_TO_CART_BUTTONS);
     waitUntilToastCycleCompletes();
   }
 
@@ -58,7 +52,7 @@ public class CatalogPageAction extends CatalogPageElements {
   }
 
   public void assertProductsFoundTextContains(String expected) {
-    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("catalog-products-found-text")));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(CATALOG_PRODUCTS_FOUND_TEXT));
     assertTextsVisible(expected);
   }
 

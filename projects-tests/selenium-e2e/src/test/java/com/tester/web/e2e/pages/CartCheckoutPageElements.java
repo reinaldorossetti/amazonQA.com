@@ -44,6 +44,19 @@ public class CartCheckoutPageElements extends BasePage {
   protected static final By FREE_SHIPPING_BANNER =
       By.xpath("//*[contains(normalize-space(.), 'FREE Shipping')]");
 
+  protected static By textContaining(String text) {
+    return By.xpath("//*[contains(normalize-space(.), '" + text + "')]");
+  }
+
+  protected static By paymentMethodOption(String displayName) {
+    return By.xpath(
+        "//button[.//*[contains(normalize-space(.), '" + displayName + "')]]");
+  }
+
+  protected static By submitPaymentButton(String buttonText) {
+    return By.xpath("//button[contains(normalize-space(.), '" + buttonText + "')]");
+  }
+
   public CartCheckoutPageElements(WebDriver driver) {
     super(driver);
   }

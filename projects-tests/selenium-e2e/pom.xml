@@ -30,7 +30,7 @@
     <argLine/>
     <!-- Passed through Surefire, so CI can override: -Dbrowser=firefox -Dheadless=true -->
     <browser>chrome</browser>
-    <headless>true</headless>
+    <headless>false</headless>
     <base.url>http://127.0.0.1:5174</base.url>
     <datafaker.version>2.5.4</datafaker.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>

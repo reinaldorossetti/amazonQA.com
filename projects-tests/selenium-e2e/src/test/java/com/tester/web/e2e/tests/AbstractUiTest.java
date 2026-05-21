@@ -7,13 +7,15 @@ import io.qameta.allure.Allure;
 import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
-@Execution(ExecutionMode.SAME_THREAD)
+/**
+ * Parallelism: classes run concurrently ({@code mode.classes.default=concurrent});
+ * methods in the same class run sequentially ({@code mode.default=same_thread}).
+ * Do not add {@code @Execution(SAME_THREAD)} here — it can force the whole suite onto one thread.
+ */
 public abstract class AbstractUiTest {
 
   static {

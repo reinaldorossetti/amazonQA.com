@@ -25,7 +25,14 @@ public final class TestEnvironment {
   }
 
   public static boolean headless() {
-    return Boolean.parseBoolean(System.getProperty("headless", "false"));
+    String headless = System.getProperty("headless");
+    if (headless == null || headless.isBlank()) {
+      headless = System.getenv("headless");
+    }
+    if (headless == null || headless.isBlank()) {
+      headless = System.getenv("HEADLESS");
+    }
+    return headless != null && Boolean.parseBoolean(headless.trim());
   }
 
   public static Duration defaultWait() {

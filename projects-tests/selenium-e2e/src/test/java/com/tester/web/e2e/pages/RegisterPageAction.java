@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -25,47 +24,47 @@ public class RegisterPageAction extends RegisterPageElements {
   }
 
   public void whenFillPersonalData(UserData userData, String cpf) {
-    fillField(FIRST_NAME, userData.firstName());
-    fillField(LAST_NAME, userData.lastName());
-    fillField(CPF, cpf);
-    fillField(EMAIL, userData.email());
-    fillField(PHONE, RegisterValidation.VALID_PHONE);
-    fillField(PASSWORD, userData.password());
-    fillField(CONFIRM_PASSWORD, userData.password());
+    fill(FIRST_NAME, userData.firstName());
+    fill(LAST_NAME, userData.lastName());
+    fill(CPF, cpf);
+    fill(EMAIL, userData.email());
+    fill(PHONE, RegisterValidation.VALID_PHONE);
+    fill(PASSWORD, userData.password());
+    fill(CONFIRM_PASSWORD, userData.password());
   }
 
   public void whenFillPersonalDataWithoutCpf(UserData userData) {
-    fillField(FIRST_NAME, userData.firstName());
-    fillField(LAST_NAME, userData.lastName());
-    fillField(EMAIL, userData.email());
-    fillField(PASSWORD, userData.password());
-    fillField(CONFIRM_PASSWORD, userData.password());
+    fill(FIRST_NAME, userData.firstName());
+    fill(LAST_NAME, userData.lastName());
+    fill(EMAIL, userData.email());
+    fill(PASSWORD, userData.password());
+    fill(CONFIRM_PASSWORD, userData.password());
   }
 
   public void whenFillStepZeroOmitting(RequiredField omitted, UserData userData) {
     switch (omitted) {
       case FIRST_NAME -> {
-        fillField(LAST_NAME, userData.lastName());
-        fillField(EMAIL, userData.email());
-        fillField(PASSWORD, userData.password());
-        fillField(CONFIRM_PASSWORD, userData.password());
+        fill(LAST_NAME, userData.lastName());
+        fill(EMAIL, userData.email());
+        fill(PASSWORD, userData.password());
+        fill(CONFIRM_PASSWORD, userData.password());
       }
       case LAST_NAME -> {
-        fillField(FIRST_NAME, userData.firstName());
-        fillField(EMAIL, userData.email());
-        fillField(PASSWORD, userData.password());
-        fillField(CONFIRM_PASSWORD, userData.password());
+        fill(FIRST_NAME, userData.firstName());
+        fill(EMAIL, userData.email());
+        fill(PASSWORD, userData.password());
+        fill(CONFIRM_PASSWORD, userData.password());
       }
       case EMAIL -> {
-        fillField(FIRST_NAME, userData.firstName());
-        fillField(LAST_NAME, userData.lastName());
-        fillField(PASSWORD, userData.password());
-        fillField(CONFIRM_PASSWORD, userData.password());
+        fill(FIRST_NAME, userData.firstName());
+        fill(LAST_NAME, userData.lastName());
+        fill(PASSWORD, userData.password());
+        fill(CONFIRM_PASSWORD, userData.password());
       }
       case PASSWORD -> {
-        fillField(FIRST_NAME, userData.firstName());
-        fillField(LAST_NAME, userData.lastName());
-        fillField(EMAIL, userData.email());
+        fill(FIRST_NAME, userData.firstName());
+        fill(LAST_NAME, userData.lastName());
+        fill(EMAIL, userData.email());
       }
     }
   }
@@ -88,44 +87,43 @@ public class RegisterPageAction extends RegisterPageElements {
   }
 
   public void whenFillPersonalDataWithMismatchPassword(UserData userData, String confirmPassword) {
-    fillField(FIRST_NAME, userData.firstName());
-    fillField(LAST_NAME, userData.lastName());
-    fillField(EMAIL, userData.email());
-    fillField(PASSWORD, userData.password());
-    fillField(CONFIRM_PASSWORD, confirmPassword);
+    fill(FIRST_NAME, userData.firstName());
+    fill(LAST_NAME, userData.lastName());
+    fill(EMAIL, userData.email());
+    fill(PASSWORD, userData.password());
+    fill(CONFIRM_PASSWORD, confirmPassword);
   }
 
   public void whenFillPersonalDataWithShortPassword(UserData userData, String shortPassword) {
-    fillField(FIRST_NAME, userData.firstName());
-    fillField(LAST_NAME, userData.lastName());
-    fillField(EMAIL, userData.email());
-    fillField(PASSWORD, shortPassword);
-    fillField(CONFIRM_PASSWORD, shortPassword);
+    fill(FIRST_NAME, userData.firstName());
+    fill(LAST_NAME, userData.lastName());
+    fill(EMAIL, userData.email());
+    fill(PASSWORD, shortPassword);
+    fill(CONFIRM_PASSWORD, shortPassword);
   }
 
   public void whenFillPersonalDataWithInvalidEmail(UserData userData, String invalidEmail) {
-    fillField(FIRST_NAME, userData.firstName());
-    fillField(LAST_NAME, userData.lastName());
-    fillField(EMAIL, invalidEmail);
-    fillField(PASSWORD, userData.password());
-    fillField(CONFIRM_PASSWORD, userData.password());
+    fill(FIRST_NAME, userData.firstName());
+    fill(LAST_NAME, userData.lastName());
+    fill(EMAIL, invalidEmail);
+    fill(PASSWORD, userData.password());
+    fill(CONFIRM_PASSWORD, userData.password());
   }
 
   public void whenClickNext() {
-    clickField(NEXT_BUTTON);
+    click(NEXT_BUTTON);
   }
 
   public void whenFillAddressAndSubmit() {
-    moveFocusToElement(wait.until(ExpectedConditions.visibilityOfElementLocated(FORM_BODY)));
-    fillField(ZIP_CODE, RegisterValidation.VALID_ZIP_CODE);
+    moveFocusToElement(FORM_BODY);
+    fill(ZIP_CODE, RegisterValidation.VALID_ZIP_CODE);
     new WebDriverWait(driver, Duration.ofSeconds(15))
         .until(webDriver -> {
-          WebElement street = webDriver.findElement(STREET);
-          String value = street.getAttribute("value");
+          String value = webDriver.findElement(STREET).getAttribute("value");
           return value != null && !value.isBlank();
         });
-    fillField(NUMBER, RegisterValidation.ADDRESS_NUMBER);
-    clickField(SUBMIT_BUTTON);
+    fill(NUMBER, RegisterValidation.ADDRESS_NUMBER);
+    click(SUBMIT_BUTTON);
   }
 
   public void thenValidatedSuccessMessage() {
@@ -138,7 +136,18 @@ public class RegisterPageAction extends RegisterPageElements {
   }
 
   public void thenValidatedStillOnStepZero() {
-    assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(NEXT_BUTTON)).isDisplayed());
+    assertTrue(isVisible(NEXT_BUTTON));
+  }
+
+  public void whenCompletePfRegistration(UserData userData, String cpf) {
+    whenFillPersonalData(userData, cpf);
+    whenClickNext();
+    whenFillAddressAndSubmit();
+  }
+
+  public void whenNavigateToLogin() {
+    driver.navigate().to(TestEnvironment.baseUrl() + "/login");
+    wait.until(ExpectedConditions.urlContains("/login"));
   }
 
   public void thenValidatedAllEmptyFieldErrors() {
@@ -149,17 +158,5 @@ public class RegisterPageAction extends RegisterPageElements {
         RegisterValidation.ERROR_EMAIL_INVALID,
         RegisterValidation.ERROR_PHONE_INVALID,
         RegisterValidation.ERROR_PASSWORD_MIN_LENGTH);
-  }
-
-  private void fillField(org.openqa.selenium.By locator, String value) {
-    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    clickElementWithFocus(field);
-    field.clear();
-    field.sendKeys(value);
-  }
-
-  private void clickField(org.openqa.selenium.By locator) {
-    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    clickElementWithFocus(field);
   }
 }

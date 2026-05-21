@@ -178,6 +178,37 @@ public final class ApiClient {
     sendDelete(apiBaseUrl() + "/users/" + userId, accessToken);
   }
 
+  public static String firstProductSearchTerm() {
+    try {
+      HttpRequest request =
+          HttpRequest.newBuilder()
+              .uri(URI.create(apiBaseUrl() + "/products"))
+              .timeout(Duration.ofSeconds(15))
+              .GET()
+              .build();
+      HttpResponse<String> response = HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+      if (response.statusCode() != 200) {
+        throw new IllegalStateException("Products list failed with HTTP " + response.statusCode());
+      }
+      String name = readFirstProductName(response.body());
+      if (name == null || name.isBlank()) {
+        return "Relógio";
+      }
+      String[] words = name.trim().split("\\s+");
+      if (words.length >= 2) {
+        return words[0] + " " + words[1];
+      }
+      return words[0];
+    } catch (Exception exception) {
+      throw new IllegalStateException("Products lookup failed: " + exception.getMessage(), exception);
+    }
+  }
+
+  private static String readFirstProductName(String json) {
+    Matcher matcher = Pattern.compile("\"name\"\\s*:\\s*\"([^\"]+)\"").matcher(json);
+    return matcher.find() ? matcher.group(1) : "";
+  }
+
   public static int getProductStatus(int productId) {
     try {
       HttpRequest request =

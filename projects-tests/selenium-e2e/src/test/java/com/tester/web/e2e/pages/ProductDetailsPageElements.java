@@ -17,4 +17,19 @@ public class ProductDetailsPageElements extends BasePage {
   protected ProductDetailsPageElements(WebDriver driver) {
     super(driver);
   }
+
+  protected static By quantityOption(String quantity) {
+    return By.xpath("//li[@role='option' and normalize-space(.)='" + quantity + "']");
+  }
+
+  protected static By productHeading(String productName) {
+    return By.xpath(
+        "//h1[contains(normalize-space(.), '"
+            + productName
+            + "')] | //h2[contains(normalize-space(.), '"
+            + productName
+            + "')] | //*[self::h1 or self::h2][contains(normalize-space(.), '"
+            + productName
+            + "')]");
+  }
 }

@@ -2,7 +2,6 @@ package com.tester.web.e2e.pages;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -27,24 +26,20 @@ public class ProductDetailsPageAction extends ProductDetailsPageElements {
   }
 
   public void whenSelectQuantity(String quantity) {
-    wait.until(ExpectedConditions.elementToBeClickable(QUANTITY_COMBOBOX)).click();
-    By option =
-        By.xpath("//li[@role='option' and normalize-space(.)='" + quantity + "']");
-    wait.until(ExpectedConditions.elementToBeClickable(option)).click();
+    click(QUANTITY_COMBOBOX);
+    click(quantityOption(quantity));
   }
 
   public void whenAddToCart() {
-    clickElementWithFocus(wait.until(ExpectedConditions.elementToBeClickable(ADD_TO_CART_BUTTON)));
+    click(ADD_TO_CART_BUTTON);
   }
 
   public void whenBackToCatalog() {
-    clickElementWithFocus(wait.until(ExpectedConditions.elementToBeClickable(BACK_BUTTON)));
+    click(BACK_BUTTON);
   }
 
   public void assertProductHeadingVisible(String productName) {
-    wait.until(ExpectedConditions.visibilityOfElementLocated(
-        By.xpath("//h1[contains(normalize-space(.), '" + productName + "')] | //h2[contains(normalize-space(.), '"
-            + productName + "')] | //*[self::h1 or self::h2][contains(normalize-space(.), '" + productName + "')]")));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(productHeading(productName)));
     assertTextsVisible(productName);
   }
 
