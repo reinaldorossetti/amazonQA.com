@@ -2,7 +2,7 @@
 
 Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
 
-**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Referências](#-referências-do-projeto)
+**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Toast e overlays](#-toast-react-toastify) · [Referências](#-referências-do-projeto)
 
 ## ☕ Introdução ao Java 23
 
@@ -76,10 +76,12 @@ public static By byTestId(String testId) {
 Arquivo: `pages/BasePage.java`, `tests/AbstractUiTest.java`
 
 ```java
+// click(By) + fallback JS em ElementClickInterceptedException
 if (driver instanceof JavascriptExecutor javascriptExecutor) {
   javascriptExecutor.executeScript("arguments[0].click();", element);
 }
 
+// screenshots Allure
 if (driver instanceof TakesScreenshot takesScreenshot) {
   byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
 }
@@ -92,8 +94,8 @@ Arquivo: `pages/RegisterPageAction.java`
 ```java
 switch (omitted) {
   case FIRST_NAME -> {
-    fillField(LAST_NAME, userData.lastName());
-    fillField(EMAIL, userData.email());
+    fill(LAST_NAME, userData.lastName());
+    fill(EMAIL, userData.email());
   }
   case EMAIL -> { /* ... */ }
 }
@@ -135,11 +137,12 @@ Resumo honesto do que o código **realmente usa** (não apenas o que o JDK supor
 
 Baseline de compilação: `maven.compiler.release=21` no `pom.xml`.
 
-- **`List.getFirst()`** — API de **Sequenced Collections** (Java 21) em `CatalogPageAction.whenAddFirstProductToCart()`:
+- **`List.getFirst()`** — API de **Sequenced Collections** (Java 21) em `BasePage.clickFirst()` (usado por `CatalogPageAction.whenAddFirstProductToCart()`):
 
 ```java
-wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ADD_TO_CART_BUTTONS))
-    .getFirst();
+protected void clickFirst(By locator) {
+  click(wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst());
+}
 ```
 
 - **Demais construções modernas** (`record`, switch expression, text blocks, `formatted()`, pattern matching em `instanceof`/`catch`) compilam no release 21, mas são de releases anteriores (14–17) — ver seção [Recursos Java 17+](#-recursos-java-17--exemplos-no-código).
@@ -173,12 +176,14 @@ Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão
 
 📋 **Documentação ATDD** (features, fluxos de tela e passo a passo): [docs/ATDD-TESTES.md](docs/ATDD-TESTES.md)
 
-- 🔐 **Login** — `LoginFeatureTest`: login válido, credenciais inválidas, campos vazios
+- 🔐 **Login** — `LoginFeatureTest`: login válido, redirect `next=/cart`, sessão após reload, credenciais inválidas, `maxLength` 30
+- 🔐 **Register + Login** — `RegisterLoginFeatureTest`: cadastro+login, logout/re-login, senha errada
 - 📝 **Register** — `RegisterFeatureTest`: cadastro PF, validações, e-mail duplicado
 - 🌐 **Register + Language** — `RegisterLanguageFeatureTest`: cadastro, toggle PT/EN persistente
 - 🛍️ **Catalog** — `CatalogFeatureTest`: listagem, busca, categoria, empty state, detalhes
 - 📦 **Product Details** — `ProductDetailsFeatureTest`: dados do produto, add to cart, ID inválido
 - 🛒 **Cart & Checkout** — `CartCheckoutFeatureTest`: checkout autenticado, quantidades, frete, thank-you
+- 📋 **Orders Checkout (negativos)** — `OrdersCheckoutFeatureTest`: erros de pedido/pagamento via mock (Chrome/Edge, DevTools)
 - 💳 **Payments** — `PaymentsCardBrandsFeatureTest`: bandeiras de cartão, detecção por BIN
 - 🔁 **Real Purchase Flow** — `RealPurchaseFlowFeatureTest`: registro API → login → checkout real
 - 🛡️ **Security** — `SecurityFeatureTest`: rotas protegidas, guest checkout, logout
@@ -279,7 +284,7 @@ projects-tests/selenium-e2e/
 │   └── test/
 │       ├── java/com/tester/web/e2e/
 │       │   ├── config/      # Browser, WebDriver factory, propriedades de ambiente
-│       │   ├── pages/       # Page Objects (BasePage, LoginPage, …)
+│       │   ├── pages/       # *PageElements, *PageAction, NavBarElements, NavBarComponent, BasePage
 │       │   ├── support/     # ApiClient, JsonPayloads, Selectors, TestDataGenerator, …
 │       │   └── tests/       # Cenários (ex.: LoginFeatureTest)
 │       └── resources/
@@ -324,16 +329,22 @@ cd projects-tests/selenium-e2e && ./mvnw clean test
 
 ## ⚡ Execução paralela (JUnit)
 
-Configuração em `src/test/resources/junit-platform.properties`:
+Arquivo: `src/test/resources/junit-platform.properties`.
 
-- `parallel.enabled` = `true` — ativa paralelismo
-- `config.strategy` = `fixed` — **2 classes** em paralelo (`fixed.parallelism=2`)
-- `mode.classes.default` = `concurrent` — cada `*FeatureTest` pode rodar ao mesmo tempo (2 browsers)
-- `mode.default` = `same_thread` — métodos **na mesma classe** em sequência (1 `WebDriver` por `@Test`)
+| Propriedade | Valor | Significado |
+|-------------|-------|-------------|
+| `parallel.enabled` | `true` | Paralelismo JUnit 5 ativo |
+| `config.strategy` | `fixed` | Pool fixo (evite `dynamic.factor` em máquinas com poucos núcleos → 1 thread) |
+| `fixed.parallelism` | `2` | No máximo **2 classes de teste** ao mesmo tempo |
+| `mode.classes.default` | `concurrent` | `LoginFeatureTest` e `CartCheckoutFeatureTest` podem rodar juntos |
+| `mode.default` | `same_thread` | Métodos **na mesma classe** em sequência |
 
-Não use `@Execution(SAME_THREAD)` em `AbstractUiTest` — isso pode fazer a suíte inteira rodar em **uma única thread** (só 1 browser visível).
+### Estratégia
 
-CI: manter `fixed.parallelism=2` (padrão do `junit-platform.properties`). Para 3 classes: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3`
+- **Um `WebDriver` por `@Test`** — `AbstractUiTest` abre no `@BeforeEach` e fecha no `@AfterEach`.
+- Paralelismo no **nível da classe**, não do método: até 2 browsers simultâneos (2 `*FeatureTest` diferentes).
+- **Não** use `@Execution(SAME_THREAD)` em `AbstractUiTest` — pode forçar a suíte inteira em uma thread (só 1 browser visível).
+- CI/local: padrão `fixed.parallelism=2`. Para 3 classes: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3` (mais RAM e carga na app).
 
 Desabilitar para debug:
 
@@ -605,12 +616,43 @@ Os seletores e fluxos espelham a app em **`web/`** e o exemplo Playwright em **`
 
 Fluxo: `*FeatureTest` → `*PageAction` → `*PageElements` → `BasePage`
 
-- **FeatureTest** — Cenário de negócio (`given` / `when` / `thenValidated`). Exemplo: `SupportProductsFeatureTest`
-- **PageAction** — Clicks, waits, validações, screenshots. Exemplo: `CartCheckoutPageAction`
-- **PageElements** — Seletores estáveis (`id`, `data-testid`). Exemplo: `LoginPageElements`
-- **BasePage** — Toast, focus, `assertTextsVisible`. Exemplo: `BasePage`
+| Camada | Responsabilidade | Exemplo |
+|--------|------------------|---------|
+| **FeatureTest** | Cenário (`given` / `when` / `thenValidated`). Sem Selenium direto | `CartCheckoutFeatureTest` |
+| **PageAction** | Navegação, cliques, fills, asserts, screenshots | `CartCheckoutPageAction` |
+| **PageElements** | `protected static final By` e fábricas `By foo(...)` | `LoginPageElements` |
+| **NavBarElements** + **NavBarComponent** | Seletores e ações da barra superior | `nav-cart-btn`, busca, logout |
+| **BasePage** | Helpers compartilhados (`click`, `fill`, toast, Allure) | `BasePage` |
 
-Exemplo compacto (sem linhas vazias entre passos):
+### By-first (obrigatório)
+
+- Todo seletor em `*PageElements` como `By` (preferir `id` ou `data-element-id` da SPA).
+- Page actions usam apenas constantes `By` herdadas + helpers do `BasePage` — **sem** `By.xpath` inline nas actions, **sem** `@FindBy` / `PageFactory`, **sem** `WebElement` nas actions.
+- Clique padrão: `click(By)` — espera clicável, scroll/focus, clique nativo e fallback JS em `ElementClickInterceptedException`.
+
+### Helpers do `BasePage` (nas PageActions)
+
+| Helper | Uso |
+|--------|-----|
+| `click(By)` | Botões e links |
+| `clickFirst(By)` | Primeiro item de uma lista (ex.: primeiro “Adicionar ao Carrinho”) |
+| `fill(By, String)` | Campos de texto |
+| `fillAndPressEnter(By, String)` | Busca no catálogo |
+| `inputValue(By)` / `textOf(By)` | Ler valor ou texto |
+| `setInputValueWithJs(By, String)` | Inputs controlados (pagamentos, quantidade) |
+| `waitUntilToastIsGone()` | Antes de cliques no header/carrinho/checkout |
+| `waitUntilToastCycleCompletes()` | Depois de add/remove no carrinho |
+
+`WebElement` fica restrito à implementação privada do `BasePage` (ex.: `clickOnElement`).
+
+Exemplo de elements:
+
+```java
+protected static final By EMAIL_INPUT = By.id("login-email");
+protected static final By NAV_CART_BUTTON = By.id("nav-cart-btn");
+```
+
+Exemplo compacto no teste (sem linhas vazias entre passos):
 
 ```java
 void supportShouldOpenCreateProductModal() {
@@ -619,22 +661,24 @@ void supportShouldOpenCreateProductModal() {
 }
 ```
 
-Skill do repositório: `.cursor/skills/selenium-e2e-tests/SKILL.md`
+Guia para agentes/IDE: `.cursor/skills/selenium-e2e-tests/SKILL.md`
 
 ---
 
-## Mapeamento de fluxo (Login)
+## 🔔 Toast (react-toastify)
 
-**Fluxo principal:**
+A SPA usa `ToastContainer` em **top-right** com `autoClose={5000}` (`web/src/App.jsx`) — mesma região do `#nav-cart-btn`. Toast visível pode causar `ElementClickInterceptedException`.
 
-`LoginFeatureTest.java` ➜ `LoginPageAction.java` ➜ `LoginPageElements.java` ➜ `BasePage.java`
+| Helper | Timeout | Quando usar |
+|--------|---------|-------------|
+| `waitUntilToastIsGone()` | até **7 s** (`TOAST_DISMISS_TIMEOUT`) | Antes de abrir carrinho, checkout, pagamento, logout |
+| `waitUntilToastCycleCompletes()` | delega ao anterior se toast visível | Depois de adicionar/remover item no carrinho |
 
-### O papel de cada classe
+Locator: `TOAST_BODY` = `.Toastify__toast-body` no `BasePage`.
 
-- **`LoginFeatureTest`**: testes de alto nível (cenários). Orquestra as ações e validações do login, deve ter somente a lógica do teste, sem click e select.
-- **`LoginPageAction`**: implementa as ações e validações do fluxo de login (ex.: preencher campos, enviar, validar telas). Aqui vai fazer as ações de click, select entre outras.
-- **`LoginPageElements`**: guarda os elementos e seletores da tela de login (Page Elements).
-- **`BasePage`**: utilitários comuns para páginas (esperas, asserts de texto, helpers de Selenium e screenshots).
+**Assert de erro só no toast:** cadastro com e-mail duplicado e outros fluxos podem exibir mensagem apenas no toast — não use só `assertTextsVisible` no `body`; valide `TOAST_BODY` / `textOf(TOAST_BODY)` na PageAction.
+
+`NavBarComponent.whenOpenCart()` e `whenLogout()` já chamam `waitUntilToastIsGone()`.
 
 ---
 

@@ -100,9 +100,31 @@ Put all browser behavior in `PageAction` classes:
 - High-level assertions/validations: `assertCartEmptyStateVisible`, `thenValidatedSuccessfulCheckoutSummary`.
 - Private low-level helpers: `clickDeleteFirstItem`, `selectPaymentMethod`, `waitUntilToastIsGone`.
 
-Use explicit waits from `BasePage.wait` or short local `WebDriverWait`s. For elements hidden by headers/toasts, use existing global helpers such as `moveFocusToElement(By)`, `click(By)`, `fill(By, String)`, `clickFirst(By)`, and `fillAndPressEnter(By, String)`.
+Use explicit waits from `BasePage.wait` or short local `WebDriverWait`s. Prefer `BasePage` helpers over raw Selenium in page actions.
 
-**By-first in Page Actions:** declare every selector as `protected static final By` (or factory methods returning `By`) in `*PageElements`. Page actions must interact only through those `By` constants and `BasePage` helpers — no inline `By.xpath(...)` in actions, no `@FindBy` / `PageFactory`, and no passing `WebElement` between action methods.
+### By-first (mandatory)
+
+- **Selectors** live only in `*PageElements` as `protected static final By` or `protected static By foo(...)` for dynamic ids/text.
+- **Page actions** call `By` constants from the elements class plus `BasePage` helpers — never inline `By.xpath(...)`, `@FindBy`, `PageFactory`, or `WebElement` parameters/fields in actions.
+- **`click(By)`** is the public click API; it waits for clickability, scroll/focus, native click, and JS fallback on `ElementClickInterceptedException`.
+- **Shared nav:** `NavBarElements` (selectors) + `NavBarComponent` (actions).
+
+### BasePage helpers (use these in PageActions)
+
+| Helper | Use when |
+|--------|----------|
+| `click(By)` | Any button/link |
+| `clickFirst(By)` | First match in a list (e.g. first delete, first add-to-cart) |
+| `fill(By, String)` | Text inputs |
+| `fillAndPressEnter(By, String)` | Search fields |
+| `inputValue(By)` / `firstInputValue(By)` | Read input value |
+| `textOf(By)` | Read visible text |
+| `moveFocusToElement(By)` | Before assertions on partially hidden elements |
+| `setInputValueWithJs(By, String)` | Controlled inputs (payments, quantity) |
+| `waitUntilToastIsGone()` | Before header/cart/checkout clicks (see below) |
+| `waitUntilToastCycleCompletes()` | After actions that show a toast (add to cart) |
+
+`WebElement` is allowed only inside `BasePage` private implementation (e.g. `clickOnElement`).
 
 ## Page Elements Rules
 
@@ -121,6 +143,40 @@ protected static final By NAV_CART_BUTTON = By.id("nav-cart-btn");
 protected static final By CART_ORDER_TOTAL = By.cssSelector("[data-element-id='cart-order-total']");
 ```
 
+Dynamic text (category, payment label, product name) — factory on the elements class:
+
+```java
+protected static By textContaining(String text) {
+  return By.xpath("//*[contains(normalize-space(.), '" + text + "')]");
+}
+```
+
+## Toast overlays (react-toastify)
+
+The app uses `ToastContainer` at **top-right** (`autoClose={5000}`), same region as `#nav-cart-btn` and checkout actions in the header. Toasts can cause `ElementClickInterceptedException` if clicked too early.
+
+### Waiting for toast to disappear
+
+- Locator: `TOAST_BODY` = `.Toastify__toast-body` in `BasePage`.
+- **`waitUntilToastIsGone()`** — waits up to **7 seconds** (`TOAST_DISMISS_TIMEOUT`) for the toast body to become invisible (covers `autoClose` 5s + exit animation).
+  - If a toast is already visible: wait until invisible.
+  - If none visible: optionally wait for appear-then-dismiss within 7s; if none appears, continue.
+- **`waitUntilToastCycleCompletes()`** — if a toast is visible now, delegates to `waitUntilToastIsGone()`; use **after** add-to-cart / delete item.
+
+### When to call
+
+| Moment | Helper |
+|--------|--------|
+| After `add to cart`, remove item | `waitUntilToastCycleCompletes()` |
+| Before `#nav-cart-btn`, proceed to checkout, payment, logout | `waitUntilToastIsGone()` |
+| `NavBarComponent.whenOpenCart()` / `whenLogout()` | already calls `waitUntilToastIsGone()` |
+
+Prefer `waitUntilToastCycleCompletes()` in `openCartFromHeader()` after catalog add-to-cart, not only `waitUntilToastIsGone()`.
+
+### Assertions on toast-only messages
+
+Some errors (e.g. duplicate email on register) appear only in the toast, not in `body`. Do not use `assertTextsVisible` on the page body alone — assert via toast text (`TOAST_BODY` / `textOf`) or a dedicated `thenValidatedToastMessage` in the page action.
+
 ## Assertions
 
 - Keep assertions readable and business-oriented in tests.
@@ -133,7 +189,7 @@ protected static final By CART_ORDER_TOTAL = By.cssSelector("[data-element-id='c
 1. Run the smallest relevant test first:
    `.\mvnw.cmd test -Dtest=CartCheckoutFeatureTest#methodName`
 2. Identify whether the failure is:
-   - Element/timing/focus/overlay: fix `PageAction`, `PageElements`, or `BasePage`.
+   - Element/timing/focus/overlay/toast: fix `PageAction`, `PageElements`, or `BasePage` (`waitUntilToastIsGone`, `click(By)`).
    - Wrong expected behavior/data: inspect app behavior and seed/mock data before changing tests.
    - Assertion mismatch: report it if the user asked not to change assertions.
 3. After fixes, run the affected class:
@@ -141,9 +197,28 @@ protected static final By CART_ORDER_TOTAL = By.cssSelector("[data-element-id='c
 4. For final validation, run:
    `.\mvnw.cmd test`
 
-## Parallel Execution
+## Parallel execution
 
-The project uses `src/test/resources/junit-platform.properties` for JUnit parallelism. Keep Selenium concurrency conservative because each test opens a browser session. If asked for parallel execution, prefer fixed parallelism such as `3`.
+Configuration: `projects-tests/selenium-e2e/src/test/resources/junit-platform.properties`.
+
+| Property | Value | Meaning |
+|----------|-------|---------|
+| `parallel.enabled` | `true` | JUnit 5 parallelism on |
+| `config.strategy` | `fixed` | Fixed thread pool (not `dynamic`) |
+| `fixed.parallelism` | `2` | At most **2 test classes** at once |
+| `mode.default` | `same_thread` | Methods **within the same class** run sequentially |
+| `mode.classes.default` | `concurrent` | **Different feature classes** run in parallel |
+
+### Strategy in practice
+
+- **One `WebDriver` per `@Test`** in `AbstractUiTest` (`@BeforeEach` open, `@AfterEach` quit).
+- **Parallelism is at class level**, not method level: e.g. `LoginFeatureTest` and `CartCheckoutFeatureTest` can run together (2 browsers); two methods inside `CartCheckoutFeatureTest` do not.
+- **Do not** add `@Execution(SAME_THREAD)` on `AbstractUiTest` or base tests — it can force the entire suite onto one thread (only one browser visible).
+- **Do not** use `mode.default=concurrent` for Selenium without isolation — multiple methods in one class would share timing/flaky state on one driver lifecycle per test, but concurrent methods in one class would still each get their own `@BeforeEach` driver; the project intentionally keeps methods same-thread per class for stability.
+- **CI / local:** default `fixed.parallelism=2`. To scale: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3` (use cautiously — more RAM and app load).
+- **Disable:** `.\mvnw.cmd test "-Djunit.jupiter.execution.parallel.enabled=false"`
+
+Avoid `dynamic.factor` on low-core machines (can collapse to 1 thread). Prefer **fixed** parallelism for predictable Selenium runs.
 
 ## Do Not
 
