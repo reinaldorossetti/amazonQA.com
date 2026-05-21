@@ -170,6 +170,30 @@ Nenhuma API ou sintaxe exclusiva do Java 22 aparece no código, por exemplo:
 
 ---
 
+## Relatório headless (tempo + logs)
+
+Após `mvn test -Dheadless=true`, gere o relatório Markdown e o arquivo de log:
+
+```powershell
+.\scripts\run-headless-and-report.ps1
+```
+
+Ou manualmente:
+
+```powershell
+mvn test -Dheadless=true
+python scripts/generate-headless-report.py --wall-clock-ms <ms> --maven-log logs/maven-console.log
+```
+
+| Artefato | Conteúdo |
+|----------|----------|
+| [HEADLESS-RUN-REPORT.md](HEADLESS-RUN-REPORT.md) | Resumo, **tempo médio**, **top 10** mais lentos, média por classe, falhas |
+| `logs/headless-run-*.log` | Sumário, top 10, médias, stack traces, relatórios Surefire, console Maven |
+
+`logs/*.log` está no `.gitignore` (não versionar).
+
+---
+
 ## 🗂️ Visão geral das features
 
 Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions. Cada método usa `@DisplayName("TC-001 …")` com id **TC = Test Case**, sequencial **por classe** (`TC-001`, `TC-002`, …).

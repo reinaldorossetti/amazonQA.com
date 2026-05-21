@@ -4,3 +4,4 @@ target/
 .jdk/
 .certs/
 allure-results/
+logs/*.log
