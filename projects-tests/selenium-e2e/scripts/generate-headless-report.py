@@ -201,7 +201,7 @@ def write_markdown(
         f"| Median per test | {median(times):.2f} s |",
         f"| Wall-clock duration | {wall_clock_ms / 60_000:.1f} min ({wall_clock_ms / 1000:.0f} s) |",
         f"| Sum of per-test times | {sum(times):.1f} s ({sum(times) / 60:.1f} min) |",
-        "| Parallelism (JUnit) | 1 class at a time (`junit-platform.properties`) |",
+        "| Parallelism (JUnit) | 1 feature class at a time, up to 3 tests in parallel (`junit-platform.properties`) |",
         "",
         "> **Note:** Per-test times can spike on Chrome/session timeouts, not only slow flows.",
         "",

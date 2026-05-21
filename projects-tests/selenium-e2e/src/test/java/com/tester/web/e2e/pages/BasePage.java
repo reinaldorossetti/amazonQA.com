@@ -69,11 +69,10 @@ public abstract class BasePage {
         () ->
             String.format(
                 "Filling locator %s with text length: %d", locator, text == null ? 0 : text.length()));
-    click(locator);
+    field.click();
+    moveFocusToElementJS(field);
     field.clear();
-    if (text != null && !text.isEmpty()) {
-      field.sendKeys(text);
-    }
+    field.sendKeys(text);
   }
 
   protected void fillAndPressEnter(By locator, String text) {
@@ -99,15 +98,16 @@ public abstract class BasePage {
     moveFocusToElement(wait.until(ExpectedConditions.presenceOfElementLocated(locator)));
   }
 
+  protected void moveFocusToElement(WebElement element) {
+    moveFocusToElementJS(element);
+  }
+
   protected boolean isVisible(By locator) {
     return isVisible(locator, DEFAULT_IS_VISIBLE_TIMEOUT);
   }
 
   protected boolean isVisible(By locator, Duration timeout) {
     Duration effectiveTimeout = capVisibleTimeout(timeout);
-    if (effectiveTimeout.isZero()) {
-      return driver.findElements(locator).stream().anyMatch(WebElement::isDisplayed);
-    }
     try {
       moveFocusToElement(locator);
       new WebDriverWait(driver, effectiveTimeout)
@@ -196,18 +196,7 @@ public abstract class BasePage {
   protected void setInputValueWithJs(By locator, String value) {
     WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     moveFocusToElement(locator);
-    if (driver instanceof JavascriptExecutor javascriptExecutor) {
-      javascriptExecutor.executeScript(
-          "const input = arguments[0];"
-              + "const value = arguments[1];"
-              + "const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;"
-              + "setter.call(input, value);"
-              + "input.dispatchEvent(new Event('input', { bubbles: true }));",
-          input,
-          value);
-    } else {
-      fill(locator, value);
-    }
+    fill(locator, value);
   }
 
   protected void setFirstInputValueWithJs(By locator, String value) {
@@ -230,7 +219,7 @@ public abstract class BasePage {
     }
   }
 
-  protected void moveFocusToElement(WebElement element) {
+  protected void moveFocusToElementJS(WebElement element) {
     if (!(driver instanceof JavascriptExecutor javascriptExecutor)) {
       return;
     }
@@ -245,7 +234,7 @@ public abstract class BasePage {
   }
 
   private void clickOnElement(WebElement element) {
-    moveFocusToElement(element);
+    moveFocusToElementJS(element);
     try {
       element.click();
     } catch (ElementClickInterceptedException exception) {

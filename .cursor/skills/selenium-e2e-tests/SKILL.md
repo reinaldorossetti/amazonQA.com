@@ -252,17 +252,17 @@ Configuration: `projects-tests/selenium-e2e/src/test/resources/junit-platform.pr
 |----------|-------|---------|
 | `parallel.enabled` | `true` | JUnit 5 parallelism on |
 | `config.strategy` | `fixed` | Fixed thread pool (not `dynamic`) |
-| `fixed.parallelism` | `1` | Default on Windows (stable Chrome); use `2` via `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=2` when the machine handles it |
-| `mode.default` | `same_thread` | Methods **within the same class** run sequentially |
-| `mode.classes.default` | `concurrent` | **Different feature classes** run in parallel |
+| `fixed.parallelism` | `3` | Up to **3 test methods** in parallel within the active feature class |
+| `mode.default` | `concurrent` | Methods **within the same class** can run in parallel |
+| `mode.classes.default` | `same_thread` | **One feature class** (`*FeatureTest`) at a time |
 
 ### Strategy in practice
 
 - **One `WebDriver` per `@Test`** in `AbstractUiTest` (`@BeforeEach` open, `@AfterEach` quit).
-- **Parallelism is at class level**, not method level: e.g. `LoginFeatureTest` and `CartCheckoutFeatureTest` can run together (2 browsers); two methods inside `CartCheckoutFeatureTest` do not.
-- **Do not** add `@Execution(SAME_THREAD)` on `AbstractUiTest` or base tests — it can force the entire suite onto one thread (only one browser visible).
-- **Do not** use `mode.default=concurrent` for Selenium without isolation — multiple methods in one class would share timing/flaky state on one driver lifecycle per test, but concurrent methods in one class would still each get their own `@BeforeEach` driver; the project intentionally keeps methods same-thread per class for stability.
-- **CI / local:** default `fixed.parallelism=2`. To scale: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3` (use cautiously — more RAM and app load).
+- **One feature at a time**, up to **3 browsers** for different `@Test` methods in that class (e.g. three `CartCheckoutFeatureTest` methods at once).
+- **Do not** add `@Execution(SAME_THREAD)` on `AbstractUiTest` — forces the entire suite serial.
+- Classes using the **same seeded user** in parallel may conflict on cart/session; prefer unique users per test or `@Execution(SAME_THREAD)` on that class only.
+- **Override:** `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=1` (one browser per feature) or `parallel.enabled=false`.
 - **Disable:** `.\mvnw.cmd test "-Djunit.jupiter.execution.parallel.enabled=false"`
 
 Avoid `dynamic.factor` on low-core machines (can collapse to 1 thread). Prefer **fixed** parallelism for predictable Selenium runs.

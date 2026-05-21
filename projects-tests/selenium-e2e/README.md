@@ -358,17 +358,18 @@ Arquivo: `src/test/resources/junit-platform.properties`.
 | Propriedade | Valor | Significado |
 |-------------|-------|-------------|
 | `parallel.enabled` | `true` | Paralelismo JUnit 5 ativo |
-| `config.strategy` | `fixed` | Pool fixo (evite `dynamic.factor` em máquinas com poucos núcleos → 1 thread) |
-| `fixed.parallelism` | `2` | No máximo **2 classes de teste** ao mesmo tempo |
-| `mode.classes.default` | `concurrent` | `LoginFeatureTest` e `CartCheckoutFeatureTest` podem rodar juntos |
-| `mode.default` | `same_thread` | Métodos **na mesma classe** em sequência |
+| `config.strategy` | `fixed` | Pool fixo (evite `dynamic.factor` em máquinas com poucos núcleos) |
+| `fixed.parallelism` | `3` | Até **3 métodos** (`@Test`) em paralelo na classe em execução |
+| `mode.classes.default` | `same_thread` | **Uma feature** (`*FeatureTest`) por vez |
+| `mode.default` | `concurrent` | Métodos **na mesma classe** podem rodar juntos (até 3 browsers) |
 
 ### Estratégia
 
 - **Um `WebDriver` por `@Test`** — `AbstractUiTest` abre no `@BeforeEach` e fecha no `@AfterEach`.
-- Paralelismo no **nível da classe**, não do método: até 2 browsers simultâneos (2 `*FeatureTest` diferentes).
-- **Não** use `@Execution(SAME_THREAD)` em `AbstractUiTest` — pode forçar a suíte inteira em uma thread (só 1 browser visível).
-- CI/local: padrão `fixed.parallelism=2`. Para 3 classes: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=3` (mais RAM e carga na app).
+- **Uma feature por vez**, com até **3 instâncias Chrome** simultâneas dentro dessa feature (ex.: 3 métodos de `CartCheckoutFeatureTest`).
+- Classes que compartilham o mesmo usuário seed (ex. `reinaldo@test.com`) podem ter interferência de carrinho/sessão se rodarem em paralelo — prefira usuário único por teste ou `@Execution(SAME_THREAD)` só naquela classe.
+- **Não** use `@Execution(SAME_THREAD)` em `AbstractUiTest` — força a suíte inteira em uma thread.
+- Override: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=1` (só 1 browser por feature) ou `parallel.enabled=false` (tudo serial).
 
 Desabilitar para debug:
 
