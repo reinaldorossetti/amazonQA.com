@@ -10,6 +10,7 @@ import com.tester.web.e2e.support.ApiClient;
 import com.tester.web.e2e.support.ApiClient.CreatedProduct;
 import com.tester.web.e2e.support.ApiClient.LoginResponse;
 import com.tester.web.e2e.support.AuthSessionHelper;
+import com.tester.web.e2e.support.TestDataGenerator;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -36,24 +37,24 @@ class SupportProductsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("SUP-UI01 support should access product management screen")
+  @DisplayName("TC-001 support should access product management screen")
   void supportShouldAccessProductManagementScreen() {
     supportProducts.thenValidatedProductManagementScreenVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI02 support should see loaded products table")
+  @DisplayName("TC-002 support should see loaded products table")
   void supportShouldSeeLoadedProductsTable() {
     supportProducts.thenValidatedProductsTableVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI03 support should filter products by search field")
+  @DisplayName("TC-003 support should filter products by search field")
   void supportShouldFilterProductsBySearch() {
     CreatedProduct created =
-        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Filter " + System.currentTimeMillis());
+        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Filter " + TestDataGenerator.randomNumeric8());
     try {
       driver.navigate().refresh();
       supportProducts.givenSupportOnProductsPage();
@@ -66,15 +67,15 @@ class SupportProductsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI04 empty search should show empty message")
+  @DisplayName("TC-004 empty search should show empty message")
   void emptySearchShouldShowEmptyMessage() {
-    supportProducts.whenSearch("__inexistente_" + System.currentTimeMillis() + "__");
+    supportProducts.whenSearch("__inexistente_" + TestDataGenerator.randomNumeric8() + "__");
     supportProducts.thenValidatedEmptySearchStateVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI05 support should open create product modal")
+  @DisplayName("TC-005 support should open create product modal")
   void supportShouldOpenCreateProductModal() {
     supportProducts.whenOpenNewProductModal();
     supportProducts.thenValidatedCreateProductDialogVisible();
@@ -82,7 +83,7 @@ class SupportProductsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI06 modal should validate required product name")
+  @DisplayName("TC-006 modal should validate required product name")
   void modalShouldValidateRequiredProductName() {
     supportProducts.whenOpenNewProductModal();
     supportProducts.whenSubmitNewProductWithoutName();
@@ -91,10 +92,10 @@ class SupportProductsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI07 support should open edit modal with prefilled data")
+  @DisplayName("TC-007 support should open edit modal with prefilled data")
   void supportShouldOpenEditModalWithPrefilledData() {
     CreatedProduct created =
-        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Edit " + System.currentTimeMillis());
+        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Edit " + TestDataGenerator.randomNumeric8());
     try {
       driver.navigate().refresh();
       supportProducts.givenSupportOnProductsPage();
@@ -108,14 +109,14 @@ class SupportProductsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SUP-UI08 support should delete product via delete button")
+  @DisplayName("TC-008 support should delete product via delete button")
   void supportShouldDeleteProductViaDeleteButton() {
     CreatedProduct created =
-        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Delete " + System.currentTimeMillis());
+        ApiClient.createProduct(supportSession.accessToken(), "E2E-UI Selenium Delete " + TestDataGenerator.randomNumeric8());
     driver.navigate().refresh();
     supportProducts.givenSupportOnProductsPage();
     supportProducts.thenValidatedProductListed(created.name());
     supportProducts.whenDeleteProduct(created.id());
-    supportProducts.thenValidatedProductNotListed(created.name());
+    supportProducts.thenValidatedProductNotListed(created.id());
   }
 }

@@ -32,6 +32,15 @@ public final class TestDataGenerator {
     return "Different@" + FAKER.number().digits(8);
   }
 
+  public static String emailFaker() {
+    return FAKER.internet().emailAddress().toLowerCase(Locale.ROOT);
+  }
+
+  /** Eight numeric digits for unique emails, product names, and search terms in E2E data. */
+  public static String randomNumeric8() {
+    return FAKER.number().digits(8);
+  }
+
   public static String validCpf() {
     List<Integer> digits = new ArrayList<>(9);
     for (int i = 0; i < 9; i++) {

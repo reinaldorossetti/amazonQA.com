@@ -172,7 +172,7 @@ Nenhuma API ou sintaxe exclusiva do Java 22 aparece no código, por exemplo:
 
 ## 🗂️ Visão geral das features
 
-Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions.
+Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão: `given` / `when` / `thenValidated` nos Page Actions. Cada método usa `@DisplayName("TC-001 …")` com id **TC = Test Case**, sequencial **por classe** (`TC-001`, `TC-002`, …).
 
 📋 **Documentação ATDD** (features, fluxos de tela e passo a passo): [docs/ATDD-TESTES.md](docs/ATDD-TESTES.md)
 
@@ -655,11 +655,15 @@ protected static final By NAV_CART_BUTTON = By.id("nav-cart-btn");
 Exemplo compacto no teste (sem linhas vazias entre passos):
 
 ```java
+@Test
+@DisplayName("TC-005 support should open create product modal")
 void supportShouldOpenCreateProductModal() {
   supportProducts.whenOpenNewProductModal();
   supportProducts.thenValidatedCreateProductDialogVisible();
 }
 ```
+
+**IDs de caso de teste:** em cada `*FeatureTest`, o primeiro método é `TC-001`, o segundo `TC-002`, e assim por diante (três dígitos). `@ParameterizedTest` conta como um único TC.
 
 Guia para agentes/IDE: `.cursor/skills/selenium-e2e-tests/SKILL.md`
 
@@ -676,7 +680,7 @@ A SPA usa `ToastContainer` em **top-right** com `autoClose={5000}` (`web/src/App
 
 Locator: `TOAST_BODY` = `.Toastify__toast-body` no `BasePage`.
 
-**Assert de erro só no toast:** cadastro com e-mail duplicado e outros fluxos podem exibir mensagem apenas no toast — não use só `assertTextsVisible` no `body`; valide `TOAST_BODY` / `textOf(TOAST_BODY)` na PageAction.
+**Erro só no toast:** cadastro com e-mail duplicado e outros fluxos podem exibir mensagem apenas no toast — na PageAction use `thenValidatedToastErrorMessage` / `ensureToastContainsOneOf`, não só `ensureTextsVisible` no `body`.
 
 `NavBarComponent.whenOpenCart()` e `whenLogout()` já chamam `waitUntilToastIsGone()`.
 

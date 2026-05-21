@@ -14,6 +14,7 @@ public interface RegisterValidation {
   String ERROR_PASSWORD_MIN_LENGTH = "Mínimo 8 caracteres.";
   String ERROR_PASSWORD_MISMATCH = "As senhas não coincidem";
   String ERROR_EMAIL_DUPLICATE = "Email já cadastrado";
+  String ERROR_EMAIL_DUPLICATE_EN = "This email is already registered.";
 
   String SUCCESS_MESSAGE = "Cadastro realizado com sucesso!";
 }

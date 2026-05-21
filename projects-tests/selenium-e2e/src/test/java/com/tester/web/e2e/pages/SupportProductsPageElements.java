@@ -14,13 +14,9 @@ public class SupportProductsPageElements extends BasePage {
   protected static final By ACCOUNT_MENU = By.id("account-menu-minha-conta-suporte-produtos");
   protected static final By DIALOG = By.id("support-product-dialog");
   protected static final By DIALOG_CLOSE = By.id("support-product-dialog-close");
-  protected static final By DIALOG_NAME_INPUT =
-      By.cssSelector("#support-product-dialog input:first-of-type");
-  protected static final By DIALOG_PRICE_INPUT =
-      By.cssSelector("#support-product-dialog input:nth-of-type(2)");
-  protected static final By DIALOG_SUBMIT_BUTTON =
-      By.xpath(
-          "//*[@id='support-product-dialog']//button[contains(normalize-space(.), 'Cadastrar Produto')]");
+  protected static final By DIALOG_NAME_INPUT = By.id("support-product-name");
+  protected static final By DIALOG_PRICE_INPUT = By.id("support-product-price");
+  protected static final By DIALOG_SUBMIT_BUTTON = By.id("support-product-save-btn");
   protected static final By TABLE_BODY_ROWS =
       By.cssSelector("#support-products-table tbody tr");
 
@@ -34,5 +30,9 @@ public class SupportProductsPageElements extends BasePage {
 
   protected static By deleteButton(int productId) {
     return By.id("support-products-delete-" + productId);
+  }
+
+  protected static By productRow(int productId) {
+    return By.id("support-products-row-" + productId);
   }
 }

@@ -41,31 +41,31 @@ class AdminManagementFeatureTest extends AbstractUiTest {
   @Test
   @Order(1)
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("ADM01 admin should list real products and delete the created one")
+  @DisplayName("TC-001 admin should list real products and delete the created one")
   void adminShouldDeleteCreatedProduct() {
     CreatedProduct created =
         ApiClient.createProduct(
-            adminSession.accessToken(), "Produto Admin E2E " + System.currentTimeMillis());
+            adminSession.accessToken(), "Produto Admin E2E " + TestDataGenerator.randomNumeric8());
 
     admin.whenOpenAdminProducts();
-    admin.assertProductListed(created.name());
+    admin.thenValidatedProductListed(created.name());
     admin.whenDeleteProduct(created.id());
-    admin.assertProductNotListed(created.name());
+    admin.thenValidatedProductNotListed(created.name());
   }
 
   @Test
   @Order(2)
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("ADM02 admin should list real users and delete the created one")
+  @DisplayName("TC-002 admin should list real users and delete the created one")
   void adminShouldDeleteCreatedUser() {
     var user = TestDataGenerator.randomUser();
-    String email = "e2e.admin.user." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.admin.user." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     admin.whenOpenAdminUsers();
-    admin.assertUserListed(created.email());
+    admin.thenValidatedUserListed(created.email());
     admin.whenDeleteUser(created.id());
-    admin.assertDeleteUserToast();
-    admin.assertUserNotListed(created.email());
+    admin.thenValidatedDeleteUserToast();
+    admin.thenValidatedUserNotListed(created.email());
   }
 }

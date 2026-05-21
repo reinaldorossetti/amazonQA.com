@@ -28,63 +28,63 @@ class CatalogFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 should list products when page loads")
+  @DisplayName("TC-001 should list products when page loads")
   void shouldListProductsWhenPageLoads() {
-    catalog.assertProductImageVisible(1);
-    catalog.assertProductImageVisible(2);
+    catalog.thenValidatedProductImageVisible(1);
+    catalog.thenValidatedProductImageVisible(2);
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS02 should search by text and update product count")
+  @DisplayName("TC-002 should search by text and update product count")
   void shouldSearchByTextAndUpdateCount() {
     catalog.whenSearchBy("Smartphone");
-    catalog.assertProductImageVisible(5);
-    catalog.assertProductImageHidden(1);
-    catalog.assertProductsFoundTextContains("1 produto encontrado");
+    catalog.thenValidatedProductImageVisible(5);
+    catalog.thenValidatedProductImageHidden(1);
+    catalog.thenValidatedProductsFoundTextContains("1 produto encontrado");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS03 should filter products by category")
+  @DisplayName("TC-003 should filter products by category")
   void shouldFilterProductsByCategory() {
     catalog.whenSelectCategory("Acessórios");
-    catalog.assertProductImageVisible(1);
-    catalog.assertProductImageHidden(5);
+    catalog.thenValidatedProductImageVisible(1);
+    catalog.thenValidatedProductImageHidden(5);
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS04 should show empty state when search has no results")
+  @DisplayName("TC-004 should show empty state when search has no results")
   void shouldShowEmptyStateWhenSearchHasNoResults() {
     catalog.whenSearchBy("PRODUTO_INEXISTENTE_123");
-    catalog.assertEmptyStateVisible();
+    catalog.thenValidatedEmptyStateVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS05 should navigate to product details when clicking product image")
+  @DisplayName("TC-005 should navigate to product details when clicking product image")
   void shouldNavigateToProductDetailsWhenClickingImage() {
     catalog.whenClickProductImage(1);
-    catalog.assertUrlEndsWith("/product/1");
-    productDetails.assertProductImageVisible();
+    catalog.thenValidatedUrlEndsWith("/product/1");
+    productDetails.thenValidatedProductImageVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS06 should preserve search filter after navigating to details and back")
+  @DisplayName("TC-006 should preserve search filter after navigating to details and back")
   void shouldPreserveSearchFilterAfterNavigatingToDetailsAndBack() {
     catalog.whenSearchBy("Smartphone");
-    catalog.assertProductImageVisible(5);
-    catalog.assertProductImageHidden(1);
+    catalog.thenValidatedProductImageVisible(5);
+    catalog.thenValidatedProductImageHidden(1);
 
     catalog.whenClickProductImage(5);
-    catalog.assertUrlEndsWith("/product/5");
+    catalog.thenValidatedUrlEndsWith("/product/5");
 
     productDetails.whenBackToCatalog();
-    catalog.assertUrlEndsWith("/");
-    catalog.assertSearchValueEquals("Smartphone");
-    catalog.assertProductImageVisible(5);
-    catalog.assertProductImageHidden(1);
+    catalog.thenValidatedUrlEndsWith("/");
+    catalog.thenValidatedSearchValueEquals("Smartphone");
+    catalog.thenValidatedProductImageVisible(5);
+    catalog.thenValidatedProductImageHidden(1);
   }
 }

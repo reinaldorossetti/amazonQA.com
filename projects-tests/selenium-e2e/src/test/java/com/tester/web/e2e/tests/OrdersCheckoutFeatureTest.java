@@ -33,17 +33,19 @@ class OrdersCheckoutFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("ORD-NEG-01 should stay on cart when order creation returns HTTP 500")
+  @DisplayName("TC-001 should stay on cart when order creation returns HTTP 500")
   void shouldStayOnCartWhenOrderCreationFails() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.order.500." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.order.500." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       ordersCheckout.givenLoggedInApiUserWithOneCartItem(email, user.password());
-      ordersCheckout.whenProceedToCheckoutUnderMock(NetworkRouteMocks.orderCreateServerError());
-      ordersCheckout.thenValidatedStaysOnCartWithOneOf(
-          "Falha ao criar pedido", "Erro ao processar checkout");
+      ordersCheckout.whenProceedToCheckoutUnderMock(
+          NetworkRouteMocks.orderCreateServerError(),
+          "Falha ao criar pedido",
+          "Erro ao processar checkout");
+      ordersCheckout.thenValidatedStaysOnCart();
     } finally {
       ApiClient.tryLoginAdmin()
           .ifPresent(admin -> ApiClient.deleteUser(admin.accessToken(), created.id()));
@@ -52,16 +54,17 @@ class OrdersCheckoutFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("ORD-NEG-02 should show empty cart error when order API returns HTTP 400")
+  @DisplayName("TC-002 should show empty cart error when order API returns HTTP 400")
   void shouldShowEmptyCartErrorWhenOrderApiReturnsBadRequest() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.order.400." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.order.400." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       ordersCheckout.givenLoggedInApiUserWithOneCartItem(email, user.password());
-      ordersCheckout.whenProceedToCheckoutUnderMock(NetworkRouteMocks.orderCreateEmptyCartBadRequest());
-      ordersCheckout.thenValidatedStaysOnCartWithMessage("Carrinho vazio ou payload inválido");
+      ordersCheckout.whenProceedToCheckoutUnderMock(
+          NetworkRouteMocks.orderCreateEmptyCartBadRequest(), "Carrinho vazio ou payload inválido");
+      ordersCheckout.thenValidatedStaysOnCart();
     } finally {
       ApiClient.tryLoginAdmin()
           .ifPresent(admin -> ApiClient.deleteUser(admin.accessToken(), created.id()));
@@ -70,18 +73,19 @@ class OrdersCheckoutFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("ORD-NEG-03 should show payment error when payment API returns HTTP 400")
+  @DisplayName("TC-003 should show payment error when payment API returns HTTP 400")
   void shouldShowPaymentErrorWhenPaymentApiReturnsBadRequest() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.pay.400." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.pay.400." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       ordersCheckout.givenLoggedInApiUserWithOneCartItem(email, user.password());
       ordersCheckout.whenPaymentFlowUnderMock(
-          NetworkRouteMocks.orderCreateSuccessWithPaymentBadRequest(99), PaymentMethod.CREDIT);
-      ordersCheckout.thenValidatedCheckoutErrorMessage(
+          NetworkRouteMocks.orderCreateSuccessWithPaymentBadRequest(99),
+          PaymentMethod.CREDIT,
           "ID inválido, método inválido, valor inválido ou maior que saldo");
+      ordersCheckout.thenValidatedCheckoutOnPaymentsPage();
     } finally {
       ApiClient.tryLoginAdmin()
           .ifPresent(admin -> ApiClient.deleteUser(admin.accessToken(), created.id()));
@@ -90,17 +94,19 @@ class OrdersCheckoutFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("ORD-NEG-04 should show not found error when payment API returns HTTP 404")
+  @DisplayName("TC-004 should show not found error when payment API returns HTTP 404")
   void shouldShowNotFoundErrorWhenPaymentApiReturnsNotFound() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.pay.404." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.pay.404." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       ordersCheckout.givenLoggedInApiUserWithOneCartItem(email, user.password());
       ordersCheckout.whenPaymentFlowUnderMock(
-          NetworkRouteMocks.orderCreateSuccessWithPaymentNotFound(404), PaymentMethod.CREDIT);
-      ordersCheckout.thenValidatedCheckoutErrorMessage("Pedido não encontrado");
+          NetworkRouteMocks.orderCreateSuccessWithPaymentNotFound(404),
+          PaymentMethod.CREDIT,
+          "Pedido não encontrado");
+      ordersCheckout.thenValidatedCheckoutOnPaymentsPage();
     } finally {
       ApiClient.tryLoginAdmin()
           .ifPresent(admin -> ApiClient.deleteUser(admin.accessToken(), created.id()));

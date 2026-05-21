@@ -2,7 +2,6 @@ package com.tester.web.e2e.pages;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -30,28 +29,28 @@ public class PaymentsPageAction extends PaymentsPageElements {
     setInputValueWithJs(CARD_INSTALLMENTS_INPUT, "2");
   }
 
-  public void assertBrandsStripHidden() {
+  public void thenValidatedBrandsStripHidden() {
     assertTrue(driver.findElements(BRANDS_STRIP).isEmpty());
   }
 
-  public void assertBrandsStripVisible() {
+  public void thenValidatedBrandsStripVisible() {
     assertTrue(isVisible(BRANDS_STRIP));
   }
 
-  public void assertBrandVisible(CardBrand brand) {
+  public void thenValidatedBrandVisible(CardBrand brand) {
     assertTrue(isVisible(brandChip(brand.id())));
   }
 
-  public void assertBrandActive(CardBrand brand) {
+  public void thenValidatedBrandActive(CardBrand brand) {
     assertEquals(
         "true",
         wait.until(ExpectedConditions.visibilityOfElementLocated(brandChip(brand.id())))
             .getDomAttribute("data-active"));
   }
 
-  public void assertAllBrandsVisible() {
+  public void thenValidatedAllBrandsVisible() {
     for (CardBrand brand : CardBrand.values()) {
-      assertBrandVisible(brand);
+      thenValidatedBrandVisible(brand);
     }
   }
 

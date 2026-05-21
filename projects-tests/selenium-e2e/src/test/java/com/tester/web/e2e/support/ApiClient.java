@@ -151,7 +151,7 @@ public final class ApiClient {
   }
 
   public static CreatedProduct createProduct(String accessToken, String name) {
-    String suffix = String.valueOf(System.currentTimeMillis());
+    String suffix = TestDataGenerator.randomNumeric8();
     String body = JsonPayloads.createProductBody(name, suffix);
     HttpResponse<String> response = post(apiBaseUrl() + "/products", body, accessToken);
     if (response.statusCode() != 201) {

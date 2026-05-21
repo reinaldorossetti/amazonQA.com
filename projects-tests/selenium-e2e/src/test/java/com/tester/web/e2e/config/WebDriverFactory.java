@@ -1,13 +1,19 @@
 package com.tester.web.e2e.config;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeDriverService;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -27,6 +33,13 @@ public final class WebDriverFactory {
   private static final int HD_HEIGHT = 1080;
   private static final String WINDOW_SIZE_ARGUMENT =
       "--window-size=" + HD_WIDTH + "," + HD_HEIGHT;
+  private static final Duration DRIVER_SERVICE_TIMEOUT = Duration.ofSeconds(90);
+  private static final Object CHROME_DRIVER_SETUP_LOCK = new Object();
+  private static final Object FIREFOX_DRIVER_SETUP_LOCK = new Object();
+  private static final Object EDGE_DRIVER_SETUP_LOCK = new Object();
+  private static volatile boolean chromeDriverReady;
+  private static volatile boolean firefoxDriverReady;
+  private static volatile boolean edgeDriverReady;
 
   /** Prevents instantiation of this factory class. */
   private WebDriverFactory() {}
@@ -50,7 +63,6 @@ public final class WebDriverFactory {
    * @return configured ChromeOptions
    */
   private static ChromeOptions chromeOptions() {
-    WebDriverManager.chromedriver().setup();
     ChromeOptions options = new ChromeOptions();
     String chromeBinary = System.getenv("CHROME_BIN");
     if (chromeBinary != null && !chromeBinary.isBlank()) {
@@ -59,11 +71,21 @@ public final class WebDriverFactory {
     options.addArguments(LANGUAGE_ARGUMENT);
     applyChromePreferences(options);
     options.addArguments(WINDOW_SIZE_ARGUMENT);
+    options.addArguments("--remote-allow-origins=*", "--remote-debugging-port=0");
+    options.addArguments("--user-data-dir=" + isolatedChromeProfileDir());
     if (TestEnvironment.headless()) {
       options.addArguments(HEADLESS_CHROME, DISABLE_GPU_ARGUMENT);
     }
     options.addArguments(NO_SANDBOX_ARGUMENT, DISABLE_DEV_SHM_ARGUMENT);
     return options;
+  }
+
+  private static String isolatedChromeProfileDir() {
+    try {
+      return Files.createTempDirectory("selenium-chrome-").toAbsolutePath().toString();
+    } catch (IOException exception) {
+      throw new UncheckedIOException("Failed to create Chrome user-data directory.", exception);
+    }
   }
 
   /**
@@ -77,7 +99,7 @@ public final class WebDriverFactory {
     if (firefoxBinary != null && !firefoxBinary.isBlank()) {
       options.setBinary(firefoxBinary);
     } else {
-      WebDriverManager.firefoxdriver().setup();
+      ensureFirefoxDriverReady();
     }
     options.addPreference("intl.accept_languages", ACCEPT_LANGUAGES);
     if (TestEnvironment.headless()) {
@@ -92,7 +114,6 @@ public final class WebDriverFactory {
    * @return configured EdgeOptions
    */
   private static EdgeOptions edgeOptions() {
-    WebDriverManager.edgedriver().setup();
     EdgeOptions options = new EdgeOptions();
     options.addArguments(LANGUAGE_ARGUMENT);
     applyEdgePreferences(options);
@@ -112,15 +133,55 @@ public final class WebDriverFactory {
    */
   private static WebDriver createDriver(BrowserName browser) {
     if (BrowserName.CHROME.equals(browser)) {
-      return new ChromeDriver(chromeOptions());
+      ensureChromeDriverReady();
+      ChromeDriverService service =
+          new ChromeDriverService.Builder().withTimeout(DRIVER_SERVICE_TIMEOUT).build();
+      return new ChromeDriver(service, chromeOptions());
     }
     if (BrowserName.FIREFOX.equals(browser)) {
+      ensureFirefoxDriverReady();
       return new FirefoxDriver(firefoxOptions());
     }
     if (BrowserName.EDGE.equals(browser)) {
-      return new EdgeDriver(edgeOptions());
+      ensureEdgeDriverReady();
+      EdgeDriverService service =
+          new EdgeDriverService.Builder().withTimeout(DRIVER_SERVICE_TIMEOUT).build();
+      return new EdgeDriver(service, edgeOptions());
     }
     throw new IllegalArgumentException("Unsupported browser: " + browser.value());
+  }
+
+  private static void ensureChromeDriverReady() {
+    if (!chromeDriverReady) {
+      synchronized (CHROME_DRIVER_SETUP_LOCK) {
+        if (!chromeDriverReady) {
+          WebDriverManager.chromedriver().setup();
+          chromeDriverReady = true;
+        }
+      }
+    }
+  }
+
+  private static void ensureFirefoxDriverReady() {
+    if (!firefoxDriverReady) {
+      synchronized (FIREFOX_DRIVER_SETUP_LOCK) {
+        if (!firefoxDriverReady) {
+          WebDriverManager.firefoxdriver().setup();
+          firefoxDriverReady = true;
+        }
+      }
+    }
+  }
+
+  private static void ensureEdgeDriverReady() {
+    if (!edgeDriverReady) {
+      synchronized (EDGE_DRIVER_SETUP_LOCK) {
+        if (!edgeDriverReady) {
+          WebDriverManager.edgedriver().setup();
+          edgeDriverReady = true;
+        }
+      }
+    }
   }
 
   /**

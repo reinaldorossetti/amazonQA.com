@@ -29,31 +29,31 @@ class SecurityFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("SE01 guest checkout should redirect to login with next cart parameter")
+  @DisplayName("TC-001 guest checkout should redirect to login with next cart parameter")
   void guestCheckoutRedirectsToLogin() {
     cartCheckout.givenUserOnCatalog();
     cartCheckout.givenCartWithOneItem();
     cartCheckout.whenGuestTriesToCheckoutFromCart();
-    cartCheckout.assertUrlMatches(".*/login\\?next=(%2Fcart|/cart).*");
+    cartCheckout.thenValidatedUrlMatches(".*/login\\?next=(%2Fcart|/cart).*");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SE02 direct thank-you access without login should redirect")
+  @DisplayName("TC-002 direct thank-you access without login should redirect")
   void directThankYouAccessRedirectsWhenGuest() {
     driver.navigate().to(TestEnvironment.baseUrl() + "/thank-you");
-    cartCheckout.assertUrlMatches(".*/login.*|.*/$");
+    cartCheckout.thenValidatedUrlMatches(".*/login.*|.*/$");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("SE03 logout should revoke protected route access")
+  @DisplayName("TC-003 logout should revoke protected route access")
   void logoutRevokesProtectedRouteAccess() {
     cartCheckout.givenLoggedInUser(LoginTestData.VALID_EMAIL, LoginTestData.VALID_PASSWORD, "Olá, Reinaldo");
     nav.whenLogout();
-    nav.assertUserGreetingHidden();
+    nav.thenValidatedUserGreetingHidden();
 
     driver.navigate().to(TestEnvironment.baseUrl() + "/thank-you");
-    cartCheckout.assertUrlMatches(".*/login\\?next=(%2Fthank-you|/thank-you).*");
+    cartCheckout.thenValidatedUrlMatches(".*/login\\?next=(%2Fthank-you|/thank-you).*");
   }
 }

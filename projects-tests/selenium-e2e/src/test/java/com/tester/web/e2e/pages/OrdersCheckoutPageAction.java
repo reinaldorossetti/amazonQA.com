@@ -19,34 +19,30 @@ public class OrdersCheckoutPageAction extends CartCheckoutPageAction {
     givenCartWithOneItem();
   }
 
-  public void whenProceedToCheckoutUnderMock(Route mockRoute) {
+  public void whenProceedToCheckoutUnderMock(Route mockRoute, String... expectedToastMessages) {
     try (NetworkInterceptor ignored = new NetworkInterceptor(driver, mockRoute)) {
       whenAuthenticatedUserProceedsToCheckout();
+      ensureToastContainsOneOf(expectedToastMessages);
     }
   }
 
-  public void whenPaymentFlowUnderMock(Route mockRoute, PaymentMethod paymentMethod) {
+  public void whenPaymentFlowUnderMock(
+      Route mockRoute, PaymentMethod paymentMethod, String... expectedToastMessages) {
     try (NetworkInterceptor ignored = new NetworkInterceptor(driver, mockRoute)) {
       whenAuthenticatedUserProceedsToCheckout();
       selectPaymentMethod(paymentMethod);
       clickSubmitPayment(paymentMethod);
+      ensureToastContainsOneOf(expectedToastMessages);
     }
   }
 
-  public void thenValidatedStaysOnCartWithMessage(String... messages) {
-    assertUrlContains("/cart");
-    assertPageTextsVisible(messages);
+  public void thenValidatedStaysOnCart() {
+    ensureUrlContains("/cart");
     attachScreenshot("ordersCheckoutCartError");
   }
 
-  public void thenValidatedStaysOnCartWithOneOf(String... messages) {
-    assertUrlContains("/cart");
-    assertPageContainsOneOf(messages);
-    attachScreenshot("ordersCheckoutCartError");
-  }
-
-  public void thenValidatedCheckoutErrorMessage(String... messages) {
-    assertPageTextsVisible(messages);
-    attachScreenshot("ordersCheckoutError");
+  public void thenValidatedCheckoutOnPaymentsPage() {
+    ensureUrlContains("/payments");
+    attachScreenshot("ordersCheckoutPayments");
   }
 }

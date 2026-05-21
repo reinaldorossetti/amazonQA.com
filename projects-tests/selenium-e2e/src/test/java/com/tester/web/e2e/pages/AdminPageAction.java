@@ -1,7 +1,6 @@
 package com.tester.web.e2e.pages;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -44,26 +43,26 @@ public class AdminPageAction extends AdminPageElements {
     acceptAlertIfPresent();
   }
 
-  public void assertProductListed(String productName) {
-    assertTextsVisible(productName);
+  public void thenValidatedProductListed(String productName) {
+    ensureTextsVisible(productName);
   }
 
-  public void assertProductNotListed(String productName) {
+  public void thenValidatedProductNotListed(String productName) {
     wait.until(webDriver -> !webDriver.getPageSource().contains(productName));
     assertFalse(driver.getPageSource().contains(productName));
   }
 
-  public void assertUserListed(String email) {
-    assertTextsVisible(email);
+  public void thenValidatedUserListed(String email) {
+    ensureTextsVisible(email);
   }
 
-  public void assertUserNotListed(String email) {
+  public void thenValidatedUserNotListed(String email) {
     wait.until(webDriver -> !webDriver.getPageSource().contains(email));
     assertFalse(driver.getPageSource().contains(email));
   }
 
-  public void assertDeleteUserToast() {
-    assertTextsVisible("Usuário excluído com sucesso.");
+  public void thenValidatedDeleteUserToast() {
+    ensureTextsVisible("Usuário excluído com sucesso.");
   }
 
   private void acceptAlertIfPresent() {

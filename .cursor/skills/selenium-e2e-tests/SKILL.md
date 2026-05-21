@@ -48,7 +48,7 @@ class CartCheckoutFeatureTest extends AbstractUiTest {
   @ParameterizedTest(name = "{displayName}: {0}")
   @EnumSource(PaymentMethod.class)
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 authenticated user should complete checkout with payment method")
+  @DisplayName("TC-001 authenticated user should complete checkout with payment method")
   void authenticatedUserCompletesCheckoutAndSeesThankYouSummary(PaymentMethod paymentMethod) {
     cartCheckout.givenCartWithOneItem();
     cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(paymentMethod);
@@ -58,6 +58,26 @@ class CartCheckoutFeatureTest extends AbstractUiTest {
 ```
 
 For permutations, use `@ParameterizedTest` with an enum in `support`, like `PaymentMethod`.
+
+## Test case IDs (`TC-xxx`)
+
+Every `@Test` and `@ParameterizedTest` must expose a **Test Case** id in `@DisplayName`, starting at **`TC-001`** in each `*FeatureTest` class and incrementing by one per method (declaration order in the class).
+
+- **Format:** `TC-001`, `TC-002`, … `TC-099`, `TC-100` (always three digits, zero-padded).
+- **Prefix in `@DisplayName`:** put the id first, then a short English description of the scenario.
+- **Scope:** numbering **restarts at `TC-001` per class** (e.g. `LoginFeatureTest` and `CartCheckoutFeatureTest` each have their own `TC-001`).
+- **Parameterized tests:** one TC id for the whole parameterized method (all enum values share the same case id).
+- **Do not** use legacy prefixes alone (`TS01`, `AUTH-01`, `ORD-NEG-01`) as the primary name — fold that traceability into the description after `TC-xxx` if still needed for ATDD docs.
+
+```java
+@DisplayName("TC-001 authenticated user should complete checkout with payment method")
+@ParameterizedTest(name = "{displayName}: {0}")
+void authenticatedUserCompletesCheckoutAndSeesThankYouSummary(PaymentMethod paymentMethod) { ... }
+
+@Test
+@DisplayName("TC-002 authenticated user should be redirected to payment from cart checkout")
+void authenticatedUserIsRedirectedToPaymentFromCartCheckout() { ... }
+```
 
 ## Test Method Formatting
 
@@ -97,8 +117,35 @@ Put all browser behavior in `PageAction` classes:
 - Navigation: `givenUserOnCatalog`, `givenUserOnEmptyCart`.
 - Setup flows: `givenCartWithOneItem`, `givenCartWithThreeItems`.
 - User actions: `whenUpdateFirstItemQuantity`, `whenRemoveFirstCartItem`.
-- High-level assertions/validations: `assertCartEmptyStateVisible`, `thenValidatedSuccessfulCheckoutSummary`.
+- High-level validations (public API for tests): `thenValidatedCartEmptyStateVisible`, `thenValidatedSuccessfulCheckoutSummary`, `validatedLoginInPage`.
+- Internal checks in `BasePage` / page actions: `ensureTextsVisible`, `ensureUrlContains` (not called from `*FeatureTest`).
 - Private low-level helpers: `clickDeleteFirstItem`, `selectPaymentMethod`, `waitUntilToastIsGone`.
+
+### Validation naming in `*FeatureTest` (mandatory)
+
+In `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`:
+
+- **Do not** call PageAction methods whose names start with `assert` (e.g. ~~`cartCheckout.assertUrlContains`~~).
+- **Do** delegate checks to PageActions using BDD-style names:
+  - `thenValidated…` — most validations (`thenValidatedCartBadgeEquals`, `thenValidatedToastErrorMessage`).
+  - `validated…` — login/session checks (`validatedLoginInPage`, `validatedErrorAlertVisible`).
+  - `shouldValidate…` / `thenTheSystemShouldShowAMessage` — acceptable when the intent is clearer (wrap in PageAction, not JUnit `assert*` in the test body).
+- **Do not** use `org.junit.jupiter.api.Assertions.*` (or `assertTrue` / `assertEquals`) directly in feature test classes; keep assertions inside PageActions.
+
+Good:
+
+```java
+loginPage.validatedLoginInPage("Reinaldo");
+cartCheckout.thenValidatedCartBadgeEquals("3");
+register.thenValidatedToastErrorMessage(RegisterValidation.ERROR_EMAIL_DUPLICATE, RegisterValidation.ERROR_EMAIL_DUPLICATE_EN);
+```
+
+Avoid:
+
+```java
+cartCheckout.assertUrlContains("/cart");
+Assertions.assertTrue(driver.getCurrentUrl().contains("/cart"));
+```
 
 Use explicit waits from `BasePage.wait` or short local `WebDriverWait`s. Prefer `BasePage` helpers over raw Selenium in page actions.
 
@@ -205,7 +252,7 @@ Configuration: `projects-tests/selenium-e2e/src/test/resources/junit-platform.pr
 |----------|-------|---------|
 | `parallel.enabled` | `true` | JUnit 5 parallelism on |
 | `config.strategy` | `fixed` | Fixed thread pool (not `dynamic`) |
-| `fixed.parallelism` | `2` | At most **2 test classes** at once |
+| `fixed.parallelism` | `1` | Default on Windows (stable Chrome); use `2` via `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=2` when the machine handles it |
 | `mode.default` | `same_thread` | Methods **within the same class** run sequentially |
 | `mode.classes.default` | `concurrent` | **Different feature classes** run in parallel |
 
@@ -231,4 +278,5 @@ Avoid `dynamic.factor` on low-core machines (can collapse to 1 thread). Prefer *
 - Do not change the test assertions, for the test to pass, it must always follow the business rule.
 - Do not make complex tests, keep your tests simple and functions short. Always prefer to use the functions from BasePage.java.
 - Do not use cucumber in the tests.
-- Do not use assert name on the test classes, prefer "then" ou "shouldValidate", "thenTheSystemShouldShowAMessage", "validatedLoginInPage"
+- Do not use assert name on the test folder (\test) classes XXXFeatureTest.java, prefer "then" ou "shouldValidate", "thenTheSystemShouldShowAMessage", "validatedLoginInPage"
+- Do not add new tests without a sequential `@DisplayName("TC-xxx …")` in the same `*FeatureTest` class.

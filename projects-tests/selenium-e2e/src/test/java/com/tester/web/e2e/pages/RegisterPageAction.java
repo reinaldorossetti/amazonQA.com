@@ -1,9 +1,8 @@
 package com.tester.web.e2e.pages;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -127,12 +126,17 @@ public class RegisterPageAction extends RegisterPageElements {
   }
 
   public void thenValidatedSuccessMessage() {
-    assertTextsVisible(RegisterValidation.SUCCESS_MESSAGE);
+    ensureTextsVisible(RegisterValidation.SUCCESS_MESSAGE);
     attachScreenshot("registerSuccess");
   }
 
   public void thenValidatedErrorMessage(String message) {
-    assertTextsVisible(message);
+    ensureTextsVisible(message);
+  }
+
+  public void thenValidatedToastErrorMessage(String... messages) {
+    ensureToastContainsOneOf(messages);
+    attachScreenshot("registerToastError");
   }
 
   public void thenValidatedStillOnStepZero() {
@@ -151,7 +155,7 @@ public class RegisterPageAction extends RegisterPageElements {
   }
 
   public void thenValidatedAllEmptyFieldErrors() {
-    assertTextsVisible(
+    ensureTextsVisible(
         RegisterValidation.ERROR_FIRST_NAME_REQUIRED,
         RegisterValidation.ERROR_LAST_NAME_REQUIRED,
         RegisterValidation.ERROR_CPF_INVALID,

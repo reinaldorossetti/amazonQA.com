@@ -35,10 +35,10 @@ class RegisterLoginFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("REG-LOGIN-01 should register via UI and login with same credentials")
+  @DisplayName("TC-001 should register via UI and login with same credentials")
   void shouldRegisterAndLoginWithSameCredentials() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.reg.login." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.reg.login." + TestDataGenerator.randomNumeric8() + "@example.com";
     UserData registered = new UserData(user.firstName(), user.lastName(), email, user.password());
     String cpf = TestDataGenerator.validCpf();
 
@@ -61,10 +61,10 @@ class RegisterLoginFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("REG-LOGIN-02 should logout and login again with same credentials")
+  @DisplayName("TC-002 should logout and login again with same credentials")
   void shouldLogoutAndLoginAgainWithSameCredentials() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.relogin." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.relogin." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
@@ -72,7 +72,7 @@ class RegisterLoginFeatureTest extends AbstractUiTest {
       loginPage.loginAction(email, user.password(), true);
       loginPage.thenValidatedAccountLayoutVisible(user.firstName());
       nav.whenLogout();
-      nav.assertUserGreetingHidden();
+      nav.thenValidatedUserGreetingHidden();
       loginPage.open();
       loginPage.loginAction(email, user.password(), true);
       loginPage.thenValidatedAccountLayoutVisible(user.firstName());
@@ -84,10 +84,10 @@ class RegisterLoginFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("REG-LOGIN-03 should show error for wrong password and stay on login page")
+  @DisplayName("TC-003 should show error for wrong password and stay on login page")
   void shouldRejectWrongPasswordAfterRegistration() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.wrong.pw." + System.currentTimeMillis() + "@example.com";
+    String email = "e2e.wrong.pw." + TestDataGenerator.randomNumeric8() + "@example.com";
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {

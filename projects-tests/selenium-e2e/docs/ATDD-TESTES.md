@@ -260,7 +260,7 @@ Fluxo de tela:
   / → whenClickProductImage(5)
   /product/5
   /product/5 → whenBackToCatalog()
-  / → assertSearchValueEquals("Smartphone")
+  / → thenValidatedSearchValueEquals("Smartphone")
   / → assert produto 5 visível; produto 1 oculto
 ```
 
@@ -283,7 +283,7 @@ TS05  Dado /product/1  → Quando Voltar ao catálogo → Então URL /
 Fluxo TS02/03:
   /product/1 → whenSelectQuantity("2")
   /product/1 → whenAddToCart()
-  Navbar     → assertCartBadgeEquals("2")
+  Navbar     → thenValidatedCartBadgeEquals("2")
 ```
 
 ---
@@ -360,8 +360,8 @@ TS04  Quando preenche cartão + BIN  Então screenshot Allure pré-confirmação
 Fluxo TS02 (exemplo Visa):
   /payments → whenClearCardNumber()
   /payments → whenFillCardNumber(brand.cardNumber())
-  /payments → assertBrandsStripVisible()
-  /payments → assertBrandVisible(brand) + assertBrandActive(brand)
+  /payments → thenValidatedBrandsStripVisible()
+  /payments → thenValidatedBrandVisible(brand) + thenValidatedBrandActive(brand)
 ```
 
 ---
@@ -389,8 +389,8 @@ Fluxo de tela:
   /login      → loginAction(email, password)
   /login      → validatedLoginInPage(firstName)
   /           → whenAddFirstProductToCart()
-  Navbar      → assertCartBadgeNotZero(); whenOpenCart()
-  /cart       → assertUrlContains("/cart")
+  Navbar      → thenValidatedCartBadgeNotZero(); whenOpenCart()
+  /cart       → thenValidatedUrlContains("/cart")
   /payments   → whenAuthenticatedUserCompletesCheckoutToThankYou(CREDIT)
   /thank-you  → thenValidatedSuccessfulCheckoutSummary(CREDIT, textos[])
   API         → deleteUser (finally)
@@ -434,13 +434,13 @@ SE03  Dado usuário logado
 Fluxo SE01:
   /       → givenUserOnCatalog(); givenCartWithOneItem()
   /cart   → whenGuestTriesToCheckoutFromCart()
-  /login  → assertUrlMatches(".*/login\\?next=(%2Fcart|/cart).*")
+  /login  → thenValidatedUrlMatches(".*/login\\?next=(%2Fcart|/cart).*")
 
 Fluxo SE03:
   /           → givenLoggedInUser()
-  Navbar      → whenLogout(); assertUserGreetingHidden()
+  Navbar      → whenLogout(); thenValidatedUserGreetingHidden()
   /thank-you  → navigate direto
-  /login      → assertUrlMatches login?next=thank-you
+  /login      → thenValidatedUrlMatches login?next=thank-you
 ```
 
 ---
@@ -466,9 +466,9 @@ Cenário: admin should list real products and delete the created one
 Fluxo de tela:
   API              → createProduct(adminToken, nome)
   /                → whenOpenAdminProducts()
-  Admin produtos   → assertProductListed(nome)
+  Admin produtos   → thenValidatedProductListed(nome)
   Admin produtos   → whenDeleteProduct(id); accept alert
-  Admin produtos   → assertProductNotListed(nome)
+  Admin produtos   → thenValidatedProductNotListed(nome)
 ```
 
 ### ADM02 — Excluir usuário
@@ -477,10 +477,10 @@ Fluxo de tela:
 Fluxo de tela:
   API              → registerUser(email único)
   /                → whenOpenAdminUsers()
-  Admin usuários   → assertUserListed(email)
+  Admin usuários   → thenValidatedUserListed(email)
   Admin usuários   → whenDeleteUser(id)
   Admin usuários   → toast "Usuário excluído com sucesso."
-  Admin usuários   → assertUserNotListed(email)
+  Admin usuários   → thenValidatedUserNotListed(email)
 ```
 
 ---

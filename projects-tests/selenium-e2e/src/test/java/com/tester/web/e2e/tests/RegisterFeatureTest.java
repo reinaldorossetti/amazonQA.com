@@ -32,7 +32,7 @@ class RegisterFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 should successfully register when all requirements are valid")
+  @DisplayName("TC-001 should successfully register when all requirements are valid")
   void shouldSuccessfullyRegisterWithValidData() {
     UserData user = TestDataGenerator.randomUser();
     String cpf = TestDataGenerator.validCpf();
@@ -45,7 +45,7 @@ class RegisterFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS02 should reject invalid email format")
+  @DisplayName("TC-002 should reject invalid email format")
   void shouldRejectInvalidEmailFormat() {
     UserData user = TestDataGenerator.randomUser();
     register.whenFillPersonalDataWithInvalidEmail(user, TestDataGenerator.invalidEmail());
@@ -56,7 +56,7 @@ class RegisterFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS03 should reject short password on step 0")
+  @DisplayName("TC-003 should reject short password on step 0")
   void shouldRejectShortPasswordOnStepZero() {
     UserData user = TestDataGenerator.randomUser();
     register.whenFillPersonalDataWithShortPassword(user, TestDataGenerator.shortPassword());
@@ -67,7 +67,7 @@ class RegisterFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS04 should reject mismatched passwords")
+  @DisplayName("TC-004 should reject mismatched passwords")
   void shouldRejectMismatchedPasswords() {
     UserData user = TestDataGenerator.randomUser();
     register.whenFillPersonalDataWithMismatchPassword(user, TestDataGenerator.differentPassword());
@@ -79,7 +79,7 @@ class RegisterFeatureTest extends AbstractUiTest {
   @ParameterizedTest(name = "{displayName}: omit {0}")
   @EnumSource(RequiredField.class)
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS05 should show validation and prevent step advancement when required field is empty")
+  @DisplayName("TC-005 should show validation and prevent step advancement when required field is empty")
   void shouldValidateMissingRequiredField(RequiredField omittedField) {
     UserData user = TestDataGenerator.randomUser();
     register.whenFillStepZeroOmitting(omittedField, user);
@@ -90,7 +90,7 @@ class RegisterFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS06 should reject duplicate email after submit")
+  @DisplayName("TC-006 should reject duplicate email after submit")
   void shouldRejectDuplicateEmail() {
     UserData user = TestDataGenerator.randomUser();
     register.whenFillPersonalData(
@@ -98,12 +98,13 @@ class RegisterFeatureTest extends AbstractUiTest {
         TestDataGenerator.validCpf());
     register.whenClickNext();
     register.whenFillAddressAndSubmit();
-    register.thenValidatedErrorMessage(RegisterValidation.ERROR_EMAIL_DUPLICATE);
+    register.thenValidatedToastErrorMessage(
+        RegisterValidation.ERROR_EMAIL_DUPLICATE, RegisterValidation.ERROR_EMAIL_DUPLICATE_EN);
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS07 should validate all empty fields with individual messages")
+  @DisplayName("TC-007 should validate all empty fields with individual messages")
   void shouldValidateAllEmptyFields() {
     register.whenClickNext();
     register.thenValidatedAllEmptyFieldErrors();

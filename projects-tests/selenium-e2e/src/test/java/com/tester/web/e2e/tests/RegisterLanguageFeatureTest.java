@@ -35,7 +35,7 @@ class RegisterLanguageFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 should complete PF registration successfully")
+  @DisplayName("TC-001 should complete PF registration successfully")
   void shouldCompletePfRegistrationSuccessfully() {
     UserData user = TestDataGenerator.randomUser();
     register.givenUserOnRegister();
@@ -43,12 +43,12 @@ class RegisterLanguageFeatureTest extends AbstractUiTest {
     register.whenClickNext();
     register.whenFillAddressAndSubmit();
     register.thenValidatedSuccessMessage();
-    catalog.assertUrlEndsWith("/");
+    catalog.thenValidatedUrlEndsWith("/");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS03 should validate required fields on register step zero")
+  @DisplayName("TC-002 should validate required fields on register step zero")
   void shouldValidateRequiredFieldsOnRegister() {
     register.givenUserOnRegister();
     register.whenClickNext();
@@ -57,28 +57,28 @@ class RegisterLanguageFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS01/TS02 language toggle should persist after reload")
+  @DisplayName("TC-003 language toggle should persist after reload")
   void languageTogglePersistsAfterReload() {
     catalog.givenUserOnCatalog();
-    catalog.assertCatalogHeadingVisible("Catálogo de Produtos");
+    catalog.thenValidatedCatalogHeadingVisible("Catálogo de Produtos");
 
     nav.whenToggleLanguage();
-    catalog.assertCatalogHeadingVisible("Product Catalog");
+    catalog.thenValidatedCatalogHeadingVisible("Product Catalog");
 
     driver.navigate().refresh();
-    catalog.assertCatalogHeadingVisible("Product Catalog");
+    catalog.thenValidatedCatalogHeadingVisible("Product Catalog");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS04 should render cart empty-state content in English after language toggle")
+  @DisplayName("TC-004 should render cart empty-state content in English after language toggle")
   void cartEmptyStateRendersInEnglishAfterLanguageToggle() {
     catalog.givenUserOnCatalog();
     nav.whenToggleLanguage();
-    catalog.assertCatalogHeadingVisible("Product Catalog");
+    catalog.thenValidatedCatalogHeadingVisible("Product Catalog");
 
     cartCheckout.givenUserOnEmptyCart();
-    cartCheckout.assertPageTextsVisible(
+    cartCheckout.thenValidatedPageTextsVisible(
         "Shopping Cart", "Your cart is empty", "Add products from the catalog to get started.");
   }
 }

@@ -67,14 +67,14 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   public void whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod paymentMethod) {
-    assertUrlContains("/cart");
+    ensureUrlContains("/cart");
     proceedToCheckout();
     selectPaymentMethod(paymentMethod);
     clickSubmitPayment(paymentMethod);
   }
 
   public void whenAuthenticatedUserProceedsToCheckout() {
-    assertUrlContains("/cart");
+    ensureUrlContains("/cart");
     proceedToCheckout();
   }
 
@@ -117,7 +117,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   private void openCartFromHeader() {
-    waitUntilToastIsGone();
+    waitUntilToastCycleCompletes();
     click(NAV_CART_BUTTON);
     wait.until(ExpectedConditions.urlContains("/cart"));
   }
@@ -138,6 +138,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   protected void clickSubmitPayment(PaymentMethod paymentMethod) {
+    waitUntilToastIsGone();
     click(submitPaymentButton(paymentMethod.submitButtonText()));
   }
 
@@ -182,32 +183,36 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     return textOf(CART_SUMMARY_SUBTOTAL);
   }
 
-  public void assertUrlContains(String expectedPath) {
+  protected void ensureUrlContains(String expectedPath) {
     wait.until(ExpectedConditions.urlContains(expectedPath));
     assertTrue(driver.getCurrentUrl().contains(expectedPath));
   }
 
-  public void assertUrlMatches(String expectedRegex) {
+  public void thenValidatedUrlContains(String expectedPath) {
+    ensureUrlContains(expectedPath);
+  }
+
+  public void thenValidatedUrlMatches(String expectedRegex) {
     wait.until(webDriver -> webDriver.getCurrentUrl().matches(expectedRegex));
     assertTrue(driver.getCurrentUrl().matches(expectedRegex));
   }
 
-  public void assertCartEmptyStateVisible() {
+  public void thenValidatedCartEmptyStateVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(CART_TITLE)).isDisplayed());
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(CART_EMPTY_TITLE)).isDisplayed());
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(CART_EMPTY_DESCRIPTION)).isDisplayed());
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(CART_GO_TO_CATALOG_BUTTON)).isDisplayed());
   }
 
-  public void assertThankYouSummaryVisible() {
+  private void ensureThankYouSummaryVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(THANK_YOU_SUMMARY_WRAPPER)).isDisplayed());
   }
 
   public void thenValidatedSuccessfulCheckoutSummary(String... texts) {
     LOGGER.info(() -> "Validating successful checkout texts count: " + texts.length);
-    assertUrlContains("/thank-you");
-    assertThankYouSummaryVisible();
-    assertTextsVisible(texts);
+    ensureUrlContains("/thank-you");
+    ensureThankYouSummaryVisible();
+    ensureTextsVisible(texts);
     attachScreenshot("validatedSucessoCheckout");
   }
 
@@ -216,49 +221,49 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     assertEquals(paymentMethod.confirmationText(), textOf(THANK_YOU_PAYMENT_METHOD));
   }
 
-  public void assertQuantityEquals(String expectedValue) {
+  public void thenValidatedQuantityEquals(String expectedValue) {
     assertEquals(expectedValue, firstItemQuantityValue());
   }
 
-  public void assertOrderTotalContains(String expectedText) {
+  public void thenValidatedOrderTotalContains(String expectedText) {
     assertTrue(orderTotalText().contains(expectedText));
   }
 
-  public void assertCartBadgeEquals(String expectedValue) {
+  public void thenValidatedCartBadgeEquals(String expectedValue) {
     assertEquals(expectedValue, cartBadgeText());
   }
 
-  public void assertDeleteButtonsCount(int expectedCount) {
+  public void thenValidatedDeleteButtonsCount(int expectedCount) {
     new WebDriverWait(driver, Duration.ofSeconds(10))
         .until(webDriver -> webDriver.findElements(DELETE_BUTTONS).size() == expectedCount);
     assertEquals(expectedCount, deleteButtonsCount());
   }
 
-  public void assertDistinctItemsTextEquals(String expectedText) {
+  public void thenValidatedDistinctItemsTextEquals(String expectedText) {
     assertEquals(expectedText, summaryDistinctItemsText());
   }
 
-  public void assertSubtotalTextContains(String expectedText) {
+  public void thenValidatedSubtotalTextContains(String expectedText) {
     assertTrue(summarySubtotalText().contains(expectedText));
   }
 
-  public void assertShippingTextContains(String expectedText) {
+  public void thenValidatedShippingTextContains(String expectedText) {
     assertTrue(shippingText().contains(expectedText));
   }
 
-  public void assertShippingTextEquals(String expectedText) {
+  public void thenValidatedShippingTextEquals(String expectedText) {
     assertEquals(expectedText, shippingText());
   }
 
-  public void assertFreeShippingBannerVisible() {
+  public void thenValidatedFreeShippingBannerVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(FREE_SHIPPING_BANNER)).isDisplayed());
   }
 
-  public void assertFreeShippingBannerHidden() {
+  public void thenValidatedFreeShippingBannerHidden() {
     assertFalse(isVisible(FREE_SHIPPING_BANNER, Duration.ZERO));
   }
 
-  public void assertPageTextsVisible(String... texts) {
-    assertTextsVisible(texts);
+  public void thenValidatedPageTextsVisible(String... texts) {
+    ensureTextsVisible(texts);
   }
 }

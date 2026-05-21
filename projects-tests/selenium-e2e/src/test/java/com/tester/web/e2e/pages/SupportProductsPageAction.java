@@ -1,12 +1,10 @@
 package com.tester.web.e2e.pages;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.Duration;
 
-import org.openqa.selenium.Alert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -50,7 +48,10 @@ public class SupportProductsPageAction extends SupportProductsPageElements {
 
   public void whenDeleteProduct(int productId) {
     click(deleteButton(productId));
-    acceptAlertIfPresent();
+    WebDriverWait alertWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    alertWait.until(ExpectedConditions.alertIsPresent());
+    driver.switchTo().alert().accept();
+    wait.until(ExpectedConditions.invisibilityOfElementLocated(productRow(productId)));
   }
 
   public void whenCloseDialog() {
@@ -70,46 +71,47 @@ public class SupportProductsPageAction extends SupportProductsPageElements {
   }
 
   public void thenValidatedProductListed(String name) {
-    assertTextsVisible(name);
+    ensureTextsVisible(name);
     attachScreenshot("thenValidatedProductListed");
   }
 
-  public void thenValidatedProductNotListed(String name) {
-    wait.until(webDriver -> !webDriver.getPageSource().contains(name));
-    assertFalse(driver.getPageSource().contains(name));
+  public void thenValidatedProductNotListed(int productId) {
+    wait.until(ExpectedConditions.invisibilityOfElementLocated(productRow(productId)));
     attachScreenshot("thenValidatedProductNotListed");
+  }
+
+  public void thenValidatedProductNameNotInTable(String name) {
+    wait.until(
+        ExpectedConditions.invisibilityOfElementLocated(
+            By.xpath(
+                "//*[@id='support-products-table']//*[contains(normalize-space(.), '"
+                    + name
+                    + "')]")));
+    attachScreenshot("thenValidatedProductNameNotInTable");
   }
 
   public void thenValidatedEmptySearchStateVisible() {
     assertTrue(isVisible(EMPTY));
-    assertTextsVisible("Nenhum produto encontrado");
+    ensureTextsVisible("Nenhum produto encontrado");
     attachScreenshot("thenValidatedEmptySearchStateVisible");
   }
 
   public void thenValidatedCreateProductDialogVisible() {
     assertTrue(isVisible(DIALOG));
-    assertTextsVisible("Cadastrar Produto");
+    ensureTextsVisible("Cadastrar Produto");
     attachScreenshot("thenValidatedCreateProductDialogVisible");
   }
 
   public void thenValidatedRequiredNameValidationVisible() {
-    assertTextsVisible("obrigatório");
+    ensureTextsVisible("obrigatório");
     attachScreenshot("thenValidatedRequiredNameValidationVisible");
   }
 
   public void thenValidatedEditDialogWithPrefilledName(String name) {
-    assertTextsVisible("Editar Produto");
+    ensureTextsVisible("Editar Produto");
     wait.until(ExpectedConditions.visibilityOfElementLocated(DIALOG));
     assertEquals(name, inputValue(DIALOG_NAME_INPUT));
     attachScreenshot("thenValidatedEditDialogWithPrefilledName");
   }
 
-  private void acceptAlertIfPresent() {
-    try {
-      Alert alert = driver.switchTo().alert();
-      alert.accept();
-    } catch (Exception ignored) {
-      LOGGER.fine("No browser alert to accept.");
-    }
-  }
 }

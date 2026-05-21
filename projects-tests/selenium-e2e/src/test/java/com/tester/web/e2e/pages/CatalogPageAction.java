@@ -1,8 +1,6 @@
 package com.tester.web.e2e.pages;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -43,33 +41,33 @@ public class CatalogPageAction extends CatalogPageElements {
     waitUntilToastCycleCompletes();
   }
 
-  public void assertProductImageVisible(int productId) {
+  public void thenValidatedProductImageVisible(int productId) {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(productImageWrapper(productId))).isDisplayed());
   }
 
-  public void assertProductImageHidden(int productId) {
+  public void thenValidatedProductImageHidden(int productId) {
     assertTrue(driver.findElements(productImageWrapper(productId)).isEmpty());
   }
 
-  public void assertProductsFoundTextContains(String expected) {
+  public void thenValidatedProductsFoundTextContains(String expected) {
     wait.until(ExpectedConditions.visibilityOfElementLocated(CATALOG_PRODUCTS_FOUND_TEXT));
-    assertTextsVisible(expected);
+    ensureTextsVisible(expected);
   }
 
-  public void assertEmptyStateVisible() {
+  public void thenValidatedEmptyStateVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(CATALOG_EMPTY)).isDisplayed());
   }
 
-  public void assertUrlEndsWith(String pathSuffix) {
+  public void thenValidatedUrlEndsWith(String pathSuffix) {
     wait.until(webDriver -> webDriver.getCurrentUrl().endsWith(pathSuffix));
     assertTrue(driver.getCurrentUrl().endsWith(pathSuffix));
   }
 
-  public void assertSearchValueEquals(String expected) {
-    nav.assertSearchValueEquals(expected);
+  public void thenValidatedSearchValueEquals(String expected) {
+    nav.thenValidatedSearchValueEquals(expected);
   }
 
-  public void assertCatalogHeadingVisible(String heading) {
-    assertTextsVisible(heading);
+  public void thenValidatedCatalogHeadingVisible(String heading) {
+    ensureTextsVisible(heading);
   }
 }

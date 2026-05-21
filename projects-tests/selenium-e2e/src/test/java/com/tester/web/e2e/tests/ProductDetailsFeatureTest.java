@@ -24,38 +24,38 @@ class ProductDetailsFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 should display main product data")
+  @DisplayName("TC-001 should display main product data")
   void shouldDisplayMainProductData() {
     productDetails.givenUserOnValidProduct(1);
-    productDetails.assertProductHeadingVisible("Relógio Elegante");
-    productDetails.assertProductImageVisible();
-    productDetails.assertPriceVisible("R$ 50.99");
+    productDetails.thenValidatedProductHeadingVisible("Relógio Elegante");
+    productDetails.thenValidatedProductImageVisible();
+    productDetails.thenValidatedPriceVisible("R$ 50.99");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS02/TS03 should add product to cart and update badge")
+  @DisplayName("TC-002 should add product to cart and update badge")
   void shouldAddProductToCartAndUpdateBadge() {
     productDetails.givenUserOnValidProduct(1);
     productDetails.whenSelectQuantity("2");
     productDetails.whenAddToCart();
-    productDetails.assertCartBadgeEquals("2");
+    productDetails.thenValidatedCartBadgeEquals("2");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS04 should handle invalid product id")
+  @DisplayName("TC-003 should handle invalid product id")
   void shouldHandleInvalidProductId() {
     productDetails.givenUserOnProduct(99999);
-    productDetails.assertNotFoundMessageVisible();
+    productDetails.thenValidatedNotFoundMessageVisible();
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS05 should return to catalog from product details")
+  @DisplayName("TC-004 should return to catalog from product details")
   void shouldReturnToCatalogFromProductDetails() {
     productDetails.givenUserOnValidProduct(1);
     productDetails.whenBackToCatalog();
-    productDetails.assertUrlIsCatalogHome();
+    productDetails.thenValidatedUrlIsCatalogHome();
   }
 }

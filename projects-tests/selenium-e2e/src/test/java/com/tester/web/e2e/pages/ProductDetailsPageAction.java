@@ -1,7 +1,6 @@
 package com.tester.web.e2e.pages;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -38,28 +37,28 @@ public class ProductDetailsPageAction extends ProductDetailsPageElements {
     click(BACK_BUTTON);
   }
 
-  public void assertProductHeadingVisible(String productName) {
+  public void thenValidatedProductHeadingVisible(String productName) {
     wait.until(ExpectedConditions.visibilityOfElementLocated(productHeading(productName)));
-    assertTextsVisible(productName);
+    ensureTextsVisible(productName);
   }
 
-  public void assertProductImageVisible() {
+  public void thenValidatedProductImageVisible() {
     assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_IMAGE)).isDisplayed());
   }
 
-  public void assertPriceVisible(String priceText) {
-    assertTextsVisible(priceText);
+  public void thenValidatedPriceVisible(String priceText) {
+    ensureTextsVisible(priceText);
   }
 
-  public void assertNotFoundMessageVisible() {
-    assertTextsVisible("Produto não encontrado");
+  public void thenValidatedNotFoundMessageVisible() {
+    ensureTextsVisible("Produto não encontrado");
   }
 
-  public void assertCartBadgeEquals(String expected) {
-    nav.assertCartBadgeEquals(expected);
+  public void thenValidatedCartBadgeEquals(String expected) {
+    nav.thenValidatedCartBadgeEquals(expected);
   }
 
-  public void assertUrlIsCatalogHome() {
+  public void thenValidatedUrlIsCatalogHome() {
     wait.until(ExpectedConditions.urlToBe(TestEnvironment.baseUrl() + "/"));
   }
 }

@@ -38,10 +38,10 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
-  @DisplayName("TS01 real login random product checkout with credit card")
+  @DisplayName("TC-001 real login random product checkout with credit card")
   void realLoginProductCheckoutWithCreditCard() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.real.flow." + System.currentTimeMillis() + "@example.com";
+    String email = TestDataGenerator.emailFaker();
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
@@ -51,9 +51,9 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
 
       catalog.givenUserOnCatalog();
       catalog.whenAddFirstProductToCart();
-      nav.assertCartBadgeNotZero();
+      nav.thenValidatedCartBadgeNotZero();
       nav.whenOpenCart();
-      cartCheckout.assertUrlContains("/cart");
+      cartCheckout.thenValidatedUrlContains("/cart");
 
       cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod.CREDIT);
       cartCheckout.thenValidatedSuccessfulCheckoutSummary(
@@ -70,13 +70,12 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("REAL-02 catalog search and checkout with credit card")
+  @DisplayName("TC-002 catalog search and checkout with credit card")
   void catalogSearchCheckoutWithCreditCard() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.search.checkout." + System.currentTimeMillis() + "@example.com";
+    String email = TestDataGenerator.emailFaker();
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
     String searchTerm = ApiClient.firstProductSearchTerm();
-
     try {
       loginPage.open();
       loginPage.loginAction(email, user.password(), true);
@@ -85,9 +84,9 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
       catalog.givenUserOnCatalog();
       catalog.whenSearchBy(searchTerm);
       catalog.whenAddFirstProductToCart();
-      nav.assertCartBadgeNotZero();
+      nav.thenValidatedCartBadgeNotZero();
       nav.whenOpenCart();
-      cartCheckout.assertUrlContains("/cart");
+      cartCheckout.thenValidatedUrlContains("/cart");
 
       cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod.CREDIT);
       cartCheckout.thenValidatedSuccessfulCheckoutSummary(
@@ -104,10 +103,10 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS03 multiple products checkout with PIX")
+  @DisplayName("TC-003 multiple products checkout with PIX")
   void multipleProductsCheckoutWithPix() {
     UserData user = TestDataGenerator.randomUser();
-    String email = "e2e.real.pix." + System.currentTimeMillis() + "@example.com";
+    String email = TestDataGenerator.emailFaker();
     CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
@@ -116,7 +115,7 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
       loginPage.validatedLoginInPage(user.firstName());
 
       cartCheckout.givenCartWithThreeItems();
-      cartCheckout.assertCartBadgeEquals("3");
+      cartCheckout.thenValidatedCartBadgeEquals("3");
       cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod.PIX);
       cartCheckout.thenValidatedSuccessfulCheckoutSummary(
           PaymentMethod.PIX,

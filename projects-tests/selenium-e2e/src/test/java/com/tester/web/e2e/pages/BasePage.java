@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -155,14 +156,14 @@ public abstract class BasePage {
     wait.until(ExpectedConditions.urlContains(path));
   }
 
-  protected void assertTextsVisible(String... texts) {
+  protected void ensureTextsVisible(String... texts) {
     for (String text : texts) {
       wait.until(ExpectedConditions.visibilityOfElementLocated(
           By.xpath("//*[contains(normalize-space(.), '" + text + "')]")));
     }
   }
 
-  protected void assertPageContainsOneOf(String... texts) {
+  protected void ensurePageContainsOneOf(String... texts) {
     String body =
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body"))).getText();
     for (String text : texts) {
@@ -171,6 +172,25 @@ public abstract class BasePage {
       }
     }
     throw new AssertionError("Page body did not contain any of: " + String.join(", ", texts));
+  }
+
+  protected void ensureToastContains(String text) {
+    WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
+    String toastText = toast.getText();
+    assertTrue(
+        toastText.contains(text),
+        () -> "Toast did not contain \"" + text + "\", got: " + toastText);
+  }
+
+  protected void ensureToastContainsOneOf(String... texts) {
+    WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
+    String toastText = toast.getText();
+    for (String text : texts) {
+      if (toastText.contains(text)) {
+        return;
+      }
+    }
+    throw new AssertionError("Toast did not contain any of: " + String.join(", ", texts));
   }
 
   protected void setInputValueWithJs(By locator, String value) {

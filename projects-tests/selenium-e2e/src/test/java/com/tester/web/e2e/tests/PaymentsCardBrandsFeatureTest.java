@@ -30,49 +30,49 @@ class PaymentsCardBrandsFeatureTest extends AbstractUiTest {
     cartCheckout.givenLoggedInUser(LoginTestData.VALID_EMAIL, LoginTestData.VALID_PASSWORD, "Olá, Reinaldo");
     cartCheckout.givenCartWithOneItem();
     cartCheckout.whenAuthenticatedUserProceedsToCheckout();
-    cartCheckout.assertUrlContains("/payments");
+    cartCheckout.thenValidatedUrlContains("/payments");
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS01 should hide brands initially and show strip after typing card number")
+  @DisplayName("TC-001 should hide brands initially and show strip after typing card number")
   void shouldShowBrandsStripAfterTypingCardNumber() {
-    payments.assertBrandsStripHidden();
+    payments.thenValidatedBrandsStripHidden();
     payments.whenFillCardNumber(CardBrand.VISA.cardNumber());
-    payments.assertBrandsStripVisible();
+    payments.thenValidatedBrandsStripVisible();
   }
 
   @ParameterizedTest(name = "{displayName}: {0}")
   @EnumSource(CardBrand.class)
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS02 should activate each card brand when matching number is typed")
+  @DisplayName("TC-002 should activate each card brand when matching number is typed")
   void shouldActivateEachCardBrand(CardBrand brand) {
     payments.whenClearCardNumber();
     payments.whenFillCardNumber(brand.cardNumber());
-    payments.assertBrandsStripVisible();
-    payments.assertBrandVisible(brand);
-    payments.assertBrandActive(brand);
+    payments.thenValidatedBrandsStripVisible();
+    payments.thenValidatedBrandVisible(brand);
+    payments.thenValidatedBrandActive(brand);
   }
 
   @Test
   @Severity(SeverityLevel.NORMAL)
-  @DisplayName("TS03 should render all required card brands in accepted list")
+  @DisplayName("TC-003 should render all required card brands in accepted list")
   void shouldRenderAllRequiredCardBrands() {
     payments.whenFillCardNumber(CardBrand.VISA.cardNumber());
-    payments.assertAllBrandsVisible();
+    payments.thenValidatedAllBrandsVisible();
   }
 
   @ParameterizedTest(name = "{displayName}: {0}")
   @EnumSource(CardBrand.class)
   @Severity(SeverityLevel.MINOR)
-  @DisplayName("TS04 should capture screenshot for each card brand before confirmation")
+  @DisplayName("TC-004 should capture screenshot for each card brand before confirmation")
   void shouldCaptureScreenshotForEachCardBrand(CardBrand brand) {
     payments.whenFillCreditCardDefaults();
     payments.whenClearCardNumber();
     payments.whenFillCardNumber(brand.cardNumber());
-    payments.assertBrandsStripVisible();
-    payments.assertBrandVisible(brand);
-    payments.assertBrandActive(brand);
+    payments.thenValidatedBrandsStripVisible();
+    payments.thenValidatedBrandVisible(brand);
+    payments.thenValidatedBrandActive(brand);
     payments.attachPreConfirmationScreenshot(brand);
   }
 }
