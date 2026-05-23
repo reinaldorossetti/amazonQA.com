@@ -1,13 +1,13 @@
-<testsuites id="" name="" tests="76" failures="5" skipped="0" errors="2" time="245.21697899999998">
-<testsuite name="frontend/admin-management.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="2" failures="1" skipped="0" time="13.609" errors="0">
-<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="11.203">
+<testsuites id="" name="" tests="76" failures="5" skipped="0" errors="2" time="247.521078">
+<testsuite name="frontend/admin-management.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="2" failures="1" skipped="0" time="14.469" errors="0">
+<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="11.912">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-edge-retry1/trace.zip]]
 ]]>
 </system-out>
 </testcase>
-<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="2.406">
+<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="2.557">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-edge/test-failed-1.png]]
@@ -124,50 +124,50 @@
 </failure>
 </testcase>
 </testsuite>
-<testsuite name="frontend/auth.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="6" failures="0" skipped="0" time="13.83" errors="0">
-<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend/auth.spec.ts" time="2.649">
+<testsuite name="frontend/auth.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="6" failures="0" skipped="0" time="13.917" errors="0">
+<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend/auth.spec.ts" time="2.719">
 </testcase>
-<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend/auth.spec.ts" time="2.57">
+<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend/auth.spec.ts" time="2.646">
 </testcase>
-<testcase name="Login › TS03 - should validate required fields" classname="frontend/auth.spec.ts" time="1.909">
+<testcase name="Login › TS03 - should validate required fields" classname="frontend/auth.spec.ts" time="2.004">
 </testcase>
-<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend/auth.spec.ts" time="2.34">
+<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend/auth.spec.ts" time="2.325">
 </testcase>
-<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend/auth.spec.ts" time="1.881">
+<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend/auth.spec.ts" time="1.849">
 </testcase>
-<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend/auth.spec.ts" time="2.481">
+<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend/auth.spec.ts" time="2.374">
 </testcase>
 </testsuite>
-<testsuite name="frontend/cart-checkout.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="15" failures="0" skipped="0" time="218.727" errors="1">
-<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend/cart-checkout.spec.ts" time="8.518">
+<testsuite name="frontend/cart-checkout.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="15" failures="0" skipped="0" time="219.896" errors="1">
+<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend/cart-checkout.spec.ts" time="8.527">
 </testcase>
-<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend/cart-checkout.spec.ts" time="8.595">
+<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend/cart-checkout.spec.ts" time="8.427">
 </testcase>
-<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend/cart-checkout.spec.ts" time="0.831">
+<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend/cart-checkout.spec.ts" time="1.021">
 </testcase>
-<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend/cart-checkout.spec.ts" time="8.598">
+<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend/cart-checkout.spec.ts" time="8.765">
 </testcase>
-<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend/cart-checkout.spec.ts" time="8.805">
+<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend/cart-checkout.spec.ts" time="8.933">
 </testcase>
-<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend/cart-checkout.spec.ts" time="9.196">
+<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend/cart-checkout.spec.ts" time="9.203">
 </testcase>
-<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend/cart-checkout.spec.ts" time="8.751">
+<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend/cart-checkout.spec.ts" time="8.649">
 </testcase>
-<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend/cart-checkout.spec.ts" time="8.853">
+<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend/cart-checkout.spec.ts" time="8.764">
 </testcase>
-<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend/cart-checkout.spec.ts" time="9.53">
+<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend/cart-checkout.spec.ts" time="9.619">
 </testcase>
-<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend/cart-checkout.spec.ts" time="8.895">
+<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend/cart-checkout.spec.ts" time="9.635">
 </testcase>
-<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend/cart-checkout.spec.ts" time="16.325">
+<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend/cart-checkout.spec.ts" time="16.363">
 </testcase>
-<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend/cart-checkout.spec.ts" time="10.048">
+<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend/cart-checkout.spec.ts" time="10.32">
 </testcase>
-<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend/cart-checkout.spec.ts" time="8.704">
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend/cart-checkout.spec.ts" time="8.595">
 </testcase>
-<testcase name="Cart and Checkout › TS14 should display free shipping if cart shipping total is 0" classname="frontend/cart-checkout.spec.ts" time="8.222">
+<testcase name="Cart and Checkout › TS14 should display free shipping if cart shipping total is 0" classname="frontend/cart-checkout.spec.ts" time="8.095">
 </testcase>
-<testcase name="Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0" classname="frontend/cart-checkout.spec.ts" time="94.856">
+<testcase name="Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0" classname="frontend/cart-checkout.spec.ts" time="94.98">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-edge/test-failed-1.png]]
@@ -281,52 +281,52 @@
 </error>
 </testcase>
 </testsuite>
-<testsuite name="frontend/catalog.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="6" failures="0" skipped="0" time="7.333" errors="0">
-<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend/catalog.spec.ts" time="1.106">
+<testsuite name="frontend/catalog.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="6" failures="0" skipped="0" time="7.671" errors="0">
+<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend/catalog.spec.ts" time="1.137">
 </testcase>
-<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend/catalog.spec.ts" time="1.155">
+<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend/catalog.spec.ts" time="1.172">
 </testcase>
-<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend/catalog.spec.ts" time="1.145">
+<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend/catalog.spec.ts" time="1.305">
 </testcase>
-<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend/catalog.spec.ts" time="1.112">
+<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend/catalog.spec.ts" time="1.085">
 </testcase>
-<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend/catalog.spec.ts" time="1.291">
+<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend/catalog.spec.ts" time="1.322">
 </testcase>
-<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend/catalog.spec.ts" time="1.524">
-</testcase>
-</testsuite>
-<testsuite name="frontend/login.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="4.905" errors="0">
-<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend/login.spec.ts" time="1.12">
-</testcase>
-<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend/login.spec.ts" time="1.047">
-</testcase>
-<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend/login.spec.ts" time="0.837">
-</testcase>
-<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend/login.spec.ts" time="1.027">
-</testcase>
-<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend/login.spec.ts" time="0.874">
+<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend/catalog.spec.ts" time="1.65">
 </testcase>
 </testsuite>
-<testsuite name="frontend/orders.checkout.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="42.149" errors="0">
-<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend/orders.checkout.spec.ts" time="8.478">
+<testsuite name="frontend/login.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="5.083" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend/login.spec.ts" time="1.141">
 </testcase>
-<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend/orders.checkout.spec.ts" time="8.388">
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend/login.spec.ts" time="1.082">
 </testcase>
-<testcase name="Frontend Checkout with Orders API › deve exibir erro quando a API retornar 400 (Carrinho vazio) ao criar pedido" classname="frontend/orders.checkout.spec.ts" time="8.309">
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend/login.spec.ts" time="0.932">
 </testcase>
-<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pagamento falhar (400)" classname="frontend/orders.checkout.spec.ts" time="8.615">
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend/login.spec.ts" time="1.028">
 </testcase>
-<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pedido não for encontrado ao tentar pagar (404)" classname="frontend/orders.checkout.spec.ts" time="8.359">
+<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend/login.spec.ts" time="0.9">
 </testcase>
 </testsuite>
-<testsuite name="frontend/payments-card-brands.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="38.837" errors="0">
-<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend/payments-card-brands.spec.ts" time="8.632">
+<testsuite name="frontend/orders.checkout.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="5" failures="0" skipped="0" time="41.861" errors="0">
+<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend/orders.checkout.spec.ts" time="8.342">
 </testcase>
-<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend/payments-card-brands.spec.ts" time="9.854">
+<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend/orders.checkout.spec.ts" time="8.339">
 </testcase>
-<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend/payments-card-brands.spec.ts" time="8.658">
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando a API retornar 400 (Carrinho vazio) ao criar pedido" classname="frontend/orders.checkout.spec.ts" time="8.166">
 </testcase>
-<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend/payments-card-brands.spec.ts" time="11.693">
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pagamento falhar (400)" classname="frontend/orders.checkout.spec.ts" time="8.546">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pedido não for encontrado ao tentar pagar (404)" classname="frontend/orders.checkout.spec.ts" time="8.468">
+</testcase>
+</testsuite>
+<testsuite name="frontend/payments-card-brands.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="38.67" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend/payments-card-brands.spec.ts" time="8.45">
+</testcase>
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend/payments-card-brands.spec.ts" time="9.813">
+</testcase>
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend/payments-card-brands.spec.ts" time="8.581">
+</testcase>
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend/payments-card-brands.spec.ts" time="11.826">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-edge/attachments/payments-card-data-before-confirmation-visa-b031c0452226f67d686feb12550f3b0e3580f3e9.png]]
@@ -352,18 +352,18 @@
 </system-out>
 </testcase>
 </testsuite>
-<testsuite name="frontend/product-details.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="3.351" errors="0">
-<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend/product-details.spec.ts" time="0.541">
+<testsuite name="frontend/product-details.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="3.368" errors="0">
+<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend/product-details.spec.ts" time="0.555">
 </testcase>
-<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend/product-details.spec.ts" time="1.418">
+<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend/product-details.spec.ts" time="1.4">
 </testcase>
-<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend/product-details.spec.ts" time="0.55">
+<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend/product-details.spec.ts" time="0.617">
 </testcase>
-<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend/product-details.spec.ts" time="0.842">
+<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend/product-details.spec.ts" time="0.796">
 </testcase>
 </testsuite>
-<testsuite name="frontend/real-purchase-flow.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="4" failures="4" skipped="0" time="8.887" errors="0">
-<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS01 — Login real + produto aleatório + checkout + pagamento com cartão" classname="frontend/real-purchase-flow.spec.ts" time="1.149">
+<testsuite name="frontend/real-purchase-flow.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="4" failures="4" skipped="0" time="9.979" errors="0">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS01 — Login real + produto aleatório + checkout + pagamento com cartão" classname="frontend/real-purchase-flow.spec.ts" time="1.203">
 <system-out>
 <![CDATA[
 ▶ Produto sorteado: [22] L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico — R$ 18.89
@@ -374,7 +374,7 @@
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-edge/error-context.md]]
 
-▶ Produto sorteado: [6] Clean Architecture: A Craftsman's Guide to Software Structure and Design — R$ 233.44
+▶ Produto sorteado: [20] Webcam Ultra HD Logitech Brio 4K PRO com Microfone Embutido para Chamadas e Gravações em Video - Compatível com Logitech Capture — R$ 489.9
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-edge-retry1/test-failed-1.png]]
 
@@ -384,7 +384,7 @@
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-edge-retry1/trace.zip]]
 
-▶ Produto sorteado: [4] Tênis de Corrida — R$ 120
+▶ Produto sorteado: [21] NIVEA Facial Cellular Luminous ANTIMARCAS – Sérum + Hidratante — R$ 27.5
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-edge-retry2/test-failed-1.png]]
 
@@ -485,11 +485,11 @@
 ]]>
 </failure>
 </testcase>
-<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS02 — Busca de produto real + compra com cartão de crédito" classname="frontend/real-purchase-flow.spec.ts" time="1.466">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS02 — Busca de produto real + compra com cartão de crédito" classname="frontend/real-purchase-flow.spec.ts" time="1.439">
 <system-out>
 <![CDATA[
-▶ Produto: [19] Fone de Ouvido Bluetooth Anker Soundcore Life P3
-▶ Termo de busca: "Fone de"
+▶ Produto: [6] Clean Architecture: A Craftsman's Guide to Software Structure and Design
+▶ Termo de busca: "Clean Architecture:"
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-edge/test-failed-1.png]]
 
@@ -497,8 +497,8 @@
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-edge/error-context.md]]
 
-▶ Produto: [21] NIVEA Facial Cellular Luminous ANTIMARCAS – Sérum + Hidratante
-▶ Termo de busca: "NIVEA Facial"
+▶ Produto: [16] Em Busca do Tempo Perdido – Box Completo (7 volumes)
+▶ Termo de busca: "Em Busca"
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-edge-retry1/test-failed-1.png]]
 
@@ -508,8 +508,8 @@
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-edge-retry1/trace.zip]]
 
-▶ Produto: [17] Sem Juízo (Chestnut Springs – Livro 4)
-▶ Termo de busca: "Sem Juízo"
+▶ Produto: [7] Gshield Mochila Mala de Mão
+▶ Termo de busca: "Gshield Mochila"
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-edge-retry2/test-failed-1.png]]
 
@@ -610,13 +610,13 @@
 ]]>
 </failure>
 </testcase>
-<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS03 — Múltiplos produtos aleatórios + checkout com PIX" classname="frontend/real-purchase-flow.spec.ts" time="1.371">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS03 — Múltiplos produtos aleatórios + checkout com PIX" classname="frontend/real-purchase-flow.spec.ts" time="1.203">
 <system-out>
 <![CDATA[
 ▶ Adicionando até 3 produtos aleatórios:
-   • [13] Suporte Vertical para PS5 com 2 Controles e Carregador — R$ 189.9
-   • [9] Caneca Na Minha Máquina Funciona — R$ 39.9
+   • [19] Fone de Ouvido Bluetooth Anker Soundcore Life P3 — R$ 219
    • [3] Fones de Ouvido — R$ 35.99
+   • [16] Em Busca do Tempo Perdido – Box Completo (7 volumes) — R$ 246.11
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-edge/test-failed-1.png]]
 
@@ -625,9 +625,9 @@
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-edge/error-context.md]]
 
 ▶ Adicionando até 3 produtos aleatórios:
-   • [3] Fones de Ouvido — R$ 35.99
-   • [21] NIVEA Facial Cellular Luminous ANTIMARCAS – Sérum + Hidratante — R$ 27.5
-   • [16] Em Busca do Tempo Perdido – Box Completo (7 volumes) — R$ 246.11
+   • [7] Gshield Mochila Mala de Mão — R$ 284.99
+   • [9] Caneca Na Minha Máquina Funciona — R$ 39.9
+   • [6] Clean Architecture: A Craftsman's Guide to Software Structure and Design — R$ 233.44
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-edge-retry1/test-failed-1.png]]
 
@@ -638,9 +638,9 @@
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-edge-retry1/trace.zip]]
 
 ▶ Adicionando até 3 produtos aleatórios:
+   • [9] Caneca Na Minha Máquina Funciona — R$ 39.9
    • [11] GameSir G7 SE Controle com Fio para Xbox e PC — R$ 279.3
-   • [16] Em Busca do Tempo Perdido – Box Completo (7 volumes) — R$ 246.11
-   • [15] Devoradores de Estrelas: O Livro que Deu Origem ao Filme — R$ 24.9
+   • [12] Headset Gamer HyperX Cloud II – 7.1 Surround — R$ 449
 
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-edge-retry2/test-failed-1.png]]
 
@@ -741,7 +741,7 @@
 ]]>
 </failure>
 </testcase>
-<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend/real-purchase-flow.spec.ts" time="4.901">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend/real-purchase-flow.spec.ts" time="6.134">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-edge/test-failed-1.png]]
@@ -858,62 +858,62 @@
 </failure>
 </testcase>
 </testsuite>
-<testsuite name="frontend/register-language.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="11.387" errors="0">
-<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend/register-language.spec.ts" time="5.543">
+<testsuite name="frontend/register-language.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="4" failures="0" skipped="0" time="10.955" errors="0">
+<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend/register-language.spec.ts" time="5.682">
 </testcase>
-<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend/register-language.spec.ts" time="1.89">
+<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend/register-language.spec.ts" time="1.612">
 </testcase>
-<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend/register-language.spec.ts" time="2.207">
+<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend/register-language.spec.ts" time="1.997">
 </testcase>
-<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend/register-language.spec.ts" time="1.747">
-</testcase>
-</testsuite>
-<testsuite name="frontend/register-login.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="12.332" errors="0">
-<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend/register-login.spec.ts" time="2.591">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend/register-login.spec.ts" time="8.804">
-</testcase>
-<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend/register-login.spec.ts" time="0.937">
+<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend/register-language.spec.ts" time="1.664">
 </testcase>
 </testsuite>
-<testsuite name="frontend/register.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="7" failures="0" skipped="0" time="14.705" errors="0">
-<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend/register.spec.ts" time="2.794">
+<testsuite name="frontend/register-login.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="12.01" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend/register-login.spec.ts" time="2.517">
 </testcase>
-<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend/register.spec.ts" time="1.873">
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend/register-login.spec.ts" time="8.515">
 </testcase>
-<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend/register.spec.ts" time="1.895">
-</testcase>
-<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend/register.spec.ts" time="2.004">
-</testcase>
-<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend/register.spec.ts" time="1.961">
-</testcase>
-<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend/register.spec.ts" time="2.606">
-</testcase>
-<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend/register.spec.ts" time="1.572">
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend/register-login.spec.ts" time="0.978">
 </testcase>
 </testsuite>
-<testsuite name="frontend/security.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="10.416" errors="0">
-<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend/security.spec.ts" time="8.507">
+<testsuite name="frontend/register.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="7" failures="0" skipped="0" time="13.256" errors="0">
+<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend/register.spec.ts" time="2.709">
 </testcase>
-<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend/security.spec.ts" time="0.548">
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend/register.spec.ts" time="1.574">
 </testcase>
-<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend/security.spec.ts" time="1.361">
+<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend/register.spec.ts" time="1.709">
+</testcase>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend/register.spec.ts" time="1.777">
+</testcase>
+<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend/register.spec.ts" time="1.713">
+</testcase>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend/register.spec.ts" time="2.385">
+</testcase>
+<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend/register.spec.ts" time="1.389">
 </testcase>
 </testsuite>
-<testsuite name="frontend/support-products.spec.ts" timestamp="2026-05-23T20:59:09.992Z" hostname="frontend-edge" tests="8" failures="0" skipped="0" time="118.389" errors="1">
-<testcase name="Support Products - Frontend E2E › SUP-UI01 - Support deve acessar tela de gestão de produtos" classname="frontend/support-products.spec.ts" time="1.603">
+<testsuite name="frontend/security.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="3" failures="0" skipped="0" time="10.695" errors="0">
+<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend/security.spec.ts" time="8.726">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI02 - Support deve ver tabela de produtos carregada" classname="frontend/support-products.spec.ts" time="1.466">
+<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend/security.spec.ts" time="0.58">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI03 - Support deve filtrar produtos pelo campo de busca" classname="frontend/support-products.spec.ts" time="1.9">
+<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend/security.spec.ts" time="1.389">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI04 - Busca sem resultados deve exibir mensagem vazia" classname="frontend/support-products.spec.ts" time="2.16">
+</testsuite>
+<testsuite name="frontend/support-products.spec.ts" timestamp="2026-05-23T21:47:25.285Z" hostname="frontend-edge" tests="8" failures="0" skipped="0" time="119.247" errors="1">
+<testcase name="Support Products - Frontend E2E › SUP-UI01 - Support deve acessar tela de gestão de produtos" classname="frontend/support-products.spec.ts" time="1.575">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI05 - Support deve abrir o modal de criação ao clicar &quot;Novo produto&quot;" classname="frontend/support-products.spec.ts" time="1.853">
+<testcase name="Support Products - Frontend E2E › SUP-UI02 - Support deve ver tabela de produtos carregada" classname="frontend/support-products.spec.ts" time="1.594">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI06 - Modal deve validar campo nome obrigatório" classname="frontend/support-products.spec.ts" time="2.28">
+<testcase name="Support Products - Frontend E2E › SUP-UI03 - Support deve filtrar produtos pelo campo de busca" classname="frontend/support-products.spec.ts" time="2.039">
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI07 - Support deve abrir modal de edição com dados preenchidos" classname="frontend/support-products.spec.ts" time="98.899">
+<testcase name="Support Products - Frontend E2E › SUP-UI04 - Busca sem resultados deve exibir mensagem vazia" classname="frontend/support-products.spec.ts" time="2.151">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI05 - Support deve abrir o modal de criação ao clicar &quot;Novo produto&quot;" classname="frontend/support-products.spec.ts" time="1.747">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI06 - Modal deve validar campo nome obrigatório" classname="frontend/support-products.spec.ts" time="2.285">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI07 - Support deve abrir modal de edição com dados preenchidos" classname="frontend/support-products.spec.ts" time="99.372">
 <system-out>
 <![CDATA[
 [[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-edge/test-failed-1.png]]
@@ -1026,7 +1026,7 @@
 ]]>
 </error>
 </testcase>
-<testcase name="Support Products - Frontend E2E › SUP-UI08 - Support deve excluir produto via botão de delete" classname="frontend/support-products.spec.ts" time="8.228">
+<testcase name="Support Products - Frontend E2E › SUP-UI08 - Support deve excluir produto via botão de delete" classname="frontend/support-products.spec.ts" time="8.484">
 </testcase>
 </testsuite>
 </testsuites>
