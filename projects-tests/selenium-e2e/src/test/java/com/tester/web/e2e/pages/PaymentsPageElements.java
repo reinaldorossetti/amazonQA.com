@@ -17,6 +17,6 @@ public class PaymentsPageElements extends BasePage {
   }
 
   protected static By brandChip(String brandId) {
-    return By.id("payments-card-brand-" + brandId);
+    return By.cssSelector(String.format("div[data-brand=\"%s\"][data-active=\"true\"]", brandId));
   }
 }

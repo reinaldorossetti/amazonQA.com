@@ -14,11 +14,11 @@ public class PaymentsPageAction extends PaymentsPageElements {
   }
 
   public void whenFillCardNumber(String cardNumber) {
-    setInputValueWithJs(CARD_NUMBER_INPUT, cardNumber);
+    fill(CARD_NUMBER_INPUT, cardNumber);
   }
 
   public void whenClearCardNumber() {
-    setInputValueWithJs(CARD_NUMBER_INPUT, "");
+    clearField(CARD_NUMBER_INPUT);
   }
 
   public void whenFillCreditCardDefaults() {
@@ -41,11 +41,8 @@ public class PaymentsPageAction extends PaymentsPageElements {
     assertTrue(isVisible(brandChip(brand.id())));
   }
 
-  public void thenValidatedBrandActive(CardBrand brand) {
-    assertEquals(
-        "true",
-        wait.until(ExpectedConditions.visibilityOfElementLocated(brandChip(brand.id())))
-            .getDomAttribute("data-active"));
+  public void thenValidatedBrandActive(CardBrand brand) throws InterruptedException {
+    assertTrue(isVisible(brandChip(brand.id())));
   }
 
   public void thenValidatedAllBrandsVisible() {

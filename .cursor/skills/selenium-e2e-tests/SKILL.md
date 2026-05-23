@@ -208,17 +208,17 @@ The app uses `ToastContainer` at **top-right** (`autoClose={5000}`), same region
 - **`waitUntilToastIsGone()`** — waits up to **7 seconds** (`TOAST_DISMISS_TIMEOUT`) for the toast body to become invisible (covers `autoClose` 5s + exit animation).
   - If a toast is already visible: wait until invisible.
   - If none visible: optionally wait for appear-then-dismiss within 7s; if none appears, continue.
-- **`waitUntilToastCycleCompletes()`** — if a toast is visible now, delegates to `waitUntilToastIsGone()`; use **after** add-to-cart / delete item.
+- **`waitUntilToastIsGone()`** — if a toast is visible now, delegates to `waitUntilToastIsGone()`; use **after** add-to-cart / delete item.
 
 ### When to call
 
 | Moment | Helper |
 |--------|--------|
-| After `add to cart`, remove item | `waitUntilToastCycleCompletes()` |
+| After `add to cart`, remove item | `waitUntilToastIsGone()` |
 | Before `#nav-cart-btn`, proceed to checkout, payment, logout | `waitUntilToastIsGone()` |
 | `NavBarComponent.whenOpenCart()` / `whenLogout()` | already calls `waitUntilToastIsGone()` |
 
-Prefer `waitUntilToastCycleCompletes()` in `openCartFromHeader()` after catalog add-to-cart, not only `waitUntilToastIsGone()`.
+Prefer `waitUntilToastIsGone()` in `openCartFromHeader()` after catalog add-to-cart, not only `waitUntilToastIsGone()`.
 
 ### Assertions on toast-only messages
 

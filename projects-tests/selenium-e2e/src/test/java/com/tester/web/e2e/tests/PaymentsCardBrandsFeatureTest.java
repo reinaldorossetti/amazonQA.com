@@ -46,7 +46,7 @@ class PaymentsCardBrandsFeatureTest extends AbstractUiTest {
   @EnumSource(CardBrand.class)
   @Severity(SeverityLevel.NORMAL)
   @DisplayName("TC-002 should activate each card brand when matching number is typed")
-  void shouldActivateEachCardBrand(CardBrand brand) {
+  void shouldActivateEachCardBrand(CardBrand brand) throws InterruptedException {
     payments.whenClearCardNumber();
     payments.whenFillCardNumber(brand.cardNumber());
     payments.thenValidatedBrandsStripVisible();
@@ -66,7 +66,7 @@ class PaymentsCardBrandsFeatureTest extends AbstractUiTest {
   @EnumSource(CardBrand.class)
   @Severity(SeverityLevel.MINOR)
   @DisplayName("TC-004 should capture screenshot for each card brand before confirmation")
-  void shouldCaptureScreenshotForEachCardBrand(CardBrand brand) {
+  void shouldCaptureScreenshotForEachCardBrand(CardBrand brand) throws InterruptedException {
     payments.whenFillCreditCardDefaults();
     payments.whenClearCardNumber();
     payments.whenFillCardNumber(brand.cardNumber());

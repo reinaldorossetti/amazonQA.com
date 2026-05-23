@@ -666,7 +666,7 @@ Fluxo: `*FeatureTest` → `*PageAction` → `*PageElements` → `BasePage`
 | `inputValue(By)` / `textOf(By)` | Ler valor ou texto |
 | `setInputValueWithJs(By, String)` | Inputs controlados (pagamentos, quantidade) |
 | `waitUntilToastIsGone()` | Antes de cliques no header/carrinho/checkout |
-| `waitUntilToastCycleCompletes()` | Depois de add/remove no carrinho |
+| `waitUntilToastIsGone()` | Depois de add/remove no carrinho |
 
 `WebElement` fica restrito à implementação privada do `BasePage` (ex.: `clickOnElement`).
 

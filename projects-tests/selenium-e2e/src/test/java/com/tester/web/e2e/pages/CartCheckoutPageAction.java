@@ -42,12 +42,6 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     loginPage.validatedLoginInPage(expectedGreeting);
   }
 
-  public void givenCartWithOneItem() {
-    givenUserOnCatalog();
-    addProductToCartByName(DEFAULT_CART_PRODUCT);
-    openCartFromHeader();
-  }
-
   public void givenCartWithThreeItems() {
     givenUserOnCatalog();
     addProductToCartByName(DEFAULT_CART_PRODUCT);
@@ -62,8 +56,10 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     openCartFromHeader();
   }
 
-  public void whenAuthenticatedUserCompletesCheckoutToThankYou() {
-    whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod.CREDIT);
+  public void givenCartWithOneItem() {
+    givenUserOnCatalog();
+    addProductToCartByName(DEFAULT_CART_PRODUCT);
+    openCartFromHeader();
   }
 
   public void whenAuthenticatedUserCompletesCheckoutToThankYou(PaymentMethod paymentMethod) {
@@ -71,6 +67,11 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     proceedToCheckout();
     selectPaymentMethod(paymentMethod);
     clickSubmitPayment(paymentMethod);
+  }
+
+  public void thenValidatedSuccessfulCheckoutSummary(PaymentMethod paymentMethod, String... texts) {
+    thenValidatedSuccessfulCheckoutSummary(texts);
+    assertEquals(paymentMethod.confirmationText(), textOf(THANK_YOU_PAYMENT_METHOD));
   }
 
   public void whenAuthenticatedUserProceedsToCheckout() {
@@ -103,7 +104,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   private void addFirstProductToCart() {
     clickFirst(ADD_TO_CART_BUTTONS);
-    waitUntilToastCycleCompletes();
+    waitUntilToastIsGone();
   }
 
   private void addProductToCartByName(String productName) {
@@ -117,9 +118,8 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   private void openCartFromHeader() {
-    waitUntilToastCycleCompletes();
+    waitUntilToastIsGone();
     click(NAV_CART_BUTTON);
-    wait.until(ExpectedConditions.urlContains("/cart"));
   }
 
   protected void proceedToCheckout() {
@@ -152,7 +152,7 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
 
   private void clickDeleteFirstItem() {
     clickFirst(DELETE_BUTTONS);
-    waitUntilToastCycleCompletes();
+    waitUntilToastIsGone();
   }
 
   public int deleteButtonsCount() {
@@ -216,11 +216,6 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
     attachScreenshot("validatedSucessoCheckout");
   }
 
-  public void thenValidatedSuccessfulCheckoutSummary(PaymentMethod paymentMethod, String... texts) {
-    thenValidatedSuccessfulCheckoutSummary(texts);
-    assertEquals(paymentMethod.confirmationText(), textOf(THANK_YOU_PAYMENT_METHOD));
-  }
-
   public void thenValidatedQuantityEquals(String expectedValue) {
     assertEquals(expectedValue, firstItemQuantityValue());
   }
@@ -234,8 +229,6 @@ public class CartCheckoutPageAction extends CartCheckoutPageElements {
   }
 
   public void thenValidatedDeleteButtonsCount(int expectedCount) {
-    new WebDriverWait(driver, Duration.ofSeconds(10))
-        .until(webDriver -> webDriver.findElements(DELETE_BUTTONS).size() == expectedCount);
     assertEquals(expectedCount, deleteButtonsCount());
   }
 

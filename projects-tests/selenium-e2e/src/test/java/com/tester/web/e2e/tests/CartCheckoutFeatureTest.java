@@ -132,7 +132,6 @@ class CartCheckoutFeatureTest extends AbstractUiTest {
   @DisplayName("TC-009 should remove a single item and show empty cart state")
   void removingSingleItemShowsEmptyCart() {
     cartCheckout.givenCartWithOneItem();
-
     cartCheckout.thenValidatedDeleteButtonsCount(1);
     cartCheckout.whenRemoveFirstCartItem();
     cartCheckout.thenValidatedDeleteButtonsCount(0);

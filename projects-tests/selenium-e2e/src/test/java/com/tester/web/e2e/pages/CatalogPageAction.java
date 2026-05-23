@@ -38,7 +38,7 @@ public class CatalogPageAction extends CatalogPageElements {
 
   public void whenAddFirstProductToCart() {
     clickFirst(ADD_TO_CART_BUTTONS);
-    waitUntilToastCycleCompletes();
+    waitUntilToastIsGone();
   }
 
   public void thenValidatedProductImageVisible(int productId) {

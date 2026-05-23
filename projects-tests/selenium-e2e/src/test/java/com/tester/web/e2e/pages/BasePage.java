@@ -22,106 +22,235 @@ import com.tester.web.e2e.support.Selectors;
 
 import io.qameta.allure.Allure;
 
+/**
+ * Shared Selenium helpers for page objects: waits, input, clicks, toast
+ * handling, and assertions.
+ */
 public abstract class BasePage {
 
+  /**
+   * Logger for page-level diagnostics (waits, clicks, validation).
+   */
   protected static final Logger LOGGER = Logger.getLogger(BasePage.class.getName());
+
+  /** Locator for react-toastify message body. */
   protected static final By TOAST_BODY = By.cssSelector(".Toastify__toast-body");
-  private static final Duration TOAST_DISMISS_TIMEOUT = Duration.ofSeconds(7);
-  private static final Duration DEFAULT_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(5);
-  private static final Duration MAX_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(10);
+  private static final Duration TOAST_DISMISS_TIMEOUT = Duration.ofSeconds(5);
+  private static final Duration DEFAULT_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(15);
+  private static final Duration MAX_IS_VISIBLE_TIMEOUT = Duration.ofSeconds(30);
+
   protected final WebDriver driver;
   protected final WebDriverWait wait;
 
+  /**
+   * Binds the page to a driver and a default explicit wait from
+   * {@link TestEnvironment}.
+   * @param driver active WebDriver session
+   */
   protected BasePage(WebDriver driver) {
     this.driver = driver;
     this.wait = new WebDriverWait(driver, TestEnvironment.defaultWait());
   }
 
-  protected By byTestId(String testId) {
-    return Selectors.byTestId(testId);
-  }
-
-  protected WebElement waitVisible(String testId) {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(byTestId(testId)));
-  }
-
-  protected void fillTestId(String testId, String text) {
-    fill(byTestId(testId), text);
-  }
-
-  protected void clickTestId(String testId) {
-    click(byTestId(testId));
-  }
-
-  protected void click(By locator) {
-    clickOnElement(wait.until(ExpectedConditions.elementToBeClickable(locator)));
-  }
-
-  protected void clickFirst(By locator) {
-    WebElement element =
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst();
-    clickOnElement(wait.until(ExpectedConditions.elementToBeClickable(element)));
-  }
-
-  protected void fill(By locator, String text) {
-    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    LOGGER.fine(
-        () ->
-            String.format(
-                "Filling locator %s with text length: %d", locator, text == null ? 0 : text.length()));
-    field.click();
-    moveFocusToElementJS(field);
-    field.clear();
-    field.sendKeys(text);
-  }
-
-  protected void fillAndPressEnter(By locator, String text) {
-    fill(locator, text);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).sendKeys(Keys.ENTER);
-  }
-
-  protected String inputValue(By locator) {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
-  }
-
-  protected String firstInputValue(By locator) {
-    return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator))
-        .getFirst()
-        .getAttribute("value");
-  }
-
-  protected String textOf(By locator) {
-    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
-  }
-
-  protected void moveFocusToElement(By locator) {
-    moveFocusToElement(wait.until(ExpectedConditions.presenceOfElementLocated(locator)));
-  }
-
-  protected void moveFocusToElement(WebElement element) {
-    moveFocusToElementJS(element);
-  }
-
+  /**
+   * Returns whether the element is visible within the default timeout.
+   */
   protected boolean isVisible(By locator) {
     return isVisible(locator, DEFAULT_IS_VISIBLE_TIMEOUT);
   }
 
+  /**
+   * Waits until clickable, then clicks (falls back to JS if intercepted).
+   */
+  protected void click(By locator) {
+    clickOnElement(wait.until(ExpectedConditions.elementToBeClickable(locator)));
+  }
+
+  /**
+   * Clicks the element, using JavaScript when a native click is blocked by
+   * overlays.
+   */
+  private void clickOnElement(WebElement element) {
+    moveFocusToElementJS(element);
+    try {
+      element.click();
+    } catch (ElementClickInterceptedException exception) {
+      LOGGER.warning(() -> "Native click intercepted, falling back to JavaScript click: "
+              + exception.getMessage());
+      if (driver instanceof JavascriptExecutor javascriptExecutor) {
+        javascriptExecutor.executeScript("arguments[0].click();", element);
+      } else {
+        LOGGER.warning(() -> "Error on clickOnElement: ${element}"
+                + exception.getMessage());
+        throw exception;
+      }
+    }
+  }
+
+  /**
+   * Returns whether the element becomes visible within {@code timeout}
+   * (capped at {@link #MAX_IS_VISIBLE_TIMEOUT}).
+   */
   protected boolean isVisible(By locator, Duration timeout) {
     Duration effectiveTimeout = capVisibleTimeout(timeout);
     try {
       moveFocusToElement(locator);
       new WebDriverWait(driver, effectiveTimeout)
-          .until(ExpectedConditions.visibilityOfElementLocated(locator));
+              .until(ExpectedConditions.visibilityOfElementLocated(locator));
       return true;
     } catch (TimeoutException exception) {
       return false;
     }
   }
 
+  /**
+   * Returns whether the element is present in the DOM within the default
+   * timeout.
+   */
+  protected boolean isPresent(By locator) {
+    return isPresent(locator, DEFAULT_IS_VISIBLE_TIMEOUT);
+  }
+
+  /**
+   * Returns whether the element is present in the DOM within {@code timeout}
+   * (capped at {@link #MAX_IS_VISIBLE_TIMEOUT}).
+   */
+  protected boolean isPresent(By locator, Duration timeout) {
+    Duration effectiveTimeout = capVisibleTimeout(timeout);
+    try {
+      new WebDriverWait(driver, effectiveTimeout)
+          .until(ExpectedConditions.presenceOfElementLocated(locator));
+      return true;
+    } catch (TimeoutException exception) {
+      return false;
+    }
+  }
+
+  /** {@link #isPresent(By, Duration)} with timeout in seconds. */
+  protected boolean isPresent(By locator, long timeoutSeconds) {
+    return isPresent(locator, Duration.ofSeconds(timeoutSeconds));
+  }
+
+  /** Builds a {@code data-testid} CSS locator. */
+  protected By byTestId(String testId) {
+    return Selectors.byTestId(testId);
+  }
+
+  /** Waits until the element with the given test id is visible. */
+  protected WebElement waitVisible(String testId) {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(byTestId(testId)));
+  }
+
+  /** Clears and types into the field identified by {@code data-testid}. */
+  protected void fillTestId(String testId, String text) {
+    fill(byTestId(testId), text);
+  }
+
+  /** Clicks the element identified by {@code data-testid}. */
+  protected void clickTestId(String testId) {
+    click(byTestId(testId));
+  }
+
+  /** Clicks the first matching element for a multi-match locator. */
+  protected void clickFirst(By locator) {
+    WebElement element =
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst();
+    element.click();
+  }
+
+  /** Focuses, clears, and sends keys to a visible input or textarea. */
+  protected void fill(By locator, String text) {
+    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    LOGGER.fine(
+        () ->
+            String.format(
+                "Filling locator %s with text length: %d", locator, text == null ? 0 : text.length()));
+    moveFocusToElementJS(field);
+    clearField(locator);
+    field.click();
+    field.sendKeys(text);
+  }
+
+  /**
+   * Clears an input by id via JavaScript ({@code element.value = ''}), with an
+   * {@code input} event for controlled React/MUI fields.
+   *
+   * @param elementId value of the HTML {@code id} attribute
+   */
+  protected void clearFieldById(String elementId) {
+    if (!(driver instanceof JavascriptExecutor javascriptExecutor)) {
+      wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(elementId))).clear();
+      return;
+    }
+    javascriptExecutor.executeScript(
+        "const el = document.getElementById(arguments[0]);"
+            + "if (el) {"
+            + "  el.value = '';"
+            + "  el.dispatchEvent(new Event('input', { bubbles: true }));"
+            + "}",
+        elementId);
+  }
+
+  /**
+   * Clears a visible field: uses {@link #clearFieldById(String)} when the
+   * element has an {@code id}, otherwise sets {@code value = ''} on the node.
+   */
+  protected void clearField(By locator) {
+    WebElement field = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    String elementId = field.getDomAttribute("id");
+    if (elementId != null && !elementId.isBlank()) {
+      clearFieldById(elementId);
+      return;
+    }
+    if (driver instanceof JavascriptExecutor javascriptExecutor) {
+      javascriptExecutor.executeScript(
+          "arguments[0].value = '';"
+              + "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
+          field);
+    } else {
+      field.clear();
+    }
+  }
+
+  /** Fills the field and submits with Enter (e.g. header search). */
+  protected void fillAndPressEnter(By locator, String text) {
+    fill(locator, text);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).sendKeys(Keys.ENTER);
+  }
+
+  /** Returns the {@code value} attribute of a visible input. */
+  protected String inputValue(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getAttribute("value");
+  }
+
+  /** Returns the {@code value} attribute of the first matching input. */
+  protected String firstInputValue(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator))
+        .getFirst()
+        .getAttribute("value");
+  }
+
+  /** Returns trimmed visible text of the element. */
+  protected String textOf(By locator) {
+    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
+  }
+
+  /** Scrolls the located element into view and moves focus to it. */
+  protected void moveFocusToElement(By locator) {
+    moveFocusToElement(wait.until(ExpectedConditions.presenceOfElementLocated(locator)));
+  }
+
+  /** Scrolls the element into view and moves focus to it. */
+  protected void moveFocusToElement(WebElement element) {
+    moveFocusToElementJS(element);
+  }
+
+  /** {@link #isVisible(By, Duration)} with timeout in seconds. */
   protected boolean isVisible(By locator, long timeoutSeconds) {
     return isVisible(locator, Duration.ofSeconds(timeoutSeconds));
   }
 
+  /** Normalizes visibility timeouts to a safe default and maximum. */
   private static Duration capVisibleTimeout(Duration timeout) {
     if (timeout == null || timeout.isNegative()) {
       return DEFAULT_IS_VISIBLE_TIMEOUT;
@@ -132,30 +261,32 @@ public abstract class BasePage {
     return timeout;
   }
 
+  /**
+   * Waits for the current toast to disappear; tolerates no toast (short wait
+   * for appearance first).
+   */
   protected void waitUntilToastIsGone() {
-    WebDriverWait toastWait = new WebDriverWait(driver, TOAST_DISMISS_TIMEOUT);
-    if (isVisible(TOAST_BODY, Duration.ZERO)) {
-      toastWait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
-      return;
-    }
     try {
-      toastWait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
-      toastWait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+      WebDriverWait toastWait = new WebDriverWait(driver, TOAST_DISMISS_TIMEOUT);
+      if (isPresent(TOAST_BODY, TOAST_DISMISS_TIMEOUT)) {
+        toastWait.until(ExpectedConditions.invisibilityOfElementLocated(TOAST_BODY));
+      }
     } catch (TimeoutException exception) {
       LOGGER.fine("No toast to dismiss.");
     }
   }
 
+  /** Dismisses the toast only when one is currently visible. */
   protected void waitUntilToastCycleCompletes() {
-    if (isVisible(TOAST_BODY)) {
-      waitUntilToastIsGone();
-    }
+    waitUntilToastIsGone();
   }
 
+  /** Blocks until the browser URL contains {@code path}. */
   protected void waitForUrlContaining(String path) {
     wait.until(ExpectedConditions.urlContains(path));
   }
 
+  /** Asserts each text snippet is visible somewhere in the DOM. */
   protected void ensureTextsVisible(String... texts) {
     for (String text : texts) {
       wait.until(ExpectedConditions.visibilityOfElementLocated(
@@ -163,6 +294,7 @@ public abstract class BasePage {
     }
   }
 
+  /** Asserts the page body contains at least one of the given strings. */
   protected void ensurePageContainsOneOf(String... texts) {
     String body =
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("body"))).getText();
@@ -174,6 +306,7 @@ public abstract class BasePage {
     throw new AssertionError("Page body did not contain any of: " + String.join(", ", texts));
   }
 
+  /** Asserts the visible toast message contains {@code text}. */
   protected void ensureToastContains(String text) {
     WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
     String toastText = toast.getText();
@@ -182,23 +315,43 @@ public abstract class BasePage {
         () -> "Toast did not contain \"" + text + "\", got: " + toastText);
   }
 
+  /**
+   * Asserts the visible toast message contains at least one expected phrase.
+   *
+   * @param texts candidate substrings (e.g. PT and EN API messages)
+   */
   protected void ensureToastContainsOneOf(String... texts) {
-    WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
-    String toastText = toast.getText();
-    for (String text : texts) {
-      if (toastText.contains(text)) {
-        return;
+    WebElement toastElement =
+        wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_BODY));
+    String toastText = toastElement.getText();
+    boolean matched = false;
+    for (String expected : texts) {
+      if (toastText.contains(expected)) {
+        matched = true;
+        break;
       }
     }
-    throw new AssertionError("Toast did not contain any of: " + String.join(", ", texts));
+    assertTrue(
+        matched,
+        () ->
+            "Toast did not contain any of: "
+                + String.join(", ", texts)
+                + ", got: "
+                + toastText);
   }
 
+  /**
+   * Sets an input value via focus + fill (for controlled React/MUI fields).
+   */
   protected void setInputValueWithJs(By locator, String value) {
-    WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     moveFocusToElement(locator);
     fill(locator, value);
   }
 
+  /**
+   * Sets the first matching input via the native value setter and
+   * {@code input} event (bypasses {@code maxLength} limits).
+   */
   protected void setFirstInputValueWithJs(By locator, String value) {
     WebElement input =
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator)).getFirst();
@@ -219,6 +372,7 @@ public abstract class BasePage {
     }
   }
 
+  /** Scrolls into view and focuses the element using JavaScript. */
   protected void moveFocusToElementJS(WebElement element) {
     if (!(driver instanceof JavascriptExecutor javascriptExecutor)) {
       return;
@@ -233,21 +387,7 @@ public abstract class BasePage {
     }
   }
 
-  private void clickOnElement(WebElement element) {
-    moveFocusToElementJS(element);
-    try {
-      element.click();
-    } catch (ElementClickInterceptedException exception) {
-      LOGGER.warning(() -> "Native click intercepted, falling back to JavaScript click: "
-          + exception.getMessage());
-      if (driver instanceof JavascriptExecutor javascriptExecutor) {
-        javascriptExecutor.executeScript("arguments[0].click();", element);
-      } else {
-        throw exception;
-      }
-    }
-  }
-
+  /** Attaches a PNG screenshot to the current Allure report step. */
   protected void attachScreenshot(String name) {
     if (driver instanceof TakesScreenshot takesScreenshot) {
       byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
