@@ -98,6 +98,7 @@ jobs:
           publish_dir: projects-tests/selenium-e2e/allure-report
           destination_dir: tests-dashboard/reports/selenium-allure-report-chrome
           keep_files: true
+        continue-on-error: true
 
       - name: Stop application stack
         if: always()
@@ -204,6 +205,7 @@ jobs:
           publish_dir: projects-tests/selenium-e2e/allure-report
           destination_dir: tests-dashboard/reports/selenium-allure-report-firefox
           keep_files: true
+        continue-on-error: true
 
       - name: Stop application stack
         if: always()
