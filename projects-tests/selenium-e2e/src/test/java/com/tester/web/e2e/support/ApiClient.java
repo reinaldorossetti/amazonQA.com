@@ -11,16 +11,25 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class ApiClient {
 
+  /** Shared executor for {@link HttpClient} and parallel credential probes (Java 21+). */
+  private static final ExecutorService VIRTUAL_EXECUTOR =
+      Executors.newVirtualThreadPerTaskExecutor();
+
   private static final HttpClient HTTP =
       HttpClient.newBuilder()
           .version(HttpClient.Version.HTTP_1_1)
           .connectTimeout(Duration.ofSeconds(15))
+          .executor(VIRTUAL_EXECUTOR)
           .build();
 
   private ApiClient() {}
@@ -86,20 +95,48 @@ public final class ApiClient {
 
   private static Optional<LoginResponse> tryLoginWithRole(
       String[][] credentialPairs, Predicate<LoginResponse> roleCheck) {
+    List<String[]> pairs = uniqueCredentialPairs(credentialPairs);
+    if (pairs.isEmpty()) {
+      return Optional.empty();
+    }
+    List<Future<Optional<LoginResponse>>> futures = new ArrayList<>(pairs.size());
+    for (String[] pair : pairs) {
+      futures.add(
+          VIRTUAL_EXECUTOR.submit(() -> tryLoginWithRole(pair[0], pair[1], roleCheck)));
+    }
+    for (Future<Optional<LoginResponse>> future : futures) {
+      Optional<LoginResponse> session = awaitLoginFuture(future);
+      if (session.isPresent()) {
+        return session;
+      }
+    }
+    return Optional.empty();
+  }
+
+  private static List<String[]> uniqueCredentialPairs(String[][] credentialPairs) {
+    List<String[]> pairs = new ArrayList<>();
     Set<String> seenEmails = new LinkedHashSet<>();
     for (String[] pair : credentialPairs) {
       if (pair[0] == null || pair[0].isBlank() || pair[1] == null || pair[1].isBlank()) {
         continue;
       }
-      if (!seenEmails.add(pair[0].trim().toLowerCase())) {
-        continue;
-      }
-      Optional<LoginResponse> response = tryLoginWithRole(pair[0], pair[1], roleCheck);
-      if (response.isPresent()) {
-        return response;
+      if (seenEmails.add(pair[0].trim().toLowerCase())) {
+        pairs.add(pair);
       }
     }
-    return Optional.empty();
+    return pairs;
+  }
+
+  private static Optional<LoginResponse> awaitLoginFuture(
+      Future<Optional<LoginResponse>> future) {
+    try {
+      return future.get();
+    } catch (InterruptedException exception) {
+      Thread.currentThread().interrupt();
+      return Optional.empty();
+    } catch (ExecutionException exception) {
+      return Optional.empty();
+    }
   }
 
   private static Optional<LoginResponse> tryLoginWithRole(

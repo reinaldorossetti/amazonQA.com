@@ -16,7 +16,13 @@ public class PaymentsPageElements extends BasePage {
     super(driver);
   }
 
+  /** Chip rendered in the accepted-brands strip (any active state). */
   protected static By brandChip(String brandId) {
+    return By.id("payments-card-brand-" + brandId);
+  }
+
+  /** Chip highlighted for the detected BIN ({@code data-active="true"}). */
+  protected static By brandChipActive(String brandId) {
     return By.cssSelector(String.format("div[data-brand=\"%s\"][data-active=\"true\"]", brandId));
   }
 }

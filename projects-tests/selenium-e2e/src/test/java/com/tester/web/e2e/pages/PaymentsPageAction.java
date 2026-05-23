@@ -1,9 +1,7 @@
 package com.tester.web.e2e.pages;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.tester.web.e2e.support.CardBrand;
 
@@ -41,8 +39,8 @@ public class PaymentsPageAction extends PaymentsPageElements {
     assertTrue(isVisible(brandChip(brand.id())));
   }
 
-  public void thenValidatedBrandActive(CardBrand brand) throws InterruptedException {
-    assertTrue(isVisible(brandChip(brand.id())));
+  public void thenValidatedBrandActive(CardBrand brand) {
+    assertTrue(isVisible(brandChipActive(brand.id())));
   }
 
   public void thenValidatedAllBrandsVisible() {

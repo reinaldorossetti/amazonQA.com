@@ -2,20 +2,32 @@
 
 Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
 
-**Índice:** [Java 23](#-introdução-ao-java-23) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [WebDriverManager](#-webdrivermanager) · [dotenv-java](#-dotenv-java) · [Datafaker](#-datafaker) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Page Object](#-padrão-page-object) · [Toast e overlays](#-toast-react-toastify) · [Referências](#-referências-do-projeto)
+**Índice:** [Java 23 e 25](#-introdução-ao-java-23-e-25) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Virtual threads](#-virtual-threads-java-21) · [Relatório headless](#relatório-headless-tempo--logs) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [Paralelismo](#-execução-paralela-junit) · [Page Object](#-padrão-page-object) · [Toast](#-toast-react-toastify) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Referências](#-referências-do-projeto)
 
-## ☕ Introdução ao Java 23
+## ☕ Introdução ao Java 23 e 25
 
-O **Java 23** (OpenJDK, setembro/2024) é a JVM recomendada para **executar** esta suite. Trás runtime atualizado, melhor desempenho em I/O (browser, HTTP) e suporte às bibliotecas atuais (Selenium 4.44, JUnit 5.11).
+Esta suite usa **duas camadas** de versão Java:
 
-O código-fonte compila com **`maven.compiler.release=21`**. Para usar `release=23`, o **próprio processo Maven** precisa rodar em JDK 23 (não basta ter JDK 23 instalado se o `java`/`javac` efetivo for 21). Há **um recurso específico do Java 21** no código (`List.getFirst()`); Java 22 e 23 não têm APIs exclusivas no projeto.
+| Papel | Versão | Onde |
+|-------|--------|------|
+| **Compilação** | **21** (`maven.compiler.release=21` no `pom.xml`) | Código-fonte e bytecode dos testes |
+| **Execução local** | **23** ou **25** (OpenJDK / Temurin) | `java`, Maven Wrapper, IDE ao rodar `mvn test` |
+| **Execução na CI** | **25** (Temurin) | [`.github/workflows/selenium-e2e-pipeline.yml`](../../.github/workflows/selenium-e2e-pipeline.yml) — `java-version: 25` |
+
+O **Java 23** (set/2024) e o **Java 25** (LTS set/2025) trazem runtime atualizado, melhor desempenho em I/O (browser, HTTP) e suporte às bibliotecas do módulo (Selenium 4.44, JUnit 5.11). O código **não exige** APIs exclusivas do 23 ou 25 para compilar: o baseline de linguagem continua sendo o **21** (`getFirst()`, virtual threads, etc.).
+
+Para subir o `release` no `pom.xml` (ex.: `23` ou `25`), o **processo Maven** precisa usar um JDK **≥** essa versão — não basta ter o JDK instalado se o `java`/`javac` efetivo for mais antigo.
 
 ```bash
 java -version
+# Local (exemplos válidos):
 # openjdk version "23.x" ...
+# openjdk version "25.x" ...
 ```
 
-> Compilação: **Java 21** (`release=21`). Execução recomendada: **JDK 23** (`java -version` deve apontar para 23 ao rodar os testes).
+> **Resumo:** compila com **21**; rode localmente com **23 ou 25**; na **CI** o padrão é **25**.
+
+Instalação de JDK e `JAVA_HOME`: [Requisitos → Instalar o JDK](#instalar-e-configurar-o-jdk-23-ou-25).
 
 ---
 
@@ -101,19 +113,36 @@ switch (omitted) {
 }
 ```
 
-### `HttpClient` + `Duration` — cliente REST nativo
+### `HttpClient` + virtual threads — cliente REST nativo
 
-Arquivo: `support/ApiClient.java`
+Arquivo: `support/ApiClient.java` (detalhes em [Virtual threads](#-virtual-threads-java-21))
 
 ```java
+private static final ExecutorService VIRTUAL_EXECUTOR =
+    Executors.newVirtualThreadPerTaskExecutor();
+
 private static final HttpClient HTTP =
     HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_1_1)
         .connectTimeout(Duration.ofSeconds(15))
+        .executor(VIRTUAL_EXECUTOR)
         .build();
 ```
 
-### Rodar só os exemplos de linguagem
+### Enum `PaymentMethod` — checkout parametrizado
+
+Arquivo: `support/PaymentMethod.java` + `pages/CartCheckoutPageAction.java`
+
+```java
+// CartCheckoutFeatureTest — @EnumSource(PaymentMethod.class)
+cartCheckout.whenAuthenticatedUserCompletesCheckoutToThankYou(paymentMethod);
+
+// Page action — displayName / submitButtonText do enum
+click(paymentMethodOption(paymentMethod.displayName()));
+click(submitPaymentButton(paymentMethod.submitButtonText()));
+```
+
+### Rodar só os exemplos de linguagem (sem WebDriver)
 
 ```powershell
 cd projects-tests/selenium-e2e
@@ -122,10 +151,12 @@ cd projects-tests/selenium-e2e
 
 - **record** — Java 16/17: `BrowserName`, `TestDataGenerator.UserData`, `ApiClient.LoginResponse`
 - **Switch expression** — Java 14/17: `BrowserName.fromSystemProperty`
+- **enum** — `PaymentMethod` (CREDIT, DEBIT, PIX, BOLETO) nos fluxos de checkout
 - **Text blocks** — Java 15+: `JsonPayloads`
 - **formatted()** — Java 15+: `Selectors`, `JsonPayloads`
 - **Pattern matching** — Java 16+: `BasePage`, `AbstractUiTest`
 - **HttpClient** — Java 11+: `ApiClient`
+- **Virtual threads** — Java 21+: `ApiClient` (ver seção dedicada)
 
 ---
 
@@ -137,7 +168,9 @@ Resumo honesto do que o código **realmente usa** (não apenas o que o JDK supor
 
 Baseline de compilação: `maven.compiler.release=21` no `pom.xml`.
 
-- **`List.getFirst()`** — API de **Sequenced Collections** (Java 21) em `BasePage.clickFirst()` (usado por `CatalogPageAction.whenAddFirstProductToCart()`):
+- **`List.getFirst()`** — Sequenced Collections em `BasePage.clickFirst()` / `CatalogPageAction.whenAddFirstProductToCart()`.
+- **`Executors.newVirtualThreadPerTaskExecutor()`** — `ApiClient` (HTTP e probes de login em paralelo). Ver [Virtual threads](#-virtual-threads-java-21).
+- **`PaymentMethod` enum** — checkout parametrizado em `CartCheckoutFeatureTest` e `RealPurchaseFlowFeatureTest`.
 
 ```java
 protected void clickFirst(By locator) {
@@ -145,28 +178,71 @@ protected void clickFirst(By locator) {
 }
 ```
 
-- **Demais construções modernas** (`record`, switch expression, text blocks, `formatted()`, pattern matching em `instanceof`/`catch`) compilam no release 21, mas são de releases anteriores (14–17) — ver seção [Recursos Java 17+](#-recursos-java-17--exemplos-no-código).
+- **Demais construções** (`record`, text blocks, `formatted()`, pattern matching em `instanceof`) — ver [Recursos Java 17+](#-recursos-java-17--exemplos-no-código).
 
-### Java 22 — não utilizado
+### Java 22 / 23 / 25 — runtime
 
-Nenhuma API ou sintaxe exclusiva do Java 22 aparece no código, por exemplo:
-
-- Unnamed variables (`_`)
-- Stream Gatherers
-- Foreign Function & Memory API
-
-### Java 23 — runtime recomendado
-
-- **JDK 23** é a JVM recomendada para **executar** os testes (local e CI GitHub Actions).
-- **Compilação** usa `release=21` — o código não exige APIs exclusivas do Java 23.
-- **Nenhum recurso exclusivo do Java 23** é usado no código-fonte.
+- **CI:** **JDK 25** (Temurin) — ver [Introdução ao Java 23 e 25](#-introdução-ao-java-23-e-25).
+- **Local:** JDK **23** ou **25** recomendado para executar; **21+** basta para compilar (`release=21`).
+- Nenhuma API **exclusiva** de Java 22, 23 ou 25 é obrigatória no código hoje.
 
 ### Resumo
 
-- **Compila com:** Java 21 (`release=21`) — requer JDK ≥ 21 no processo Maven
-- **Executa com:** Java 23 (recomendado)
-- **API 21+ no código:** `getFirst()` em `CatalogPageAction`
-- **API 22/23 no código:** nenhuma exclusiva hoje
+| Item | Valor |
+|------|--------|
+| Compila (`release`) | 21 |
+| Executa (CI) | 25 |
+| API 21+ no código | `getFirst()`, virtual threads, enum `PaymentMethod` |
+
+---
+
+## 🧵 Virtual threads (Java 21+)
+
+[Virtual Threads (JEP 444)](https://openjdk.org/jeps/444) são threads leves da plataforma Java, ideais para **I/O** (HTTP, espera de rede). **Não substituem** o thread do browser: cada `@Test` Selenium continua com seu próprio `WebDriver` em thread de plataforma.
+
+### Onde o projeto usa
+
+| Local | O que faz |
+|-------|-----------|
+| `ApiClient.VIRTUAL_EXECUTOR` | `Executors.newVirtualThreadPerTaskExecutor()` compartilhado |
+| `HttpClient.newBuilder().executor(...)` | Requisições REST (`login`, `register`, `GET /products`, `DELETE`) rodam no executor virtual |
+| `tryLoginAdmin()` / `tryLoginSupport()` | Várias credenciais do `.env` são testadas **em paralelo**; retorna a primeira sessão válida **na ordem de prioridade** (E2E → SEED → fallback) |
+
+### Trecho principal (`ApiClient`)
+
+```java
+private static final ExecutorService VIRTUAL_EXECUTOR =
+    Executors.newVirtualThreadPerTaskExecutor();
+
+private static final HttpClient HTTP =
+    HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1)
+        .connectTimeout(Duration.ofSeconds(15))
+        .executor(VIRTUAL_EXECUTOR)
+        .build();
+```
+
+Probes de login (resumo do fluxo):
+
+```java
+for (String[] pair : pairs) {
+  futures.add(
+      VIRTUAL_EXECUTOR.submit(() -> tryLoginWithRole(pair[0], pair[1], roleCheck)));
+}
+// Resultados são lidos na ordem da lista (prioridade do .env preservada).
+```
+
+### Requisitos e limites
+
+- **JDK 21+** no processo que executa os testes (`java -version`).
+- **Compilação** continua com `maven.compiler.release=21` (virtual threads fazem parte da API estável do 21).
+- **Benefício:** menos bloqueio ao resolver `tryLoginSupport()` com vários pares de credenciais e ao disparar várias chamadas HTTP na suíte.
+- **Não usar** virtual threads para compartilhar um único `WebDriver` entre testes — o JUnit + Selenium não foram desenhados para isso.
+
+### O que não mudou
+
+- Paralelismo JUnit e browsers: ver [Execução paralela (JUnit)](#-execução-paralela-junit).
+- `fill()` / `clearField()` na UI: ainda sincronizam no thread do teste que segura o driver.
 
 ---
 
@@ -220,7 +296,7 @@ Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão
 
 ## ✅ Requisitos
 
-- **JDK** — **21+** para compilar (Maven usa o JDK do processo; `release=21`). **23** recomendado para executar os testes
+- **JDK** — **21+** para compilar (`release=21`); **23 ou 25** recomendado para executar os testes (a CI usa **25**)
 - **Maven** — **4.0.0-rc-5** (obrigatório para `maven-compiler-plugin` 4.x). Use o **Maven Wrapper** (`mvnw` / `mvnw.cmd`) em `projects-tests/selenium-e2e/` — não precisa instalar Maven globalmente
 - **Navegador** — Chrome, Firefox ou Edge instalados (drivers resolvidos via WebDriverManager)
 - **Aplicação** — API (`server-ts`) em `http://127.0.0.1:3001` e SPA em `http://127.0.0.1:5174`
@@ -228,15 +304,15 @@ Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão
 
 > **Locale:** o `WebDriverFactory` força **pt-BR** nos browsers (Chrome/Edge/Firefox) para garantir textos em português.
 
-### Instalar e configurar o Java 23
+### Instalar e configurar o JDK (23 ou 25)
 
-1. Instale um **JDK 23** (por exemplo [Eclipse Temurin](https://adoptium.net/) ou a distribuição da sua empresa).
+1. Instale um **JDK 23** ou **JDK 25** (recomendado alinhar com a CI: **25** LTS — [Eclipse Temurin](https://adoptium.net/) ou distribuição corporativa).
 2. Defina **`JAVA_HOME`** para a pasta raiz do JDK (não use apenas o JRE).
 3. Confirme no terminal:
 
    ```bash
    java -version
-   # esperado: versão 23.x
+   # esperado: 23.x ou 25.x (major ≥ 21 para compilar; 23+ recomendado para rodar)
 
    echo %JAVA_HOME%
    REM Windows CMD
@@ -246,6 +322,8 @@ Cenários em `src/test/java/com/tester/web/e2e/tests/*FeatureTest.java`. Padrão
    ```
 
 4. Reinicie o terminal/IDE depois de alterar variáveis de ambiente.
+
+> Na **GitHub Actions**, o workflow fixa **Java 25**; localmente, **23** e **25** são equivalentes para esta suite, desde que `java -version` aponte para o JDK escolhido.
 
 ---
 
@@ -357,21 +435,20 @@ Arquivo: `src/test/resources/junit-platform.properties`.
 
 | Propriedade | Valor | Significado |
 |-------------|-------|-------------|
-| `parallel.enabled` | `true` | Paralelismo JUnit 5 ativo |
+| `parallel.enabled` | `true` | Paralelismo JUnit 5 ativo (pool disponível) |
 | `config.strategy` | `fixed` | Pool fixo (evite `dynamic.factor` em máquinas com poucos núcleos) |
-| `fixed.parallelism` | `3` | Até **3 métodos** (`@Test`) em paralelo na classe em execução |
-| `mode.classes.default` | `same_thread` | **Uma feature** (`*FeatureTest`) por vez |
-| `mode.default` | `concurrent` | Métodos **na mesma classe** podem rodar juntos (até 3 browsers) |
+| `fixed.parallelism` | `2` | Tamanho do pool JUnit (reservado se `mode.default=concurrent`) |
+| `mode.classes.default` | `same_thread` | **Uma classe** `*FeatureTest` por vez |
+| `mode.default` | `same_thread` | **Um método** `@Test` por vez dentro da classe |
 
-### Estratégia
+### Estratégia atual (estável para UI)
 
-- **Um `WebDriver` por `@Test`** — `AbstractUiTest` abre no `@BeforeEach` e fecha no `@AfterEach`.
-- **Uma feature por vez**, com até **3 instâncias Chrome** simultâneas dentro dessa feature (ex.: 3 métodos de `CartCheckoutFeatureTest`).
-- Classes que compartilham o mesmo usuário seed (ex. `reinaldo@test.com`) podem ter interferência de carrinho/sessão se rodarem em paralelo — prefira usuário único por teste ou `@Execution(SAME_THREAD)` só naquela classe.
-- **Não** use `@Execution(SAME_THREAD)` em `AbstractUiTest` — força a suíte inteira em uma thread.
-- Override: `-Djunit.jupiter.execution.parallel.config.fixed.parallelism=1` (só 1 browser por feature) ou `parallel.enabled=false` (tudo serial).
+- **Um `WebDriver` por `@Test`** — `AbstractUiTest` abre no `@BeforeEach` e encerra no `@AfterEach` (`closeBrowser`).
+- **Uma feature por vez** e **um teste por vez** — evita corrida de carrinho/sessão com o usuário seed (`reinaldo@test.com`) e reduz flakiness de Chrome.
+- **Virtual threads** no `ApiClient` são independentes: aceleram HTTP (login admin/support, register, cleanup), não paralelizam browsers.
+- Para voltar a métodos concorrentes na mesma classe: `mode.default=concurrent` e ajuste `fixed.parallelism` (ex.: `3`) — só se cada teste usar usuário/dados isolados.
 
-Desabilitar para debug:
+Desabilitar paralelismo JUnit para debug:
 
 ```powershell
 .\mvnw.cmd test "-Djunit.jupiter.execution.parallel.enabled=false"
@@ -439,10 +516,10 @@ mvn -f projects-tests/selenium-e2e/pom.xml clean test
 ### Problemas comuns no Windows
 
 - `No such property: maven.mainClass` — causa: Maven Wrapper com Maven 4.0.0-beta-5 a rc-4 sem a propriedade de bootstrap. Solução: atualize o repo (`.mvn/jvm.config`, `mvnw` com `-Dmaven.mainClass=org.apache.maven.cling.MavenCling`, wrapper em **4.0.0-rc-5**) e rode de `projects-tests/selenium-e2e/` com `.\mvnw.cmd` ou `./mvnw`
-- `No enum constant SourceVersion.RELEASE_23` — causa: `release=23` no `pom.xml`, mas o **Maven está rodando em JDK 21 ou 22** (`java -version`). Solução: use `release=21` (padrão do projeto) **ou** configure IDE/terminal para executar Maven com JDK 23
+- `No enum constant SourceVersion.RELEASE_23` (ou `RELEASE_25`) — causa: `release` no `pom.xml` maior que o JDK do processo Maven. Solução: mantenha `release=21` (padrão) **ou** configure IDE/terminal com JDK **≥** o `release` desejado (23 ou 25)
 - `bash: ./mvnw: No such file or directory` — causa: comando na **raiz** do repo. Solução: `cd projects-tests/selenium-e2e`
 - `mvnw.cmd: command not found` (Git Bash) — causa: sem caminho completo. Solução: `./projects-tests/selenium-e2e/mvnw.cmd clean test`
-- `JAVA_HOME is set to an invalid directory` — causa: `JAVA_HOME` com pasta que não existe. Solução: corrija o `JAVA_HOME` para apontar para um JDK 23 válido
+- `JAVA_HOME is set to an invalid directory` — causa: `JAVA_HOME` com pasta que não existe. Solução: corrija o `JAVA_HOME` para um JDK 23 ou 25 válido
 - `PKIX path building failed` ao baixar do Maven Central — causa: certificado corporativo/SSL no Java truststore. Solução: importe o certificado da empresa no truststore do Java usado pelo Maven e/ou configure `~/.m2/settings.xml` corporativo
 
 ### TLS/PKIX sem permissão de administrador (Windows/Linux)
@@ -455,7 +532,7 @@ mvnw.cmd clean test -Dbrowser=firefox -Dheadless=true "-Dbase.url=http://127.0.0
 ```
 
 Esse comando:
-1. Provisiona JDK 23 (script Python);
+1. Provisiona JDK (script Python; alvo compatível com o truststore);
 2. Gera `.certs/maven-truststore.p12` com certificados do Windows;
 3. Define `MAVEN_OPTS` com `javax.net.ssl.trustStore` para o Maven Wrapper.
 
@@ -527,7 +604,7 @@ Dispara em **push** e **pull request** para `main`, quando há alterações em:
 
 ```mermaid
 flowchart TD
-  A[checkout] --> B[setup Node 22 + Java 23]
+  A[checkout] --> B[setup Node 22 + Java 25]
   B --> C[setup browser + driver]
   C --> D[npm install em web/]
   D --> E[docker compose up -d --build]
@@ -540,7 +617,7 @@ flowchart TD
 ```
 
 1. **Checkout** do repositório.
-2. **Setup:** Node.js 22 (cache npm em `web/`), Java 23 Temurin (cache Maven).
+2. **Setup:** Node.js 22 (cache npm em `web/`), **Java 25** Temurin (cache Maven).
 3. **Browser:** Chrome via `browser-actions/setup-chrome@v1`; Firefox via `setup-firefox@v1` + `setup-geckodriver@latest` (token `GITHUB_TOKEN`).
 4. **Stack:** `docker compose up -d --build` (API + web + banco).
 5. **Readiness:** `wait-on` em `http://127.0.0.1:3001/api/products` e `http://127.0.0.1:5174`.
@@ -659,14 +736,24 @@ Fluxo: `*FeatureTest` → `*PageAction` → `*PageElements` → `BasePage`
 
 | Helper | Uso |
 |--------|-----|
-| `click(By)` | Botões e links |
+| `click(By)` | Botões e links (fallback JS se interceptado) |
 | `clickFirst(By)` | Primeiro item de uma lista (ex.: primeiro “Adicionar ao Carrinho”) |
-| `fill(By, String)` | Campos de texto |
+| `fill(By, String)` | Limpa via `clearField`, foca e digita |
+| `clearField(By)` / `clearFieldById(String)` | Limpa inputs React/MUI (`value = ''` + evento `input`) |
 | `fillAndPressEnter(By, String)` | Busca no catálogo |
+| `isVisible(By)` / `isPresent(By)` | Visível vs presente no DOM (`presenceOfElementLocated`) |
 | `inputValue(By)` / `textOf(By)` | Ler valor ou texto |
 | `setInputValueWithJs(By, String)` | Inputs controlados (pagamentos, quantidade) |
+| `setFirstInputValueWithJs(By, String)` | Primeiro input da lista (ex.: quantidade no carrinho) |
 | `waitUntilToastIsGone()` | Antes de cliques no header/carrinho/checkout |
-| `waitUntilToastIsGone()` | Depois de add/remove no carrinho |
+| `waitUntilToastCycleCompletes()` | Depois de add/remove no carrinho |
+| `ensureToastContainsOneOf(...)` | Toast com mensagem PT ou EN (ex.: e-mail duplicado) |
+
+### `PaymentMethod` no checkout
+
+O enum `support/PaymentMethod` centraliza rótulos PT/EN e textos do botão de confirmação. `CartCheckoutPageAction` monta os `By` via `paymentMethod.displayName()` e `paymentMethod.submitButtonText()` (helpers em `CartCheckoutPageElements`).
+
+`PaymentsPageAction.whenClearCardNumber()` usa `clearField(CARD_NUMBER_INPUT)` para resetar o BIN antes de cada bandeira.
 
 `WebElement` fica restrito à implementação privada do `BasePage` (ex.: `clickOnElement`).
 
@@ -717,11 +804,11 @@ Bibliotecas, plugins e documentação oficial usados em `projects-tests/selenium
 
 ### Stack principal
 
-- **Java (JDK)** — 21 release / 23 target — Linguagem e runtime — [Adoptium](https://adoptium.net/) · [Java docs](https://docs.oracle.com/en/java/)
+- **Java (JDK)** — `release=21` / CI com **JDK 25** — Linguagem e runtime — [Adoptium](https://adoptium.net/) · [Virtual Threads (JEP 444)](https://openjdk.org/jeps/444)
 - **Selenium Java** — 4.44.0 — Automação WebDriver (Chrome, Firefox, Edge) — [selenium.dev](https://www.selenium.dev/documentation/) · [Maven Central](https://central.sonatype.com/artifact/org.seleniumhq.selenium/selenium-java)
 - **JUnit Jupiter** — 5.11.4 — Runner, parametrização, paralelismo, assumptions — [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
 - **Maven Surefire** — 3.5.5 — Execução dos testes no build — [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)
-- **Maven Compiler Plugin** — 4.0.0-beta-4 — Compilação Java 21 (`release=21`; `release=23` exige Maven rodando em JDK 23) — [Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/)
+- **Maven Compiler Plugin** — 4.0.0-beta-4 — Compilação Java 21 (`release=21`; `release=23`/`25` exige Maven em JDK ≥ release) — [Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/)
 - **Apache Maven** — 4.0.0-rc-5 — Versão fixada no Maven Wrapper (`.mvn/wrapper/maven-wrapper.properties`)
 - **Maven Wrapper** — 3.3.4 — Build reproduzível sem Maven global — [Maven Wrapper](https://maven.apache.org/wrapper/)
 
