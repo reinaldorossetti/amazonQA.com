@@ -1,0 +1,217 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: frontend/real-purchase-flow.spec.ts >> 🛒 Fluxo de Compra Real (sem mock) >> TS03 — Múltiplos produtos aleatórios + checkout com PIX
+- Location: e2e/specs/frontend/real-purchase-flow.spec.ts:323:3
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 201
+Received: 400
+```
+
+# Test source
+
+```ts
+  1   | /**
+  2   |  * real-purchase-flow.spec.ts
+  3   |  *
+  4   |  * Fluxo de compra REAL — sem nenhum mock de rede.
+  5   |  * Todos os passos batem na API real em http://localhost:3001.
+  6   |  *
+  7   |  * Cobertura:
+  8   |  *   TS01 — Login real → catálogo com produtos reais →
+  9   |  *           produto aleatório → carrinho → checkout → cartão → confirmação.
+  10  |  *
+  11  |  *   TS02 — Busca produto por nome (via API) + compra com cartão de crédito.
+  12  |  *
+  13  |  *   TS03 — Múltiplos produtos aleatórios + compra com PIX.
+  14  |  *
+  15  |  *   TS04 — Admin cria usuário + produto via API e remove ambos na sequência.
+  16  |  */
+  17  | 
+  18  | import { test, expect } from '../../fixtures/ui.fixture';
+  19  | import { LoginPage } from '../../pages/LoginPage';
+  20  | import { CatalogPage } from '../../pages/CatalogPage';
+  21  | import { CartPage } from '../../pages/CartPage';
+  22  | import { NavComponent } from '../../pages/NavComponent';
+  23  | import { ThankYouPage } from '../../pages/ThankYouPage';
+  24  | import { loginAsAdminWithFallback } from '../../helpers/adminAuth';
+  25  | import { isAdminAuthUnavailableError } from '../../helpers/adminAuth';
+  26  | 
+  27  | type RealFlowUser = {
+  28  |   email: string;
+  29  |   password: string;
+  30  | };
+  31  | 
+  32  | type AdminLoginPayload = {
+  33  |   accessToken: string;
+  34  |   user: {
+  35  |     id: number;
+  36  |     first_name: string;
+  37  |     last_name: string;
+  38  |     email: string;
+  39  |     isAdmin?: boolean;
+  40  |   };
+  41  | };
+  42  | 
+  43  | // ─── URL base da API real ─────────────────────────────────────────────────────
+  44  | const API_BASE = 'http://localhost:3001/api';
+  45  | 
+  46  | /**
+  47  |  * Helpers de preenchimento de campos do cartão usando pressSequentially
+  48  |  * para garantir que os eventos React (onChange) disparem corretamente.
+  49  |  */
+  50  | async function fillCardField(page: any, selector: string, value: string) {
+  51  |   const loc = page.locator(selector).first();
+  52  |   await loc.waitFor({ state: 'visible', timeout: 15_000 });
+  53  |   await loc.click({ clickCount: 3 }); // seleciona tudo
+  54  |   await loc.pressSequentially(value, { delay: 60 });
+  55  | }
+  56  | 
+  57  | /** Busca todos os produtos da API real e retorna um aleatório */
+  58  | async function fetchRandomProduct(): Promise<{ id: number; name: string; price: number }> {
+  59  |   const res = await fetch(`${API_BASE}/products`);
+  60  |   if (!res.ok) throw new Error(`GET /api/products falhou: ${res.status}`);
+  61  |   const products: Array<{ id: number; name: string; price: number }> = await res.json();
+  62  |   if (!products.length) throw new Error('API não retornou produtos');
+  63  |   return products[Math.floor(Math.random() * products.length)];
+  64  | }
+  65  | 
+  66  | /** Busca todos os produtos já embaralhados */
+  67  | async function fetchShuffledProducts(): Promise<Array<{ id: number; name: string; price: number }>> {
+  68  |   const res = await fetch(`${API_BASE}/products`);
+  69  |   if (!res.ok) throw new Error(`GET /api/products falhou: ${res.status}`);
+  70  |   const products: Array<{ id: number; name: string; price: number }> = await res.json();
+  71  |   return [...products].sort(() => Math.random() - 0.5);
+  72  | }
+  73  | 
+  74  | /** Cria um usuário real exclusivo para o cenário e retorna as credenciais */
+  75  | async function createRealFlowUser(request: any): Promise<RealFlowUser> {
+  76  |   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  77  |   const credentials: RealFlowUser = {
+  78  |     email: `e2e.real.flow.${suffix}@example.com`,
+  79  |     password: 'Senha@1234',
+  80  |   };
+  81  | 
+  82  |   const response = await request.post(`${API_BASE}/users/register`, {
+  83  |     data: {
+  84  |       first_name: 'Real',
+  85  |       last_name: `Flow-${suffix}`,
+  86  |       email: credentials.email,
+  87  |       password: credentials.password,
+  88  |       person_type: 'PF',
+  89  |     },
+  90  |   });
+  91  | 
+> 92  |   expect(response.status()).toBe(201);
+      |                             ^ Error: expect(received).toBe(expected) // Object.is equality
+  93  |   return credentials;
+  94  | }
+  95  | 
+  96  | async function loginAsAdmin(request: any): Promise<AdminLoginPayload> {
+  97  |   const payload = await loginAsAdminWithFallback(request, `${API_BASE}/users/login`);
+  98  |   return payload as AdminLoginPayload;
+  99  | }
+  100 | 
+  101 | async function createUserForDeletion(request: any) {
+  102 |   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  103 |   const response = await request.post(`${API_BASE}/users/register`, {
+  104 |     data: {
+  105 |       first_name: 'Delete',
+  106 |       last_name: `User-${suffix}`,
+  107 |       email: `e2e.delete.user.${suffix}@example.com`,
+  108 |       password: 'Senha@1234',
+  109 |       person_type: 'PF',
+  110 |     },
+  111 |   });
+  112 | 
+  113 |   expect(response.status()).toBe(201);
+  114 |   return response.json() as Promise<{ id: number; email: string }>;
+  115 | }
+  116 | 
+  117 | async function createProductForDeletion(request: any, accessToken: string) {
+  118 |   const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  119 |   const response = await request.post(`${API_BASE}/products`, {
+  120 |     headers: { Authorization: `Bearer ${accessToken}` },
+  121 |     data: {
+  122 |       name: `Produto Delete API ${suffix}`,
+  123 |       price: 129.9,
+  124 |       category: `Delete-E2E-${suffix}`,
+  125 |       description: 'Produto criado no fluxo real para validar exclusão por API',
+  126 |     },
+  127 |   });
+  128 | 
+  129 |   expect(response.status()).toBe(201);
+  130 |   return response.json() as Promise<{ id: number; name: string }>;
+  131 | }
+  132 | 
+  133 | /** Helper: login real no app e aguarda redirecionamento para /minha-conta */
+  134 | async function doRealLogin(page: any, credentials: RealFlowUser) {
+  135 |   const loginPage = new LoginPage(page);
+  136 |   await loginPage.goToLogin();
+  137 |   await loginPage.doLogin(credentials.email, credentials.password);
+  138 |   await expect(page).toHaveURL('/minha-conta', { timeout: 20_000 });
+  139 |   const nav = new NavComponent(page);
+  140 |   await expect(nav.getUserGreetingLocator()).toBeVisible();
+  141 | }
+  142 | 
+  143 | /** Helper: vai ao catálogo e adiciona N produtos ao carrinho */
+  144 | async function addProductsToCart(page: any, waitForPageLoad: any, count: number) {
+  145 |   const catalogPage = new CatalogPage(page);
+  146 |   const navComponent = new NavComponent(page);
+  147 | 
+  148 |   await catalogPage.goToCatalog();
+  149 |   await waitForPageLoad(page, 'catalog');
+  150 | 
+  151 |   // Aguarda header do catálogo e botões de adicionar (produtos reais da API)
+  152 |   await page.getByTestId(catalogPage.header).waitFor({ state: 'visible', timeout: 20_000 });
+  153 |   const addButtons = catalogPage.getAddToCartButtonLocator();
+  154 |   await addButtons.first().waitFor({ state: 'visible', timeout: 20_000 });
+  155 | 
+  156 |   const available = await addButtons.count();
+  157 |   const toAdd = Math.min(count, available);
+  158 | 
+  159 |   for (let i = 0; i < toAdd; i++) {
+  160 |     await catalogPage.getAddToCartButtonLocator().nth(i).click();
+  161 |     await page.waitForTimeout(500);
+  162 |   }
+  163 | 
+  164 |   return { navComponent, catalogPage, toAdd };
+  165 | }
+  166 | 
+  167 | /**
+  168 |  * Helper: preenche os dados do cartão de crédito na tela de pagamentos.
+  169 |  * Usa pressSequentially para garantir que os eventos React disparem.
+  170 |  */
+  171 | async function fillCreditCardForm(page: any) {
+  172 |   // Certifica que o método "Crédito" está selecionado (é o padrão)
+  173 |   const creditCard = page.getByText('Crédito', { exact: true });
+  174 |   if (await creditCard.count() > 0) {
+  175 |     await creditCard.first().click();
+  176 |     await page.waitForTimeout(400);
+  177 |   }
+  178 | 
+  179 |   // Preenche campos do cartão usando pressSequentially (garante eventos React)
+  180 |   await fillCardField(page, '#payments-card-holder-input', 'DEMO TESTER');
+  181 |   await fillCardField(page, '#payments-card-number-input', '4111111111111111');
+  182 |   await fillCardField(page, '#payments-card-expiry-input', '1228');
+  183 |   await fillCardField(page, '#payments-card-cvv-input', '123');
+  184 | 
+  185 |   // Aguarda a detecção da bandeira Visa aparecer
+  186 |   await page.waitForTimeout(400);
+  187 | }
+  188 | 
+  189 | // ─────────────────────────────────────────────────────────────────────────────
+  190 | 
+  191 | test.describe('🛒 Fluxo de Compra Real (sem mock)', () => {
+  192 | 
+```

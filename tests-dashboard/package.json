@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.6.0"
+  },
+  "scripts": {
+    "dashboard-api": "node ./tests-dashboard/api-server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "yaml": "^2.8.3"
+  }
+}

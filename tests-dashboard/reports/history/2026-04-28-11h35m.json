@@ -1,0 +1,156 @@
+{
+  "generatedAt": "2026-04-28T14:35:39.945Z",
+  "source": "github-actions-artifacts",
+  "unit": {
+    "web": {
+      "tests": 171,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 171,
+      "status": "passed",
+      "sourceFile": "reports/unit-tests-web/junit.xml",
+      "coverage": {
+        "statements": {
+          "percent": 83.17,
+          "covered": 954,
+          "total": 1147
+        },
+        "branches": {
+          "percent": 70.76,
+          "covered": 610,
+          "total": 862
+        },
+        "functions": {
+          "percent": 78.32,
+          "covered": 253,
+          "total": 323
+        },
+        "lines": {
+          "percent": 84.89,
+          "covered": 860,
+          "total": 1013
+        }
+      },
+      "coverageSourceFile": "reports/unit-tests-web/coverage/index.html"
+    },
+    "backend": {
+      "tests": 47,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 47,
+      "status": "passed",
+      "sourceFile": "reports/unit-tests-backend/junit.xml"
+    },
+    "totals": {
+      "tests": 218,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 218,
+      "status": "passed"
+    }
+  },
+  "e2e": {
+    "byProject": {
+      "api": {
+        "tests": 104,
+        "failures": 0,
+        "errors": 104,
+        "skipped": 0,
+        "passed": 0,
+        "status": "failed",
+        "sourceFile": "reports/e2e-junit-api/junit-report.xml"
+      },
+      "frontend-chromium": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 50,
+        "status": "passed",
+        "sourceFile": "reports/e2e-junit-frontend-chromium/junit-report.xml"
+      },
+      "frontend-edge": {
+        "tests": 50,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 48,
+        "status": "failed",
+        "sourceFile": "reports/e2e-junit-frontend-edge/junit-report.xml"
+      },
+      "frontend-webkit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0,
+        "status": "unknown",
+        "sourceFile": null
+      },
+      "mobile-android": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0,
+        "status": "unknown",
+        "sourceFile": null
+      }
+    },
+    "totals": {
+      "tests": 204,
+      "failures": 2,
+      "errors": 104,
+      "skipped": 0,
+      "passed": 98,
+      "status": "failed"
+    }
+  },
+  "scan": {
+    "webUnitJunitPath": "reports/unit-tests-web/junit.xml",
+    "backendUnitJunitPath": "reports/unit-tests-backend/junit.xml",
+    "webUnitCoveragePath": "reports/unit-tests-web/coverage/index.html",
+    "playwrightIndexFiles": [],
+    "e2eDirs": [],
+    "scanRoots": [
+      "D:\\github-projects\\tester.com\\tests-dashboard\\reports",
+      "D:\\github-projects\\tester.com\\tests-dashboard",
+      "D:\\github-projects\\tester.com\\tests-dashboard"
+    ]
+  },
+  "qaEfficiency": {
+    "defectDensity": {
+      "bugs": 11,
+      "kloc": 1,
+      "value": 11
+    },
+    "automationROI": {
+      "manualHours": 27.9,
+      "automationHours": 1.4,
+      "savedHours": 26.5,
+      "hourlyRate": 60
+    },
+    "flakiness": {
+      "flakyTests": 0,
+      "totalE2E": 204,
+      "value": 0
+    },
+    "defectLeakage": {
+      "escapedToProduction": 0,
+      "detectedInQA": 11,
+      "leakageRate": 0
+    },
+    "testAutomationCoverage": {
+      "automated": 204,
+      "manual": 31,
+      "coveragePercent": 86.8,
+      "totalTestCases": 235
+    },
+    "mttr": {
+      "meanTimeToRepair": 0
+    }
+  }
+}

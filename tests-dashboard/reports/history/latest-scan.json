@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-05-23T21:09:08.164Z",
+  "writtenAt": "2026-05-23T21:09:08.165Z",
+  "scan": {
+    "webUnitJunitPath": "tests-dashboard/reports/unit-tests-web/junit.xml",
+    "backendUnitJunitPath": "tests-dashboard/reports/e2e-junit-api/junit-report.xml",
+    "webUnitCoveragePath": "tests-dashboard/reports/unit-tests-web/coverage/index.html",
+    "playwrightIndexFiles": [],
+    "e2eDirs": [],
+    "scanRoots": [
+      "/home/runner/work/amazonQA.com/amazonQA.com/tests-dashboard/reports",
+      "/home/runner/work/amazonQA.com/amazonQA.com",
+      "/home/runner/work/amazonQA.com/amazonQA.com"
+    ]
+  }
+}
