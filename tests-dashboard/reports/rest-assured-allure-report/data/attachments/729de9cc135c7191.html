@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Lightweight Linen Clock 1779720609459&quot;,
+    &quot;price&quot;: 1774.67,
+    &quot;description&quot;: &quot;Quas aperiam voluptatum dolores nihil.&quot;,
+    &quot;category&quot;: &quot;Automotive-1779720609459&quot;,
+    &quot;image&quot;: &quot;https://www.micah-lehner.info/explicabo?dolorum=ipsam&amp;corporis=placeat&quot;,
+    &quot;manufacturer&quot;: &quot;Kozey and Sons&quot;,
+    &quot;line&quot;: &quot;Linen&quot;,
+    &quot;model&quot;: &quot;NM9KO0&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDksImV4cCI6MTc3OTcyNDIwOX0.1dsQv6tjWT8BmbrhQ0W2THste2ycNilHnHVTcQTEZ5g</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDksImV4cCI6MTc3OTcyNDIwOX0.1dsQv6tjWT8BmbrhQ0W2THste2ycNilHnHVTcQTEZ5g&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Lightweight Linen Clock 1779720609459&quot;,
+    &quot;price&quot;: 1774.67,
+    &quot;description&quot;: &quot;Quas aperiam voluptatum dolores nihil.&quot;,
+    &quot;category&quot;: &quot;Automotive-1779720609459&quot;,
+    &quot;image&quot;: &quot;https://www.micah-lehner.info/explicabo?dolorum=ipsam&amp;corporis=placeat&quot;,
+    &quot;manufacturer&quot;: &quot;Kozey and Sons&quot;,
+    &quot;line&quot;: &quot;Linen&quot;,
+    &quot;model&quot;: &quot;NM9KO0&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-23T21:56:51.583Z",
-  "writtenAt": "2026-05-23T21:56:51.585Z",
+  "generatedAt": "2026-05-25T14:50:44.248Z",
+  "writtenAt": "2026-05-25T14:50:44.250Z",
   "scan": {
-    "webUnitJunitPath": "tests-dashboard/reports/unit-tests-web/junit.xml",
-    "backendUnitJunitPath": "tests-dashboard/reports/e2e-junit-api/junit-report.xml",
-    "webUnitCoveragePath": "tests-dashboard/reports/unit-tests-web/coverage/index.html",
+    "webUnitJunitPath": "web/junit-report.xml",
+    "backendUnitJunitPath": null,
+    "webUnitCoveragePath": null,
     "playwrightIndexFiles": [],
     "e2eDirs": [],
     "scanRoots": [

@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Rustic Rubber Knife 1779720606668&quot;,
+    &quot;price&quot;: 4339.12,
+    &quot;description&quot;: &quot;Quod in culpa sunt cumque doloribus provident.&quot;,
+    &quot;category&quot;: &quot;Automotive &amp; Grocery-1779720606668&quot;,
+    &quot;image&quot;: &quot;http://www.jewell-schmeler.info:55356/veritatis/iure?unde=voluptate&amp;ea=dolore&quot;,
+    &quot;manufacturer&quot;: &quot;O&#39;Kon-Berge&quot;,
+    &quot;line&quot;: &quot;Plastic&quot;,
+    &quot;model&quot;: &quot;UJD8R3&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzIwNjA1NDU4QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzIwNjA2LCJleHAiOjE3Nzk3MjQyMDZ9.zHFVapqjNq7VxCBlfFXByaio5fjkQt7w1ym3HKCCWtQ</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzIwNjA1NDU4QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzIwNjA2LCJleHAiOjE3Nzk3MjQyMDZ9.zHFVapqjNq7VxCBlfFXByaio5fjkQt7w1ym3HKCCWtQ&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Rustic Rubber Knife 1779720606668&quot;,
+    &quot;price&quot;: 4339.12,
+    &quot;description&quot;: &quot;Quod in culpa sunt cumque doloribus provident.&quot;,
+    &quot;category&quot;: &quot;Automotive &amp; Grocery-1779720606668&quot;,
+    &quot;image&quot;: &quot;http://www.jewell-schmeler.info:55356/veritatis/iure?unde=voluptate&amp;ea=dolore&quot;,
+    &quot;manufacturer&quot;: &quot;O&#39;Kon-Berge&quot;,
+    &quot;line&quot;: &quot;Plastic&quot;,
+    &quot;model&quot;: &quot;UJD8R3&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

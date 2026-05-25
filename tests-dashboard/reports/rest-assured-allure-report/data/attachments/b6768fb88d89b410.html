@@ -1,0 +1,40 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;price&quot;: 1202.51,
+    &quot;description&quot;: &quot;Modi voluptate provident delectus cum.&quot;,
+    &quot;category&quot;: &quot;Toys-1779720610914&quot;,
+    &quot;image&quot;: &quot;https://www.abel-harber.com:39664/ipsum/isteveritatis&quot;,
+    &quot;manufacturer&quot;: &quot;Waelchi, Tillman and Conn&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;8GOENN&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MTAsImV4cCI6MTc3OTcyNDIxMH0.RR7aqH9EBZ53bHi9cRpytw08FjIacZ3SzGEqOvL669Y</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MTAsImV4cCI6MTc3OTcyNDIxMH0.RR7aqH9EBZ53bHi9cRpytw08FjIacZ3SzGEqOvL669Y&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;price&quot;: 1202.51,
+    &quot;description&quot;: &quot;Modi voluptate provident delectus cum.&quot;,
+    &quot;category&quot;: &quot;Toys-1779720610914&quot;,
+    &quot;image&quot;: &quot;https://www.abel-harber.com:39664/ipsum/isteveritatis&quot;,
+    &quot;manufacturer&quot;: &quot;Waelchi, Tillman and Conn&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;8GOENN&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

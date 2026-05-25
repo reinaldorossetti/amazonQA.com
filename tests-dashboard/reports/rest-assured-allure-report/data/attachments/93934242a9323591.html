@@ -1,0 +1,42 @@
+<div>PUT to http://127.0.0.1:3001/api/products/49</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Produto Atualizado 1779720610963&quot;,
+    &quot;price&quot;: 222.22,
+    &quot;description&quot;: &quot;Produto para teste automatizado&quot;,
+    &quot;category&quot;: &quot;Playwright-1779720610963&quot;,
+    &quot;image&quot;: &quot;https://example.com/pw-product.jpg&quot;,
+    &quot;manufacturer&quot;: &quot;PW&quot;,
+    &quot;line&quot;: &quot;Automation&quot;,
+    &quot;model&quot;: &quot;PW-1&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJyZWlsb2FkQGdtYWlsLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyMDYxMCwiZXhwIjoxNzc5NzI0MjEwfQ.0KvbVPejeAa-ihrH93McxerHQ7qylexVGNSyesuCXQQ</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X PUT &#39;http://127.0.0.1:3001/api/products/49&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJyZWlsb2FkQGdtYWlsLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyMDYxMCwiZXhwIjoxNzc5NzI0MjEwfQ.0KvbVPejeAa-ihrH93McxerHQ7qylexVGNSyesuCXQQ&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Produto Atualizado 1779720610963&quot;,
+    &quot;price&quot;: 222.22,
+    &quot;description&quot;: &quot;Produto para teste automatizado&quot;,
+    &quot;category&quot;: &quot;Playwright-1779720610963&quot;,
+    &quot;image&quot;: &quot;https://example.com/pw-product.jpg&quot;,
+    &quot;manufacturer&quot;: &quot;PW&quot;,
+    &quot;line&quot;: &quot;Automation&quot;,
+    &quot;model&quot;: &quot;PW-1&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

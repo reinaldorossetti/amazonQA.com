@@ -1,0 +1,40 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Intelligent Wooden Bottle 1779720607170&quot;,
+    &quot;price&quot;: 8975.97,
+    &quot;description&quot;: &quot;Adipisci doloribus corporis perferendis vitae amet natus.&quot;,
+    &quot;category&quot;: &quot;Baby, Beauty &amp; Grocery-1779720607170&quot;,
+    &quot;image&quot;: &quot;https://www.noel-mayer.info:49374/ab#aspernatur&quot;,
+    &quot;manufacturer&quot;: &quot;Moore LLC&quot;,
+    &quot;line&quot;: &quot;Iron&quot;,
+    &quot;model&quot;: &quot;379V1Y&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDcsImV4cCI6MTc3OTcyNDIwN30.ylZDgTMF8qOYlZ_gsEMHZ7mAk41LPNEWIsPm39V8ug4</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDcsImV4cCI6MTc3OTcyNDIwN30.ylZDgTMF8qOYlZ_gsEMHZ7mAk41LPNEWIsPm39V8ug4&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Intelligent Wooden Bottle 1779720607170&quot;,
+    &quot;price&quot;: 8975.97,
+    &quot;description&quot;: &quot;Adipisci doloribus corporis perferendis vitae amet natus.&quot;,
+    &quot;category&quot;: &quot;Baby, Beauty &amp; Grocery-1779720607170&quot;,
+    &quot;image&quot;: &quot;https://www.noel-mayer.info:49374/ab#aspernatur&quot;,
+    &quot;manufacturer&quot;: &quot;Moore LLC&quot;,
+    &quot;line&quot;: &quot;Iron&quot;,
+    &quot;model&quot;: &quot;379V1Y&quot;
+}&#39;
+    </div>
+

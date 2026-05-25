@@ -1,0 +1,30 @@
+<div>POST to http://127.0.0.1:3001/api/orders/999999999/payments</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;method&quot;: &quot;credit&quot;,
+    &quot;amount&quot;: 10.0,
+    &quot;cardNumber&quot;: &quot;4111111111111111&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1IiwiZW1haWwiOiJyYS5wYXltZW50LjgyMzIxMDY5QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzIwNTg4LCJleHAiOjE3Nzk3MjQxODh9.eK9SE1186Kp-ei_Xqt9Wo7cne1c6QG7um-zQ1fdYiRw</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/orders/999999999/payments&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1IiwiZW1haWwiOiJyYS5wYXltZW50LjgyMzIxMDY5QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzIwNTg4LCJleHAiOjE3Nzk3MjQxODh9.eK9SE1186Kp-ei_Xqt9Wo7cne1c6QG7um-zQ1fdYiRw&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;method&quot;: &quot;credit&quot;,
+    &quot;amount&quot;: 10.0,
+    &quot;cardNumber&quot;: &quot;4111111111111111&quot;
+}&#39;
+    </div>
+

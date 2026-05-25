@@ -582,7 +582,7 @@ function getZeroMetrics(dateStr) {
 
 function getRoiEligibleE2ETotal(data) {
   const byProject = data?.e2e?.byProject || {};
-  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api'];
+  const roiProjects = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api', 'api-rest-assured'];
   return roiProjects.reduce((sum, key) => sum + safeNumber(byProject[key]?.tests), 0);
 }
 

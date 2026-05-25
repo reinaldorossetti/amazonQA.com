@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Heavy Duty Marble Pants 1779720608097&quot;,
+    &quot;price&quot;: 3521.18,
+    &quot;description&quot;: &quot;Expedita iste nesciunt adipisci distinctio itaque officiis voluptatibus.&quot;,
+    &quot;category&quot;: &quot;Baby &amp; Electronics-1779720608097&quot;,
+    &quot;image&quot;: &quot;https://www.leland-romaguera.name/veniam/minima#commodi&quot;,
+    &quot;manufacturer&quot;: &quot;Medhurst, Metz and Abernathy&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;FTN7X1&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDgsImV4cCI6MTc3OTcyNDIwOH0.jpJs1-dsaIsmRrx8owqSyL3MskANGVKE2fnGZGGKaTc</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDgsImV4cCI6MTc3OTcyNDIwOH0.jpJs1-dsaIsmRrx8owqSyL3MskANGVKE2fnGZGGKaTc&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Heavy Duty Marble Pants 1779720608097&quot;,
+    &quot;price&quot;: 3521.18,
+    &quot;description&quot;: &quot;Expedita iste nesciunt adipisci distinctio itaque officiis voluptatibus.&quot;,
+    &quot;category&quot;: &quot;Baby &amp; Electronics-1779720608097&quot;,
+    &quot;image&quot;: &quot;https://www.leland-romaguera.name/veniam/minima#commodi&quot;,
+    &quot;manufacturer&quot;: &quot;Medhurst, Metz and Abernathy&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;FTN7X1&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

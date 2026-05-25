@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Rustic Granite Bottle 1779720611317&quot;,
+    &quot;price&quot;: 5593.81,
+    &quot;description&quot;: &quot;Consequuntur facilis consectetur.&quot;,
+    &quot;category&quot;: &quot;Automotive, Garden &amp; Health-1779720611317&quot;,
+    &quot;image&quot;: &quot;https://www.noah-schroeder.co/aperiam/accusantium?eum=doloribus&amp;iste=dolorem&quot;,
+    &quot;manufacturer&quot;: &quot;Kuhic, Sawayn and Cruickshank&quot;,
+    &quot;line&quot;: &quot;Bronze&quot;,
+    &quot;model&quot;: &quot;PGXQRP&quot;,
+    &quot;shipping_cost&quot;: 43.8
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MTEsImV4cCI6MTc3OTcyNDIxMX0.41nhWihlSeEXyA-2dHnZl94odVe2RiUF5H2s43eaiHQ</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MTEsImV4cCI6MTc3OTcyNDIxMX0.41nhWihlSeEXyA-2dHnZl94odVe2RiUF5H2s43eaiHQ&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Rustic Granite Bottle 1779720611317&quot;,
+    &quot;price&quot;: 5593.81,
+    &quot;description&quot;: &quot;Consequuntur facilis consectetur.&quot;,
+    &quot;category&quot;: &quot;Automotive, Garden &amp; Health-1779720611317&quot;,
+    &quot;image&quot;: &quot;https://www.noah-schroeder.co/aperiam/accusantium?eum=doloribus&amp;iste=dolorem&quot;,
+    &quot;manufacturer&quot;: &quot;Kuhic, Sawayn and Cruickshank&quot;,
+    &quot;line&quot;: &quot;Bronze&quot;,
+    &quot;model&quot;: &quot;PGXQRP&quot;,
+    &quot;shipping_cost&quot;: 43.8
+}&#39;
+    </div>
+

@@ -22,7 +22,7 @@ Focada na estratégia de testes e visão macro.
 Central de atalhos para os relatórios detalhados gerados pelas ferramentas de teste:
 - **Web & Backend (Vitest):** Links diretos para os relatórios HTML de testes unitários e cobertura.
 - **E2E (Playwright):** Atalhos para os resultados das execuções em diferentes browsers (Chromium, Edge).
-- **API Tests:** Link para o relatório de integração de API.
+- **API Tests:** Playwright API, REST Assured (Allure + JUnit em `rest-assured-allure-report/` e `api-rest-assured/`).
 
 ### 2.3. Aba: Métricas CI (CI Metrics)
 Visão técnica e detalhada dos números da última pipeline:

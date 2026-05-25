@@ -1,0 +1,40 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Awesome Steel Chair 1779720608664&quot;,
+    &quot;description&quot;: &quot;Deleniti doloremque aliquid reprehenderit.&quot;,
+    &quot;category&quot;: &quot;Movies &amp; Sports-1779720608664&quot;,
+    &quot;image&quot;: &quot;https://www.shala-bogan.name:28130/&quot;,
+    &quot;manufacturer&quot;: &quot;Quigley Group&quot;,
+    &quot;line&quot;: &quot;Leather&quot;,
+    &quot;model&quot;: &quot;VU5GUG&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDgsImV4cCI6MTc3OTcyNDIwOH0.jpJs1-dsaIsmRrx8owqSyL3MskANGVKE2fnGZGGKaTc</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MDgsImV4cCI6MTc3OTcyNDIwOH0.jpJs1-dsaIsmRrx8owqSyL3MskANGVKE2fnGZGGKaTc&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Awesome Steel Chair 1779720608664&quot;,
+    &quot;description&quot;: &quot;Deleniti doloremque aliquid reprehenderit.&quot;,
+    &quot;category&quot;: &quot;Movies &amp; Sports-1779720608664&quot;,
+    &quot;image&quot;: &quot;https://www.shala-bogan.name:28130/&quot;,
+    &quot;manufacturer&quot;: &quot;Quigley Group&quot;,
+    &quot;line&quot;: &quot;Leather&quot;,
+    &quot;model&quot;: &quot;VU5GUG&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

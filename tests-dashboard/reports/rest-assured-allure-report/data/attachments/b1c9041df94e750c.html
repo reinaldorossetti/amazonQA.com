@@ -1,0 +1,28 @@
+<div>PUT to http://127.0.0.1:3001/api/users/me/address</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;address_zip&quot;: &quot;01001-000&quot;,
+    &quot;address_city&quot;: &quot;São Paulo&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MyIsImVtYWlsIjoiaXNhYmVsYS5nb21lc0B5YWhvby5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MjAsImV4cCI6MTc3OTcyNDIyMH0.1rSsil8xIAxIbyKO1lagWP8oYJZWnS-SV5r970i32sY</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X PUT &#39;http://127.0.0.1:3001/api/users/me/address&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MyIsImVtYWlsIjoiaXNhYmVsYS5nb21lc0B5YWhvby5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjA2MjAsImV4cCI6MTc3OTcyNDIyMH0.1rSsil8xIAxIbyKO1lagWP8oYJZWnS-SV5r970i32sY&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;address_zip&quot;: &quot;01001-000&quot;,
+    &quot;address_city&quot;: &quot;São Paulo&quot;
+}&#39;
+    </div>
+
