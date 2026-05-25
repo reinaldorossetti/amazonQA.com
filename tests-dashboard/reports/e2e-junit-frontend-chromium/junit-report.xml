@@ -1,7 +1,1032 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites id="" name="" tests="50" failures="0" skipped="0" errors="0" time="120.0">
-  <testsuite name="frontend-chromium" timestamp="2026-04-28T14:00:00" hostname="localhost" tests="50" failures="0" skipped="0" time="120.0" errors="0">
-    <testcase name="should login" classname="login.spec.ts" time="2.5"/>
-    <!-- Simulated passed tests -->
-  </testsuite>
+<testsuites id="" name="" tests="76" failures="5" skipped="0" errors="2" time="255.346889">
+<testsuite name="frontend/admin-management.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="2" failures="1" skipped="0" time="14.541" errors="0">
+<testcase name="Admin management › ADM01 - admin deve listar produtos reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="12.081">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-admin-management--8c51a-excluir-o-último-cadastrado-frontend-chromium-retry1/trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado" classname="frontend/admin-management.spec.ts" time="2.46">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/trace.zip]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [frontend-chromium] › frontend/admin-management.spec.ts:136:3 › Admin management › ADM02 - admin deve listar usuários reais e excluir o último cadastrado 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      64 |   });
+      65 |
+    > 66 |   expect(response.status()).toBe(201);
+         |                             ^
+      67 |   return response.json();
+      68 | }
+      69 |
+        at createRegularUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:66:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:149:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      64 |   });
+      65 |
+    > 66 |   expect(response.status()).toBe(201);
+         |                             ^
+      67 |   return response.json();
+      68 | }
+      69 |
+        at createRegularUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:66:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:149:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      64 |   });
+      65 |
+    > 66 |   expect(response.status()).toBe(201);
+         |                             ^
+      67 |   return response.json();
+      68 | }
+      69 |
+        at createRegularUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:66:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/admin-management.spec.ts:149:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-admin-management--33e89-excluir-o-último-cadastrado-frontend-chromium-retry2/error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="frontend/auth.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="13.305" errors="0">
+<testcase name="Login › TS01 - should log in successfully with next redirect and greeting" classname="frontend/auth.spec.ts" time="1.952">
+</testcase>
+<testcase name="Login › TS02 - should display error for invalid credentials" classname="frontend/auth.spec.ts" time="2.017">
+</testcase>
+<testcase name="Login › TS03 - should validate required fields" classname="frontend/auth.spec.ts" time="2.238">
+</testcase>
+<testcase name="Login › TS04 - should show validation when password is blank" classname="frontend/auth.spec.ts" time="2.22">
+</testcase>
+<testcase name="Login › TS05 - should show validation when email is blank" classname="frontend/auth.spec.ts" time="2.306">
+</testcase>
+<testcase name="Login › TS06 - should keep authenticated state after reload" classname="frontend/auth.spec.ts" time="2.572">
+</testcase>
+</testsuite>
+<testsuite name="frontend/cart-checkout.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="15" failures="0" skipped="0" time="223.581" errors="1">
+<testcase name="Cart and Checkout › TS01 authenticated user should complete checkout and navigate to thank-you page" classname="frontend/cart-checkout.spec.ts" time="8.238">
+</testcase>
+<testcase name="Cart and Checkout › TS02 non-authenticated user should be redirected to login with next parameter" classname="frontend/cart-checkout.spec.ts" time="8.611">
+</testcase>
+<testcase name="Cart and Checkout › TS03 empty cart should keep checkout unavailable" classname="frontend/cart-checkout.spec.ts" time="4.677">
+</testcase>
+<testcase name="Cart and Checkout › TS04 should update quantity, total and badge for a valid positive value" classname="frontend/cart-checkout.spec.ts" time="8.839">
+</testcase>
+<testcase name="Cart and Checkout › TS05 should keep previous quantity when value is zero" classname="frontend/cart-checkout.spec.ts" time="9.112">
+</testcase>
+<testcase name="Cart and Checkout › TS06 should keep previous quantity when value is negative" classname="frontend/cart-checkout.spec.ts" time="8.763">
+</testcase>
+<testcase name="Cart and Checkout › TS07 should handle larger valid quantity values correctly" classname="frontend/cart-checkout.spec.ts" time="8.941">
+</testcase>
+<testcase name="Cart and Checkout › TS08 should normalize decimal input to integer quantity" classname="frontend/cart-checkout.spec.ts" time="9.585">
+</testcase>
+<testcase name="Cart and Checkout › TS09 should remove a single item and show empty cart state" classname="frontend/cart-checkout.spec.ts" time="8.682">
+</testcase>
+<testcase name="Cart and Checkout › TS10 should add three items, remove all of them, and validate empty cart" classname="frontend/cart-checkout.spec.ts" time="9.332">
+</testcase>
+<testcase name="Cart and Checkout › TS11 should clear cart after successful checkout when leaving thank-you page" classname="frontend/cart-checkout.spec.ts" time="16.168">
+</testcase>
+<testcase name="Cart and Checkout › TS12 should decrement cart badge after each item removal" classname="frontend/cart-checkout.spec.ts" time="10.28">
+</testcase>
+<testcase name="Cart and Checkout › TS13 should validate distinct items vs total quantity in the order summary" classname="frontend/cart-checkout.spec.ts" time="8.824">
+</testcase>
+<testcase name="Cart and Checkout › TS14 should display free shipping if cart shipping total is 0" classname="frontend/cart-checkout.spec.ts" time="8.249">
+</testcase>
+<testcase name="Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0" classname="frontend/cart-checkout.spec.ts" time="95.28">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/trace.zip]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<error message="locator.click: Timeout 30000ms exceeded." type="TimeoutError">
+<![CDATA[  [frontend-chromium] › frontend/cart-checkout.spec.ts:387:3 › Cart and Checkout › TS15 should display paid shipping and compute grand total if shipping total is greater than 0 
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first()
+
+
+      395 |
+      396 |     // Add product with paid shipping (Câmera Vintage has 16.00 shipping in seed)
+    > 397 |     await catalogPage.getAddToCartButtonLocator().first().click();
+          |                                                           ^
+      398 |     await navComponent.clickCartButton();
+      399 |
+      400 |     const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/cart-checkout.spec.ts:397:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first()
+
+
+      395 |
+      396 |     // Add product with paid shipping (Câmera Vintage has 16.00 shipping in seed)
+    > 397 |     await catalogPage.getAddToCartButtonLocator().first().click();
+          |                                                           ^
+      398 |     await navComponent.clickCartButton();
+      399 |
+      400 |     const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/cart-checkout.spec.ts:397:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: /Adicionar ao Carrinho|Add to Cart/i }).first()
+
+
+      395 |
+      396 |     // Add product with paid shipping (Câmera Vintage has 16.00 shipping in seed)
+    > 397 |     await catalogPage.getAddToCartButtonLocator().first().click();
+          |                                                           ^
+      398 |     await navComponent.clickCartButton();
+      399 |
+      400 |     const shippingLocator = page.locator('[data-element-id="cart-summary-shipping"]');
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/cart-checkout.spec.ts:397:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-cart-checkout-Car-0bd72-ing-total-is-greater-than-0-frontend-chromium-retry2/error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="frontend/catalog.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="6" failures="0" skipped="0" time="11.535" errors="0">
+<testcase name="Catalog Page › TS01 deve listar produtos ao carregar página" classname="frontend/catalog.spec.ts" time="1.098">
+</testcase>
+<testcase name="Catalog Page › TS02 deve permitir busca por texto e atualizar contagem" classname="frontend/catalog.spec.ts" time="1.115">
+</testcase>
+<testcase name="Catalog Page › TS03 deve aplicar filtro por categoria" classname="frontend/catalog.spec.ts" time="1.232">
+</testcase>
+<testcase name="Catalog Page › TS04 deve mostrar estado vazio quando busca não retorna itens" classname="frontend/catalog.spec.ts" time="1.214">
+</testcase>
+<testcase name="Catalog Page › TS05 deve navegar para detalhes ao clicar no produto" classname="frontend/catalog.spec.ts" time="5.542">
+</testcase>
+<testcase name="Catalog Page › TS06 should preserve search filter after navigating to details and back" classname="frontend/catalog.spec.ts" time="1.334">
+</testcase>
+</testsuite>
+<testsuite name="frontend/login.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="4.072" errors="0">
+<testcase name="Login › TS01 - Should successfully log in when providing valid credentials" classname="frontend/login.spec.ts" time="0.868">
+</testcase>
+<testcase name="Login › TS02 - Should display an error alert when credentials are invalid" classname="frontend/login.spec.ts" time="0.726">
+</testcase>
+<testcase name="Login › TS03 - Should display a validation message when submitting with empty fields" classname="frontend/login.spec.ts" time="0.61">
+</testcase>
+<testcase name="Login › TS04 - Should display a validation message when password is empty" classname="frontend/login.spec.ts" time="1.046">
+</testcase>
+<testcase name="Login › TS06 - Should cap email and password fields to a maximum of 30 characters using special chars payload" classname="frontend/login.spec.ts" time="0.822">
+</testcase>
+</testsuite>
+<testsuite name="frontend/orders.checkout.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="5" failures="0" skipped="0" time="44.541" errors="0">
+<testcase name="Frontend Checkout with Orders API › deve chamar POST /api/orders e concluir pagamento antes de ir para thank-you" classname="frontend/orders.checkout.spec.ts" time="8.686">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve permanecer no carrinho quando POST /api/orders falhar" classname="frontend/orders.checkout.spec.ts" time="8.375">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando a API retornar 400 (Carrinho vazio) ao criar pedido" classname="frontend/orders.checkout.spec.ts" time="8.194">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pagamento falhar (400)" classname="frontend/orders.checkout.spec.ts" time="8.576">
+</testcase>
+<testcase name="Frontend Checkout with Orders API › deve exibir erro quando o pedido não for encontrado ao tentar pagar (404)" classname="frontend/orders.checkout.spec.ts" time="10.71">
+</testcase>
+</testsuite>
+<testsuite name="frontend/payments-card-brands.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="38.569" errors="0">
+<testcase name="Payments - Card Brands › TS01 should hide brands initially and show strip after typing card number" classname="frontend/payments-card-brands.spec.ts" time="8.412">
+</testcase>
+<testcase name="Payments - Card Brands › TS02 should activate each card brand when matching number is typed" classname="frontend/payments-card-brands.spec.ts" time="9.598">
+</testcase>
+<testcase name="Payments - Card Brands › TS03 should render all required card brands in accepted list" classname="frontend/payments-card-brands.spec.ts" time="8.669">
+</testcase>
+<testcase name="Payments - Card Brands › TS04 should capture screenshot for each card brand before confirmation" classname="frontend/payments-card-brands.spec.ts" time="11.89">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-visa-04a0214d6eafd2d7ccc99ceae33346a28a955fd6.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-mastercard-64524968fb2e1e910d96ff3b5a4adffe6362b7dc.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-elo-9bbfca83556ace91d3afb05d5a9865f63daf2dce.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-amex-5f313ab6730f08ae62bf0c7d635f8a088941f74c.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-hipercard-ffa5d0ae5ccd23c075e9c97408be3af882f17f8b.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-hiper-2901370d7cd254a95682e0be0a5d4cd9f035070c.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-cabal-048e9ea38f32bc8e3408327fc82b3eab94df9bb6.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-verdecard-64441722b2b1a57063f7310fcf658874175e6191.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-unionpay-16e7472de671855b66c3e35412356273b4277b6b.png]]
+
+[[ATTACHMENT|test-results/frontend-payments-card-bra-39c10-d-brand-before-confirmation-frontend-chromium/attachments/payments-card-data-before-confirmation-diners-7e93c7100fc002eb907dcaa8eb52d52bd2bff3c7.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="frontend/product-details.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="8.253" errors="0">
+<testcase name="Product Details › TS01 deve exibir dados principais do produto" classname="frontend/product-details.spec.ts" time="5.312">
+</testcase>
+<testcase name="Product Details › TS02/TS03 deve permitir adicionar ao carrinho e atualizar badge" classname="frontend/product-details.spec.ts" time="1.4">
+</testcase>
+<testcase name="Product Details › TS04 deve tratar ID inválido" classname="frontend/product-details.spec.ts" time="0.569">
+</testcase>
+<testcase name="Product Details › TS05 deve voltar para catálogo" classname="frontend/product-details.spec.ts" time="0.972">
+</testcase>
+</testsuite>
+<testsuite name="frontend/real-purchase-flow.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="4" failures="4" skipped="0" time="9.468" errors="0">
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS01 — Login real + produto aleatório + checkout + pagamento com cartão" classname="frontend/real-purchase-flow.spec.ts" time="1.221">
+<system-out>
+<![CDATA[
+▶ Produto sorteado: [17] Sem Juízo (Chestnut Springs – Livro 4) — R$ 48.9
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/error-context.md]]
+
+▶ Produto sorteado: [18] Óculos VR Realidade Virtual 3D com Fone de Ouvido — R$ 157.36
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/trace.zip]]
+
+▶ Produto sorteado: [22] L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico — R$ 18.89
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [frontend-chromium] › frontend/real-purchase-flow.spec.ts:197:3 › 🛒 Fluxo de Compra Real (sem mock) › TS01 — Login real + produto aleatório + checkout + pagamento com cartão 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:208:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:208:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:208:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fd852-eckout-pagamento-com-cartão-frontend-chromium-retry2/error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS02 — Busca de produto real + compra com cartão de crédito" classname="frontend/real-purchase-flow.spec.ts" time="1.049">
+<system-out>
+<![CDATA[
+▶ Produto: [19] Fone de Ouvido Bluetooth Anker Soundcore Life P3
+▶ Termo de busca: "Fone de"
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/error-context.md]]
+
+▶ Produto: [18] Óculos VR Realidade Virtual 3D com Fone de Ouvido
+▶ Termo de busca: "Óculos VR"
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/trace.zip]]
+
+▶ Produto: [5] Smartphone
+▶ Termo de busca: "Smartphone"
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [frontend-chromium] › frontend/real-purchase-flow.spec.ts:257:3 › 🛒 Fluxo de Compra Real (sem mock) › TS02 — Busca de produto real + compra com cartão de crédito 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:271:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:271:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:271:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-bb7f1-ompra-com-cartão-de-crédito-frontend-chromium-retry2/error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS03 — Múltiplos produtos aleatórios + checkout com PIX" classname="frontend/real-purchase-flow.spec.ts" time="1.259">
+<system-out>
+<![CDATA[
+▶ Adicionando até 3 produtos aleatórios:
+   • [10] eXtreme Go Horse (XGH) — R$ 49.9
+   • [18] Óculos VR Realidade Virtual 3D com Fone de Ouvido — R$ 157.36
+   • [22] L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico — R$ 18.89
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/error-context.md]]
+
+▶ Adicionando até 3 produtos aleatórios:
+   • [18] Óculos VR Realidade Virtual 3D com Fone de Ouvido — R$ 157.36
+   • [4] Tênis de Corrida — R$ 120
+   • [5] Smartphone — R$ 299.99
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/trace.zip]]
+
+▶ Adicionando até 3 produtos aleatórios:
+   • [15] Devoradores de Estrelas: O Livro que Deu Origem ao Filme — R$ 24.9
+   • [17] Sem Juízo (Chestnut Springs – Livro 4) — R$ 48.9
+   • [5] Smartphone — R$ 299.99
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [frontend-chromium] › frontend/real-purchase-flow.spec.ts:323:3 › 🛒 Fluxo de Compra Real (sem mock) › TS03 — Múltiplos produtos aleatórios + checkout com PIX 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:336:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:336:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      90 |   });
+      91 |
+    > 92 |   expect(response.status()).toBe(201);
+         |                             ^
+      93 |   return credentials;
+      94 | }
+      95 |
+        at createRealFlowUser (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:92:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:336:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-fe718-aleatórios-checkout-com-PIX-frontend-chromium-retry2/error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos" classname="frontend/real-purchase-flow.spec.ts" time="5.939">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/trace.zip]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [frontend-chromium] › frontend/real-purchase-flow.spec.ts:377:3 › 🛒 Fluxo de Compra Real (sem mock) › TS04 — Criar usuário + produto via API e deletar ambos 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      111 |   });
+      112 |
+    > 113 |   expect(response.status()).toBe(201);
+          |                             ^
+      114 |   return response.json() as Promise<{ id: number; email: string }>;
+      115 | }
+      116 |
+        at createUserForDeletion (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:113:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:392:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      111 |   });
+      112 |
+    > 113 |   expect(response.status()).toBe(201);
+          |                             ^
+      114 |   return response.json() as Promise<{ id: number; email: string }>;
+      115 | }
+      116 |
+        at createUserForDeletion (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:113:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:392:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 201
+    Received: 400
+
+      111 |   });
+      112 |
+    > 113 |   expect(response.status()).toBe(201);
+          |                             ^
+      114 |   return response.json() as Promise<{ id: number; email: string }>;
+      115 | }
+      116 |
+        at createUserForDeletion (/home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:113:29)
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/real-purchase-flow.spec.ts:392:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-real-purchase-flo-6a3c4-uto-via-API-e-deletar-ambos-frontend-chromium-retry2/error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="frontend/register-language.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="4" failures="0" skipped="0" time="11.489" errors="0">
+<testcase name="Register and Language › TS01 registro PF completo com sucesso" classname="frontend/register-language.spec.ts" time="6.376">
+</testcase>
+<testcase name="Register and Language › TS03 validação de campos obrigatórios no registro" classname="frontend/register-language.spec.ts" time="1.655">
+</testcase>
+<testcase name="Register and Language › TS01/TS02 idioma alterna e persiste após reload" classname="frontend/register-language.spec.ts" time="1.718">
+</testcase>
+<testcase name="Register and Language › TS04 should render cart empty-state content in English after language toggle" classname="frontend/register-language.spec.ts" time="1.74">
+</testcase>
+</testsuite>
+<testsuite name="frontend/register-login.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="13.596" errors="0">
+<testcase name="Register → Login — Fluxo Completo › TS01 - Should register a new user and immediately login with the same credentials" classname="frontend/register-login.spec.ts" time="2.655">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS02 - Should allow the user to log out and log back in with the same credentials" classname="frontend/register-login.spec.ts" time="8.834">
+</testcase>
+<testcase name="Register → Login — Fluxo Completo › TS03 - Should show an error when logging in with wrong password after registration" classname="frontend/register-login.spec.ts" time="2.107">
+</testcase>
+</testsuite>
+<testsuite name="frontend/register.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="7" failures="0" skipped="0" time="14.442" errors="0">
+<testcase name="Register › TS01 - Should successfully register a new user when providing all valid requirements" classname="frontend/register.spec.ts" time="2.83">
+</testcase>
+<testcase name="Register › TS02 - rejeita email em formato inválido aleatório" classname="frontend/register.spec.ts" time="1.86">
+</testcase>
+<testcase name="Register › TS03 - rejeita senha curta no step 0" classname="frontend/register.spec.ts" time="1.912">
+</testcase>
+<testcase name="Register › TS04 - rejeita senhas não-correspondentes com dados aleatórios" classname="frontend/register.spec.ts" time="2.036">
+</testcase>
+<testcase name="Register › TS05 - Should display specific validation errors and prevent step advancement when individual required fields are empty" classname="frontend/register.spec.ts" time="1.751">
+</testcase>
+<testcase name="Register › TS06 - rejeita email duplicado com dados aleatórios" classname="frontend/register.spec.ts" time="2.526">
+</testcase>
+<testcase name="Register › TS07 - valida todos os campos vazios com mensagens de validação individuais" classname="frontend/register.spec.ts" time="1.527">
+</testcase>
+</testsuite>
+<testsuite name="frontend/security.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="3" failures="0" skipped="0" time="10.75" errors="0">
+<testcase name="Security / Access Control › SE01 - Não logado tentando fazer checkout deve redirecionar para login" classname="frontend/security.spec.ts" time="8.82">
+</testcase>
+<testcase name="Security / Access Control › SE02 - Tentar acessar a página de confirmação (/thank-you) diretamente sem estar logado deve redirecionar" classname="frontend/security.spec.ts" time="0.544">
+</testcase>
+<testcase name="Security / Access Control › SE03 - Should revoke protected access after logout" classname="frontend/security.spec.ts" time="1.386">
+</testcase>
+</testsuite>
+<testsuite name="frontend/support-products.spec.ts" timestamp="2026-05-25T17:12:22.294Z" hostname="frontend-chromium" tests="8" failures="0" skipped="0" time="121.091" errors="1">
+<testcase name="Support Products - Frontend E2E › SUP-UI01 - Support deve acessar tela de gestão de produtos" classname="frontend/support-products.spec.ts" time="1.608">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI02 - Support deve ver tabela de produtos carregada" classname="frontend/support-products.spec.ts" time="1.538">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI03 - Support deve filtrar produtos pelo campo de busca" classname="frontend/support-products.spec.ts" time="1.988">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI04 - Busca sem resultados deve exibir mensagem vazia" classname="frontend/support-products.spec.ts" time="1.988">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI05 - Support deve abrir o modal de criação ao clicar &quot;Novo produto&quot;" classname="frontend/support-products.spec.ts" time="2.264">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI06 - Modal deve validar campo nome obrigatório" classname="frontend/support-products.spec.ts" time="2.74">
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI07 - Support deve abrir modal de edição com dados preenchidos" classname="frontend/support-products.spec.ts" time="99.786">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/error-context.md]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/trace.zip]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/test-failed-1.png]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/video.webm]]
+
+[[ATTACHMENT|test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/error-context.md]]
+]]>
+</system-out>
+<error message="locator.click: Timeout 30000ms exceeded." type="TimeoutError">
+<![CDATA[  [frontend-chromium] › frontend/support-products.spec.ts:231:3 › Support Products - Frontend E2E › SUP-UI07 - Support deve abrir modal de edição com dados preenchidos 
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('[role="dialog"] button[aria-label="close"]')
+
+
+      251 |
+      252 |     // Close and cleanup
+    > 253 |     await page.locator('[role="dialog"] button[aria-label="close"]').click();
+          |                                                                      ^
+      254 |     await request.delete(`${API_BASE_URL}/products/${created.id}`, {
+      255 |       headers: { Authorization: `Bearer ${session.accessToken}` },
+      256 |     });
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/support-products.spec.ts:253:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium/error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('[role="dialog"] button[aria-label="close"]')
+
+
+      251 |
+      252 |     // Close and cleanup
+    > 253 |     await page.locator('[role="dialog"] button[aria-label="close"]').click();
+          |                                                                      ^
+      254 |     await request.delete(`${API_BASE_URL}/products/${created.id}`, {
+      255 |       headers: { Authorization: `Bearer ${session.accessToken}` },
+      256 |     });
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/support-products.spec.ts:253:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('[role="dialog"] button[aria-label="close"]')
+
+
+      251 |
+      252 |     // Close and cleanup
+    > 253 |     await page.locator('[role="dialog"] button[aria-label="close"]').click();
+          |                                                                      ^
+      254 |     await request.delete(`${API_BASE_URL}/products/${created.id}`, {
+      255 |       headers: { Authorization: `Bearer ${session.accessToken}` },
+      256 |     });
+        at /home/runner/work/amazonQA.com/amazonQA.com/web/e2e/specs/frontend/support-products.spec.ts:253:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/frontend-support-products--e4193-dição-com-dados-preenchidos-frontend-chromium-retry2/error-context.md
+]]>
+</error>
+</testcase>
+<testcase name="Support Products - Frontend E2E › SUP-UI08 - Support deve excluir produto via botão de delete" classname="frontend/support-products.spec.ts" time="9.179">
+</testcase>
+</testsuite>
 </testsuites>
