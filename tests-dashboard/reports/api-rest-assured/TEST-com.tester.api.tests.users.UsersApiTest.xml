@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.users.UsersApiTest" time="13.406" tests="33" errors="0" skipped="0" failures="0" flakes="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.users.UsersApiTest" time="12.773" tests="33" errors="0" skipped="0" failures="0" flakes="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="SEED_ADMIN_PASSWORD" value="rei2026@QA"/>
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="SEED_ADMIN_EMAIL" value="reiload@gmail.com"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-25-jdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T17-51-52_744-jvmRun1 surefire-20260525175152905_1tmp surefire_0-20260525175152905_2tmp"/>
+    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T18-04-03_954-jvmRun1 surefire-20260525180404096_1tmp surefire_0-20260525180404096_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/test-classes:/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/classes:/home/runner/.m2/repository/io/rest-assured/rest-assured/6.0.0/rest-assured-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/5.0.3/groovy-5.0.3.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/5.0.3/groovy-xml-5.0.3.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/6.0.0/json-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/5.0.3/groovy-json-5.0.3.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/6.0.0/rest-assured-common-6.0.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/6.0.0/xml-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.jar:/home/runner/.m2/repository/io/rest-assured/json-schema-validator/6.0.0/json-schema-validator-6.0.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-validator/2.2.14/json-schema-validator-2.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils-equivalence/1.0/jackson-coreutils-equivalence-1.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils/2.0/jackson-coreutils-2.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/msg-simple/1.2/msg-simple-1.2.jar:/home/runner/.m2/repository/com/github/java-json-tools/btf/1.3/btf-1.3.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-core/1.2.14/json-schema-core-1.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/uri-template/0.10/uri-template-0.10.jar:/home/runner/.m2/repository/org/mozilla/rhino/1.7.7.2/rhino-1.7.7.2.jar:/home/runner/.m2/repository/com/sun/mail/mailapi/1.6.2/mailapi-1.6.2.jar:/home/runner/.m2/repository/joda-time/joda-time/2.10.5/joda-time-2.10.5.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/home/runner/.m2/repository/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.26.1/error_prone_annotations-2.26.1.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-rest-assured/2.34.0/allure-rest-assured-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-attachments/2.34.0/allure-attachments-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.34.0/allure-java-commons-2.34.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.34.0/allure-model-2.34.0.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.33/freemarker-2.3.33.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit5/2.34.0/allure-junit5-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit-platform/2.34.0/allure-junit-platform-2.34.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.3/junit-platform-launcher-1.10.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.34.0/allure-test-filter-2.34.0.jar:/home/runner/.m2/repository/io/github/cdimascio/dotenv-java/3.2.0/dotenv-java-3.2.0.jar:/home/runner/.m2/repository/net/datafaker/datafaker/2.5.4/datafaker-2.5.4.jar:/home/runner/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar:/home/runner/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar:/home/runner/.m2/repository/com/googlecode/libphonenumber/libphonenumber/9.0.23/libphonenumber-9.0.23.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-api/2.26.0/log4j-api-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-core/2.26.0/log4j-core-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-jul/2.26.0/log4j-jul-2.26.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -36,7 +36,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="E2E_SUPPORT_EMAIL" value="suporte@tester.com"/>
-    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar"/>
     <property name="BASE_URI" value="http://127.0.0.1:3001"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="E2E_ADMIN_EMAIL" value="reiload@gmail.com"/>
@@ -72,213 +72,211 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="deveRetornar401AoTentarLogarComEmailInexistente" classname="com.tester.api.tests.users.UsersApiTest" time="0.885">
-    <system-out><![CDATA[17:52:22.790 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:22.871 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:22.916 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
+  <testcase name="deveRetornar401AoTentarLogarComEmailInexistente" classname="com.tester.api.tests.users.UsersApiTest" time="0.698">
+    <system-out><![CDATA[18:04:33.826 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:33.878 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaPayloadIncompleto" classname="com.tester.api.tests.users.UsersApiTest" time="0.754">
-    <system-out><![CDATA[17:52:23.008 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:23.148 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:23.207 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaPayloadIncompleto" classname="com.tester.api.tests.users.UsersApiTest" time="0.878">
+    <system-out><![CDATA[18:04:35.030 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:35.118 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401ParaSenhaIncorretaDeUsuarioExistente" classname="com.tester.api.tests.users.UsersApiTest" time="1.427">
-    <system-out><![CDATA[17:52:24.640 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
+  <testcase name="deveRetornar400AoAtualizarUsuarioSemCamposPermitidos" classname="com.tester.api.tests.users.UsersApiTest" time="2.089">
+    <system-out><![CDATA[18:04:35.666 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:35.958 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoAtualizarUsuarioSemCamposPermitidos" classname="com.tester.api.tests.users.UsersApiTest" time="1.953">
-    <system-out><![CDATA[17:52:24.828 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:24.861 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 400&amp#27;[m
+  <testcase name="deveRetornar401ParaSenhaIncorretaDeUsuarioExistente" classname="com.tester.api.tests.users.UsersApiTest" time="1.62">
+    <system-out><![CDATA[18:04:36.651 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:36.743 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar200AoConsultarGetUsersMeAddressComUsuarioAutenticado" classname="com.tester.api.tests.users.UsersApiTest" time="1.147">
-    <system-out><![CDATA[17:52:25.449 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:25.664 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 200&amp#27;[m
-17:52:25.727 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:25.748 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetAddress: status 200&amp#27;[m
+  <testcase name="deveRetornar409ParaEmailDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="1.007">
+    <system-out><![CDATA[18:04:36.816 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:36.942 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:36.979 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar409ParaEmailDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="1.334">
-    <system-out><![CDATA[17:52:25.788 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:26.147 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:26.171 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:26.205 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
+  <testcase name="deveRetornar200AoConsultarGetUsersMeAddressComUsuarioAutenticado" classname="com.tester.api.tests.users.UsersApiTest" time="0.969">
+    <system-out><![CDATA[18:04:37.355 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:37.376 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:37.658 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 200&amp#27;[m
+18:04:37.687 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:37.700 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetAddress: status 200&amp#27;[m
+18:04:37.704 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoListarUsuariosComTokenDeUsuarioComum" classname="com.tester.api.tests.users.UsersApiTest" time="0.972">
-    <system-out><![CDATA[17:52:26.488 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:26.510 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:26.756 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlistUsers: status 403&amp#27;[m
-17:52:26.759 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+  <testcase name="deveRetornar403AoListarUsuariosComTokenDeUsuarioComum" classname="com.tester.api.tests.users.UsersApiTest" time="1.136">
+    <system-out><![CDATA[18:04:38.009 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:38.077 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:38.094 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:38.292 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlistUsers: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaLoginSemEmailSenha" classname="com.tester.api.tests.users.UsersApiTest" time="0.662">
-    <system-out><![CDATA[17:52:26.846 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:27.062 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:27.096 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:27.154 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:27.387 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:27.392 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:27.434 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 400&amp#27;[m
+  <testcase name="deveRetornar403AoTentarAtualizarPerfilDeOutroUsuario" classname="com.tester.api.tests.users.UsersApiTest" time="1.406">
+    <system-out><![CDATA[18:04:38.329 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:38.388 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoTentarAtualizarPerfilDeOutroUsuario" classname="com.tester.api.tests.users.UsersApiTest" time="1.294">
-    <system-out><![CDATA[17:52:27.456 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:27.504 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 403&amp#27;[m
+  <testcase name="deveRetornar400ParaLoginSemEmailSenha" classname="com.tester.api.tests.users.UsersApiTest" time="0.649">
+    <system-out><![CDATA[18:04:38.425 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:38.620 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:38.709 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:38.737 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:38.918 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:38.951 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRegistrarEAutenticarUsuarioValido" classname="com.tester.api.tests.users.UsersApiTest" time="1.404">
-    <system-out><![CDATA[17:52:27.695 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveRetornar400AoRegistrarSemPersonType" classname="com.tester.api.tests.users.UsersApiTest" time="0.653">
+    <system-out><![CDATA[18:04:38.996 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:39.043 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoRegistrarPfSemInformarCpf" classname="com.tester.api.tests.users.UsersApiTest" time="0.62">
-    <system-out><![CDATA[17:52:27.733 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:27.833 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:28.020 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:28.027 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:28.056 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveRegistrarEAutenticarUsuarioValido" classname="com.tester.api.tests.users.UsersApiTest" time="1.389">
+    <system-out><![CDATA[18:04:39.051 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoRegistrarSemPersonType" classname="com.tester.api.tests.users.UsersApiTest" time="0.665">
-    <system-out><![CDATA[17:52:28.124 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:28.171 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoRegistrarPfSemInformarCpf" classname="com.tester.api.tests.users.UsersApiTest" time="0.634">
+    <system-out><![CDATA[18:04:39.259 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:39.364 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:39.495 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:39.551 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:39.587 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoAtualizarEnderecoSemCamposEmUsersMeAddress" classname="com.tester.api.tests.users.UsersApiTest" time="0.665">
-    <system-out><![CDATA[17:52:28.327 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:28.369 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:28.379 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoAtualizarEnderecoSemCamposEmUsersMeAddress" classname="com.tester.api.tests.users.UsersApiTest" time="0.737">
+    <system-out><![CDATA[18:04:39.677 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:39.792 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:39.843 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoConsultarGetUsersMeAddressComTokenDeUsuarioInexistente" classname="com.tester.api.tests.users.UsersApiTest" time="0.962">
-    <system-out><![CDATA[17:52:28.568 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:28.682 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:28.726 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:28.851 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:28.964 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:29.010 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:29.134 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:29.249 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:29.307 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:29.312 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mdeleteUser: status 200&amp#27;[m
-17:52:29.355 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetAddress: status 404&amp#27;[m
+  <testcase name="deveCriarUsuarioViaUsersQuandoAutenticadoComoAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="1.338">
+    <system-out><![CDATA[18:04:39.880 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:39.975 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:40.150 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:40.202 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:40.371 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mcreateUser: status 201&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveCriarUsuarioViaUsersQuandoAutenticadoComoAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="1.314">
-    <system-out><![CDATA[17:52:29.461 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mcreateUser: status 201&amp#27;[m
+  <testcase name="deveRetornar404AoConsultarGetUsersMeAddressComTokenDeUsuarioInexistente" classname="com.tester.api.tests.users.UsersApiTest" time="1.021">
+    <system-out><![CDATA[18:04:40.450 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:40.538 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:40.680 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:40.752 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:40.811 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mdeleteUser: status 200&amp#27;[m
+18:04:40.874 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetAddress: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveBloquearAcessoDeUsuarioComumAoUsersIdDeOutroUsuario" classname="com.tester.api.tests.users.UsersApiTest" time="2.026">
-    <system-out><![CDATA[17:52:29.658 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:29.735 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:29.867 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:30.034 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:30.071 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetUser: status 403&amp#27;[m
-17:52:30.073 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveAtualizarOProprioUsuarioEmUsersId" classname="com.tester.api.tests.users.UsersApiTest" time="0.703">
+    <system-out><![CDATA[18:04:40.875 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:40.986 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:41.080 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoCriarUsuarioViaUsersComUsuarioNaoAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="0.763">
-    <system-out><![CDATA[17:52:30.113 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mcreateUser: status 403&amp#27;[m
+  <testcase name="deveRetornar403AoCriarUsuarioViaUsersComUsuarioNaoAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="0.685">
+    <system-out><![CDATA[18:04:41.214 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:41.244 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:41.420 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:41.500 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:41.541 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:41.555 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mcreateUser: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveAtualizarOProprioUsuarioEmUsersId" classname="com.tester.api.tests.users.UsersApiTest" time="0.947">
-    <system-out><![CDATA[17:52:30.339 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:30.423 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateUser: status 200&amp#27;[m
+  <testcase name="deveBloquearAcessoDeUsuarioComumAoUsersIdDeOutroUsuario" classname="com.tester.api.tests.users.UsersApiTest" time="2.019">
+    <system-out><![CDATA[18:04:41.603 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetUser: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornarOUsuarioAutenticadoEmUsersMe" classname="com.tester.api.tests.users.UsersApiTest" time="0.9">
-    <system-out><![CDATA[17:52:30.485 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:30.490 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:30.764 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:30.767 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:30.775 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:30.972 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mme: status 200&amp#27;[m
+  <testcase name="deveRetornarOUsuarioAutenticadoEmUsersMe" classname="com.tester.api.tests.users.UsersApiTest" time="0.846">
+    <system-out><![CDATA[18:04:41.715 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:41.886 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:41.932 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:42.196 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:42.247 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:42.399 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mme: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar409ParaCpfDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="0.993">
-    <system-out><![CDATA[17:52:31.074 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:31.083 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:31.116 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
+  <testcase name="deveRetornar409ParaCpfDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="1.013">
+    <system-out><![CDATA[18:04:42.582 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:42.627 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401AoListarUsuariosSemAutenticacao" classname="com.tester.api.tests.users.UsersApiTest" time="0.762">
-    <system-out><![CDATA[17:52:31.347 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:31.469 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:31.840 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:31.860 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveEncerrarAPropriaContaERetornar409NaSegundaTentativa" classname="com.tester.api.tests.users.UsersApiTest" time="2.15">
+    <system-out><![CDATA[18:04:42.712 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:43.011 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:43.072 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:43.155 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mterminate: status 200&amp#27;[m
+18:04:43.240 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mterminate: status 409&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveValidarJsonSchemaDaRespostaDeLogin" classname="com.tester.api.tests.users.UsersApiTest" time="1.719">
-    <system-out><![CDATA[17:52:32.201 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:32.300 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:32.626 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mterminate: status 200&amp#27;[m
-17:52:32.646 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:32.692 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveRetornar401AoListarUsuariosSemAutenticacao" classname="com.tester.api.tests.users.UsersApiTest" time="0.746">
+    <system-out><![CDATA[18:04:43.318 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoDeletarUsuarioSemSerAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="0.858">
-    <system-out><![CDATA[17:52:32.733 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mdeleteUser: status 403&amp#27;[m
+  <testcase name="deveValidarJsonSchemaDaRespostaDeLogin" classname="com.tester.api.tests.users.UsersApiTest" time="1.361">
+    <system-out><![CDATA[18:04:43.451 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:43.581 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:43.700 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:43.765 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveEncerrarAPropriaContaERetornar409NaSegundaTentativa" classname="com.tester.api.tests.users.UsersApiTest" time="2.326">
-    <system-out><![CDATA[17:52:32.770 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mterminate: status 409&amp#27;[m
+  <testcase name="deveRetornar400AoRegistrarPjSemInformarCnpj" classname="com.tester.api.tests.users.UsersApiTest" time="0.645">
+    <system-out><![CDATA[18:04:43.867 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:43.896 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401ParaCredenciaisInvalidas" classname="com.tester.api.tests.users.UsersApiTest" time="0.759">
-    <system-out><![CDATA[17:52:33.127 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:33.203 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:33.399 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:33.474 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:33.503 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
+  <testcase name="deveRetornar403AoDeletarUsuarioSemSerAdmin" classname="com.tester.api.tests.users.UsersApiTest" time="0.676">
+    <system-out><![CDATA[18:04:43.995 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:44.044 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mdeleteUser: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoRegistrarPjSemInformarCnpj" classname="com.tester.api.tests.users.UsersApiTest" time="1.079">
-    <system-out><![CDATA[17:52:33.663 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:33.793 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:33.800 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:33.857 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaSenhaMuitoCurtaNoRegistro" classname="com.tester.api.tests.users.UsersApiTest" time="0.679">
+    <system-out><![CDATA[18:04:44.086 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:44.244 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:44.382 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:44.448 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:44.549 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:44.578 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveListarUsuariosComAdminEValidarFormatoDaResposta" classname="com.tester.api.tests.users.UsersApiTest" time="1.33">
-    <system-out><![CDATA[17:52:33.962 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:34.023 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlistUsers: status 200&amp#27;[m
+  <testcase name="deveRetornar401ParaCredenciaisInvalidas" classname="com.tester.api.tests.users.UsersApiTest" time="0.664">
+    <system-out><![CDATA[18:04:44.672 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:44.721 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 401&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaEmailComFormatoInvalidoNoRegistro" classname="com.tester.api.tests.users.UsersApiTest" time="0.694">
-    <system-out><![CDATA[17:52:34.157 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:34.199 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveListarUsuariosComAdminEValidarFormatoDaResposta" classname="com.tester.api.tests.users.UsersApiTest" time="1.11">
+    <system-out><![CDATA[18:04:44.781 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:44.859 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlistUsers: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaSenhaMuitoCurtaNoRegistro" classname="com.tester.api.tests.users.UsersApiTest" time="0.661">
-    <system-out><![CDATA[17:52:34.202 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:34.362 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:34.492 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:34.504 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:34.522 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
+  <testcase name="deveAtualizarEnderecoEmUsersMeAddress" classname="com.tester.api.tests.users.UsersApiTest" time="0.691">
+    <system-out><![CDATA[18:04:44.936 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.063 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.186 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.225 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:45.258 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401AoConsultarGetUsersMeAddressSemAutenticacao" classname="com.tester.api.tests.users.UsersApiTest" time="0.611">
-    <system-out><![CDATA[17:52:34.632 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:34.783 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:34.795 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+  <testcase name="deveRetornar400ParaEmailComFormatoInvalidoNoRegistro" classname="com.tester.api.tests.users.UsersApiTest" time="0.649">
+    <system-out><![CDATA[18:04:45.343 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:45.371 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar409ParaCnpjDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="0.898">
-    <system-out><![CDATA[17:52:34.912 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:34.939 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
+  <testcase name="deveRetornar409ParaCnpjDuplicado" classname="com.tester.api.tests.users.UsersApiTest" time="0.892">
+    <system-out><![CDATA[18:04:45.468 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:45.555 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.649 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.752 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:45.780 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 409&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveAtualizarEnderecoEmUsersMeAddress" classname="com.tester.api.tests.users.UsersApiTest" time="0.579">
-    <system-out><![CDATA[17:52:35.067 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:35.088 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:35.094 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mupdateAddress: status 200&amp#27;[m
+  <testcase name="deveRetornarDadosDoProprioUsuarioEmUsersId" classname="com.tester.api.tests.users.UsersApiTest" time="0.606">
+    <system-out><![CDATA[18:04:45.829 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:45.866 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetUser: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornarDadosDoProprioUsuarioEmUsersId" classname="com.tester.api.tests.users.UsersApiTest" time="0.618">
-    <system-out><![CDATA[17:52:35.351 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:35.414 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mgetUser: status 200&amp#27;[m
+  <testcase name="deveRetornar401AoConsultarGetUsersMeAddressSemAutenticacao" classname="com.tester.api.tests.users.UsersApiTest" time="0.575">
+    <system-out><![CDATA[18:04:45.922 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
 </testsuite>

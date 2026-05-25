@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.products.ProductsApiTest" time="5.848" tests="14" errors="0" skipped="0" failures="0" flakes="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.products.ProductsApiTest" time="5.477" tests="14" errors="0" skipped="0" failures="0" flakes="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="SEED_ADMIN_PASSWORD" value="rei2026@QA"/>
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="SEED_ADMIN_EMAIL" value="reiload@gmail.com"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-25-jdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T17-51-52_744-jvmRun1 surefire-20260525175152905_1tmp surefire_0-20260525175152905_2tmp"/>
+    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T18-04-03_954-jvmRun1 surefire-20260525180404096_1tmp surefire_0-20260525180404096_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/test-classes:/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/classes:/home/runner/.m2/repository/io/rest-assured/rest-assured/6.0.0/rest-assured-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/5.0.3/groovy-5.0.3.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/5.0.3/groovy-xml-5.0.3.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/6.0.0/json-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/5.0.3/groovy-json-5.0.3.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/6.0.0/rest-assured-common-6.0.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/6.0.0/xml-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.jar:/home/runner/.m2/repository/io/rest-assured/json-schema-validator/6.0.0/json-schema-validator-6.0.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-validator/2.2.14/json-schema-validator-2.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils-equivalence/1.0/jackson-coreutils-equivalence-1.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils/2.0/jackson-coreutils-2.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/msg-simple/1.2/msg-simple-1.2.jar:/home/runner/.m2/repository/com/github/java-json-tools/btf/1.3/btf-1.3.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-core/1.2.14/json-schema-core-1.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/uri-template/0.10/uri-template-0.10.jar:/home/runner/.m2/repository/org/mozilla/rhino/1.7.7.2/rhino-1.7.7.2.jar:/home/runner/.m2/repository/com/sun/mail/mailapi/1.6.2/mailapi-1.6.2.jar:/home/runner/.m2/repository/joda-time/joda-time/2.10.5/joda-time-2.10.5.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/home/runner/.m2/repository/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.26.1/error_prone_annotations-2.26.1.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-rest-assured/2.34.0/allure-rest-assured-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-attachments/2.34.0/allure-attachments-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.34.0/allure-java-commons-2.34.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.34.0/allure-model-2.34.0.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.33/freemarker-2.3.33.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit5/2.34.0/allure-junit5-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit-platform/2.34.0/allure-junit-platform-2.34.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.3/junit-platform-launcher-1.10.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.34.0/allure-test-filter-2.34.0.jar:/home/runner/.m2/repository/io/github/cdimascio/dotenv-java/3.2.0/dotenv-java-3.2.0.jar:/home/runner/.m2/repository/net/datafaker/datafaker/2.5.4/datafaker-2.5.4.jar:/home/runner/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar:/home/runner/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar:/home/runner/.m2/repository/com/googlecode/libphonenumber/libphonenumber/9.0.23/libphonenumber-9.0.23.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-api/2.26.0/log4j-api-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-core/2.26.0/log4j-core-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-jul/2.26.0/log4j-jul-2.26.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -36,7 +36,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="E2E_SUPPORT_EMAIL" value="suporte@tester.com"/>
-    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar"/>
     <property name="BASE_URI" value="http://127.0.0.1:3001"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="E2E_ADMIN_EMAIL" value="reiload@gmail.com"/>
@@ -72,82 +72,80 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="deveRetornar401AoCriarProdutoSemToken" classname="com.tester.api.tests.products.ProductsApiTest" time="0.071">
-    <system-out><![CDATA[17:52:20.454 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 200&amp#27;[m
-17:52:20.485 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+  <testcase name="deveRetornar401AoCriarProdutoSemToken" classname="com.tester.api.tests.products.ProductsApiTest" time="0.068"/>
+  <testcase name="deveValidarJsonSchemaDaListaDeProdutos" classname="com.tester.api.tests.products.ProductsApiTest" time="0.165">
+    <system-out><![CDATA[18:04:31.758 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:31.859 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:31.888 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveValidarJsonSchemaDaListaDeProdutos" classname="com.tester.api.tests.products.ProductsApiTest" time="0.234">
-    <system-out><![CDATA[17:52:20.550 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:20.609 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-17:52:20.676 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+  <testcase name="deveRetornar400AoCriarProdutoSemCategoria" classname="com.tester.api.tests.products.ProductsApiTest" time="0.464">
+    <system-out><![CDATA[18:04:32.056 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:32.150 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:32.252 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:32.308 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 200&amp#27;[m
+18:04:32.310 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:32.342 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:32.355 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 200&amp#27;[m
+18:04:32.357 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:32.392 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarProdutoSemCategoria" classname="com.tester.api.tests.products.ProductsApiTest" time="0.461">
-    <system-out><![CDATA[17:52:21.162 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:21.193 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
-17:52:21.246 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveCriarBuscarFiltrarAtualizarERemoverProduto" classname="com.tester.api.tests.products.ProductsApiTest" time="0.66">
+    <system-out><![CDATA[18:04:32.878 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:32.951 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 200&amp#27;[m
+18:04:32.996 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+18:04:33.055 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mgetById: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveCriarBuscarFiltrarAtualizarERemoverProduto" classname="com.tester.api.tests.products.ProductsApiTest" time="0.636">
-    <system-out><![CDATA[17:52:21.630 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:21.637 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:21.670 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:21.719 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mgetById: status 200&amp#27;[m
-17:52:21.758 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
-17:52:21.817 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 200&amp#27;[m
-17:52:21.855 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
-17:52:21.888 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mgetById: status 404&amp#27;[m
+  <testcase name="deveRetornar403AoAtualizarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.753">
+    <system-out><![CDATA[18:04:33.813 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoAtualizarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.703">
-    <system-out><![CDATA[17:52:22.531 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:22.594 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 403&amp#27;[m
+  <testcase name="deveRetornar403AoCriarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.724">
+    <system-out><![CDATA[18:04:34.242 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:34.476 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:34.541 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar403AoCriarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.883">
-    <system-out><![CDATA[17:52:23.245 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:23.424 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:23.481 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 403&amp#27;[m
+  <testcase name="deveRetornar404AoAtualizarProdutoInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.426">
+    <system-out><![CDATA[18:04:34.546 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:34.568 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:34.908 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:34.970 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoAtualizarProdutoInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.448">
-    <system-out><![CDATA[17:52:23.561 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:23.655 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:23.792 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:23.927 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:23.928 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mupdate: status 404&amp#27;[m
+  <testcase name="deveRetornar400AoCriarProdutoComPrecoNegativo" classname="com.tester.api.tests.products.ProductsApiTest" time="0.526">
+    <system-out><![CDATA[18:04:35.431 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:35.497 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarProdutoComPrecoNegativo" classname="com.tester.api.tests.products.ProductsApiTest" time="0.456">
-    <system-out><![CDATA[17:52:24.319 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:24.328 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:24.389 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveListarProdutosSemFiltroDeCategoria" classname="com.tester.api.tests.products.ProductsApiTest" time="0.07">
+    <system-out><![CDATA[18:04:35.568 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveListarProdutosSemFiltroDeCategoria" classname="com.tester.api.tests.products.ProductsApiTest" time="0.064">
-    <system-out><![CDATA[17:52:24.456 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+  <testcase name="deveRetornarArrayVazioParaCategoriaInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.047">
+    <system-out><![CDATA[18:04:35.610 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornarArrayVazioParaCategoriaInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.037">
-    <system-out><![CDATA[17:52:24.494 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+  <testcase name="deveRetornar400AoBuscarProdutoComIdEmFormatoInvalido" classname="com.tester.api.tests.products.ProductsApiTest" time="0.036"/>
+  <testcase name="deveRetornar404AoRemoverProdutoInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.508">
+    <system-out><![CDATA[18:04:36.101 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:36.113 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:36.170 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoBuscarProdutoComIdEmFormatoInvalido" classname="com.tester.api.tests.products.ProductsApiTest" time="0.027"/>
-  <testcase name="deveRetornar404AoRemoverProdutoInexistente" classname="com.tester.api.tests.products.ProductsApiTest" time="0.409">
-    <system-out><![CDATA[17:52:24.938 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 404&amp#27;[m
+  <testcase name="deveRetornar400AoCriarProdutoSemCamposObrigatorios" classname="com.tester.api.tests.products.ProductsApiTest" time="0.347">
+    <system-out><![CDATA[18:04:36.357 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:36.421 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:36.470 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:36.520 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarProdutoSemCamposObrigatorios" classname="com.tester.api.tests.products.ProductsApiTest" time="0.493">
-    <system-out><![CDATA[17:52:25.055 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:25.247 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:25.363 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:25.434 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
-]]></system-out>
-  </testcase>
-  <testcase name="deveRetornar403AoDeletarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.87">
-    <system-out><![CDATA[17:52:26.243 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:26.307 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 403&amp#27;[m
+  <testcase name="deveRetornar403AoDeletarProdutoComUsuarioComum" classname="com.tester.api.tests.products.ProductsApiTest" time="0.638">
+    <system-out><![CDATA[18:04:37.050 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:37.109 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:37.161 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
 </testsuite>

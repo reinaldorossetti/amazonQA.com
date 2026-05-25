@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.cart.CartApiTest" time="27.541" tests="22" errors="0" skipped="0" failures="0" flakes="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.cart.CartApiTest" time="27.407" tests="22" errors="0" skipped="0" failures="0" flakes="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="SEED_ADMIN_PASSWORD" value="rei2026@QA"/>
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="SEED_ADMIN_EMAIL" value="reiload@gmail.com"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-25-jdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T17-51-52_744-jvmRun1 surefire-20260525175152905_1tmp surefire_0-20260525175152905_2tmp"/>
+    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T18-04-03_954-jvmRun1 surefire-20260525180404096_1tmp surefire_0-20260525180404096_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/test-classes:/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/classes:/home/runner/.m2/repository/io/rest-assured/rest-assured/6.0.0/rest-assured-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/5.0.3/groovy-5.0.3.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/5.0.3/groovy-xml-5.0.3.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/6.0.0/json-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/5.0.3/groovy-json-5.0.3.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/6.0.0/rest-assured-common-6.0.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/6.0.0/xml-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.jar:/home/runner/.m2/repository/io/rest-assured/json-schema-validator/6.0.0/json-schema-validator-6.0.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-validator/2.2.14/json-schema-validator-2.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils-equivalence/1.0/jackson-coreutils-equivalence-1.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils/2.0/jackson-coreutils-2.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/msg-simple/1.2/msg-simple-1.2.jar:/home/runner/.m2/repository/com/github/java-json-tools/btf/1.3/btf-1.3.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-core/1.2.14/json-schema-core-1.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/uri-template/0.10/uri-template-0.10.jar:/home/runner/.m2/repository/org/mozilla/rhino/1.7.7.2/rhino-1.7.7.2.jar:/home/runner/.m2/repository/com/sun/mail/mailapi/1.6.2/mailapi-1.6.2.jar:/home/runner/.m2/repository/joda-time/joda-time/2.10.5/joda-time-2.10.5.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/home/runner/.m2/repository/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.26.1/error_prone_annotations-2.26.1.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-rest-assured/2.34.0/allure-rest-assured-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-attachments/2.34.0/allure-attachments-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.34.0/allure-java-commons-2.34.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.34.0/allure-model-2.34.0.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.33/freemarker-2.3.33.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit5/2.34.0/allure-junit5-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit-platform/2.34.0/allure-junit-platform-2.34.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.3/junit-platform-launcher-1.10.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.34.0/allure-test-filter-2.34.0.jar:/home/runner/.m2/repository/io/github/cdimascio/dotenv-java/3.2.0/dotenv-java-3.2.0.jar:/home/runner/.m2/repository/net/datafaker/datafaker/2.5.4/datafaker-2.5.4.jar:/home/runner/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar:/home/runner/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar:/home/runner/.m2/repository/com/googlecode/libphonenumber/libphonenumber/9.0.23/libphonenumber-9.0.23.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-api/2.26.0/log4j-api-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-core/2.26.0/log4j-core-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-jul/2.26.0/log4j-jul-2.26.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -36,7 +36,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="E2E_SUPPORT_EMAIL" value="suporte@tester.com"/>
-    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525175152905_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525180404096_3.jar"/>
     <property name="BASE_URI" value="http://127.0.0.1:3001"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="E2E_ADMIN_EMAIL" value="reiload@gmail.com"/>
@@ -72,12 +72,12 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="deveRetornar401AoListarCarrinhoSemToken" classname="com.tester.api.tests.cart.CartApiTest" time="1.754">
-    <system-out><![CDATA[17:51:54.527 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.support.EnvFileLoader&amp#27;[m - &amp#27;[37mLoaded 4 fallback entries from /home/runner/work/amazonQA.com/amazonQA.com/.env&amp#27;[m
-17:51:54.530 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.support.EnvFileLoader&amp#27;[m - &amp#27;[37mLoaded 6 entries from /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/.env&amp#27;[m
-17:51:56.626 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 401&amp#27;[m
+  <testcase name="deveRetornar401AoListarCarrinhoSemToken" classname="com.tester.api.tests.cart.CartApiTest" time="1.701">
+    <system-out><![CDATA[18:04:05.807 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.support.EnvFileLoader&amp#27;[m - &amp#27;[37mLoaded 4 fallback entries from /home/runner/work/amazonQA.com/amazonQA.com/.env&amp#27;[m
+18:04:05.810 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.support.EnvFileLoader&amp#27;[m - &amp#27;[37mLoaded 6 entries from /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/.env&amp#27;[m
+18:04:07.875 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 401&amp#27;[m
 ]]></system-out>
-    <system-err><![CDATA[2026-05-25T17:51:54.058380025Z main WARN Ignoring call to `j.u.l.Logger.setLevel(WARNING)`, since the Log4j API does not provide methods to modify the underlying implementation.
+    <system-err><![CDATA[2026-05-25T18:04:05.328797867Z main WARN Ignoring call to `j.u.l.Logger.setLevel(WARNING)`, since the Log4j API does not provide methods to modify the underlying implementation.
 To modify the configuration using JUL, use an `AbstractLoggerAdapter` appropriate for your logging implementation.
 See https://logging.apache.org/log4j/3.x/log4j-jul.html#log4j.jul.loggerAdapter for more information.
 SLF4J(W): No SLF4J providers were found.
@@ -85,132 +85,151 @@ SLF4J(W): Defaulting to no-operation (NOP) logger implementation
 SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
 ]]></system-err>
   </testcase>
-  <testcase name="deveValidarJsonSchemaDaListaDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="3.134">
-    <system-out><![CDATA[17:51:59.594 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:51:59.869 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveValidarJsonSchemaDaListaDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="3.05">
+    <system-out><![CDATA[18:04:11.070 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaQuantidadeAcimaDoLimite" classname="com.tester.api.tests.cart.CartApiTest" time="1.485">
-    <system-out><![CDATA[17:52:01.192 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:01.243 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
-17:52:01.359 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveRetornar400ParaQuantidadeAcimaDoLimite" classname="com.tester.api.tests.cart.CartApiTest" time="1.504">
+    <system-out><![CDATA[18:04:12.359 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+18:04:12.579 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveAdicionarIncrementarListarERemoverItemDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="2.053">
-    <system-out><![CDATA[17:52:03.207 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:03.278 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 200&amp#27;[m
-17:52:03.324 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
-17:52:03.411 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveAdicionarIncrementarListarERemoverItemDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="2.009">
+    <system-out><![CDATA[18:04:14.423 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:14.501 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:14.592 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaCartItemIdAusenteQuandoAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.737">
-    <system-out><![CDATA[17:52:03.948 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-17:52:03.991 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:04.070 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:04.071 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
-17:52:04.160 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaCartItemIdAusenteQuandoAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.926">
+    <system-out><![CDATA[18:04:15.063 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:15.228 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:15.410 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:15.462 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:15.534 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaPayloadInvalidoNoPostDoCarrinhoAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.962">
-    <system-out><![CDATA[17:52:04.388 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:04.640 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:04.875 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:04.883 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:05.023 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:05.124 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaPayloadInvalidoNoPostDoCarrinhoAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.97">
+    <system-out><![CDATA[18:04:16.372 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:16.443 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:16.504 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaProdutoInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="1.047">
-    <system-out><![CDATA[17:52:05.801 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:05.881 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:05.947 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-17:52:06.066 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:06.105 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:06.155 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
-17:52:06.169 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+  <testcase name="deveRetornar400ParaProdutoInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="0.99">
+    <system-out><![CDATA[18:04:16.841 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:16.999 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:17.231 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:17.304 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:17.432 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:17.486 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveValidarErrosDePayloadDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.39"/>
-  <testcase name="deveRetornar400ParaUserIdInvalidoNoGetDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.769">
-    <system-out><![CDATA[17:52:06.740 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:06.800 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:06.909 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:07.260 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:07.291 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:07.311 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:07.339 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:07.345 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 400&amp#27;[m
+  <testcase name="deveValidarErrosDePayloadDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.149">
+    <system-out><![CDATA[18:04:17.582 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 401&amp#27;[m
+18:04:17.585 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoTentarAdicionarProdutoSemProductId" classname="com.tester.api.tests.cart.CartApiTest" time="0.871">
-    <system-out><![CDATA[17:52:07.655 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:07.724 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:07.733 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-17:52:07.845 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:07.923 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
-17:52:08.059 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:08.152 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:08.218 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37maddPartial: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaUserIdInvalidoNoGetDoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.837">
+    <system-out><![CDATA[18:04:18.500 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404ComMensagemCarrinhoNaoEncontradoParaIdInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="1.934">
-    <system-out><![CDATA[17:52:10.138 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mgetById: status 404&amp#27;[m
+  <testcase name="deveRetornar400AoTentarAdicionarProdutoSemProductId" classname="com.tester.api.tests.cart.CartApiTest" time="0.847">
+    <system-out><![CDATA[18:04:18.511 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:18.788 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:18.911 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:18.944 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:19.194 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:19.240 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:19.279 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:19.287 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:19.327 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:19.351 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37maddPartial: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoRemoverItemComIdInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="0.89">
-    <system-out><![CDATA[17:52:11.006 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:11.053 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 404&amp#27;[m
+  <testcase name="deveRetornar404ComMensagemCarrinhoNaoEncontradoParaIdInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="2.187">
+    <system-out><![CDATA[18:04:21.107 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:21.270 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:21.526 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mgetById: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoAdicionarProdutoInexistenteAoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.843">
-    <system-out><![CDATA[17:52:11.855 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:11.909 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+  <testcase name="deveRetornar404AoRemoverItemComIdInexistente" classname="com.tester.api.tests.cart.CartApiTest" time="0.914">
+    <system-out><![CDATA[18:04:21.953 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:22.143 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:22.170 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:22.184 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:22.250 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:22.334 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:22.408 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:22.420 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
+18:04:22.462 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveBuscarItemDoCarrinhoPorIdQuandoExistir" classname="com.tester.api.tests.cart.CartApiTest" time="1.677">
-    <system-out><![CDATA[17:52:13.425 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mgetById: status 200&amp#27;[m
-17:52:13.462 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:13.590 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveRetornar400AoAdicionarProdutoInexistenteAoCarrinho" classname="com.tester.api.tests.cart.CartApiTest" time="0.861">
+    <system-out><![CDATA[18:04:22.968 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:23.056 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:23.287 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:23.328 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoRemoverItemInexistenteParaUsuarioAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.887">
-    <system-out><![CDATA[17:52:14.389 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:14.483 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 404&amp#27;[m
+  <testcase name="deveBuscarItemDoCarrinhoPorIdQuandoExistir" classname="com.tester.api.tests.cart.CartApiTest" time="1.765">
+    <system-out><![CDATA[18:04:24.500 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:24.562 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:24.576 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:24.604 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:24.643 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:24.702 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+18:04:24.821 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mgetById: status 200&amp#27;[m
+18:04:24.962 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:25.005 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:25.098 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaProdutoDuplicadoNoMesmoPayload" classname="com.tester.api.tests.cart.CartApiTest" time="2.099">
-    <system-out><![CDATA[17:52:16.224 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-17:52:16.509 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:16.509 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
-17:52:16.591 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveRetornar404AoRemoverItemInexistenteParaUsuarioAutenticado" classname="com.tester.api.tests.cart.CartApiTest" time="0.988">
+    <system-out><![CDATA[18:04:26.093 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremove: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoRemoverItemComIdInvalidoString" classname="com.tester.api.tests.cart.CartApiTest" time="0.756">
-    <system-out><![CDATA[17:52:17.314 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:17.349 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremoveStringId: status 400&amp#27;[m
+  <testcase name="deveRetornar400ParaProdutoDuplicadoNoMesmoPayload" classname="com.tester.api.tests.cart.CartApiTest" time="1.653">
+    <system-out><![CDATA[18:04:27.624 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:27.659 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:27.671 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:27.703 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+18:04:27.706 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:27.751 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+18:04:27.754 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401ComMensagemPadronizadaParaTokenAusenteNoPost" classname="com.tester.api.tests.cart.CartApiTest" time="0.032"/>
-  <testcase name="deveRetornar403AoTentarAcessarCarrinhoDeOutroUsuario" classname="com.tester.api.tests.cart.CartApiTest" time="1.295">
-    <system-out><![CDATA[17:52:18.622 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:18.680 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 403&amp#27;[m
+  <testcase name="deveRetornar400AoRemoverItemComIdInvalidoString" classname="com.tester.api.tests.cart.CartApiTest" time="0.891">
+    <system-out><![CDATA[18:04:28.236 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:28.389 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:28.577 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:28.608 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:28.647 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mremoveStringId: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoAdicionarProdutoComQuantidadeZero" classname="com.tester.api.tests.cart.CartApiTest" time="0.765">
-    <system-out><![CDATA[17:52:19.337 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-17:52:19.412 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:19.448 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+  <testcase name="deveRetornar401ComMensagemPadronizadaParaTokenAusenteNoPost" classname="com.tester.api.tests.cart.CartApiTest" time="0.048"/>
+  <testcase name="deveRetornar403AoTentarAcessarCarrinhoDeOutroUsuario" classname="com.tester.api.tests.cart.CartApiTest" time="1.395">
+    <system-out><![CDATA[18:04:30.017 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:30.052 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:30.053 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:30.089 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 403&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveAceitarLoteComMultiplosProdutosDiferentes" classname="com.tester.api.tests.cart.CartApiTest" time="1.864">
-    <system-out><![CDATA[17:52:21.261 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
-17:52:21.318 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+  <testcase name="deveRetornar400AoAdicionarProdutoComQuantidadeZero" classname="com.tester.api.tests.cart.CartApiTest" time="0.71">
+    <system-out><![CDATA[18:04:30.464 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:30.540 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+18:04:30.705 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:30.749 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+18:04:30.765 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:30.786 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mgetById: status 200&amp#27;[m
+18:04:30.808 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoAdicionarProdutoComQuantidadeNegativa" classname="com.tester.api.tests.cart.CartApiTest" time="0.695">
-    <system-out><![CDATA[17:52:21.959 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:21.991 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-17:52:22.015 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
+  <testcase name="deveAceitarLoteComMultiplosProdutosDiferentes" classname="com.tester.api.tests.cart.CartApiTest" time="1.628">
+    <system-out><![CDATA[18:04:32.443 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 200&amp#27;[m
+]]></system-out>
+  </testcase>
+  <testcase name="deveRetornar400AoAdicionarProdutoComQuantidadeNegativa" classname="com.tester.api.tests.cart.CartApiTest" time="0.721">
+    <system-out><![CDATA[18:04:33.119 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+18:04:33.166 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
 </testsuite>

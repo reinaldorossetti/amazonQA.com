@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Ergonomic Rubber Car 1779732268959&quot;,
+    &quot;price&quot;: 2195.27,
+    &quot;description&quot;: &quot;Delectus repellat repellendus tempora praesentium.&quot;,
+    &quot;category&quot;: &quot;Computers-1779732268959&quot;,
+    &quot;image&quot;: &quot;https://www.dell-runte.com:1173/eaque/liberodicta?veritatis=temporibus&amp;pariatur=quas&quot;,
+    &quot;manufacturer&quot;: &quot;Kris-Pfannerstill&quot;,
+    &quot;line&quot;: &quot;Marble&quot;,
+    &quot;model&quot;: &quot;VTG761&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MyIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzMyMjY4MTE0QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzMyMjY4LCJleHAiOjE3Nzk3MzU4Njh9.Fjj_U7ALeKt_jLNYRFhbDKiV5nYL43ZQ4kBptTQkXhU</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MyIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzMyMjY4MTE0QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzMyMjY4LCJleHAiOjE3Nzk3MzU4Njh9.Fjj_U7ALeKt_jLNYRFhbDKiV5nYL43ZQ4kBptTQkXhU&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Ergonomic Rubber Car 1779732268959&quot;,
+    &quot;price&quot;: 2195.27,
+    &quot;description&quot;: &quot;Delectus repellat repellendus tempora praesentium.&quot;,
+    &quot;category&quot;: &quot;Computers-1779732268959&quot;,
+    &quot;image&quot;: &quot;https://www.dell-runte.com:1173/eaque/liberodicta?veritatis=temporibus&amp;pariatur=quas&quot;,
+    &quot;manufacturer&quot;: &quot;Kris-Pfannerstill&quot;,
+    &quot;line&quot;: &quot;Marble&quot;,
+    &quot;model&quot;: &quot;VTG761&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

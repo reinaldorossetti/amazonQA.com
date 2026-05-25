@@ -1,0 +1,38 @@
+<div>POST to http://127.0.0.1:3001/api/orders</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;paymentMethod&quot;: &quot;metodo-invalido&quot;,
+    &quot;items&quot;: [
+        {
+            &quot;productId&quot;: 1,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMCIsImVtYWlsIjoicmEub3JkZXIuNjI5NTMxMjdAZXhhbXBsZS5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzIyNjIsImV4cCI6MTc3OTczNTg2Mn0.RITgJR2Dwr014F1BCez-8spj5jbaf5ATev7sJTogI10</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/orders&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMCIsImVtYWlsIjoicmEub3JkZXIuNjI5NTMxMjdAZXhhbXBsZS5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzIyNjIsImV4cCI6MTc3OTczNTg2Mn0.RITgJR2Dwr014F1BCez-8spj5jbaf5ATev7sJTogI10&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;paymentMethod&quot;: &quot;metodo-invalido&quot;,
+    &quot;items&quot;: [
+        {
+            &quot;productId&quot;: 1,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}&#39;
+    </div>
+

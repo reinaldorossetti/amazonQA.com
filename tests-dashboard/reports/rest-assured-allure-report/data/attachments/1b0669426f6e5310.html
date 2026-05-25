@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Intelligent Iron Lamp 1779732271597&quot;,
+    &quot;price&quot;: 6836.25,
+    &quot;description&quot;: &quot;Placeat qui ipsam hic laborum.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779732271596&quot;,
+    &quot;image&quot;: &quot;https://www.alyson-ortiz.org:40510/&quot;,
+    &quot;manufacturer&quot;: &quot;Cummerata and Sons&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;USFPIP&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzIyNzEsImV4cCI6MTc3OTczNTg3MX0.kCGdVI2-l-oEsSUnsKhqwbIekC8sLtTLCyC935Uvy4A</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzIyNzEsImV4cCI6MTc3OTczNTg3MX0.kCGdVI2-l-oEsSUnsKhqwbIekC8sLtTLCyC935Uvy4A&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Intelligent Iron Lamp 1779732271597&quot;,
+    &quot;price&quot;: 6836.25,
+    &quot;description&quot;: &quot;Placeat qui ipsam hic laborum.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779732271596&quot;,
+    &quot;image&quot;: &quot;https://www.alyson-ortiz.org:40510/&quot;,
+    &quot;manufacturer&quot;: &quot;Cummerata and Sons&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;USFPIP&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+
