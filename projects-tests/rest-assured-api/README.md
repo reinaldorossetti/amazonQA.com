@@ -247,17 +247,6 @@ Essa é a proposta da suíte **REST Assured API** integrada ao **Tests Dashboard
 #QualidadeDeSoftware #QA #TestAutomation #RestAssured #Java25 #APITesting #AllureReport #ContinuousTesting #DevOps
 # 🧪 REST Assured API (`rest-assured-api`)
 
-# JAVA 25 and RestAssured
-![Java 25 e RestAssured](./docs/java-25-restassured-banner.png)
-
-Projeto de automação de testes de API focado em garantir a estabilidade e os contratos dos endpoints do sistema. Desenvolvido com **REST Assured**, **JUnit 5**, **Log4j 2** e **Allure**, esta suíte foi desenhada para tirar proveito da estabilidade e alta performance do **Java 25 (LTS)**, que é a versão oficial adotada em nossa esteira de integração contínua (CI) e o padrão recomendado para o projeto. 
-
-Para consultar as rotas, *payloads* e regras de negócio testadas por essa suíte, acesse a documentação interativa da API em **[Swagger - Tester.com API](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/swagger/index.html)**.
-
-**Índice:** [Java e toolchain](#-java-e-toolchain) · [Visão das suítes](#-visão-geral-das-suítes) · [JSON Schema](#-validação-de-contrato-com-json-schema) · [Requisitos](#-requisitos) · [Passo a passo](#-passo-a-passo-executar-localmente) · [Estrutura](#-estrutura-de-pastas) · [Configuração `.env`](#-configuração-env) · [Logging](#-logging-log4j-2) · [Paralelismo](#-execução-paralela-junit) · [Executar testes](#-executar-todos-os-testes) · [Por domínio](#-executar-por-domínio) · [Esteira CI](#-esteira-github-actions) · [Allure e Dashboard](#-allure-report-e-dashboard) · [Arquitetura](#-arquitetura-da-suíte) · [Referências](#-referências-do-projeto)
-
----
-
 ## ☕ Introdução ao Java 21 a 26
 
 Esta suíte de testes API trabalha com múltiplas versões Java para tirar proveito dos avanços de performance sem perder compatibilidade:
