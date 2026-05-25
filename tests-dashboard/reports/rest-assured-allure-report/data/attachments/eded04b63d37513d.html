@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Practical Concrete Bottle 1779729387752&quot;,
+    &quot;price&quot;: 2231.72,
+    &quot;description&quot;: &quot;Sequi placeat dolores quis non nulla dolor.&quot;,
+    &quot;category&quot;: &quot;Beauty-1779729387752&quot;,
+    &quot;image&quot;: &quot;https://www.landon-hermiston.io:19407/numquam/iureillo?eum=possimus&amp;corrupti=corporis&quot;,
+    &quot;manufacturer&quot;: &quot;Yost, Lindgren and Schumm&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;E1EWT9&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MyIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzI5Mzg2Nzk3QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzI5Mzg3LCJleHAiOjE3Nzk3MzI5ODd9.104DJZ5PDXhUWw6986t-2ubpemBzcpMBKZdGtEQaOrw</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MyIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzI5Mzg2Nzk3QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzI5Mzg3LCJleHAiOjE3Nzk3MzI5ODd9.104DJZ5PDXhUWw6986t-2ubpemBzcpMBKZdGtEQaOrw&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Practical Concrete Bottle 1779729387752&quot;,
+    &quot;price&quot;: 2231.72,
+    &quot;description&quot;: &quot;Sequi placeat dolores quis non nulla dolor.&quot;,
+    &quot;category&quot;: &quot;Beauty-1779729387752&quot;,
+    &quot;image&quot;: &quot;https://www.landon-hermiston.io:19407/numquam/iureillo?eum=possimus&amp;corrupti=corporis&quot;,
+    &quot;manufacturer&quot;: &quot;Yost, Lindgren and Schumm&quot;,
+    &quot;line&quot;: &quot;Aluminum&quot;,
+    &quot;model&quot;: &quot;E1EWT9&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Aerodynamic Linen Bag 1779729391316&quot;,
+    &quot;price&quot;: 4060.78,
+    &quot;description&quot;: &quot;Enim fugiat repudiandae id corporis.&quot;,
+    &quot;category&quot;: &quot;Kids &amp; Shoes-1779729391316&quot;,
+    &quot;image&quot;: &quot;https://www.guy-hills.net:10102/pariatur/sequi?quas=dolor&amp;ducimus=fugit#quae&quot;,
+    &quot;manufacturer&quot;: &quot;Huels, Olson and Ebert&quot;,
+    &quot;line&quot;: &quot;Paper&quot;,
+    &quot;model&quot;: &quot;QD81BY&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTEsImV4cCI6MTc3OTczMjk5MX0.44kDzBBelsTOrNPVXVZe2qMiUJ3Kl2YXS0cSqqdB8pI</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTEsImV4cCI6MTc3OTczMjk5MX0.44kDzBBelsTOrNPVXVZe2qMiUJ3Kl2YXS0cSqqdB8pI&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Aerodynamic Linen Bag 1779729391316&quot;,
+    &quot;price&quot;: 4060.78,
+    &quot;description&quot;: &quot;Enim fugiat repudiandae id corporis.&quot;,
+    &quot;category&quot;: &quot;Kids &amp; Shoes-1779729391316&quot;,
+    &quot;image&quot;: &quot;https://www.guy-hills.net:10102/pariatur/sequi?quas=dolor&amp;ducimus=fugit#quae&quot;,
+    &quot;manufacturer&quot;: &quot;Huels, Olson and Ebert&quot;,
+    &quot;line&quot;: &quot;Paper&quot;,
+    &quot;model&quot;: &quot;QD81BY&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

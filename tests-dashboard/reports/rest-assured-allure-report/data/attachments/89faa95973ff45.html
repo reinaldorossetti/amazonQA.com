@@ -1,0 +1,34 @@
+<div>POST to http://127.0.0.1:3001/api/users</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;first_name&quot;: &quot;Admin&quot;,
+    &quot;last_name&quot;: &quot;Created&quot;,
+    &quot;email&quot;: &quot;admin.created.1779729399204@example.com&quot;,
+    &quot;password&quot;: &quot;Senha@1234&quot;,
+    &quot;role&quot;: &quot;user&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJyZWlsb2FkQGdtYWlsLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyOTM5OSwiZXhwIjoxNzc5NzMyOTk5fQ.Xfm1sod-8FPy_JPgSAh15p8LtBO8sdm0FtBlQ6P8z60</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/users&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJyZWlsb2FkQGdtYWlsLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyOTM5OSwiZXhwIjoxNzc5NzMyOTk5fQ.Xfm1sod-8FPy_JPgSAh15p8LtBO8sdm0FtBlQ6P8z60&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;first_name&quot;: &quot;Admin&quot;,
+    &quot;last_name&quot;: &quot;Created&quot;,
+    &quot;email&quot;: &quot;admin.created.1779729399204@example.com&quot;,
+    &quot;password&quot;: &quot;Senha@1234&quot;,
+    &quot;role&quot;: &quot;user&quot;
+}&#39;
+    </div>
+

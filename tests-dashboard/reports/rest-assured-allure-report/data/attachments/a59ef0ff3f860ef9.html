@@ -1,0 +1,35 @@
+<div>POST to http://127.0.0.1:3001/api/users/register</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;first_name&quot;: &quot;Paulo&quot;,
+    &quot;last_name&quot;: &quot;Jesus&quot;,
+    &quot;email&quot;: &quot;mariaclara.danobrega@gmail.com&quot;,
+    &quot;password&quot;: &quot;Senha@1234&quot;,
+    &quot;person_type&quot;: &quot;PF&quot;,
+    &quot;cpf&quot;: &quot;623.284.387-84&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/users/register&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;first_name&quot;: &quot;Paulo&quot;,
+    &quot;last_name&quot;: &quot;Jesus&quot;,
+    &quot;email&quot;: &quot;mariaclara.danobrega@gmail.com&quot;,
+    &quot;password&quot;: &quot;Senha@1234&quot;,
+    &quot;person_type&quot;: &quot;PF&quot;,
+    &quot;cpf&quot;: &quot;623.284.387-84&quot;
+}&#39;
+    </div>
+

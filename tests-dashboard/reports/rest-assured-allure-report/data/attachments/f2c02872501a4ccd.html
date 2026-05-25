@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Intelligent Silk Table 1779729389793&quot;,
+    &quot;price&quot;: 44.24,
+    &quot;description&quot;: &quot;Animi sed rerum distinctio.&quot;,
+    &quot;category&quot;: &quot;Shoes-1779729389793&quot;,
+    &quot;image&quot;: &quot;https://www.melani-conn.name/sequi/quas?illum=quibusdam&amp;eius=cupiditate#asperiores&quot;,
+    &quot;manufacturer&quot;: &quot;Cremin LLC&quot;,
+    &quot;line&quot;: &quot;Plastic&quot;,
+    &quot;model&quot;: &quot;YX09UT&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzODksImV4cCI6MTc3OTczMjk4OX0.n07e5rS9ZPXM5GgH6Od6p9gVDPOs2UkYtIMh9I9m8ug</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzODksImV4cCI6MTc3OTczMjk4OX0.n07e5rS9ZPXM5GgH6Od6p9gVDPOs2UkYtIMh9I9m8ug&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Intelligent Silk Table 1779729389793&quot;,
+    &quot;price&quot;: 44.24,
+    &quot;description&quot;: &quot;Animi sed rerum distinctio.&quot;,
+    &quot;category&quot;: &quot;Shoes-1779729389793&quot;,
+    &quot;image&quot;: &quot;https://www.melani-conn.name/sequi/quas?illum=quibusdam&amp;eius=cupiditate#asperiores&quot;,
+    &quot;manufacturer&quot;: &quot;Cremin LLC&quot;,
+    &quot;line&quot;: &quot;Plastic&quot;,
+    &quot;model&quot;: &quot;YX09UT&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

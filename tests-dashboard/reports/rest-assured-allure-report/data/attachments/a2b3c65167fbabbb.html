@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Fantastic Iron Lamp 1779729390715&quot;,
+    &quot;price&quot;: 9872.34,
+    &quot;description&quot;: &quot;Provident deleniti quidem fugiat totam a vero.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779729390714&quot;,
+    &quot;image&quot;: &quot;https://www.aldo-powlowski.name/reprehenderit&quot;,
+    &quot;manufacturer&quot;: &quot;Pagac, Von and Kris&quot;,
+    &quot;line&quot;: &quot;Wool&quot;,
+    &quot;model&quot;: &quot;1B2P6A&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTAsImV4cCI6MTc3OTczMjk5MH0.l0vnvBb2BIMK0j_hP-sphEy0UH_rmfOxgwe4M3oMa60</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTAsImV4cCI6MTc3OTczMjk5MH0.l0vnvBb2BIMK0j_hP-sphEy0UH_rmfOxgwe4M3oMa60&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Fantastic Iron Lamp 1779729390715&quot;,
+    &quot;price&quot;: 9872.34,
+    &quot;description&quot;: &quot;Provident deleniti quidem fugiat totam a vero.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779729390714&quot;,
+    &quot;image&quot;: &quot;https://www.aldo-powlowski.name/reprehenderit&quot;,
+    &quot;manufacturer&quot;: &quot;Pagac, Von and Kris&quot;,
+    &quot;line&quot;: &quot;Wool&quot;,
+    &quot;model&quot;: &quot;1B2P6A&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

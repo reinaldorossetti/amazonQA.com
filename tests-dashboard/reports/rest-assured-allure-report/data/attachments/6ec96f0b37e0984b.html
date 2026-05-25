@@ -1,0 +1,40 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Enormous Copper Chair 1779729390384&quot;,
+    &quot;description&quot;: &quot;Tenetur similique minima sint.&quot;,
+    &quot;category&quot;: &quot;Grocery-1779729390384&quot;,
+    &quot;image&quot;: &quot;https://www.mohammad-swift.com:52466/explicabo/quis?aliquid=adipisci&amp;quia=architecto#similique&quot;,
+    &quot;manufacturer&quot;: &quot;Lowe-Ritchie&quot;,
+    &quot;line&quot;: &quot;Cotton&quot;,
+    &quot;model&quot;: &quot;2J7KTH&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTAsImV4cCI6MTc3OTczMjk5MH0.l0vnvBb2BIMK0j_hP-sphEy0UH_rmfOxgwe4M3oMa60</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzOTAsImV4cCI6MTc3OTczMjk5MH0.l0vnvBb2BIMK0j_hP-sphEy0UH_rmfOxgwe4M3oMa60&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Enormous Copper Chair 1779729390384&quot;,
+    &quot;description&quot;: &quot;Tenetur similique minima sint.&quot;,
+    &quot;category&quot;: &quot;Grocery-1779729390384&quot;,
+    &quot;image&quot;: &quot;https://www.mohammad-swift.com:52466/explicabo/quis?aliquid=adipisci&amp;quia=architecto#similique&quot;,
+    &quot;manufacturer&quot;: &quot;Lowe-Ritchie&quot;,
+    &quot;line&quot;: &quot;Cotton&quot;,
+    &quot;model&quot;: &quot;2J7KTH&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

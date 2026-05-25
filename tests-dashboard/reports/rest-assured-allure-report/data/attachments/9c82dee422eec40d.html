@@ -1,0 +1,29 @@
+<div>POST to http://127.0.0.1:3001/api/orders</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;shippingTotal&quot;: 0.0,
+    &quot;discountTotal&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZW1haWwiOiJyYS5vcmRlci43MzkyOTg0N0BleGFtcGxlLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyOTM2OCwiZXhwIjoxNzc5NzMyOTY4fQ.sGLIo8DE7hPVY762wTEiEs4A9g_zErpmJvVu1uev288</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Idempotency-Key: idem-1779729368916-9299</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/orders&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZW1haWwiOiJyYS5vcmRlci43MzkyOTg0N0BleGFtcGxlLmNvbSIsInBlcnNvblR5cGUiOiJQRiIsImlzcyI6InRlc3Rlci5jb20iLCJhdWQiOiJ0ZXN0ZXIuY29tLXdlYiIsImlhdCI6MTc3OTcyOTM2OCwiZXhwIjoxNzc5NzMyOTY4fQ.sGLIo8DE7hPVY762wTEiEs4A9g_zErpmJvVu1uev288&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Idempotency-Key: idem-1779729368916-9299&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;shippingTotal&quot;: 0.0,
+    &quot;discountTotal&quot;: 0.0
+}&#39;
+    </div>
+

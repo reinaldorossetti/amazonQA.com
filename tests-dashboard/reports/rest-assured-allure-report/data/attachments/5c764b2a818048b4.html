@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Ergonomic Plastic Keyboard 1779729388599&quot;,
+    &quot;price&quot;: 2879.36,
+    &quot;description&quot;: &quot;Earum exercitationem aperiam provident excepturi non ad.&quot;,
+    &quot;category&quot;: &quot;Kids-1779729388599&quot;,
+    &quot;image&quot;: &quot;http://www.peggie-medhurst.biz/veniam/enim?dolor=at&amp;voluptas=maxime#blanditiis&quot;,
+    &quot;manufacturer&quot;: &quot;Heller and Sons&quot;,
+    &quot;line&quot;: &quot;Silk&quot;,
+    &quot;model&quot;: &quot;QE75VY&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzODgsImV4cCI6MTc3OTczMjk4OH0.DrjXfBtE8YIt1ohiv-WA_pi1p_PqDqyri7BJOYOsCAg</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkzODgsImV4cCI6MTc3OTczMjk4OH0.DrjXfBtE8YIt1ohiv-WA_pi1p_PqDqyri7BJOYOsCAg&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Ergonomic Plastic Keyboard 1779729388599&quot;,
+    &quot;price&quot;: 2879.36,
+    &quot;description&quot;: &quot;Earum exercitationem aperiam provident excepturi non ad.&quot;,
+    &quot;category&quot;: &quot;Kids-1779729388599&quot;,
+    &quot;image&quot;: &quot;http://www.peggie-medhurst.biz/veniam/enim?dolor=at&amp;voluptas=maxime#blanditiis&quot;,
+    &quot;manufacturer&quot;: &quot;Heller and Sons&quot;,
+    &quot;line&quot;: &quot;Silk&quot;,
+    &quot;model&quot;: &quot;QE75VY&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+
