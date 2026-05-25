@@ -1,0 +1,38 @@
+<div>POST to http://127.0.0.1:3001/api/orders</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;discountTotal&quot;: -5.0,
+    &quot;items&quot;: [
+        {
+            &quot;productId&quot;: 1,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMCIsImVtYWlsIjoicmEub3JkZXIuODk5NTAxMzNAZXhhbXBsZS5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MjEsImV4cCI6MTc3OTczNTEyMX0.eNU7Te66h1AWdDP9gp7ScM9GDISZamjovwse2bHEK8E</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/orders&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMCIsImVtYWlsIjoicmEub3JkZXIuODk5NTAxMzNAZXhhbXBsZS5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MjEsImV4cCI6MTc3OTczNTEyMX0.eNU7Te66h1AWdDP9gp7ScM9GDISZamjovwse2bHEK8E&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;discountTotal&quot;: -5.0,
+    &quot;items&quot;: [
+        {
+            &quot;productId&quot;: 1,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}&#39;
+    </div>
+

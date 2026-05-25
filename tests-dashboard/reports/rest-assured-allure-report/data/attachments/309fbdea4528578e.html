@@ -1,0 +1,40 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Intelligent Marble Bench 1779731537579&quot;,
+    &quot;price&quot;: 4777.76,
+    &quot;description&quot;: &quot;Facere illum ab maxime.&quot;,
+    &quot;category&quot;: &quot;Clothing, Industrial &amp; Toys-1779731537579&quot;,
+    &quot;image&quot;: &quot;http://www.randall-lowe.com/ex/laudantiummolestiae#nemo&quot;,
+    &quot;manufacturer&quot;: &quot;Murphy-Keeling&quot;,
+    &quot;line&quot;: &quot;Copper&quot;,
+    &quot;model&quot;: &quot;3258SK&quot;
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MzcsImV4cCI6MTc3OTczNTEzN30.B524UKf7ghJjKGkirG3hVCaKLKr_1C8q6HzPIAGDSd8</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MzcsImV4cCI6MTc3OTczNTEzN30.B524UKf7ghJjKGkirG3hVCaKLKr_1C8q6HzPIAGDSd8&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Intelligent Marble Bench 1779731537579&quot;,
+    &quot;price&quot;: 4777.76,
+    &quot;description&quot;: &quot;Facere illum ab maxime.&quot;,
+    &quot;category&quot;: &quot;Clothing, Industrial &amp; Toys-1779731537579&quot;,
+    &quot;image&quot;: &quot;http://www.randall-lowe.com/ex/laudantiummolestiae#nemo&quot;,
+    &quot;manufacturer&quot;: &quot;Murphy-Keeling&quot;,
+    &quot;line&quot;: &quot;Copper&quot;,
+    &quot;model&quot;: &quot;3258SK&quot;
+}&#39;
+    </div>
+

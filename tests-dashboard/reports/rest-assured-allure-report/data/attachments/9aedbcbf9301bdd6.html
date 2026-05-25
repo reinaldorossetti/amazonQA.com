@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Aerodynamic Paper Bench 1779731539892&quot;,
+    &quot;price&quot;: 2645.53,
+    &quot;description&quot;: &quot;Iure voluptates dolores ex repellendus ad architecto.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779731539891&quot;,
+    &quot;image&quot;: &quot;https://www.yolando-rohan.org/corrupti/temporibusbeatae&quot;,
+    &quot;manufacturer&quot;: &quot;Deckow-O&#39;Kon&quot;,
+    &quot;line&quot;: &quot;Copper&quot;,
+    &quot;model&quot;: &quot;5K9LM9&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MzksImV4cCI6MTc3OTczNTEzOX0.dxNzRSPSOFZZzurhtPKx_OESXfUkH1K0wcV4qhSWzxA</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1MzksImV4cCI6MTc3OTczNTEzOX0.dxNzRSPSOFZZzurhtPKx_OESXfUkH1K0wcV4qhSWzxA&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Aerodynamic Paper Bench 1779731539892&quot;,
+    &quot;price&quot;: 2645.53,
+    &quot;description&quot;: &quot;Iure voluptates dolores ex repellendus ad architecto.&quot;,
+    &quot;category&quot;: &quot;Categoria-1779731539891&quot;,
+    &quot;image&quot;: &quot;https://www.yolando-rohan.org/corrupti/temporibusbeatae&quot;,
+    &quot;manufacturer&quot;: &quot;Deckow-O&#39;Kon&quot;,
+    &quot;line&quot;: &quot;Copper&quot;,
+    &quot;model&quot;: &quot;5K9LM9&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Intelligent Plastic Gloves 1779731541013&quot;,
+    &quot;price&quot;: 206.52,
+    &quot;description&quot;: &quot;Molestias hic in temporibus corporis eligendi.&quot;,
+    &quot;category&quot;: &quot;Health-1779731541013&quot;,
+    &quot;image&quot;: &quot;https://www.rosena-hammes.co:16942/cum&quot;,
+    &quot;manufacturer&quot;: &quot;Oberbrunner, O&#39;Kon and Rippin&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;AK86YK&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1NDAsImV4cCI6MTc3OTczNTE0MH0.J_YYrLMzF37VeRGg18HNZrWVt-0WCdgNt0Y4YXHvG30</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MzE1NDAsImV4cCI6MTc3OTczNTE0MH0.J_YYrLMzF37VeRGg18HNZrWVt-0WCdgNt0Y4YXHvG30&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Intelligent Plastic Gloves 1779731541013&quot;,
+    &quot;price&quot;: 206.52,
+    &quot;description&quot;: &quot;Molestias hic in temporibus corporis eligendi.&quot;,
+    &quot;category&quot;: &quot;Health-1779731541013&quot;,
+    &quot;image&quot;: &quot;https://www.rosena-hammes.co:16942/cum&quot;,
+    &quot;manufacturer&quot;: &quot;Oberbrunner, O&#39;Kon and Rippin&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;AK86YK&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+
