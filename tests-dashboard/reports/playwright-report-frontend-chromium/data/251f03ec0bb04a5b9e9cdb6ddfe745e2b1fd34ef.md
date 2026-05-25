@@ -1,0 +1,978 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: frontend/support-products.spec.ts >> Support Products - Frontend E2E >> SUP-UI07 - Support deve abrir modal de edição com dados preenchidos
+- Location: e2e/specs/frontend/support-products.spec.ts:231:3
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[role="dialog"] button[aria-label="close"]')
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img [ref=e6]
+        - link [ref=e7] [cursor=pointer]:
+          - /url: /
+          - paragraph [ref=e8]: Navegue pelo
+          - paragraph [ref=e9]: Catálogo
+        - generic [ref=e10]:
+          - generic [ref=e11] [cursor=pointer]: Todos ▾
+          - textbox [ref=e12]:
+            - /placeholder: Pesquisa amazonQA.com
+          - img [ref=e14] [cursor=pointer]
+        - generic [ref=e16] [cursor=pointer]:
+          - img [ref=e17]
+          - paragraph [ref=e19]: pt
+        - generic [ref=e20]:
+          - link [ref=e21] [cursor=pointer]:
+            - /url: /minha-conta
+            - paragraph [ref=e22]: Olá,
+            - paragraph [ref=e23]: Suporte
+          - img [ref=e25] [cursor=pointer]
+        - link [ref=e27] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=e28]:
+            - generic [ref=e29]: "0"
+            - img [ref=e30]
+          - paragraph [ref=e35]: Carrinho
+    - generic [ref=e36]:
+      - link [ref=e37] [cursor=pointer]:
+        - /url: /
+        - img [ref=e38]
+        - paragraph [ref=e40]:
+          - strong [ref=e41]: Todos
+      - link [ref=e42] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e43]: Venda na Amazon
+      - link [ref=e44] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e45]: Chega em 15 min
+      - link [ref=e46] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e47]: Ofertas do Dia
+      - link [ref=e48] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e49]: Mais Vendidos
+      - link [ref=e50] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e51]: Games
+      - link [ref=e52] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=e53]: Livros
+      - generic [ref=e55] [cursor=pointer]:
+        - generic [ref=e56]:
+          - paragraph [ref=e58]: C
+          - paragraph [ref=e59]: vs
+          - paragraph [ref=e61]: "N"
+        - generic [ref=e62]:
+          - paragraph [ref=e63]: "AO VIVO: QUINTA-FEIRA,"
+          - paragraph [ref=e64]: 20:30
+    - generic [ref=e65]:
+      - paragraph [ref=e67]: amazonnow
+      - link [ref=e68] [cursor=pointer]:
+        - /url: "#"
+        - text: Compras anteriores
+      - link [ref=e69] [cursor=pointer]:
+        - /url: "#"
+        - text: Ofertas
+      - link [ref=e70] [cursor=pointer]:
+        - /url: "#"
+        - text: Categorias ∨
+      - link [ref=e71] [cursor=pointer]:
+        - /url: "#"
+        - text: Saiba mais
+      - link [ref=e72] [cursor=pointer]:
+        - /url: "#"
+        - text: Ajuda
+    - generic [ref=e74]:
+      - heading [level=5] [ref=e75]: Minha conta
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - heading [level=6] [ref=e78]: Olá, Suporte
+          - generic [ref=e79]:
+            - link [ref=e80] [cursor=pointer]:
+              - /url: /minha-conta
+              - text: Resumo da conta
+            - link [ref=e81] [cursor=pointer]:
+              - /url: /minha-conta/dados
+              - text: Meu perfil
+            - link [ref=e82] [cursor=pointer]:
+              - /url: /minha-conta/endereco
+              - text: Meu endereço
+            - link [ref=e83] [cursor=pointer]:
+              - /url: /minha-conta/pedidos
+              - text: Meus pedidos
+            - link [ref=e84] [cursor=pointer]:
+              - /url: /minha-conta/suporte/produtos
+              - text: Suporte • Produtos
+            - link [ref=e85] [cursor=pointer]:
+              - /url: /cart
+              - text: Carrinho
+            - link [ref=e86] [cursor=pointer]:
+              - /url: /
+              - text: Continuar comprando
+            - button [ref=e87] [cursor=pointer]: Sair
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - heading [level=6] [ref=e92]: Gestão de Produtos
+              - paragraph [ref=e93]: Cadastre, edite e remova produtos do catálogo.
+            - button [ref=e94] [cursor=pointer]:
+              - img [ref=e96]
+              - text: Novo produto
+          - separator [ref=e98]
+          - generic [ref=e100]:
+            - img [ref=e102]
+            - textbox [ref=e104]:
+              - /placeholder: Pesquisar por nome, categoria ou fabricante...
+            - group
+          - generic [ref=e105]: 25 produtos encontrados
+          - table [ref=e107]:
+            - rowgroup [ref=e108]:
+              - row [ref=e109]:
+                - columnheader [ref=e110]: ID
+                - columnheader [ref=e111]: Produto
+                - columnheader [ref=e112]: Categoria
+                - columnheader [ref=e113]: Preço
+                - columnheader [ref=e114]: Frete
+                - columnheader [ref=e115]: Ações
+            - rowgroup [ref=e116]:
+              - row [ref=e117]:
+                - cell [ref=e118]:
+                  - generic [ref=e119]: "#2"
+                - cell [ref=e120]:
+                  - generic [ref=e121]:
+                    - img [ref=e122]
+                    - generic [ref=e123]:
+                      - paragraph [ref=e124]: Câmera Vintage
+                      - text: RetroCam
+                - cell [ref=e125]:
+                  - generic [ref=e127]: Eletrônicos
+                - cell [ref=e128]:
+                  - paragraph [ref=e129]: R$ 85.50
+                - cell [ref=e130]:
+                  - paragraph [ref=e131]: R$ 16.00
+                - cell [ref=e132]:
+                  - generic [ref=e133]:
+                    - button [ref=e134] [cursor=pointer]:
+                      - img [ref=e135]
+                    - button [ref=e138] [cursor=pointer]:
+                      - img [ref=e139]
+              - row [ref=e141]:
+                - cell [ref=e142]:
+                  - generic [ref=e143]: "#9"
+                - cell [ref=e144]:
+                  - generic [ref=e145]:
+                    - img [ref=e146]
+                    - generic [ref=e147]:
+                      - paragraph [ref=e148]: Caneca Na Minha Máquina Funciona
+                      - text: DevMugs
+                - cell [ref=e149]:
+                  - generic [ref=e151]: Acessórios
+                - cell [ref=e152]:
+                  - paragraph [ref=e153]: R$ 39.90
+                - cell [ref=e154]:
+                  - generic [ref=e156]: Grátis
+                - cell [ref=e157]:
+                  - generic [ref=e158]:
+                    - button [ref=e159] [cursor=pointer]:
+                      - img [ref=e160]
+                    - button [ref=e163] [cursor=pointer]:
+                      - img [ref=e164]
+              - row [ref=e166]:
+                - cell [ref=e167]:
+                  - generic [ref=e168]: "#6"
+                - cell [ref=e169]:
+                  - generic [ref=e170]:
+                    - img [ref=e171]
+                    - generic [ref=e172]:
+                      - paragraph [ref=e173]: "Clean Architecture: A Craftsman's Guide to Software Structure and Design"
+                      - text: Robert C. Martin
+                - cell [ref=e174]:
+                  - generic [ref=e176]: Livros
+                - cell [ref=e177]:
+                  - paragraph [ref=e178]: R$ 233.44
+                - cell [ref=e179]:
+                  - generic [ref=e181]: Grátis
+                - cell [ref=e182]:
+                  - generic [ref=e183]:
+                    - button [ref=e184] [cursor=pointer]:
+                      - img [ref=e185]
+                    - button [ref=e188] [cursor=pointer]:
+                      - img [ref=e189]
+              - row [ref=e191]:
+                - cell [ref=e192]:
+                  - generic [ref=e193]: "#15"
+                - cell [ref=e194]:
+                  - generic [ref=e195]:
+                    - img [ref=e196]
+                    - generic [ref=e197]:
+                      - paragraph [ref=e198]: "Devoradores de Estrelas: O Livro que Deu Origem ao Filme"
+                      - text: Andy Weir
+                - cell [ref=e199]:
+                  - generic [ref=e201]: Livros
+                - cell [ref=e202]:
+                  - paragraph [ref=e203]: R$ 24.90
+                - cell [ref=e204]:
+                  - generic [ref=e206]: Grátis
+                - cell [ref=e207]:
+                  - generic [ref=e208]:
+                    - button [ref=e209] [cursor=pointer]:
+                      - img [ref=e210]
+                    - button [ref=e213] [cursor=pointer]:
+                      - img [ref=e214]
+              - row [ref=e216]:
+                - cell [ref=e217]:
+                  - generic [ref=e218]: "#27"
+                - cell [ref=e219]:
+                  - generic [ref=e220]:
+                    - img [ref=e221]
+                    - generic [ref=e222]:
+                      - paragraph [ref=e223]: E2E-UI Electronic Bamboo Car 1779732479898
+                      - text: Gleason - Wiegand
+                - cell [ref=e224]:
+                  - generic [ref=e226]: Eletrônicos
+                - cell [ref=e227]:
+                  - paragraph [ref=e228]: R$ 238.80
+                - cell [ref=e229]:
+                  - paragraph [ref=e230]: R$ 9.90
+                - cell [ref=e231]:
+                  - generic [ref=e232]:
+                    - button [ref=e233] [cursor=pointer]:
+                      - img [ref=e234]
+                    - button [ref=e237] [cursor=pointer]:
+                      - img [ref=e238]
+              - row [ref=e240]:
+                - cell [ref=e241]:
+                  - generic [ref=e242]: "#30"
+                - cell [ref=e243]:
+                  - generic [ref=e244]:
+                    - img [ref=e245]
+                    - generic [ref=e246]:
+                      - paragraph [ref=e247]: E2E-UI Modern Cotton Tuna 1779732548077
+                      - text: Balistreri and Sons
+                - cell [ref=e248]:
+                  - generic [ref=e250]: Eletrônicos
+                - cell [ref=e251]:
+                  - paragraph [ref=e252]: R$ 145.89
+                - cell [ref=e253]:
+                  - paragraph [ref=e254]: R$ 9.90
+                - cell [ref=e255]:
+                  - generic [ref=e256]:
+                    - button [ref=e257] [cursor=pointer]:
+                      - img [ref=e258]
+                    - button [ref=e261] [cursor=pointer]:
+                      - img [ref=e262]
+              - row [ref=e264]:
+                - cell [ref=e265]:
+                  - generic [ref=e266]: "#29"
+                - cell [ref=e267]:
+                  - generic [ref=e268]:
+                    - img [ref=e269]
+                    - generic [ref=e270]:
+                      - paragraph [ref=e271]: E2E-UI Practical Bronze Shirt 1779732513932
+                      - text: Collins, Morissette and Terry
+                - cell [ref=e272]:
+                  - generic [ref=e274]: Acessórios
+                - cell [ref=e275]:
+                  - paragraph [ref=e276]: R$ 305.59
+                - cell [ref=e277]:
+                  - paragraph [ref=e278]: R$ 15.00
+                - cell [ref=e279]:
+                  - generic [ref=e280]:
+                    - button [ref=e281] [cursor=pointer]:
+                      - img [ref=e282]
+                    - button [ref=e285] [cursor=pointer]:
+                      - img [ref=e286]
+              - row [ref=e288]:
+                - cell [ref=e289]:
+                  - generic [ref=e290]: "#16"
+                - cell [ref=e291]:
+                  - generic [ref=e292]:
+                    - img [ref=e293]
+                    - generic [ref=e294]:
+                      - paragraph [ref=e295]: Em Busca do Tempo Perdido – Box Completo (7 volumes)
+                      - text: Marcel Proust
+                - cell [ref=e296]:
+                  - generic [ref=e298]: Livros
+                - cell [ref=e299]:
+                  - paragraph [ref=e300]: R$ 246.11
+                - cell [ref=e301]:
+                  - generic [ref=e303]: Grátis
+                - cell [ref=e304]:
+                  - generic [ref=e305]:
+                    - button [ref=e306] [cursor=pointer]:
+                      - img [ref=e307]
+                    - button [ref=e310] [cursor=pointer]:
+                      - img [ref=e311]
+              - row [ref=e313]:
+                - cell [ref=e314]:
+                  - generic [ref=e315]: "#10"
+                - cell [ref=e316]:
+                  - generic [ref=e317]:
+                    - img [ref=e318]
+                    - generic [ref=e319]:
+                      - paragraph [ref=e320]: eXtreme Go Horse (XGH)
+                      - text: O'Reilly Books
+                - cell [ref=e321]:
+                  - generic [ref=e323]: Livros
+                - cell [ref=e324]:
+                  - paragraph [ref=e325]: R$ 49.90
+                - cell [ref=e326]:
+                  - generic [ref=e328]: Grátis
+                - cell [ref=e329]:
+                  - generic [ref=e330]:
+                    - button [ref=e331] [cursor=pointer]:
+                      - img [ref=e332]
+                    - button [ref=e335] [cursor=pointer]:
+                      - img [ref=e336]
+              - row [ref=e338]:
+                - cell [ref=e339]:
+                  - generic [ref=e340]: "#19"
+                - cell [ref=e341]:
+                  - generic [ref=e342]:
+                    - img [ref=e343]
+                    - generic [ref=e344]:
+                      - paragraph [ref=e345]: Fone de Ouvido Bluetooth Anker Soundcore Life P3
+                      - text: Anker
+                - cell [ref=e346]:
+                  - generic [ref=e348]: Eletrônicos
+                - cell [ref=e349]:
+                  - paragraph [ref=e350]: R$ 219.00
+                - cell [ref=e351]:
+                  - generic [ref=e353]: Grátis
+                - cell [ref=e354]:
+                  - generic [ref=e355]:
+                    - button [ref=e356] [cursor=pointer]:
+                      - img [ref=e357]
+                    - button [ref=e360] [cursor=pointer]:
+                      - img [ref=e361]
+              - row [ref=e363]:
+                - cell [ref=e364]:
+                  - generic [ref=e365]: "#3"
+                - cell [ref=e366]:
+                  - generic [ref=e367]:
+                    - img [ref=e368]
+                    - generic [ref=e369]:
+                      - paragraph [ref=e370]: Fones de Ouvido
+                      - text: SoundBeat
+                - cell [ref=e371]:
+                  - generic [ref=e373]: Eletrônicos
+                - cell [ref=e374]:
+                  - paragraph [ref=e375]: R$ 35.99
+                - cell [ref=e376]:
+                  - generic [ref=e378]: Grátis
+                - cell [ref=e379]:
+                  - generic [ref=e380]:
+                    - button [ref=e381] [cursor=pointer]:
+                      - img [ref=e382]
+                    - button [ref=e385] [cursor=pointer]:
+                      - img [ref=e386]
+              - row [ref=e388]:
+                - cell [ref=e389]:
+                  - generic [ref=e390]: "#11"
+                - cell [ref=e391]:
+                  - generic [ref=e392]:
+                    - img [ref=e393]
+                    - generic [ref=e394]:
+                      - paragraph [ref=e395]: GameSir G7 SE Controle com Fio para Xbox e PC
+                      - text: GameSir
+                - cell [ref=e396]:
+                  - generic [ref=e398]: Games
+                - cell [ref=e399]:
+                  - paragraph [ref=e400]: R$ 279.30
+                - cell [ref=e401]:
+                  - generic [ref=e403]: Grátis
+                - cell [ref=e404]:
+                  - generic [ref=e405]:
+                    - button [ref=e406] [cursor=pointer]:
+                      - img [ref=e407]
+                    - button [ref=e410] [cursor=pointer]:
+                      - img [ref=e411]
+              - row [ref=e413]:
+                - cell [ref=e414]:
+                  - generic [ref=e415]: "#8"
+                - cell [ref=e416]:
+                  - generic [ref=e417]:
+                    - img [ref=e418]
+                    - generic [ref=e419]:
+                      - paragraph [ref=e420]: Garrafa Térmica
+                      - text: Dried Pine 950ml Stanley
+                - cell [ref=e421]:
+                  - generic [ref=e423]: Acessórios
+                - cell [ref=e424]:
+                  - paragraph [ref=e425]: R$ 45.00
+                - cell [ref=e426]:
+                  - generic [ref=e428]: Grátis
+                - cell [ref=e429]:
+                  - generic [ref=e430]:
+                    - button [ref=e431] [cursor=pointer]:
+                      - img [ref=e432]
+                    - button [ref=e435] [cursor=pointer]:
+                      - img [ref=e436]
+              - row [ref=e438]:
+                - cell [ref=e439]:
+                  - generic [ref=e440]: "#7"
+                - cell [ref=e441]:
+                  - generic [ref=e442]:
+                    - img [ref=e443]
+                    - generic [ref=e444]:
+                      - paragraph [ref=e445]: Gshield Mochila Mala de Mão
+                      - text: Gshield
+                - cell [ref=e446]:
+                  - generic [ref=e448]: Acessórios
+                - cell [ref=e449]:
+                  - paragraph [ref=e450]: R$ 284.99
+                - cell [ref=e451]:
+                  - generic [ref=e453]: Grátis
+                - cell [ref=e454]:
+                  - generic [ref=e455]:
+                    - button [ref=e456] [cursor=pointer]:
+                      - img [ref=e457]
+                    - button [ref=e460] [cursor=pointer]:
+                      - img [ref=e461]
+              - row [ref=e463]:
+                - cell [ref=e464]:
+                  - generic [ref=e465]: "#12"
+                - cell [ref=e466]:
+                  - generic [ref=e467]:
+                    - img [ref=e468]
+                    - generic [ref=e469]:
+                      - paragraph [ref=e470]: Headset Gamer HyperX Cloud II – 7.1 Surround
+                      - text: HyperX
+                - cell [ref=e471]:
+                  - generic [ref=e473]: Games
+                - cell [ref=e474]:
+                  - paragraph [ref=e475]: R$ 449.00
+                - cell [ref=e476]:
+                  - generic [ref=e478]: Grátis
+                - cell [ref=e479]:
+                  - generic [ref=e480]:
+                    - button [ref=e481] [cursor=pointer]:
+                      - img [ref=e482]
+                    - button [ref=e485] [cursor=pointer]:
+                      - img [ref=e486]
+              - row [ref=e488]:
+                - cell [ref=e489]:
+                  - generic [ref=e490]: "#22"
+                - cell [ref=e491]:
+                  - generic [ref=e492]:
+                    - img [ref=e493]
+                    - generic [ref=e494]:
+                      - paragraph [ref=e495]: L'Oréal Paris Elseve Creme para Pentear Hidra-Hialurônico
+                      - text: L'Oréal Paris
+                - cell [ref=e496]:
+                  - generic [ref=e498]: Mais Vendidos
+                - cell [ref=e499]:
+                  - paragraph [ref=e500]: R$ 18.89
+                - cell [ref=e501]:
+                  - generic [ref=e503]: Grátis
+                - cell [ref=e504]:
+                  - generic [ref=e505]:
+                    - button [ref=e506] [cursor=pointer]:
+                      - img [ref=e507]
+                    - button [ref=e510] [cursor=pointer]:
+                      - img [ref=e511]
+              - row [ref=e513]:
+                - cell [ref=e514]:
+                  - generic [ref=e515]: "#21"
+                - cell [ref=e516]:
+                  - generic [ref=e517]:
+                    - img [ref=e518]
+                    - generic [ref=e519]:
+                      - paragraph [ref=e520]: NIVEA Facial Cellular Luminous ANTIMARCAS – Sérum + Hidratante
+                      - text: NIVEA
+                - cell [ref=e521]:
+                  - generic [ref=e523]: Mais Vendidos
+                - cell [ref=e524]:
+                  - paragraph [ref=e525]: R$ 27.50
+                - cell [ref=e526]:
+                  - generic [ref=e528]: Grátis
+                - cell [ref=e529]:
+                  - generic [ref=e530]:
+                    - button [ref=e531] [cursor=pointer]:
+                      - img [ref=e532]
+                    - button [ref=e535] [cursor=pointer]:
+                      - img [ref=e536]
+              - row [ref=e538]:
+                - cell [ref=e539]:
+                  - generic [ref=e540]: "#14"
+                - cell [ref=e541]:
+                  - generic [ref=e542]:
+                    - img [ref=e543]
+                    - generic [ref=e544]:
+                      - paragraph [ref=e545]: O Massacre da Família Hope
+                      - text: Riley Sager
+                - cell [ref=e546]:
+                  - generic [ref=e548]: Livros
+                - cell [ref=e549]:
+                  - paragraph [ref=e550]: R$ 30.49
+                - cell [ref=e551]:
+                  - generic [ref=e553]: Grátis
+                - cell [ref=e554]:
+                  - generic [ref=e555]:
+                    - button [ref=e556] [cursor=pointer]:
+                      - img [ref=e557]
+                    - button [ref=e560] [cursor=pointer]:
+                      - img [ref=e561]
+              - row [ref=e563]:
+                - cell [ref=e564]:
+                  - generic [ref=e565]: "#18"
+                - cell [ref=e566]:
+                  - generic [ref=e567]:
+                    - img [ref=e568]
+                    - generic [ref=e569]:
+                      - paragraph [ref=e570]: Óculos VR Realidade Virtual 3D com Fone de Ouvido
+                      - text: VDRBG
+                - cell [ref=e571]:
+                  - generic [ref=e573]: Eletrônicos
+                - cell [ref=e574]:
+                  - paragraph [ref=e575]: R$ 157.36
+                - cell [ref=e576]:
+                  - generic [ref=e578]: Grátis
+                - cell [ref=e579]:
+                  - generic [ref=e580]:
+                    - button [ref=e581] [cursor=pointer]:
+                      - img [ref=e582]
+                    - button [ref=e585] [cursor=pointer]:
+                      - img [ref=e586]
+              - row [ref=e588]:
+                - cell [ref=e589]:
+                  - generic [ref=e590]: "#1"
+                - cell [ref=e591]:
+                  - generic [ref=e592]:
+                    - img [ref=e593]
+                    - generic [ref=e594]:
+                      - paragraph [ref=e595]: Relógio Elegante
+                      - text: TimeX
+                - cell [ref=e596]:
+                  - generic [ref=e598]: Acessórios
+                - cell [ref=e599]:
+                  - paragraph [ref=e600]: R$ 50.99
+                - cell [ref=e601]:
+                  - generic [ref=e603]: Grátis
+                - cell [ref=e604]:
+                  - generic [ref=e605]:
+                    - button [ref=e606] [cursor=pointer]:
+                      - img [ref=e607]
+                    - button [ref=e610] [cursor=pointer]:
+                      - img [ref=e611]
+              - row [ref=e613]:
+                - cell [ref=e614]:
+                  - generic [ref=e615]: "#17"
+                - cell [ref=e616]:
+                  - generic [ref=e617]:
+                    - img [ref=e618]
+                    - generic [ref=e619]:
+                      - paragraph [ref=e620]: Sem Juízo (Chestnut Springs – Livro 4)
+                      - text: Elsie Silver
+                - cell [ref=e621]:
+                  - generic [ref=e623]: Livros
+                - cell [ref=e624]:
+                  - paragraph [ref=e625]: R$ 48.90
+                - cell [ref=e626]:
+                  - generic [ref=e628]: Grátis
+                - cell [ref=e629]:
+                  - generic [ref=e630]:
+                    - button [ref=e631] [cursor=pointer]:
+                      - img [ref=e632]
+                    - button [ref=e635] [cursor=pointer]:
+                      - img [ref=e636]
+              - row [ref=e638]:
+                - cell [ref=e639]:
+                  - generic [ref=e640]: "#5"
+                - cell [ref=e641]:
+                  - generic [ref=e642]:
+                    - img [ref=e643]
+                    - generic [ref=e644]:
+                      - paragraph [ref=e645]: Smartphone
+                      - text: TechNova
+                - cell [ref=e646]:
+                  - generic [ref=e648]: Eletrônicos
+                - cell [ref=e649]:
+                  - paragraph [ref=e650]: R$ 299.99
+                - cell [ref=e651]:
+                  - generic [ref=e653]: Grátis
+                - cell [ref=e654]:
+                  - generic [ref=e655]:
+                    - button [ref=e656] [cursor=pointer]:
+                      - img [ref=e657]
+                    - button [ref=e660] [cursor=pointer]:
+                      - img [ref=e661]
+              - row [ref=e663]:
+                - cell [ref=e664]:
+                  - generic [ref=e665]: "#13"
+                - cell [ref=e666]:
+                  - generic [ref=e667]:
+                    - img [ref=e668]
+                    - generic [ref=e669]:
+                      - paragraph [ref=e670]: Suporte Vertical para PS5 com 2 Controles e Carregador
+                      - text: Sony
+                - cell [ref=e671]:
+                  - generic [ref=e673]: Games
+                - cell [ref=e674]:
+                  - paragraph [ref=e675]: R$ 189.90
+                - cell [ref=e676]:
+                  - generic [ref=e678]: Grátis
+                - cell [ref=e679]:
+                  - generic [ref=e680]:
+                    - button [ref=e681] [cursor=pointer]:
+                      - img [ref=e682]
+                    - button [ref=e685] [cursor=pointer]:
+                      - img [ref=e686]
+              - row [ref=e688]:
+                - cell [ref=e689]:
+                  - generic [ref=e690]: "#4"
+                - cell [ref=e691]:
+                  - generic [ref=e692]:
+                    - img [ref=e693]
+                    - generic [ref=e694]:
+                      - paragraph [ref=e695]: Tênis de Corrida
+                      - text: RunFast
+                - cell [ref=e696]:
+                  - generic [ref=e698]: Esportes
+                - cell [ref=e699]:
+                  - paragraph [ref=e700]: R$ 120.00
+                - cell [ref=e701]:
+                  - generic [ref=e703]: Grátis
+                - cell [ref=e704]:
+                  - generic [ref=e705]:
+                    - button [ref=e706] [cursor=pointer]:
+                      - img [ref=e707]
+                    - button [ref=e710] [cursor=pointer]:
+                      - img [ref=e711]
+              - row [ref=e713]:
+                - cell [ref=e714]:
+                  - generic [ref=e715]: "#20"
+                - cell [ref=e716]:
+                  - generic [ref=e717]:
+                    - img [ref=e718]
+                    - generic [ref=e719]:
+                      - paragraph [ref=e720]: Webcam Ultra HD Logitech Brio 4K PRO com Microfone Embutido para Chamadas e Gravações em Video - Compatível com Logitech Capture
+                      - text: Logitech
+                - cell [ref=e721]:
+                  - generic [ref=e723]: Eletrônicos
+                - cell [ref=e724]:
+                  - paragraph [ref=e725]: R$ 489.90
+                - cell [ref=e726]:
+                  - generic [ref=e728]: Grátis
+                - cell [ref=e729]:
+                  - generic [ref=e730]:
+                    - button [ref=e731] [cursor=pointer]:
+                      - img [ref=e732]
+                    - button [ref=e735] [cursor=pointer]:
+                      - img [ref=e736]
+    - generic [ref=e738]:
+      - paragraph [ref=e740] [cursor=pointer]: Voltar ao início
+      - generic [ref=e741]:
+        - generic [ref=e743]:
+          - generic [ref=e744]:
+            - heading [level=6] [ref=e745]: Conheça-nos
+            - link [ref=e746] [cursor=pointer]:
+              - /url: https://www.aboutamazon.com.br/
+              - text: Sobre a Amazon
+            - link [ref=e747] [cursor=pointer]:
+              - /url: https://www.aboutamazon.com.br/
+              - text: Informações corporativas
+            - link [ref=e748] [cursor=pointer]:
+              - /url: https://www.amazon.jobs/pt-br/
+              - text: Carreiras
+            - link [ref=e749] [cursor=pointer]:
+              - /url: https://www.aboutamazon.com.br/noticias
+              - text: Comunicados à imprensa
+            - link [ref=e750] [cursor=pointer]:
+              - /url: https://www.aboutamazon.com.br/impacto
+              - text: Comunidade
+            - link [ref=e751] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/b?node=21216503011
+              - text: Acessibilidade
+            - link [ref=e752] [cursor=pointer]:
+              - /url: https://www.amazon.science/
+              - text: Amazon Science
+          - generic [ref=e753]:
+            - heading [level=6] [ref=e754]: Ganhe dinheiro conosco
+            - link [ref=e755] [cursor=pointer]:
+              - /url: https://venda.amazon.com.br/
+              - text: Venda na Amazon
+            - link [ref=e756] [cursor=pointer]:
+              - /url: https://brandservices.amazon.com.br/
+              - text: Proteja e construa a sua marca
+            - link [ref=e757] [cursor=pointer]:
+              - /url: https://venda.amazon.com.br/
+              - text: Forneça para a Amazon
+            - link [ref=e758] [cursor=pointer]:
+              - /url: https://kdp.amazon.com/pt_BR/
+              - text: Publique seus livros
+            - link [ref=e759] [cursor=pointer]:
+              - /url: https://associados.amazon.com.br/
+              - text: Seja um associado
+            - link [ref=e760] [cursor=pointer]:
+              - /url: https://ads.amazon.com/pt-br
+              - text: Anuncie seus produtos
+          - generic [ref=e761]:
+            - heading [level=6] [ref=e762]: Pagamento
+            - link [ref=e763] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/b?node=17387340011
+              - text: Meios de Pagamento
+            - link [ref=e764] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/b?node=21325178011
+              - text: Compre com Pontos
+            - link [ref=e765] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/b?node=17387340011
+              - text: Cartão de crédito Amazon
+          - generic [ref=e766]:
+            - heading [level=6] [ref=e767]: Deixe-nos ajudar você
+            - link [ref=e768] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/gp/css/homepage.html
+              - text: Sua conta
+            - link [ref=e769] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/gp/help/customer/display.html?nodeId=201910060
+              - text: Frete e prazo de entrega
+            - link [ref=e770] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/gp/css/returns/homepage.html
+              - text: Devoluções e reembolsos
+            - link [ref=e771] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/hz/mycd/myx
+              - text: Gerencie seu conteúdo e dispositivos
+            - link [ref=e772] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/Recalls-e-Alertas-de-Seguran%C3%A7a/b?node=33189917011
+              - text: Recalls e alertas de segurança do produto
+            - link [ref=e773] [cursor=pointer]:
+              - /url: https://www.amazon.com.br/gp/help/customer/display.html
+              - text: Ajuda
+        - generic [ref=e774]:
+          - img [ref=e775]
+          - generic [ref=e776] [cursor=pointer]:
+            - generic [ref=e777]: 🇧🇷
+            - paragraph [ref=e778]: Brasil
+      - generic [ref=e779]:
+        - generic [ref=e780]:
+          - link [ref=e781] [cursor=pointer]:
+            - /url: https://www.amazon.com.br/gp/help/customer/display.html?nodeId=201002280
+            - text: Condições de Uso
+          - link [ref=e782] [cursor=pointer]:
+            - /url: https://www.amazon.com.br/gp/help/customer/display.html?nodeId=201006660
+            - text: Notificação de Privacidade
+          - link [ref=e783] [cursor=pointer]:
+            - /url: https://www.amazon.com.br/gp/help/customer/display.html?nodeId=201890250
+            - text: Cookies
+          - link [ref=e784] [cursor=pointer]:
+            - /url: https://www.amazon.com.br/gp/help/customer/display.html?nodeId=201890280
+            - text: Anúncios Baseados em Interesses
+        - paragraph [ref=e785]: © 2021-2026 Amazon.com, Inc. ou suas afiliadas
+        - paragraph [ref=e786]: Amazon Serviços de Varejo do Brasil Ltda. | CNPJ 15.436.940/0001-03
+        - paragraph [ref=e787]:
+          - text: "Av. Juscelino Kubitschek, 2041, Torre E, 18º andar - São Paulo CEP: 04543-011 |"
+          - link [ref=e788] [cursor=pointer]:
+            - /url: https://www.amazon.com.br/gp/help/customer/contact-us
+            - text: Fale conosco
+          - text: "| ajuda-amazon@amazon.com.br"
+        - paragraph [ref=e789]: "Formas de pagamento aceitas: cartões de crédito (Visa, MasterCard, Elo e American Express), cartões de débito (Visa e Elo), Boleto e Pix."
+  - dialog [ref=e792]:
+    - heading "Editar Produto" [level=2] [ref=e793]:
+      - generic [ref=e794]:
+        - img [ref=e796]
+        - heading "Editar Produto" [level=5] [ref=e798]
+      - button [ref=e799] [cursor=pointer]:
+        - img [ref=e800]
+    - generic [ref=e803]:
+      - generic [ref=e804]:
+        - heading "Nome do Produto" [level=6] [ref=e805]
+        - generic [ref=e807]:
+          - textbox "Digite o nome completo" [ref=e808]: E2E-UI Modern Cotton Tuna 1779732548077
+          - group
+      - generic [ref=e809]:
+        - heading "Categoria" [level=6] [ref=e810]
+        - generic [ref=e812]:
+          - 'textbox "Ex: Eletrônicos" [ref=e813]': Eletrônicos
+          - group
+      - generic [ref=e814]:
+        - heading "Preço" [level=6] [ref=e815]
+        - generic [ref=e817]:
+          - paragraph [ref=e819]: R$
+          - spinbutton [ref=e820]: "145.89"
+          - group
+      - generic [ref=e821]:
+        - heading "Custo do Frete" [level=6] [ref=e822]
+        - generic [ref=e823]:
+          - generic [ref=e824]:
+            - paragraph [ref=e826]: R$
+            - spinbutton [ref=e827]: "9.9"
+            - group
+          - paragraph [ref=e828]: 0 = grátis
+      - generic [ref=e829]:
+        - heading "Fabricante" [level=6] [ref=e830]
+        - generic [ref=e832]:
+          - textbox "Marca ou Empresa" [ref=e833]: Balistreri and Sons
+          - group
+      - generic [ref=e834]:
+        - heading "Descrição" [level=6] [ref=e835]
+        - generic [ref=e837]:
+          - textbox "Descreva as características do produto..." [ref=e838]: Stylish Fish designed to make you stand out with spotless looks
+          - group
+      - generic [ref=e839]:
+        - heading "URL da Imagem" [level=6] [ref=e840]
+        - generic [ref=e841]:
+          - generic [ref=e843]:
+            - textbox "https://..." [ref=e844]: https://picsum.photos/seed/rZac7rsI/2547/956
+            - group
+          - img "preview" [ref=e845]
+    - generic [ref=e846]:
+      - button "Cancelar" [ref=e847] [cursor=pointer]
+      - button "Atualizar Produto" [ref=e848] [cursor=pointer]
+```
+
+# Test source
+
+```ts
+  153 | 
+  154 |     await page.locator('#support-products-search').fill(created.name.split(' ')[0]);
+  155 |     await page.waitForTimeout(500);
+  156 | 
+  157 |     await expect(page.locator('body')).toContainText(created.name);
+  158 | 
+  159 |     // Cleanup
+  160 |     await request.delete(`${API_BASE_URL}/products/${created.id}`, {
+  161 |       headers: { Authorization: `Bearer ${session.accessToken}` },
+  162 |     });
+  163 |   });
+  164 | 
+  165 |   test('SUP-UI04 - Busca sem resultados deve exibir mensagem vazia', async ({ page, request }) => {
+  166 |     let session: LoginPayload;
+  167 |     try {
+  168 |       session = await loginAsSupport(request);
+  169 |     } catch {
+  170 |       test.skip(true, 'Support login unavailable');
+  171 |       return;
+  172 |     }
+  173 | 
+  174 |     await setSession(page, session);
+  175 |     await goToSupportProducts(page);
+  176 | 
+  177 |     await page.locator('#support-products-search').fill(`__inexistente_${Date.now()}__`);
+  178 |     await page.waitForTimeout(500);
+  179 | 
+  180 |     await expect(page.locator('#support-products-empty')).toBeVisible();
+  181 |     await expect(page.locator('body')).toContainText('Nenhum produto encontrado');
+  182 |   });
+  183 | 
+  184 |   // ── Criação de Produto via Modal ──────────────────────────────────
+  185 | 
+  186 |   test('SUP-UI05 - Support deve abrir o modal de criação ao clicar "Novo produto"', async ({ page, request }) => {
+  187 |     let session: LoginPayload;
+  188 |     try {
+  189 |       session = await loginAsSupport(request);
+  190 |     } catch {
+  191 |       test.skip(true, 'Support login unavailable');
+  192 |       return;
+  193 |     }
+  194 | 
+  195 |     await setSession(page, session);
+  196 |     await goToSupportProducts(page);
+  197 | 
+  198 |     await page.locator('#support-products-new-btn').click();
+  199 |     await expect(page.locator('[role="dialog"]')).toBeVisible();
+  200 |     await expect(page.locator('[role="dialog"]')).toContainText('Cadastrar Produto');
+  201 |   });
+  202 | 
+  203 |   test('SUP-UI06 - Modal deve validar campo nome obrigatório', async ({ page, request }) => {
+  204 |     let session: LoginPayload;
+  205 |     try {
+  206 |       session = await loginAsSupport(request);
+  207 |     } catch {
+  208 |       test.skip(true, 'Support login unavailable');
+  209 |       return;
+  210 |     }
+  211 | 
+  212 |     await setSession(page, session);
+  213 |     await goToSupportProducts(page);
+  214 | 
+  215 |     await page.locator('#support-products-new-btn').click();
+  216 |     await expect(page.locator('[role="dialog"]')).toBeVisible();
+  217 | 
+  218 |     // Fill only price, skip name
+  219 |     const priceInput = page.locator('[role="dialog"] input').nth(1);
+  220 |     await priceInput.fill('99.99');
+  221 | 
+  222 |     // Click save
+  223 |     await page.locator('[role="dialog"] button:has-text("Cadastrar Produto")').click();
+  224 | 
+  225 |     // Should show validation error
+  226 |     await expect(page.locator('[role="dialog"]')).toContainText('obrigatório');
+  227 |   });
+  228 | 
+  229 |   // ── Edição de Produto ─────────────────────────────────────────────
+  230 | 
+  231 |   test('SUP-UI07 - Support deve abrir modal de edição com dados preenchidos', async ({ page, request }) => {
+  232 |     let session: LoginPayload;
+  233 |     try {
+  234 |       session = await loginAsSupport(request);
+  235 |     } catch {
+  236 |       test.skip(true, 'Support login unavailable');
+  237 |       return;
+  238 |     }
+  239 | 
+  240 |     const created = await createProductViaAPI(request, session.accessToken);
+  241 |     await setSession(page, session);
+  242 |     await goToSupportProducts(page);
+  243 | 
+  244 |     await page.locator(`#support-products-edit-${created.id}`).click();
+  245 |     await expect(page.locator('[role="dialog"]')).toBeVisible();
+  246 |     await expect(page.locator('[role="dialog"]')).toContainText('Editar Produto');
+  247 | 
+  248 |     // Check that name field is pre-filled
+  249 |     const nameInput = page.locator('[role="dialog"] input').first();
+  250 |     await expect(nameInput).toHaveValue(created.name);
+  251 | 
+  252 |     // Close and cleanup
+> 253 |     await page.locator('[role="dialog"] button[aria-label="close"]').click();
+      |                                                                      ^ TimeoutError: locator.click: Timeout 30000ms exceeded.
+  254 |     await request.delete(`${API_BASE_URL}/products/${created.id}`, {
+  255 |       headers: { Authorization: `Bearer ${session.accessToken}` },
+  256 |     });
+  257 |   });
+  258 | 
+  259 |   test('SUP-UI08 - Support deve excluir produto via botão de delete', async ({ page, request }) => {
+  260 |     let session: LoginPayload;
+  261 |     try {
+  262 |       session = await loginAsSupport(request);
+  263 |     } catch {
+  264 |       test.skip(true, 'Support login unavailable');
+  265 |       return;
+  266 |     }
+  267 | 
+  268 |     const created = await createProductViaAPI(request, session.accessToken);
+  269 |     await setSession(page, session);
+  270 |     await goToSupportProducts(page);
+  271 | 
+  272 |     await expect(page.locator('body')).toContainText(created.name);
+  273 | 
+  274 |     page.once('dialog', async (dialog) => {
+  275 |       await dialog.accept();
+  276 |     });
+  277 | 
+  278 |     await page.locator(`#support-products-delete-${created.id}`).click();
+  279 | 
+  280 |     // Product should disappear from the table
+  281 |     await expect(page.locator('body')).not.toContainText(created.name, { timeout: 15_000 });
+  282 |   });
+  283 | });
+  284 | 
+```

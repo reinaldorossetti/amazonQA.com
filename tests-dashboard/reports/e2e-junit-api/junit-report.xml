@@ -1,228 +1,228 @@
-<testsuites id="" name="" tests="107" failures="0" skipped="0" errors="0" time="25.646892">
-<testsuite name="api/cart.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="21" failures="0" skipped="0" time="15.565" errors="0">
-<testcase name="API Cart › deve adicionar, incrementar, listar e remover item do carrinho" classname="api/cart.api.spec.ts" time="2.198">
+<testsuites id="" name="" tests="107" failures="0" skipped="0" errors="0" time="25.184161">
+<testsuite name="api/cart.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="21" failures="0" skipped="0" time="15.354" errors="0">
+<testcase name="API Cart › deve adicionar, incrementar, listar e remover item do carrinho" classname="api/cart.api.spec.ts" time="2.14">
 </testcase>
-<testcase name="API Cart › deve validar erros de payload do carrinho" classname="api/cart.api.spec.ts" time="0.249">
+<testcase name="API Cart › deve validar erros de payload do carrinho" classname="api/cart.api.spec.ts" time="0.21">
 </testcase>
-<testcase name="API Cart › deve retornar 401 com mensagem padronizada para token ausente no POST" classname="api/cart.api.spec.ts" time="0.196">
+<testcase name="API Cart › deve retornar 401 com mensagem padronizada para token ausente no POST" classname="api/cart.api.spec.ts" time="0.184">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para cartItemId ausente quando autenticado" classname="api/cart.api.spec.ts" time="0.671">
+<testcase name="API Cart › deve retornar 400 para cartItemId ausente quando autenticado" classname="api/cart.api.spec.ts" time="0.644">
 </testcase>
-<testcase name="API Cart › deve retornar 404 ao remover item inexistente para usuário autenticado" classname="api/cart.api.spec.ts" time="0.648">
+<testcase name="API Cart › deve retornar 404 ao remover item inexistente para usuário autenticado" classname="api/cart.api.spec.ts" time="0.589">
 </testcase>
-<testcase name="API Cart › deve buscar item do carrinho por ID quando existir" classname="api/cart.api.spec.ts" time="1.476">
+<testcase name="API Cart › deve buscar item do carrinho por ID quando existir" classname="api/cart.api.spec.ts" time="1.462">
 </testcase>
-<testcase name="API Cart › deve retornar 404 com mensagem &quot;Carrinho não encontrado&quot; para ID inexistente" classname="api/cart.api.spec.ts" time="1.435">
+<testcase name="API Cart › deve retornar 404 com mensagem &quot;Carrinho não encontrado&quot; para ID inexistente" classname="api/cart.api.spec.ts" time="1.419">
 </testcase>
-<testcase name="API Cart › deve retornar 403 ao tentar acessar carrinho de outro usuário" classname="api/cart.api.spec.ts" time="0.885">
+<testcase name="API Cart › deve retornar 403 ao tentar acessar carrinho de outro usuário" classname="api/cart.api.spec.ts" time="0.876">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para userId inválido no GET do carrinho" classname="api/cart.api.spec.ts" time="0.597">
+<testcase name="API Cart › deve retornar 400 para userId inválido no GET do carrinho" classname="api/cart.api.spec.ts" time="0.564">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para payload inválido no POST do carrinho autenticado" classname="api/cart.api.spec.ts" time="0.596">
+<testcase name="API Cart › deve retornar 400 para payload inválido no POST do carrinho autenticado" classname="api/cart.api.spec.ts" time="0.581">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para produto duplicado no mesmo payload" classname="api/cart.api.spec.ts" time="0.856">
+<testcase name="API Cart › deve retornar 400 para produto duplicado no mesmo payload" classname="api/cart.api.spec.ts" time="0.839">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para produto inexistente" classname="api/cart.api.spec.ts" time="0.563">
+<testcase name="API Cart › deve retornar 400 para produto inexistente" classname="api/cart.api.spec.ts" time="0.561">
 </testcase>
-<testcase name="API Cart › deve retornar 400 para quantidade acima do limite" classname="api/cart.api.spec.ts" time="0.884">
+<testcase name="API Cart › deve retornar 400 para quantidade acima do limite" classname="api/cart.api.spec.ts" time="0.879">
 </testcase>
-<testcase name="API Cart › deve aceitar lote com múltiplos produtos diferentes" classname="api/cart.api.spec.ts" time="0.949">
+<testcase name="API Cart › deve aceitar lote com múltiplos produtos diferentes" classname="api/cart.api.spec.ts" time="0.953">
 </testcase>
-<testcase name="API Cart › deve retornar 400 ao adicionar produto inexistente ao carrinho" classname="api/cart.api.spec.ts" time="0.57">
+<testcase name="API Cart › deve retornar 400 ao adicionar produto inexistente ao carrinho" classname="api/cart.api.spec.ts" time="0.617">
 </testcase>
-<testcase name="API Cart › deve retornar 400 ao adicionar produto com quantidade zero" classname="api/cart.api.spec.ts" time="0.575">
+<testcase name="API Cart › deve retornar 400 ao adicionar produto com quantidade zero" classname="api/cart.api.spec.ts" time="0.559">
 </testcase>
-<testcase name="API Cart › deve retornar 400 ao adicionar produto com quantidade negativa" classname="api/cart.api.spec.ts" time="0.569">
+<testcase name="API Cart › deve retornar 400 ao adicionar produto com quantidade negativa" classname="api/cart.api.spec.ts" time="0.598">
 </testcase>
-<testcase name="API Cart › deve retornar 400 ao tentar adicionar produto sem productId" classname="api/cart.api.spec.ts" time="0.569">
+<testcase name="API Cart › deve retornar 400 ao tentar adicionar produto sem productId" classname="api/cart.api.spec.ts" time="0.547">
 </testcase>
-<testcase name="API Cart › deve retornar 401 ao listar carrinho sem token" classname="api/cart.api.spec.ts" time="0.016">
+<testcase name="API Cart › deve retornar 401 ao listar carrinho sem token" classname="api/cart.api.spec.ts" time="0.014">
 </testcase>
-<testcase name="API Cart › deve retornar 404 ao remover item com ID inexistente" classname="api/cart.api.spec.ts" time="0.534">
+<testcase name="API Cart › deve retornar 404 ao remover item com ID inexistente" classname="api/cart.api.spec.ts" time="0.57">
 </testcase>
-<testcase name="API Cart › deve retornar 400 ao remover item com ID inválido (string)" classname="api/cart.api.spec.ts" time="0.529">
-</testcase>
-</testsuite>
-<testsuite name="api/orders.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="19" failures="0" skipped="0" time="14.143" errors="0">
-<testcase name="API Orders › deve criar pedido a partir do carrinho e limpar carrinho" classname="api/orders.api.spec.ts" time="1.075">
-</testcase>
-<testcase name="API Orders › deve respeitar idempotência no POST /orders" classname="api/orders.api.spec.ts" time="1.01">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com carrinho vazio" classname="api/orders.api.spec.ts" time="0.562">
-</testcase>
-<testcase name="API Orders › deve retornar 401 sem token no POST /orders" classname="api/orders.api.spec.ts" time="0.034">
-</testcase>
-<testcase name="API Orders › deve listar pedidos do usuário autenticado" classname="api/orders.api.spec.ts" time="1.059">
-</testcase>
-<testcase name="API Orders › deve bloquear acesso a pedido de outro usuário (403)" classname="api/orders.api.spec.ts" time="1.594">
-</testcase>
-<testcase name="API Orders › deve retornar 401 ao tentar alterar pedido sem autenticação" classname="api/orders.api.spec.ts" time="1.073">
-</testcase>
-<testcase name="API Orders › deve retornar 404 ao cancelar pedido inexistente com usuário autenticado" classname="api/orders.api.spec.ts" time="0.648">
-</testcase>
-<testcase name="API Orders › deve retornar 400 para id inválido no GET /orders/{id}" classname="api/orders.api.spec.ts" time="0.654">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com items vazio no payload" classname="api/orders.api.spec.ts" time="0.708">
-</testcase>
-<testcase name="API Orders › deve criar pedido com items no payload quando carrinho estiver vazio" classname="api/orders.api.spec.ts" time="0.948">
-</testcase>
-<testcase name="API Orders › deve listar pedidos paginados e validar campos de paginação" classname="api/orders.api.spec.ts" time="0.657">
-</testcase>
-<testcase name="API Orders › deve retornar 400 para transição de status inválida" classname="api/orders.api.spec.ts" time="1.033">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com método de pagamento inválido" classname="api/orders.api.spec.ts" time="0.586">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com valor de frete negativo" classname="api/orders.api.spec.ts" time="0.554">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com desconto negativo" classname="api/orders.api.spec.ts" time="0.603">
-</testcase>
-<testcase name="API Orders › deve retornar 404 ao tentar atualizar status de pedido inexistente" classname="api/orders.api.spec.ts" time="0.641">
-</testcase>
-<testcase name="API Orders › deve retornar 401 ao tentar atualizar pedido sem autenticação" classname="api/orders.api.spec.ts" time="0.029">
-</testcase>
-<testcase name="API Orders › deve retornar 400 ao criar pedido com quantidade zero em items" classname="api/orders.api.spec.ts" time="0.675">
+<testcase name="API Cart › deve retornar 400 ao remover item com ID inválido (string)" classname="api/cart.api.spec.ts" time="0.548">
 </testcase>
 </testsuite>
-<testsuite name="api/payments.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="10" failures="0" skipped="0" time="13.843" errors="0">
-<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api/payments.api.spec.ts" time="1.817">
+<testsuite name="api/orders.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="19" failures="0" skipped="0" time="13.626" errors="0">
+<testcase name="API Orders › deve criar pedido a partir do carrinho e limpar carrinho" classname="api/orders.api.spec.ts" time="1.034">
 </testcase>
-<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api/payments.api.spec.ts" time="2.756">
+<testcase name="API Orders › deve respeitar idempotência no POST /orders" classname="api/orders.api.spec.ts" time="0.937">
 </testcase>
-<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api/payments.api.spec.ts" time="1.352">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com carrinho vazio" classname="api/orders.api.spec.ts" time="0.572">
 </testcase>
-<testcase name="API Payments › deve baixar PDF do boleto mesmo para pedido inexistente (comportamento atual do backend)" classname="api/payments.api.spec.ts" time="1.109">
+<testcase name="API Orders › deve retornar 401 sem token no POST /orders" classname="api/orders.api.spec.ts" time="0.017">
 </testcase>
-<testcase name="API Payments › deve retornar 400 para ID de pedido inválido no download de boleto" classname="api/payments.api.spec.ts" time="1.068">
+<testcase name="API Orders › deve listar pedidos do usuário autenticado" classname="api/orders.api.spec.ts" time="0.98">
 </testcase>
-<testcase name="API Payments › deve retornar 400 para método de pagamento inválido" classname="api/payments.api.spec.ts" time="1.136">
+<testcase name="API Orders › deve bloquear acesso a pedido de outro usuário (403)" classname="api/orders.api.spec.ts" time="1.513">
 </testcase>
-<testcase name="API Payments › deve retornar 400 para requisição de pagamento sem método" classname="api/payments.api.spec.ts" time="1.286">
+<testcase name="API Orders › deve retornar 401 ao tentar alterar pedido sem autenticação" classname="api/orders.api.spec.ts" time="1.076">
 </testcase>
-<testcase name="API Payments › deve retornar 404 ao pagar pedido inexistente quando autenticado" classname="api/payments.api.spec.ts" time="0.734">
+<testcase name="API Orders › deve retornar 404 ao cancelar pedido inexistente com usuário autenticado" classname="api/orders.api.spec.ts" time="0.628">
 </testcase>
-<testcase name="API Payments › deve criar pagamento boleto pendente e baixar PDF com referência arbitrária" classname="api/payments.api.spec.ts" time="1.242">
+<testcase name="API Orders › deve retornar 400 para id inválido no GET /orders/{id}" classname="api/orders.api.spec.ts" time="0.622">
 </testcase>
-<testcase name="API Payments › deve criar pagamento débito autorizado e marcar pedido como paid" classname="api/payments.api.spec.ts" time="1.343">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com items vazio no payload" classname="api/orders.api.spec.ts" time="0.644">
 </testcase>
-</testsuite>
-<testsuite name="api/products.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="13" failures="0" skipped="0" time="5.046" errors="0">
-<testcase name="API Products › deve listar produtos sem filtro de categoria" classname="api/products.api.spec.ts" time="0.026">
+<testcase name="API Orders › deve criar pedido com items no payload quando carrinho estiver vazio" classname="api/orders.api.spec.ts" time="0.97">
 </testcase>
-<testcase name="API Products › deve criar, buscar, filtrar, atualizar e remover produto" classname="api/products.api.spec.ts" time="0.363">
+<testcase name="API Orders › deve listar pedidos paginados e validar campos de paginação" classname="api/orders.api.spec.ts" time="0.628">
 </testcase>
-<testcase name="API Products › deve retornar 400 ao criar produto sem campos obrigatórios" classname="api/products.api.spec.ts" time="0.415">
+<testcase name="API Orders › deve retornar 400 para transição de status inválida" classname="api/orders.api.spec.ts" time="0.933">
 </testcase>
-<testcase name="API Products › deve retornar array vazio para categoria inexistente" classname="api/products.api.spec.ts" time="0.027">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com método de pagamento inválido" classname="api/orders.api.spec.ts" time="0.577">
 </testcase>
-<testcase name="API Products › deve retornar 404 ao atualizar produto inexistente" classname="api/products.api.spec.ts" time="0.49">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com valor de frete negativo" classname="api/orders.api.spec.ts" time="0.568">
 </testcase>
-<testcase name="API Products › deve retornar 404 ao remover produto inexistente" classname="api/products.api.spec.ts" time="0.485">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com desconto negativo" classname="api/orders.api.spec.ts" time="0.64">
 </testcase>
-<testcase name="API Products › deve retornar 401 ao criar produto sem token" classname="api/products.api.spec.ts" time="0.015">
+<testcase name="API Orders › deve retornar 404 ao tentar atualizar status de pedido inexistente" classname="api/orders.api.spec.ts" time="0.629">
 </testcase>
-<testcase name="API Products › deve retornar 403 ao criar produto com usuário comum" classname="api/products.api.spec.ts" time="0.898">
+<testcase name="API Orders › deve retornar 401 ao tentar atualizar pedido sem autenticação" classname="api/orders.api.spec.ts" time="0.028">
 </testcase>
-<testcase name="API Products › deve retornar 403 ao deletar produto com usuário comum" classname="api/products.api.spec.ts" time="0.883">
-</testcase>
-<testcase name="API Products › deve retornar 403 ao atualizar produto com usuário comum" classname="api/products.api.spec.ts" time="0.796">
-</testcase>
-<testcase name="API Products › deve retornar 400 ao buscar produto com id em formato inválido" classname="api/products.api.spec.ts" time="0.025">
-</testcase>
-<testcase name="API Products › deve retornar 400 ao criar produto com preço negativo" classname="api/products.api.spec.ts" time="0.319">
-</testcase>
-<testcase name="API Products › deve retornar 400 ao criar produto sem categoria" classname="api/products.api.spec.ts" time="0.304">
+<testcase name="API Orders › deve retornar 400 ao criar pedido com quantidade zero em items" classname="api/orders.api.spec.ts" time="0.63">
 </testcase>
 </testsuite>
-<testsuite name="api/support-products.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="12" failures="0" skipped="0" time="3.746" errors="0">
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP01 - Support deve criar produto com dados aleatórios via faker" classname="api/support-products.api.spec.ts" time="0.309">
+<testsuite name="api/payments.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="10" failures="0" skipped="0" time="13.693" errors="0">
+<testcase name="API Payments › deve criar pagamento de crédito autorizado e marcar pedido como paid" classname="api/payments.api.spec.ts" time="1.773">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP02 - Support deve atualizar produto existente com dados faker" classname="api/support-products.api.spec.ts" time="0.327">
+<testcase name="API Payments › deve criar pagamento pix pendente e permitir consulta por paymentId" classname="api/payments.api.spec.ts" time="2.713">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP03 - Support deve deletar produto criado" classname="api/support-products.api.spec.ts" time="0.329">
+<testcase name="API Payments › deve retornar 400 quando valor de pagamento for maior que saldo do pedido" classname="api/payments.api.spec.ts" time="1.483">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP04 - Produto criado com frete grátis deve retornar shipping_cost=0" classname="api/support-products.api.spec.ts" time="0.312">
+<testcase name="API Payments › deve baixar PDF do boleto mesmo para pedido inexistente (comportamento atual do backend)" classname="api/payments.api.spec.ts" time="1.117">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP05 - Produto criado com frete pago deve preservar valor" classname="api/support-products.api.spec.ts" time="0.288">
+<testcase name="API Payments › deve retornar 400 para ID de pedido inválido no download de boleto" classname="api/payments.api.spec.ts" time="1.071">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP06 - Produto sem shipping_cost deve assumir valor 0 por padrão" classname="api/support-products.api.spec.ts" time="0.312">
+<testcase name="API Payments › deve retornar 400 para método de pagamento inválido" classname="api/payments.api.spec.ts" time="1.161">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP07 - Usuário normal NÃO deve criar produto (403)" classname="api/support-products.api.spec.ts" time="0.554">
+<testcase name="API Payments › deve retornar 400 para requisição de pagamento sem método" classname="api/payments.api.spec.ts" time="1.228">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP08 - Requisição sem token NÃO deve criar produto (401)" classname="api/support-products.api.spec.ts" time="0.016">
+<testcase name="API Payments › deve retornar 404 ao pagar pedido inexistente quando autenticado" classname="api/payments.api.spec.ts" time="0.724">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP09 - Support deve buscar produto por ID após criar" classname="api/support-products.api.spec.ts" time="0.335">
+<testcase name="API Payments › deve criar pagamento boleto pendente e baixar PDF com referência arbitrária" classname="api/payments.api.spec.ts" time="1.241">
 </testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP10 - Support deve filtrar produtos por categoria" classname="api/support-products.api.spec.ts" time="0.318">
-</testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP11 - Criar produto sem nome deve retornar 400" classname="api/support-products.api.spec.ts" time="0.312">
-</testcase>
-<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP12 - Criar produto sem preço deve retornar 400" classname="api/support-products.api.spec.ts" time="0.334">
+<testcase name="API Payments › deve criar pagamento débito autorizado e marcar pedido como paid" classname="api/payments.api.spec.ts" time="1.182">
 </testcase>
 </testsuite>
-<testsuite name="api/users.api.spec.ts" timestamp="2026-05-25T17:53:54.315Z" hostname="api" tests="32" failures="0" skipped="0" time="15.565" errors="0">
-<testcase name="API Users › deve registrar e autenticar usuário válido" classname="api/users.api.spec.ts" time="0.584">
+<testsuite name="api/products.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="13" failures="0" skipped="0" time="5.147" errors="0">
+<testcase name="API Products › deve listar produtos sem filtro de categoria" classname="api/products.api.spec.ts" time="0.022">
 </testcase>
-<testcase name="API Users › deve retornar 409 para e-mail duplicado" classname="api/users.api.spec.ts" time="0.28">
+<testcase name="API Products › deve criar, buscar, filtrar, atualizar e remover produto" classname="api/products.api.spec.ts" time="0.462">
 </testcase>
-<testcase name="API Users › deve retornar 401 para credenciais inválidas" classname="api/users.api.spec.ts" time="0.019">
+<testcase name="API Products › deve retornar 400 ao criar produto sem campos obrigatórios" classname="api/products.api.spec.ts" time="0.388">
 </testcase>
-<testcase name="API Users › deve retornar 401 para senha incorreta de usuário existente" classname="api/users.api.spec.ts" time="0.533">
+<testcase name="API Products › deve retornar array vazio para categoria inexistente" classname="api/products.api.spec.ts" time="0.03">
 </testcase>
-<testcase name="API Users › deve retornar 400 para login sem email/senha" classname="api/users.api.spec.ts" time="0.01">
+<testcase name="API Products › deve retornar 404 ao atualizar produto inexistente" classname="api/products.api.spec.ts" time="0.513">
 </testcase>
-<testcase name="API Users › deve retornar 400 para payload incompleto" classname="api/users.api.spec.ts" time="0.008">
+<testcase name="API Products › deve retornar 404 ao remover produto inexistente" classname="api/products.api.spec.ts" time="0.445">
 </testcase>
-<testcase name="API Users › deve retornar 409 para CPF duplicado" classname="api/users.api.spec.ts" time="0.287">
+<testcase name="API Products › deve retornar 401 ao criar produto sem token" classname="api/products.api.spec.ts" time="0.034">
 </testcase>
-<testcase name="API Users › deve retornar 409 para CNPJ duplicado" classname="api/users.api.spec.ts" time="0.306">
+<testcase name="API Products › deve retornar 403 ao criar produto com usuário comum" classname="api/products.api.spec.ts" time="1.023">
 </testcase>
-<testcase name="API Users › deve retornar 401 ao listar usuários sem autenticação" classname="api/users.api.spec.ts" time="0.158">
+<testcase name="API Products › deve retornar 403 ao deletar produto com usuário comum" classname="api/products.api.spec.ts" time="0.929">
 </testcase>
-<testcase name="API Users › deve retornar 403 ao listar usuários com token de usuário comum" classname="api/users.api.spec.ts" time="0.532">
+<testcase name="API Products › deve retornar 403 ao atualizar produto com usuário comum" classname="api/products.api.spec.ts" time="0.694">
 </testcase>
-<testcase name="API Users › deve listar usuários com admin e validar formato da resposta" classname="api/users.api.spec.ts" time="0.299">
+<testcase name="API Products › deve retornar 400 ao buscar produto com id em formato inválido" classname="api/products.api.spec.ts" time="0.022">
 </testcase>
-<testcase name="API Users › deve retornar 403 ao criar usuário via /users com usuário não-admin" classname="api/users.api.spec.ts" time="0.535">
+<testcase name="API Products › deve retornar 400 ao criar produto com preço negativo" classname="api/products.api.spec.ts" time="0.296">
 </testcase>
-<testcase name="API Users › deve criar usuário via /users quando autenticado como admin" classname="api/users.api.spec.ts" time="0.519">
+<testcase name="API Products › deve retornar 400 ao criar produto sem categoria" classname="api/products.api.spec.ts" time="0.289">
 </testcase>
-<testcase name="API Users › deve retornar dados do próprio usuário em /users/{id}" classname="api/users.api.spec.ts" time="1.384">
+</testsuite>
+<testsuite name="api/support-products.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="12" failures="0" skipped="0" time="3.683" errors="0">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP01 - Support deve criar produto com dados aleatórios via faker" classname="api/support-products.api.spec.ts" time="0.296">
 </testcase>
-<testcase name="API Users › deve bloquear acesso de usuário comum ao /users/{id} de outro usuário" classname="api/users.api.spec.ts" time="1.274">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP02 - Support deve atualizar produto existente com dados faker" classname="api/support-products.api.spec.ts" time="0.324">
 </testcase>
-<testcase name="API Users › deve atualizar o próprio usuário em /users/{id}" classname="api/users.api.spec.ts" time="1.081">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP03 - Support deve deletar produto criado" classname="api/support-products.api.spec.ts" time="0.313">
 </testcase>
-<testcase name="API Users › deve retornar 400 ao atualizar usuário sem campos permitidos" classname="api/users.api.spec.ts" time="0.519">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP04 - Produto criado com frete grátis deve retornar shipping_cost=0" classname="api/support-products.api.spec.ts" time="0.322">
 </testcase>
-<testcase name="API Users › deve retornar o usuário autenticado em /users/me" classname="api/users.api.spec.ts" time="0.793">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP05 - Produto criado com frete pago deve preservar valor" classname="api/support-products.api.spec.ts" time="0.304">
 </testcase>
-<testcase name="API Users › deve atualizar endereço em /users/me/address" classname="api/users.api.spec.ts" time="0.782">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP06 - Produto sem shipping_cost deve assumir valor 0 por padrão" classname="api/support-products.api.spec.ts" time="0.286">
 </testcase>
-<testcase name="API Users › deve retornar 400 ao atualizar endereço sem campos em /users/me/address" classname="api/users.api.spec.ts" time="0.584">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP07 - Usuário normal NÃO deve criar produto (403)" classname="api/support-products.api.spec.ts" time="0.565">
 </testcase>
-<testcase name="API Users › deve retornar 200 ao consultar GET /users/me/address com usuário autenticado" classname="api/users.api.spec.ts" time="0.623">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP08 - Requisição sem token NÃO deve criar produto (401)" classname="api/support-products.api.spec.ts" time="0.011">
 </testcase>
-<testcase name="API Users › deve retornar 401 ao consultar GET /users/me/address sem autenticação" classname="api/users.api.spec.ts" time="0.014">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP09 - Support deve buscar produto por ID após criar" classname="api/support-products.api.spec.ts" time="0.306">
 </testcase>
-<testcase name="API Users › deve retornar 404 ao consultar GET /users/me/address com token de usuário inexistente" classname="api/users.api.spec.ts" time="0.851">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP10 - Support deve filtrar produtos por categoria" classname="api/support-products.api.spec.ts" time="0.319">
 </testcase>
-<testcase name="API Users › deve retornar 403 ao deletar usuário sem ser admin" classname="api/users.api.spec.ts" time="0.602">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP11 - Criar produto sem nome deve retornar 400" classname="api/support-products.api.spec.ts" time="0.318">
 </testcase>
-<testcase name="API Users › deve encerrar a própria conta e retornar 409 na segunda tentativa" classname="api/users.api.spec.ts" time="1.811">
+<testcase name="API Products - Support Role &amp; Shipping Cost › API-SP12 - Criar produto sem preço deve retornar 400" classname="api/support-products.api.spec.ts" time="0.319">
 </testcase>
-<testcase name="API Users › deve retornar 400 para e-mail com formato inválido no registro" classname="api/users.api.spec.ts" time="0.015">
+</testsuite>
+<testsuite name="api/users.api.spec.ts" timestamp="2026-05-25T18:05:54.800Z" hostname="api" tests="32" failures="0" skipped="0" time="15.368" errors="0">
+<testcase name="API Users › deve registrar e autenticar usuário válido" classname="api/users.api.spec.ts" time="0.564">
+</testcase>
+<testcase name="API Users › deve retornar 409 para e-mail duplicado" classname="api/users.api.spec.ts" time="0.279">
+</testcase>
+<testcase name="API Users › deve retornar 401 para credenciais inválidas" classname="api/users.api.spec.ts" time="0.015">
+</testcase>
+<testcase name="API Users › deve retornar 401 para senha incorreta de usuário existente" classname="api/users.api.spec.ts" time="0.527">
+</testcase>
+<testcase name="API Users › deve retornar 400 para login sem email/senha" classname="api/users.api.spec.ts" time="0.018">
+</testcase>
+<testcase name="API Users › deve retornar 400 para payload incompleto" classname="api/users.api.spec.ts" time="0.022">
+</testcase>
+<testcase name="API Users › deve retornar 409 para CPF duplicado" classname="api/users.api.spec.ts" time="0.285">
+</testcase>
+<testcase name="API Users › deve retornar 409 para CNPJ duplicado" classname="api/users.api.spec.ts" time="0.283">
+</testcase>
+<testcase name="API Users › deve retornar 401 ao listar usuários sem autenticação" classname="api/users.api.spec.ts" time="0.166">
+</testcase>
+<testcase name="API Users › deve retornar 403 ao listar usuários com token de usuário comum" classname="api/users.api.spec.ts" time="0.549">
+</testcase>
+<testcase name="API Users › deve listar usuários com admin e validar formato da resposta" classname="api/users.api.spec.ts" time="0.304">
+</testcase>
+<testcase name="API Users › deve retornar 403 ao criar usuário via /users com usuário não-admin" classname="api/users.api.spec.ts" time="0.536">
+</testcase>
+<testcase name="API Users › deve criar usuário via /users quando autenticado como admin" classname="api/users.api.spec.ts" time="0.522">
+</testcase>
+<testcase name="API Users › deve retornar dados do próprio usuário em /users/{id}" classname="api/users.api.spec.ts" time="1.364">
+</testcase>
+<testcase name="API Users › deve bloquear acesso de usuário comum ao /users/{id} de outro usuário" classname="api/users.api.spec.ts" time="1.236">
+</testcase>
+<testcase name="API Users › deve atualizar o próprio usuário em /users/{id}" classname="api/users.api.spec.ts" time="1.036">
+</testcase>
+<testcase name="API Users › deve retornar 400 ao atualizar usuário sem campos permitidos" classname="api/users.api.spec.ts" time="0.567">
+</testcase>
+<testcase name="API Users › deve retornar o usuário autenticado em /users/me" classname="api/users.api.spec.ts" time="0.789">
+</testcase>
+<testcase name="API Users › deve atualizar endereço em /users/me/address" classname="api/users.api.spec.ts" time="0.706">
+</testcase>
+<testcase name="API Users › deve retornar 400 ao atualizar endereço sem campos em /users/me/address" classname="api/users.api.spec.ts" time="0.629">
+</testcase>
+<testcase name="API Users › deve retornar 200 ao consultar GET /users/me/address com usuário autenticado" classname="api/users.api.spec.ts" time="0.62">
+</testcase>
+<testcase name="API Users › deve retornar 401 ao consultar GET /users/me/address sem autenticação" classname="api/users.api.spec.ts" time="0.016">
+</testcase>
+<testcase name="API Users › deve retornar 404 ao consultar GET /users/me/address com token de usuário inexistente" classname="api/users.api.spec.ts" time="0.828">
+</testcase>
+<testcase name="API Users › deve retornar 403 ao deletar usuário sem ser admin" classname="api/users.api.spec.ts" time="0.579">
+</testcase>
+<testcase name="API Users › deve encerrar a própria conta e retornar 409 na segunda tentativa" classname="api/users.api.spec.ts" time="1.749">
+</testcase>
+<testcase name="API Users › deve retornar 400 para e-mail com formato inválido no registro" classname="api/users.api.spec.ts" time="0.012">
 </testcase>
 <testcase name="API Users › deve retornar 400 para senha muito curta no registro" classname="api/users.api.spec.ts" time="0.014">
 </testcase>
-<testcase name="API Users › deve retornar 400 ao registrar sem person_type" classname="api/users.api.spec.ts" time="0.017">
+<testcase name="API Users › deve retornar 400 ao registrar sem person_type" classname="api/users.api.spec.ts" time="0.012">
 </testcase>
-<testcase name="API Users › deve retornar 400 ao registrar PF sem informar CPF" classname="api/users.api.spec.ts" time="0.018">
+<testcase name="API Users › deve retornar 400 ao registrar PF sem informar CPF" classname="api/users.api.spec.ts" time="0.014">
 </testcase>
-<testcase name="API Users › deve retornar 400 ao registrar PJ sem informar CNPJ" classname="api/users.api.spec.ts" time="0.017">
+<testcase name="API Users › deve retornar 400 ao registrar PJ sem informar CNPJ" classname="api/users.api.spec.ts" time="0.019">
 </testcase>
 <testcase name="API Users › deve retornar 401 ao tentar logar com email inexistente" classname="api/users.api.spec.ts" time="0.015">
 </testcase>
-<testcase name="API Users › deve retornar 403 ao tentar atualizar perfil de outro usuário" classname="api/users.api.spec.ts" time="1.081">
+<testcase name="API Users › deve retornar 403 ao tentar atualizar perfil de outro usuário" classname="api/users.api.spec.ts" time="1.093">
 </testcase>
 </testsuite>
 </testsuites>
