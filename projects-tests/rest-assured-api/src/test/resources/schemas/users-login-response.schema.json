@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Users login response",
+  "type": "object",
+  "required": ["accessToken", "tokenType", "user"],
+  "additionalProperties": true,
+  "properties": {
+    "accessToken": { "type": "string", "minLength": 1 },
+    "tokenType": { "type": "string", "enum": ["Bearer"] },
+    "user": {
+      "type": "object",
+      "required": ["id", "email"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "integer" },
+        "email": { "type": "string", "format": "email" },
+        "isAdmin": { "type": ["boolean", "null"] },
+        "roles": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

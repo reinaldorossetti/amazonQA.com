@@ -1,6 +1,7 @@
 package com.tester.api.tests.supportproducts;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 import com.tester.api.base.BaseApiTest;
@@ -35,6 +36,22 @@ class SupportProductsApiTest extends BaseApiTest {
     Response create = ProductsClient.create(token, product);
     create.then().statusCode(201).body("id", notNullValue()).body("name", equalTo(product.name()));
     assertEquals(product.price(), create.jsonPath().getDouble("price"), 1.0);
+
+    int productId = create.jsonPath().getInt("id");
+    ProductsClient.delete(token, productId).then().statusCode(200);
+  }
+
+  @Test
+  @DisplayName("API-SP13 - Support deve validar json schema do produto criado")
+  void apiSp13SupportDeveValidarJsonSchemaDoProdutoCriado() {
+    String token = AuthSession.supportToken();
+    ProductRequest product = ProductFixture.randomProduct();
+
+    Response create = ProductsClient.create(token, product);
+    create
+        .then()
+        .statusCode(201)
+        .body(matchesJsonSchemaInClasspath("schemas/support-product-response.schema.json"));
 
     int productId = create.jsonPath().getInt("id");
     ProductsClient.delete(token, productId).then().statusCode(200);

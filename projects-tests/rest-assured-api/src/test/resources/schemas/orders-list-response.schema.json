@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Orders list response",
+  "type": "object",
+  "required": ["page", "pageSize", "total", "items"],
+  "additionalProperties": true,
+  "properties": {
+    "page": { "type": "integer", "minimum": 1 },
+    "pageSize": { "type": "integer", "minimum": 1 },
+    "total": { "type": "integer", "minimum": 0 },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "order_number", "status"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "integer" },
+          "order_number": { "type": "string" },
+          "status": { "type": "string" },
+          "grand_total": { "type": ["number", "null"] },
+          "payment_method": { "type": ["string", "null"] },
+          "items": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "product_id": { "type": "integer" },
+                "quantity": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

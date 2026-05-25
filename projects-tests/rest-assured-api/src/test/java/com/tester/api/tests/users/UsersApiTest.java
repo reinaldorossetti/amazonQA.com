@@ -1,6 +1,7 @@
 package com.tester.api.tests.users;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 import com.tester.api.base.BaseApiTest;
@@ -54,6 +55,17 @@ class UsersApiTest extends BaseApiTest {
     UsersClient.login(new LoginRequest("naoexiste@example.com", "senhaErrada"))
         .then()
         .statusCode(401);
+  }
+
+  @Test
+  @DisplayName("deve validar json schema da resposta de login")
+  void deveValidarJsonSchemaDaRespostaDeLogin() {
+    RegisterUserRequest user = UserFixture.uniquePfUser();
+    UsersClient.register(user).then().statusCode(201);
+    UsersClient.login(new LoginRequest(user.email(), user.password()))
+        .then()
+        .statusCode(200)
+        .body(matchesJsonSchemaInClasspath("schemas/users-login-response.schema.json"));
   }
 
   @Test

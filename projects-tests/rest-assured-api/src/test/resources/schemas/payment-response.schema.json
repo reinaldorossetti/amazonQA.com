@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Payment response",
+  "type": "object",
+  "required": ["id", "status", "method", "metadata"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "integer" },
+    "order_id": { "type": ["integer", "null"] },
+    "status": { "type": "string" },
+    "method": { "type": "string" },
+    "amount": { "type": ["number", "null"] },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "pixCode": { "type": ["string", "null"] },
+        "qrCode": { "type": ["string", "null"] },
+        "readableText": { "type": ["string", "null"] },
+        "line": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

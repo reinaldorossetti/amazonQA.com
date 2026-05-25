@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 @Epic("API")
@@ -30,6 +31,15 @@ class ProductsApiTest extends BaseApiTest {
         .then()
         .statusCode(200)
         .body("", instanceOf(List.class));
+  }
+
+  @Test
+  @DisplayName("deve validar json schema da lista de produtos")
+  void deveValidarJsonSchemaDaListaDeProdutos() {
+    ProductsClient.list(null)
+        .then()
+        .statusCode(200)
+        .body(matchesJsonSchemaInClasspath("schemas/products-list-response.schema.json"));
   }
 
   @Test

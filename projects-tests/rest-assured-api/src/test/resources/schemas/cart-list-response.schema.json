@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Cart list response",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "product_id", "quantity"],
+    "additionalProperties": true,
+    "properties": {
+      "id": { "type": "integer" },
+      "product_id": { "type": "integer" },
+      "quantity": { "type": "integer", "minimum": 1 },
+      "user_id": { "type": ["integer", "null"] },
+      "name": { "type": ["string", "null"] },
+      "price": { "type": ["number", "null"] }
+    }
+  }
+}

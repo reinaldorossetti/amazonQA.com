@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 @Epic("API")
@@ -47,6 +48,21 @@ class CartApiTest extends BaseApiTest {
         .then()
         .statusCode(200)
         .body("size()", is(0));
+    TestFlows.deleteProduct(adminToken, productId);
+  }
+
+  @Test
+  @DisplayName("deve validar json schema da lista do carrinho")
+  void deveValidarJsonSchemaDaListaDoCarrinho() {
+    var user = TestFlows.registerUser("CartSchema");
+    String adminToken = AuthSession.adminToken();
+    ProductResponse product = TestFlows.createProduct(adminToken);
+    int productId = product.id();
+    CartClient.add(user.token(), CartAddRequest.single(productId, 1)).then().statusCode(201);
+    CartClient.list(user.token(), "userId=" + user.userId())
+        .then()
+        .statusCode(200)
+        .body(matchesJsonSchemaInClasspath("schemas/cart-list-response.schema.json"));
     TestFlows.deleteProduct(adminToken, productId);
   }
 

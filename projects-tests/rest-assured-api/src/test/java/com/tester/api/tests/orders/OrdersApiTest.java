@@ -20,6 +20,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 @Epic("API")
@@ -125,6 +126,25 @@ class OrdersApiTest extends BaseApiTest {
         .statusCode(200)
         .body("items", not(empty()))
         .body("total", greaterThan(0));
+
+    TestFlows.deleteProduct(adminToken, productId);
+  }
+
+  @Test
+  @DisplayName("deve validar json schema da lista de pedidos")
+  void deveValidarJsonSchemaDaListaDePedidos() {
+    var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("OrderSchema"));
+    String adminToken = AuthSession.adminToken();
+    ProductResponse product = TestFlows.createOrderProduct(adminToken);
+    int productId = product.id();
+
+    TestFlows.addToCart(user.token(), productId, 1);
+    OrdersClient.create(user.token(), CreateOrderRequest.empty(), null).then().statusCode(201);
+
+    OrdersClient.list(user.token(), "page=1&pageSize=10")
+        .then()
+        .statusCode(200)
+        .body(matchesJsonSchemaInClasspath("schemas/orders-list-response.schema.json"));
 
     TestFlows.deleteProduct(adminToken, productId);
   }

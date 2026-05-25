@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Support product response",
+  "type": "object",
+  "required": ["id", "name", "price"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "price": { "type": "number" },
+    "description": { "type": ["string", "null"] },
+    "category": { "type": ["string", "null"] },
+    "image": { "type": ["string", "null"] },
+    "manufacturer": { "type": ["string", "null"] },
+    "line": { "type": ["string", "null"] },
+    "model": { "type": ["string", "null"] },
+    "shipping_cost": { "type": ["number", "null"] }
+  }
+}

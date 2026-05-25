@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
 @Epic("API")
@@ -69,6 +70,19 @@ class PaymentsApiTest extends BaseApiTest {
         .then()
         .statusCode(200)
         .body("status", equalTo("pending_payment"));
+
+    TestFlows.deleteProduct(ctx.adminToken(), ctx.productId());
+  }
+
+  @Test
+  @DisplayName("deve validar json schema da resposta de pagamento")
+  void deveValidarJsonSchemaDaRespostaDePagamento() {
+    TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
+
+    PaymentsClient.pay(ctx.token(), ctx.orderId(), PaymentRequest.pix(ctx.grandTotal()))
+        .then()
+        .statusCode(201)
+        .body(matchesJsonSchemaInClasspath("schemas/payment-response.schema.json"));
 
     TestFlows.deleteProduct(ctx.adminToken(), ctx.productId());
   }
