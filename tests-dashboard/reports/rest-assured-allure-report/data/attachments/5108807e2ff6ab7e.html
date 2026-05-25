@@ -1,0 +1,36 @@
+<div>POST to http://127.0.0.1:3001/api/cart</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;products&quot;: [
+        {
+            &quot;productId&quot;: 27,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJhbmRyZS5yaWJlaXJhQGJvbC5jb20uYnIiLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkwNzAsImV4cCI6MTc3OTczMjY3MH0.bJ6PBut9c_Ew3uiFZw7iejgSVtZo3w4pJ5m5pZ6Ptlc</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/cart&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJhbmRyZS5yaWJlaXJhQGJvbC5jb20uYnIiLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkwNzAsImV4cCI6MTc3OTczMjY3MH0.bJ6PBut9c_Ew3uiFZw7iejgSVtZo3w4pJ5m5pZ6Ptlc&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;products&quot;: [
+        {
+            &quot;productId&quot;: 27,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}&#39;
+    </div>
+

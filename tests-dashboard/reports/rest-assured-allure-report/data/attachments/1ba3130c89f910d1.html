@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Small Granite Keyboard 1779729084923&quot;,
+    &quot;price&quot;: 3903.61,
+    &quot;description&quot;: &quot;Soluta perferendis rerum dolorum.&quot;,
+    &quot;category&quot;: &quot;Computers-1779729084923&quot;,
+    &quot;image&quot;: &quot;https://www.dick-wiza.info:57969/#optio&quot;,
+    &quot;manufacturer&quot;: &quot;Moore Inc&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;NE1CRO&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MiIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzI5MDgzOTY0QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzI5MDg0LCJleHAiOjE3Nzk3MzI2ODR9.lmm94nfP6vXraM209ZKZ_d1tS_KDmUsGr4akI-ixyCE</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MiIsImVtYWlsIjoiZTJlLW5vcm1hbC0xNzc5NzI5MDgzOTY0QGV4YW1wbGUuY29tIiwicGVyc29uVHlwZSI6IlBGIiwiaXNzIjoidGVzdGVyLmNvbSIsImF1ZCI6InRlc3Rlci5jb20td2ViIiwiaWF0IjoxNzc5NzI5MDg0LCJleHAiOjE3Nzk3MzI2ODR9.lmm94nfP6vXraM209ZKZ_d1tS_KDmUsGr4akI-ixyCE&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Small Granite Keyboard 1779729084923&quot;,
+    &quot;price&quot;: 3903.61,
+    &quot;description&quot;: &quot;Soluta perferendis rerum dolorum.&quot;,
+    &quot;category&quot;: &quot;Computers-1779729084923&quot;,
+    &quot;image&quot;: &quot;https://www.dick-wiza.info:57969/#optio&quot;,
+    &quot;manufacturer&quot;: &quot;Moore Inc&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;NE1CRO&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+

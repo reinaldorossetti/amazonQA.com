@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.orders.OrdersApiTest" time="24.785" tests="19" errors="0" skipped="0" failures="0" flakes="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.tester.api.tests.orders.OrdersApiTest" time="25.157" tests="20" errors="0" skipped="0" failures="0" flakes="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="SEED_ADMIN_PASSWORD" value="rei2026@QA"/>
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="SEED_ADMIN_EMAIL" value="reiload@gmail.com"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-25-jdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525144943852_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T14-49-43_541-jvmRun1 surefire-20260525144943852_1tmp surefire_0-20260525144943852_2tmp"/>
+    <property name="sun.java.command" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525171101198_3.jar /home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire 2026-05-25T17-11-01_058-jvmRun1 surefire-20260525171101198_1tmp surefire_0-20260525171101198_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/test-classes:/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/classes:/home/runner/.m2/repository/io/rest-assured/rest-assured/6.0.0/rest-assured-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/5.0.3/groovy-5.0.3.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/5.0.3/groovy-xml-5.0.3.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/6.0.0/json-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/5.0.3/groovy-json-5.0.3.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/6.0.0/rest-assured-common-6.0.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/6.0.0/xml-path-6.0.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.jar:/home/runner/.m2/repository/io/rest-assured/json-schema-validator/6.0.0/json-schema-validator-6.0.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-validator/2.2.14/json-schema-validator-2.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils-equivalence/1.0/jackson-coreutils-equivalence-1.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/jackson-coreutils/2.0/jackson-coreutils-2.0.jar:/home/runner/.m2/repository/com/github/java-json-tools/msg-simple/1.2/msg-simple-1.2.jar:/home/runner/.m2/repository/com/github/java-json-tools/btf/1.3/btf-1.3.jar:/home/runner/.m2/repository/com/github/java-json-tools/json-schema-core/1.2.14/json-schema-core-1.2.14.jar:/home/runner/.m2/repository/com/github/java-json-tools/uri-template/0.10/uri-template-0.10.jar:/home/runner/.m2/repository/org/mozilla/rhino/1.7.7.2/rhino-1.7.7.2.jar:/home/runner/.m2/repository/com/sun/mail/mailapi/1.6.2/mailapi-1.6.2.jar:/home/runner/.m2/repository/joda-time/joda-time/2.10.5/joda-time-2.10.5.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/home/runner/.m2/repository/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/org/checkerframework/checker-qual/3.42.0/checker-qual-3.42.0.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.26.1/error_prone_annotations-2.26.1.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/home/runner/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/home/runner/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/home/runner/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-rest-assured/2.34.0/allure-rest-assured-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-attachments/2.34.0/allure-attachments-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.34.0/allure-java-commons-2.34.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.34.0/allure-model-2.34.0.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.33/freemarker-2.3.33.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit5/2.34.0/allure-junit5-2.34.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-junit-platform/2.34.0/allure-junit-platform-2.34.0.jar:/home/runner/.m2/repository/org/junit/platform/junit-platform-launcher/1.10.3/junit-platform-launcher-1.10.3.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.34.0/allure-test-filter-2.34.0.jar:/home/runner/.m2/repository/io/github/cdimascio/dotenv-java/3.2.0/dotenv-java-3.2.0.jar:/home/runner/.m2/repository/net/datafaker/datafaker/2.5.4/datafaker-2.5.4.jar:/home/runner/.m2/repository/org/yaml/snakeyaml/2.5/snakeyaml-2.5.jar:/home/runner/.m2/repository/com/github/curious-odd-man/rgxgen/3.1/rgxgen-3.1.jar:/home/runner/.m2/repository/com/googlecode/libphonenumber/libphonenumber/9.0.23/libphonenumber-9.0.23.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-api/2.26.0/log4j-api-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-core/2.26.0/log4j-core-2.26.0.jar:/home/runner/.m2/repository/org/apache/logging/log4j/log4j-jul/2.26.0/log4j-jul-2.26.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -36,7 +36,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="E2E_SUPPORT_EMAIL" value="suporte@tester.com"/>
-    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525144943852_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/amazonQA.com/amazonQA.com/projects-tests/rest-assured-api/target/surefire/surefirebooter-20260525171101198_3.jar"/>
     <property name="BASE_URI" value="http://127.0.0.1:3001"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="E2E_ADMIN_EMAIL" value="reiload@gmail.com"/>
@@ -72,159 +72,159 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="deveRespeitarIdempotenciaNoPostOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="5.076">
-    <system-out><![CDATA[14:49:50.902 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveRespeitarIdempotenciaNoPostOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="4.822">
+    <system-out><![CDATA[17:11:08.423 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401AoAtualizarPedidoSemAutenticacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.489">
-    <system-out><![CDATA[14:49:51.891 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:52.123 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:52.281 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveRetornar401AoAtualizarPedidoSemAutenticacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.2">
+    <system-out><![CDATA[17:11:09.536 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:09.608 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComDescontoNegativo" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.053">
-    <system-out><![CDATA[14:49:53.131 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:53.247 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:53.337 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:53.350 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:53.432 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 400&amp#27;[m
-14:49:53.457 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoCriarPedidoComDescontoNegativo" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.848">
+    <system-out><![CDATA[17:11:10.038 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:10.231 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:10.301 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:10.390 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:10.491 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComQuantidadeZero" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.917">
-    <system-out><![CDATA[14:49:54.002 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:54.299 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:54.358 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:54.384 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoCriarPedidoComQuantidadeZero" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.15">
+    <system-out><![CDATA[17:11:11.142 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:11.240 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:11.319 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:11.392 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:11.470 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:11.542 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:11.635 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComFreteNegativo" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.84">
-    <system-out><![CDATA[14:49:54.751 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:54.780 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:54.868 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:54.943 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:55.001 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:55.078 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
-14:49:55.084 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:55.101 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:55.205 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mgetById: status 200&amp#27;[m
-14:49:55.233 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoCriarPedidoComFreteNegativo" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.845">
+    <system-out><![CDATA[17:11:12.067 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:12.153 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:12.207 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:12.459 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:12.463 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:12.506 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaTransicaoDeStatusInvalida" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.824">
-    <system-out><![CDATA[14:49:56.670 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:56.724 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:56.779 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:56.809 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:56.885 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:56.898 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:56.947 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:56.969 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mupdate: status 400&amp#27;[m
-14:49:56.980 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:57.005 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:57.061 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveRetornar400ParaTransicaoDeStatusInvalida" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.629">
+    <system-out><![CDATA[17:11:13.428 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:13.470 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:13.728 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:13.779 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:13.841 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:13.881 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:13.953 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:14.011 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:14.079 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mupdate: status 400&amp#27;[m
+17:11:14.138 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveCriarPedidoAPartirDoCarrinhoELimparCarrinho" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.664">
-    <system-out><![CDATA[14:49:57.600 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:57.757 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:57.934 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:58.016 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:49:58.102 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:58.318 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:58.400 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:58.451 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:58.456 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:58.500 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:58.511 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:49:58.564 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:49:58.614 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
-14:49:58.701 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:49:58.729 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveCriarPedidoAPartirDoCarrinhoELimparCarrinho" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.577">
+    <system-out><![CDATA[17:11:15.272 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:15.313 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:15.336 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:15.445 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:15.539 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:15.564 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:15.662 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:15.716 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:15.722 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveBloquearAcessoAPedidoDeOutroUsuario" classname="com.tester.api.tests.orders.OrdersApiTest" time="2.272">
-    <system-out><![CDATA[14:50:00.559 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:00.762 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:00.782 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:00.855 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:50:00.906 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:00.956 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mgetById: status 403&amp#27;[m
-14:50:01.005 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveBloquearAcessoAPedidoDeOutroUsuario" classname="com.tester.api.tests.orders.OrdersApiTest" time="2.227">
+    <system-out><![CDATA[17:11:17.898 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mgetById: status 403&amp#27;[m
+17:11:17.953 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoCancelarPedidoInexistente" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.887">
-    <system-out><![CDATA[14:50:01.601 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:01.641 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:50:01.704 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:01.817 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
-14:50:01.831 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:01.890 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcancel: status 404&amp#27;[m
+  <testcase name="deveRetornar404AoCancelarPedidoInexistente" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.851">
+    <system-out><![CDATA[17:11:18.185 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:18.386 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:18.409 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:18.527 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:18.564 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:18.605 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:18.649 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:18.715 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:18.730 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.PaymentsClient&amp#27;[m - &amp#27;[37mpay: status 201&amp#27;[m
+17:11:18.736 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:18.791 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcancel: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComMetodoDePagamentoInvalido" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.703">
-    <system-out><![CDATA[14:50:02.007 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:02.249 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:02.404 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:02.553 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:02.603 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveRetornar400AoCriarPedidoComMetodoDePagamentoInvalido" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.695">
+    <system-out><![CDATA[17:11:19.171 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:19.236 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:19.459 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:19.508 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400ParaIdInvalidoNoGetOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.259">
-    <system-out><![CDATA[14:50:03.764 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:03.808 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+  <testcase name="deveValidarJsonSchemaDaListaDePedidos" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.308">
+    <system-out><![CDATA[17:11:20.096 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:20.203 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:20.439 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:20.541 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:20.561 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:20.571 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:20.604 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:20.624 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:20.640 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:20.663 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:20.683 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:20.718 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:20.762 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:20.819 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar404AoAtualizarPedidoInexistente" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.189">
-    <system-out><![CDATA[14:50:04.607 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:04.643 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:04.925 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:04.970 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:04.991 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:05.035 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:05.059 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mupdate: status 404&amp#27;[m
+  <testcase name="deveRetornar400ParaIdInvalidoNoGetOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.142"/>
+  <testcase name="deveRetornar404AoAtualizarPedidoInexistente" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.262">
+    <system-out><![CDATA[17:11:22.604 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:22.700 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:22.819 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:23.184 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:23.234 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mupdate: status 404&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401AoTentarAlterarPedidoSemAutenticacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.066">
-    <system-out><![CDATA[14:50:05.080 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:50:05.129 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+  <testcase name="deveRetornar401AoTentarAlterarPedidoSemAutenticacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.036"/>
+  <testcase name="deveRetornar400AoCriarPedidoComItemsVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.032">
+    <system-out><![CDATA[17:11:24.257 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:24.298 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComItemsVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.191">
-    <system-out><![CDATA[14:50:06.290 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:06.310 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveListarPedidosDoUsuarioAutenticado" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.229">
+    <system-out><![CDATA[17:11:25.508 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:25.547 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveListarPedidosDoUsuarioAutenticado" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.425">
-    <system-out><![CDATA[14:50:07.442 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:07.481 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:07.527 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
-14:50:07.589 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:07.591 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
-14:50:07.592 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:07.663 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:07.669 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
-14:50:07.754 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveCriarPedidoComItemsQuandoCarrinhoVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.166">
+    <system-out><![CDATA[17:11:26.563 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:26.587 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:26.626 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:26.664 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:26.718 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveCriarPedidoComItemsQuandoCarrinhoVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="1.04">
-    <system-out><![CDATA[14:50:08.705 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:08.750 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
-14:50:08.797 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mdelete: status 500&amp#27;[m
+  <testcase name="deveRetornar400AoCriarPedidoComCarrinhoVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.692">
+    <system-out><![CDATA[17:11:27.053 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:27.267 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mregister: status 201&amp#27;[m
+17:11:27.379 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:27.392 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:27.409 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar400AoCriarPedidoComCarrinhoVazio" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.638">
-    <system-out><![CDATA[14:50:09.396 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:09.429 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
+  <testcase name="deveRetornar401SemTokenNoPostOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.029">
+    <system-out><![CDATA[17:11:27.445 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 400&amp#27;[m
 ]]></system-out>
   </testcase>
-  <testcase name="deveRetornar401SemTokenNoPostOrders" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.03">
-    <system-out><![CDATA[14:50:09.457 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-]]></system-out>
-  </testcase>
-  <testcase name="deveListarPedidosPaginadosEValidarCamposDePaginacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.683">
-    <system-out><![CDATA[14:50:10.094 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
-14:50:10.132 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+  <testcase name="deveListarPedidosPaginadosEValidarCamposDePaginacao" classname="com.tester.api.tests.orders.OrdersApiTest" time="0.817">
+    <system-out><![CDATA[17:11:27.867 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:27.897 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:27.943 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.ProductsClient&amp#27;[m - &amp#27;[37mcreate: status 201&amp#27;[m
+17:11:27.981 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37madd: status 201&amp#27;[m
+17:11:28.083 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
+17:11:28.086 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-2]&amp#27;[m &amp#27;[36mcom.tester.api.client.CartClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:28.172 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-3]&amp#27;[m &amp#27;[36mcom.tester.api.client.OrdersClient&amp#27;[m - &amp#27;[37mlist: status 200&amp#27;[m
+17:11:28.226 &amp#27;[32mINFO &amp#27;[m &amp#27;[1;35m[ForkJoinPool-1-worker-1]&amp#27;[m &amp#27;[36mcom.tester.api.client.UsersClient&amp#27;[m - &amp#27;[37mlogin: status 200&amp#27;[m
 ]]></system-out>
   </testcase>
 </testsuite>

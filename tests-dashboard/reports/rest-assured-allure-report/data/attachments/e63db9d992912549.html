@@ -1,0 +1,42 @@
+<div>POST to http://127.0.0.1:3001/api/products</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;name&quot;: &quot;Rustic Wool Keyboard 1779729085824&quot;,
+    &quot;price&quot;: 877.51,
+    &quot;description&quot;: &quot;Exercitationem placeat quasi facilis rerum modi sequi enim.&quot;,
+    &quot;category&quot;: &quot;Games-1779729085824&quot;,
+    &quot;image&quot;: &quot;https://www.ludivina-wisoky.com:7571/&quot;,
+    &quot;manufacturer&quot;: &quot;Heidenreich and Sons&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;ZLIQAD&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkwODUsImV4cCI6MTc3OTczMjY4NX0.M7dnIhZfFgAhb9T4-q_wI_TbTSp3qxo17IoZcLFtGAo</div>
+            <div>Accept: application/json, application/javascript, text/javascript, text/json</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;http://127.0.0.1:3001/api/products&#39; -H &#39;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiZW1haWwiOiJzdXBvcnRlQHRlc3Rlci5jb20iLCJwZXJzb25UeXBlIjoiUEYiLCJpc3MiOiJ0ZXN0ZXIuY29tIiwiYXVkIjoidGVzdGVyLmNvbS13ZWIiLCJpYXQiOjE3Nzk3MjkwODUsImV4cCI6MTc3OTczMjY4NX0.M7dnIhZfFgAhb9T4-q_wI_TbTSp3qxo17IoZcLFtGAo&#39; -H &#39;Accept: application/json, application/javascript, text/javascript, text/json&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;name&quot;: &quot;Rustic Wool Keyboard 1779729085824&quot;,
+    &quot;price&quot;: 877.51,
+    &quot;description&quot;: &quot;Exercitationem placeat quasi facilis rerum modi sequi enim.&quot;,
+    &quot;category&quot;: &quot;Games-1779729085824&quot;,
+    &quot;image&quot;: &quot;https://www.ludivina-wisoky.com:7571/&quot;,
+    &quot;manufacturer&quot;: &quot;Heidenreich and Sons&quot;,
+    &quot;line&quot;: &quot;Granite&quot;,
+    &quot;model&quot;: &quot;ZLIQAD&quot;,
+    &quot;shipping_cost&quot;: 0.0
+}&#39;
+    </div>
+
