@@ -10,6 +10,8 @@ import com.tester.api.specs.RequestSpecs;
 import com.tester.api.support.AuthSession;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ class ProductsApiTest extends BaseApiTest {
   private static final int NONEXISTENT_PRODUCT_ID = 999_999_999;
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve listar produtos sem filtro de categoria")
   void deveListarProdutosSemFiltroDeCategoria() {
     ProductsClient.list(null)
@@ -34,6 +37,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve validar json schema da lista de produtos")
   void deveValidarJsonSchemaDaListaDeProdutos() {
     ProductsClient.list(null)
@@ -43,6 +47,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.BLOCKER)
   @DisplayName("deve criar, buscar, filtrar, atualizar e remover produto")
   void deveCriarBuscarFiltrarAtualizarERemoverProduto() {
     String adminToken = AuthSession.adminToken();
@@ -70,6 +75,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar produto sem campos obrigatórios")
   void deveRetornar400AoCriarProdutoSemCamposObrigatorios() {
     String adminToken = AuthSession.adminToken();
@@ -79,6 +85,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar array vazio para categoria inexistente")
   void deveRetornarArrayVazioParaCategoriaInexistente() {
     ProductsClient.list("category=__NO_MATCH__PLAYWRIGHT__")
@@ -89,6 +96,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao atualizar produto inexistente")
   void deveRetornar404AoAtualizarProdutoInexistente() {
     String adminToken = AuthSession.adminToken();
@@ -107,6 +115,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao remover produto inexistente")
   void deveRetornar404AoRemoverProdutoInexistente() {
     String adminToken = AuthSession.adminToken();
@@ -114,6 +123,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 ao criar produto sem token")
   void deveRetornar401AoCriarProdutoSemToken() {
     given()
@@ -126,6 +136,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve retornar 403 ao criar produto com usuário comum")
   void deveRetornar403AoCriarProdutoComUsuarioComum() {
     String userToken = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Product")).token();
@@ -135,6 +146,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 403 ao deletar produto com usuário comum")
   void deveRetornar403AoDeletarProdutoComUsuarioComum() {
     String userToken = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Delete")).token();
@@ -142,6 +154,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 403 ao atualizar produto com usuário comum")
   void deveRetornar403AoAtualizarProdutoComUsuarioComum() {
     String userToken = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Update")).token();
@@ -151,12 +164,14 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao buscar produto com id em formato inválido")
   void deveRetornar400AoBuscarProdutoComIdEmFormatoInvalido() {
     given().when().get("/products/abc-invalido").then().statusCode(400);
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar produto com preço negativo")
   void deveRetornar400AoCriarProdutoComPrecoNegativo() {
     String adminToken = AuthSession.adminToken();
@@ -164,6 +179,7 @@ class ProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar produto sem categoria")
   void deveRetornar400AoCriarProdutoSemCategoria() {
     String adminToken = AuthSession.adminToken();

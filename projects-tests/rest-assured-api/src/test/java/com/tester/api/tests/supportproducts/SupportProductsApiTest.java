@@ -18,16 +18,23 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import java.util.List;
 import net.datafaker.Faker;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Epic("API")
+@Feature("Support Products")
 class SupportProductsApiTest extends BaseApiTest {
 
   private static final Faker FAKER = new Faker();
 
   @Test
+  @Severity(SeverityLevel.BLOCKER)
   @DisplayName("API-SP01 - Support deve criar produto com dados aleatórios via faker")
   void apiSp01SupportDeveCriarProdutoComDadosAleatoriosViaFaker() {
     String token = AuthSession.supportToken();
@@ -42,6 +49,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP13 - Support deve validar json schema do produto criado")
   void apiSp13SupportDeveValidarJsonSchemaDoProdutoCriado() {
     String token = AuthSession.supportToken();
@@ -58,6 +66,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("API-SP02 - Support deve atualizar produto existente com dados faker")
   void apiSp02SupportDeveAtualizarProdutoExistenteComDadosFaker() {
     String token = AuthSession.supportToken();
@@ -82,6 +91,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP03 - Support deve deletar produto criado")
   void apiSp03SupportDeveDeletarProdutoCriado() {
     String token = AuthSession.supportToken();
@@ -96,6 +106,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP04 - Produto criado com frete grátis deve retornar shipping_cost=0")
   void apiSp04ProdutoCriadoComFreteGratisDeveRetornarShippingCostZero() {
     String token = AuthSession.supportToken();
@@ -109,6 +120,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP05 - Produto criado com frete pago deve preservar valor")
   void apiSp05ProdutoCriadoComFretePagoDevePreservarValor() {
     String token = AuthSession.supportToken();
@@ -124,6 +136,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP06 - Produto sem shipping_cost deve assumir valor 0 por padrão")
   void apiSp06ProdutoSemShippingCostDeveAssumirValorZeroPorPadrao() {
     String token = AuthSession.supportToken();
@@ -137,6 +150,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("API-SP07 - Usuário normal NÃO deve criar produto (403)")
   void apiSp07UsuarioNormalNaoDeveCriarProduto403() {
     String suffix = String.valueOf(System.currentTimeMillis());
@@ -154,6 +168,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP08 - Requisição sem token NÃO deve criar produto (401)")
   void apiSp08RequisicaoSemTokenNaoDeveCriarProduto401() {
     given()
@@ -166,6 +181,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP09 - Support deve buscar produto por ID após criar")
   void apiSp09SupportDeveBuscarProdutoPorIdAposCriar() {
     String token = AuthSession.supportToken();
@@ -186,6 +202,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP10 - Support deve filtrar produtos por categoria")
   void apiSp10SupportDeveFiltrarProdutosPorCategoria() {
     String token = AuthSession.supportToken();
@@ -212,6 +229,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP11 - Criar produto sem nome deve retornar 400")
   void apiSp11CriarProdutoSemNomeDeveRetornar400() {
     String token = AuthSession.supportToken();
@@ -221,6 +239,7 @@ class SupportProductsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("API-SP12 - Criar produto sem preço deve retornar 400")
   void apiSp12CriarProdutoSemPrecoDeveRetornar400() {
     String token = AuthSession.supportToken();

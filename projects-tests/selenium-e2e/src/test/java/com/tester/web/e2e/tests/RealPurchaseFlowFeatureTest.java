@@ -28,21 +28,25 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
   private CartCheckoutPageAction cartCheckout;
   private NavBarComponent nav;
 
+  private UserData user;
+  private String email;
+
   @BeforeEach
   void setupPages() {
     loginPage = new LoginPageAction(driver);
     catalog = new CatalogPageAction(driver);
     cartCheckout = new CartCheckoutPageAction(driver);
     nav = new NavBarComponent(driver);
+
+    user = TestDataGenerator.randomUser();
+    email = TestDataGenerator.emailFaker();
+    CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
   }
 
   @Test
   @Severity(SeverityLevel.CRITICAL)
   @DisplayName("TC-001 real login random product checkout with credit card")
   void realLoginProductCheckoutWithCreditCard() {
-    UserData user = TestDataGenerator.randomUser();
-    String email = TestDataGenerator.emailFaker();
-    CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       loginPage.open();
@@ -72,9 +76,6 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
   @Severity(SeverityLevel.NORMAL)
   @DisplayName("TC-002 catalog search and checkout with credit card")
   void catalogSearchCheckoutWithCreditCard() {
-    UserData user = TestDataGenerator.randomUser();
-    String email = TestDataGenerator.emailFaker();
-    CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
     String searchTerm = ApiClient.firstProductSearchTerm();
     try {
       loginPage.open();
@@ -105,9 +106,6 @@ class RealPurchaseFlowFeatureTest extends AbstractUiTest {
   @Severity(SeverityLevel.NORMAL)
   @DisplayName("TC-003 multiple products checkout with PIX")
   void multipleProductsCheckoutWithPix() {
-    UserData user = TestDataGenerator.randomUser();
-    String email = TestDataGenerator.emailFaker();
-    CreatedUser created = ApiClient.registerUser(email, user.password(), user.firstName(), user.lastName());
 
     try {
       loginPage.open();

@@ -9,6 +9,8 @@ import com.tester.api.support.AuthSession;
 import com.tester.api.support.TestFlows;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import static org.hamcrest.Matchers.*;
 class PaymentsApiTest extends BaseApiTest {
 
   @Test
+  @Severity(SeverityLevel.BLOCKER)
   @DisplayName("deve criar pagamento de crédito autorizado e marcar pedido como paid")
   void deveCriarPagamentoCreditoAutorizadoEMarcarPedidoComoPaid() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -41,6 +44,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve criar pagamento pix pendente e permitir consulta por paymentId")
   void deveCriarPagamentoPixPendenteEConsultarPorPaymentId() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -75,6 +79,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve validar json schema da resposta de pagamento")
   void deveValidarJsonSchemaDaRespostaDePagamento() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -88,6 +93,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 quando valor de pagamento for maior que saldo do pedido")
   void deveRetornar400QuandoValorExcedeSaldoDoPedido() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -104,6 +110,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName(
       "deve baixar PDF do boleto mesmo para pedido inexistente (comportamento atual do backend)")
   void deveBaixarPdfDoBoletoParaPedidoInexistente() {
@@ -120,6 +127,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para ID de pedido inválido no download de boleto")
   void deveRetornar400ParaIdInvalidoNoDownloadDeBoleto() {
     given()
@@ -131,6 +139,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para método de pagamento inválido")
   void deveRetornar400ParaMetodoDePagamentoInvalido() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -144,6 +153,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para requisição de pagamento sem método")
   void deveRetornar400ParaPagamentoSemMetodo() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -157,6 +167,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao pagar pedido inexistente quando autenticado")
   void deveRetornar404AoPagarPedidoInexistente() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Payment"));
@@ -168,6 +179,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve criar pagamento boleto pendente e baixar PDF com referência arbitrária")
   void deveCriarPagamentoBoletoPendenteEBaixarPdf() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();
@@ -194,6 +206,7 @@ class PaymentsApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve criar pagamento débito autorizado e marcar pedido como paid")
   void deveCriarPagamentoDebitoAutorizadoEMarcarPedidoComoPaid() {
     TestFlows.OrderContext ctx = TestFlows.createOrderForUser();

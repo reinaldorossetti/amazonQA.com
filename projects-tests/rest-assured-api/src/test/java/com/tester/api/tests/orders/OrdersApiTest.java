@@ -14,6 +14,8 @@ import com.tester.api.support.AuthSession;
 import com.tester.api.support.TestFlows;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +30,7 @@ import static org.hamcrest.Matchers.*;
 class OrdersApiTest extends BaseApiTest {
 
   @Test
+  @Severity(SeverityLevel.BLOCKER)
   @DisplayName("deve criar pedido a partir do carrinho e limpar carrinho")
   void deveCriarPedidoAPartirDoCarrinhoELimparCarrinho() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -37,7 +40,7 @@ class OrdersApiTest extends BaseApiTest {
 
     TestFlows.addToCart(user.token(), productId, 2);
 
-    String idempotencyKey = idempotencyKey();
+    String idempotencyKey = OrdersClient.idempotencyKey();
     CreateOrderRequest payload = CreateOrderRequest.fromCart(10, 5, "pix");
 
     Response createRes = OrdersClient.create(user.token(), payload, idempotencyKey);
@@ -59,6 +62,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve respeitar idempotência no POST /orders")
   void deveRespeitarIdempotenciaNoPostOrders() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -68,7 +72,7 @@ class OrdersApiTest extends BaseApiTest {
 
     TestFlows.addToCart(user.token(), productId, 1);
 
-    String key = idempotencyKey();
+    String key = OrdersClient.idempotencyKey();
     CreateOrderRequest payload = CreateOrderRequest.zeroTotals();
 
     Response first = OrdersClient.create(user.token(), payload, key);
@@ -88,6 +92,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com carrinho vazio")
   void deveRetornar400AoCriarPedidoComCarrinhoVazio() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -99,6 +104,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 sem token no POST /orders")
   void deveRetornar401SemTokenNoPostOrders() {
     given()
@@ -111,6 +117,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve listar pedidos do usuário autenticado")
   void deveListarPedidosDoUsuarioAutenticado() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -131,6 +138,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve validar json schema da lista de pedidos")
   void deveValidarJsonSchemaDaListaDePedidos() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("OrderSchema"));
@@ -150,6 +158,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve bloquear acesso a pedido de outro usuário (403)")
   void deveBloquearAcessoAPedidoDeOutroUsuario() {
     var userA = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -170,6 +179,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 ao tentar alterar pedido sem autenticação")
   void deveRetornar401AoTentarAlterarPedidoSemAutenticacao() {
     given()
@@ -183,6 +193,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao cancelar pedido inexistente com usuário autenticado")
   void deveRetornar404AoCancelarPedidoInexistente() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -194,6 +205,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para id inválido no GET /orders/{id}")
   void deveRetornar400ParaIdInvalidoNoGetOrders() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -208,6 +220,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com items vazio no payload")
   void deveRetornar400AoCriarPedidoComItemsVazio() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -219,6 +232,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve criar pedido com items no payload quando carrinho estiver vazio")
   void deveCriarPedidoComItemsQuandoCarrinhoVazio() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -241,6 +255,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve listar pedidos paginados e validar campos de paginação")
   void deveListarPedidosPaginadosEValidarCamposDePaginacao() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -255,6 +270,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para transição de status inválida")
   void deveRetornar400ParaTransicaoDeStatusInvalida() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -277,6 +293,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com método de pagamento inválido")
   void deveRetornar400AoCriarPedidoComMetodoDePagamentoInvalido() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -288,6 +305,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com valor de frete negativo")
   void deveRetornar400AoCriarPedidoComFreteNegativo() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -299,6 +317,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com desconto negativo")
   void deveRetornar400AoCriarPedidoComDescontoNegativo() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -310,6 +329,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao tentar atualizar status de pedido inexistente")
   void deveRetornar404AoAtualizarPedidoInexistente() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -320,6 +340,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 ao tentar atualizar pedido sem autenticação")
   void deveRetornar401AoAtualizarPedidoSemAutenticacao() {
     given()
@@ -332,6 +353,7 @@ class OrdersApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao criar pedido com quantidade zero em items")
   void deveRetornar400AoCriarPedidoComQuantidadeZero() {
     var user = AuthSession.registerAndLogin(UserFixture.uniquePfUser("Order"));
@@ -342,7 +364,4 @@ class OrdersApiTest extends BaseApiTest {
     OrdersClient.create(user.token(), payload, null).then().statusCode(400);
   }
 
-  private static String idempotencyKey() {
-    return "idem-" + System.currentTimeMillis() + "-" + (int) (Math.random() * 10000);
-  }
 }

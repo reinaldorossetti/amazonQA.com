@@ -13,6 +13,8 @@ import com.tester.api.support.AuthSession;
 import com.tester.api.support.TestFlows;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,7 @@ class CartApiTest extends BaseApiTest {
   private static final int UNKNOWN_PRODUCT_ID = 987_654_321;
 
   @Test
+  @Severity(SeverityLevel.BLOCKER)
   @DisplayName("deve adicionar, incrementar, listar e remover item do carrinho")
   void deveAdicionarIncrementarListarERemoverItemDoCarrinho() {
     var user = TestFlows.registerUser("Cart");
@@ -52,6 +55,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve validar json schema da lista do carrinho")
   void deveValidarJsonSchemaDaListaDoCarrinho() {
     var user = TestFlows.registerUser("CartSchema");
@@ -67,6 +71,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve validar erros de payload do carrinho")
   void deveValidarErrosDePayloadDoCarrinho() {
     CartClient.list(null, null).then().statusCode(401);
@@ -87,6 +92,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 com mensagem padronizada para token ausente no POST")
   void deveRetornar401ComMensagemPadronizadaParaTokenAusenteNoPost() {
     given()
@@ -100,6 +106,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para cartItemId ausente quando autenticado")
   void deveRetornar400ParaCartItemIdAusenteQuandoAutenticado() {
     String token = TestFlows.registerUser().token();
@@ -107,6 +114,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao remover item inexistente para usuário autenticado")
   void deveRetornar404AoRemoverItemInexistenteParaUsuarioAutenticado() {
     String token = TestFlows.registerUser().token();
@@ -114,6 +122,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve buscar item do carrinho por ID quando existir")
   void deveBuscarItemDoCarrinhoPorIdQuandoExistir() {
     var user = TestFlows.registerUser();
@@ -135,6 +144,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 com mensagem \"Carrinho não encontrado\" para ID inexistente")
   void deveRetornar404ComMensagemCarrinhoNaoEncontradoParaIdInexistente() {
     String token = TestFlows.registerUser().token();
@@ -145,6 +155,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 403 ao tentar acessar carrinho de outro usuário")
   void deveRetornar403AoTentarAcessarCarrinhoDeOutroUsuario() {
     var userA = TestFlows.registerUser();
@@ -153,6 +164,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para userId inválido no GET do carrinho")
   void deveRetornar400ParaUserIdInvalidoNoGetDoCarrinho() {
     String token = TestFlows.registerUser().token();
@@ -160,6 +172,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para payload inválido no POST do carrinho autenticado")
   void deveRetornar400ParaPayloadInvalidoNoPostDoCarrinhoAutenticado() {
     String token = TestFlows.registerUser().token();
@@ -167,6 +180,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para produto duplicado no mesmo payload")
   void deveRetornar400ParaProdutoDuplicadoNoMesmoPayload() {
     var user = TestFlows.registerUser();
@@ -184,6 +198,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para produto inexistente")
   void deveRetornar400ParaProdutoInexistente() {
     String token = TestFlows.registerUser().token();
@@ -194,6 +209,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 para quantidade acima do limite")
   void deveRetornar400ParaQuantidadeAcimaDoLimite() {
     var user = TestFlows.registerUser();
@@ -208,6 +224,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.CRITICAL)
   @DisplayName("deve aceitar lote com múltiplos produtos diferentes")
   void deveAceitarLoteComMultiplosProdutosDiferentes() {
     var user = TestFlows.registerUser();
@@ -244,6 +261,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao adicionar produto inexistente ao carrinho")
   void deveRetornar400AoAdicionarProdutoInexistenteAoCarrinho() {
     String token = TestFlows.registerUser().token();
@@ -251,6 +269,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao adicionar produto com quantidade zero")
   void deveRetornar400AoAdicionarProdutoComQuantidadeZero() {
     String token = TestFlows.registerUser().token();
@@ -258,6 +277,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao adicionar produto com quantidade negativa")
   void deveRetornar400AoAdicionarProdutoComQuantidadeNegativa() {
     String token = TestFlows.registerUser().token();
@@ -265,6 +285,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao tentar adicionar produto sem productId")
   void deveRetornar400AoTentarAdicionarProdutoSemProductId() {
     String token = TestFlows.registerUser().token();
@@ -272,12 +293,14 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 401 ao listar carrinho sem token")
   void deveRetornar401AoListarCarrinhoSemToken() {
     CartClient.list(null, "userId=1").then().statusCode(401);
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 404 ao remover item com ID inexistente")
   void deveRetornar404AoRemoverItemComIdInexistente() {
     String token = TestFlows.registerUser().token();
@@ -287,6 +310,7 @@ class CartApiTest extends BaseApiTest {
   }
 
   @Test
+  @Severity(SeverityLevel.NORMAL)
   @DisplayName("deve retornar 400 ao remover item com ID inválido (string)")
   void deveRetornar400AoRemoverItemComIdInvalidoString() {
     String token = TestFlows.registerUser().token();

@@ -10,6 +10,7 @@ import com.tester.api.model.request.RegisterUserRequest;
 import com.tester.api.model.request.UpdateUserRequest;
 import com.tester.api.specs.RequestSpecs;
 import io.restassured.response.Response;
+import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,6 +92,21 @@ public final class UsersClient {
   public static Response terminate(String token, int userId) {
     Response response = given().spec(RequestSpecs.bearer(token)).when().post("/users/{id}/terminate", userId);
     logResponse(LOGGER, "terminate", response);
+    return response;
+  }
+
+  public static Response registerUntilCreated(Supplier<RegisterUserRequest> factory) {
+    Response response = null;
+    for (int attempt = 0; attempt < 5; attempt++) {
+      response = register(factory.get());
+      if (response.statusCode() == 201) {
+        return response;
+      }
+    }
+    if (response == null) {
+      throw new IllegalStateException(
+          "Não foi possível criar um usuário válido após múltiplas tentativas.");
+    }
     return response;
   }
 }

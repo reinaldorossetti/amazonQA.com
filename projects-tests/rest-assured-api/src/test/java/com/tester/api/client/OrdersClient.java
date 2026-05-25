@@ -58,4 +58,8 @@ public final class OrdersClient {
     logResponse(LOGGER, "cancel", response);
     return response;
   }
+
+  public static String idempotencyKey() {
+    return "idem-" + System.currentTimeMillis() + "-" + (int) (Math.random() * 10000);
+  }
 }
