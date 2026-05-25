@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-25T17:22:07.509Z",
-  "writtenAt": "2026-05-25T17:22:07.510Z",
+  "generatedAt": "2026-05-25T17:27:47.254Z",
+  "writtenAt": "2026-05-25T17:27:47.255Z",
   "scan": {
     "webUnitJunitPath": "tests-dashboard/reports/unit-tests-web/junit.xml",
     "backendUnitJunitPath": "tests-dashboard/reports/e2e-junit-api/junit-report.xml",
