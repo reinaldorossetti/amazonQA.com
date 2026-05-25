@@ -1,5 +1,7 @@
 # 🧪 Selenium UI E2E (`selenium-e2e`)
 
+![Java 25 e RestAssured](./docs/java-25-restassured-banner.png)
+
 Testes de interface com **Selenium WebDriver**, **JUnit 5** e **Page Object Model**. O `pom.xml` compila com **Java 21** (`maven.compiler.release=21`) e integra **Allure Report**, **WebDriverManager**, **dotenv-java** e **Datafaker**.
 
 **Índice:** [Java 23 e 25](#-introdução-ao-java-23-e-25) · [Recursos Java 17+](#-recursos-java-17--exemplos-no-código) · [Java 21/22/23](#-recursos-java-21-22-e-23-no-projeto) · [Virtual threads](#-virtual-threads-java-21) · [Relatório headless](#relatório-headless-tempo--logs) · [Features](#-visão-geral-das-features) · [Requisitos](#-requisitos) · [Paralelismo](#-execução-paralela-junit) · [Page Object](#-padrão-page-object) · [Toast](#-toast-react-toastify) · [Executar testes](#-executar-todos-os-testes-global) · [GitHub Actions](#-esteira-github-actions) · [Allure](#-allure-report) · [Referências](#-referências-do-projeto)
