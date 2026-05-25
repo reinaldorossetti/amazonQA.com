@@ -72,15 +72,39 @@ Override de ambiente:
 .\mvnw.cmd test -DbaseUri=http://127.0.0.1:3001 -DbasePath=/api
 ```
 
+## Logging (Log4j 2)
+
+O módulo usa **somente Apache Log4j 2** (`org.apache.logging.log4j`). Não há `java.util.logging` no código do projeto.
+
+Configuração: `src/test/resources/log4j2.xml` ([Apache Log4j 2.26.0](https://github.com/apache/logging-log4j2/releases)) — saída no console com **nível e mensagem coloridos** (`%highlight` / `%style`). Logs de bibliotecas que ainda usam JUL são redirecionados via `log4j-jul` (`java.util.logging.manager` no Surefire).
+
+Desativar cores (ex.: CI sem ANSI): `.\mvnw.cmd test -Dlog4j.skipJansi=true`
+
+| Nível | Quando |
+|-------|--------|
+| **INFO** | Status HTTP de cada request nos `*Client` (`ClientLogging.logResponse`) |
+| **DEBUG** | Corpo da response (padrão local; desligado na CI) |
+
+**Local:** o profile `api-client-debug` vem ativo por padrão (`activeByDefault`) — `mvn test` já loga status + body.
+
+```powershell
+.\mvnw.cmd test
+```
+
+Desligar debug localmente:
+
+```powershell
+.\mvnw.cmd test -Dapi.client.debug=false -Dapi.client.log.level=info
+```
+
 ## CI (GitHub Actions)
 
-Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml) (mesmo padrão do Selenium E2E, sem `web` nem browser)
+Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml)
 
-- Sobe apenas `postgres` + `server-ts`
-- `wait-on` na API (`/api/products`)
-- Executa `./mvnw clean test`
-- Publica Allure em `tests-dashboard/reports/rest-assured-allure-report/`
-- Publica JUnit em `tests-dashboard/reports/api-rest-assured/` (métricas do dashboard)
+- Sobe `postgres` + `server-ts`, executa `./mvnw clean test` com **log INFO** (`-Dapi.client.debug=false`)
+- Copia JUnit → `tests-dashboard/reports/api-rest-assured/` (métricas do dashboard)
+- Copia Allure → `tests-dashboard/reports/rest-assured-allure-report/`
+- Roda `generate-dashboard-metrics.js` e publica o `tests-dashboard` no gh-pages
 
 ## Paralelismo
 
@@ -105,3 +129,4 @@ Workflow: [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/work
 - Allure 2.34.0
 - dotenv-java 3.2.0
 - Datafaker 2.5.4
+- Log4j 2.26.0 (`log4j-api`, `log4j-core`)

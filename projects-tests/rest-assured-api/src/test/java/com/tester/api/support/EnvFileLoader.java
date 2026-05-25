@@ -5,11 +5,12 @@ import io.github.cdimascio.dotenv.DotenvEntry;
 import io.github.cdimascio.dotenv.Dotenv.Filter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class EnvFileLoader {
 
-  private static final Logger LOGGER = Logger.getLogger(EnvFileLoader.class.getName());
+  private static final Logger LOGGER = LogManager.getLogger(EnvFileLoader.class);
   private static volatile Path loadedEnvDirectory;
 
   private EnvFileLoader() {}
@@ -17,7 +18,7 @@ public final class EnvFileLoader {
   public static void loadIfPresent() {
     Path envDirectory = resolveEnvDirectory();
     if (envDirectory == null) {
-      LOGGER.warning(
+      LOGGER.warn(
           "No REST API .env found. Expected projects-tests/rest-assured-api/.env (cwd: "
               + Path.of("").toAbsolutePath().normalize()
               + ").");
@@ -29,11 +30,9 @@ public final class EnvFileLoader {
     int loadedCount = loadEnvDirectory(envDirectory, true);
     loadRepoRootFallback();
     LOGGER.info(
-        () ->
-            "Loaded "
-                + loadedCount
-                + " entries from "
-                + envDirectory.resolve(".env").toAbsolutePath());
+        "Loaded {} entries from {}",
+        loadedCount,
+        envDirectory.resolve(".env").toAbsolutePath());
   }
 
   public static String loadedEnvPath() {
@@ -77,11 +76,9 @@ public final class EnvFileLoader {
     int loadedCount = loadEnvDirectory(repoRoot, false);
     if (loadedCount > 0) {
       LOGGER.info(
-          () ->
-              "Loaded "
-                  + loadedCount
-                  + " fallback entries from "
-                  + repoRoot.resolve(".env").toAbsolutePath());
+          "Loaded {} fallback entries from {}",
+          loadedCount,
+          repoRoot.resolve(".env").toAbsolutePath());
     }
   }
 

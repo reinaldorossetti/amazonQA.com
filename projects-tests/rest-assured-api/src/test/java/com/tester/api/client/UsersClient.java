@@ -1,5 +1,8 @@
 package com.tester.api.client;
 
+import static com.tester.api.support.ClientLogging.logResponse;
+import static io.restassured.RestAssured.given;
+
 import com.tester.api.model.request.AddressUpdateRequest;
 import com.tester.api.model.request.AdminCreateUserRequest;
 import com.tester.api.model.request.LoginRequest;
@@ -7,61 +10,87 @@ import com.tester.api.model.request.RegisterUserRequest;
 import com.tester.api.model.request.UpdateUserRequest;
 import com.tester.api.specs.RequestSpecs;
 import io.restassured.response.Response;
-
-import static io.restassured.RestAssured.given;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class UsersClient {
+
+  private static final Logger LOGGER = LogManager.getLogger(UsersClient.class);
 
   private UsersClient() {}
 
   public static Response register(RegisterUserRequest payload) {
-    return given().spec(RequestSpecs.json()).body(payload).when().post("/users/register");
+    Response response = given().spec(RequestSpecs.json()).body(payload).when().post("/users/register");
+    logResponse(LOGGER, "register", response);
+    return response;
   }
 
   public static Response login(LoginRequest payload) {
-    return given().spec(RequestSpecs.json()).body(payload).when().post("/users/login");
+    Response response = given().spec(RequestSpecs.json()).body(payload).when().post("/users/login");
+    logResponse(LOGGER, "login", response);
+    return response;
   }
 
   public static Response listUsers(String token, String query) {
-    return given()
-        .spec(RequestSpecs.bearer(token))
-        .when()
-        .get("/users" + (query == null || query.isBlank() ? "" : "?" + query));
+    Response response =
+        given()
+            .spec(RequestSpecs.bearer(token))
+            .when()
+            .get("/users" + (query == null || query.isBlank() ? "" : "?" + query));
+    logResponse(LOGGER, "listUsers", response);
+    return response;
   }
 
   public static Response createUser(String token, AdminCreateUserRequest payload) {
-    return given().spec(RequestSpecs.bearer(token)).body(payload).when().post("/users");
+    Response response = given().spec(RequestSpecs.bearer(token)).body(payload).when().post("/users");
+    logResponse(LOGGER, "createUser", response);
+    return response;
   }
 
   public static Response getUser(String token, int userId) {
-    return given().spec(RequestSpecs.bearer(token)).when().get("/users/{id}", userId);
+    Response response = given().spec(RequestSpecs.bearer(token)).when().get("/users/{id}", userId);
+    logResponse(LOGGER, "getUser", response);
+    return response;
   }
 
   public static Response updateUser(String token, int userId, UpdateUserRequest payload) {
-    return given()
-        .spec(RequestSpecs.bearer(token))
-        .body(payload)
-        .when()
-        .put("/users/{id}", userId);
+    Response response =
+        given()
+            .spec(RequestSpecs.bearer(token))
+            .body(payload)
+            .when()
+            .put("/users/{id}", userId);
+    logResponse(LOGGER, "updateUser", response);
+    return response;
   }
 
   public static Response deleteUser(String token, int userId) {
-    return given().spec(RequestSpecs.bearer(token)).when().delete("/users/{id}", userId);
+    Response response = given().spec(RequestSpecs.bearer(token)).when().delete("/users/{id}", userId);
+    logResponse(LOGGER, "deleteUser", response);
+    return response;
   }
 
   public static Response me(String token) {
-    return given().spec(RequestSpecs.bearer(token)).when().get("/users/me");
+    Response response = given().spec(RequestSpecs.bearer(token)).when().get("/users/me");
+    logResponse(LOGGER, "me", response);
+    return response;
   }
 
   public static Response updateAddress(String token, AddressUpdateRequest payload) {
-    return given().spec(RequestSpecs.bearer(token)).body(payload).when().put("/users/me/address");
+    Response response = given().spec(RequestSpecs.bearer(token)).body(payload).when().put("/users/me/address");
+    logResponse(LOGGER, "updateAddress", response);
+    return response;
   }
 
   public static Response getAddress(String token) {
-    return given().spec(RequestSpecs.bearer(token)).when().get("/users/me/address");
+    Response response = given().spec(RequestSpecs.bearer(token)).when().get("/users/me/address");
+    logResponse(LOGGER, "getAddress", response);
+    return response;
   }
 
   public static Response terminate(String token, int userId) {
-    return given().spec(RequestSpecs.bearer(token)).when().post("/users/{id}/terminate", userId);
+    Response response = given().spec(RequestSpecs.bearer(token)).when().post("/users/{id}/terminate", userId);
+    logResponse(LOGGER, "terminate", response);
+    return response;
   }
 }

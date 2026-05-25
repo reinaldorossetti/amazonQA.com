@@ -448,7 +448,7 @@ function createMetrics() {
 
   // Ensure known Playwright projects appear in the JSON even if no report was found
   try {
-    const PW_KEYS = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api', 'mobile-android'];
+    const PW_KEYS = ['frontend-chromium', 'frontend-webkit', 'frontend-edge', 'api', 'api-rest-assured', 'mobile-android'];
     for (const k of PW_KEYS) {
       if (!e2eByProject[k]) {
         e2eByProject[k] = { tests: 0, failures: 0, errors: 0, skipped: 0, passed: 0, status: 'unknown', sourceFile: null };

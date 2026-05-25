@@ -45,7 +45,7 @@ if (fs.existsSync(path.join(ROOT, 'history'))) {
 }
 
 // Move typical report directories
-const patterns = ['unit-tests-web', 'unit-tests-backend', 'e2e-junit-', 'playwright-report-'];
+const patterns = ['unit-tests-web', 'unit-tests-backend', 'e2e-junit-', 'playwright-report-', 'api-rest-assured', 'rest-assured-allure-report'];
 for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
   try {
     const name = entry.name;

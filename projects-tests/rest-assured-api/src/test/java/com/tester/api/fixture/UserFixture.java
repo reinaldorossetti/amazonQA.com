@@ -1,47 +1,46 @@
 package com.tester.api.fixture;
 
+import java.util.Locale;
+
 import com.tester.api.model.request.RegisterUserRequest;
 
+import net.datafaker.Faker;
+
 public final class UserFixture {
+
+  @SuppressWarnings("deprecation")
+  private static final Faker FAKER = new Faker(new Locale("pt", "BR"));
+  private static final String DEFAULT_PASSWORD = "Senha@1234";
 
   private UserFixture() {}
 
   public static RegisterUserRequest uniquePfUser() {
-    String suffix = System.currentTimeMillis() + "-" + (int) (Math.random() * 10000);
-    return new RegisterUserRequest(
-        "RestAssured",
-        "User-" + suffix,
-        "ra.user." + suffix + "@example.com",
-        "Senha@1234",
-        "PF",
-        BrazilianDocuments.validCpf(),
-        null,
-        null);
+    return pfUser(FAKER.name().firstName(), FAKER.name().lastName(), randomEmail());
   }
 
   public static RegisterUserRequest uniquePfUser(String prefix) {
-    String suffix = System.currentTimeMillis() + "-" + (int) (Math.random() * 10000);
+    String localPart =
+        "ra." + prefix.toLowerCase(Locale.ROOT) + "." + FAKER.number().digits(8);
+    return pfUser(prefix, FAKER.name().lastName(), localPart + "@example.com");
+  }
+
+  public static RegisterUserRequest normalUserForProductTest() {
+    return pfUser("Product", FAKER.name().lastName(), randomEmail());
+  }
+
+  private static RegisterUserRequest pfUser(String firstName, String lastName, String email) {
     return new RegisterUserRequest(
-        prefix,
-        prefix + "-" + suffix,
-        "ra." + prefix.toLowerCase() + "." + suffix + "@example.com",
-        "Senha@1234",
+        firstName,
+        lastName,
+        email,
+        DEFAULT_PASSWORD,
         "PF",
         BrazilianDocuments.validCpf(),
         null,
         null);
   }
 
-  public static RegisterUserRequest normalUserForProductTest() {
-    String suffix = String.valueOf(System.currentTimeMillis());
-    return new RegisterUserRequest(
-        "Product",
-        "Tester",
-        "ra.product." + suffix + "@example.com",
-        "Senha@1234",
-        "PF",
-        BrazilianDocuments.validCpf(),
-        null,
-        null);
+  private static String randomEmail() {
+    return FAKER.internet().emailAddress().toLowerCase(Locale.ROOT);
   }
 }

@@ -36,6 +36,8 @@ tests-dashboard/
 │   ├── dashboard-metrics.json       # JSON consolidado da última execução
 │   ├── history/                     # Snapshots e lista de datas de execução
 │   ├── e2e-junit-*/                 # Pastas com JUnit de Playwright (Chromium, Edge, etc.)
+│   ├── api-rest-assured/            # JUnit Surefire (REST Assured API pipeline)
+│   ├── rest-assured-allure-report/  # Allure HTML (REST Assured API pipeline)
 │   ├── unit-tests-*/                # Pastas com JUnit de testes unitários
 │   └── coverage/                    # Relatórios de cobertura LCOV/HTML
 ```

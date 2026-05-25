@@ -7,6 +7,7 @@ on:
       - "projects-tests/rest-assured-api/**"
       - "server-ts/**"
       - "docker-compose.yml"
+      - "tests-dashboard/**"
       - ".github/workflows/rest-assured-api-pipeline.yml"
 
 permissions:
@@ -20,6 +21,9 @@ jobs:
     name: REST Assured API
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -60,7 +64,10 @@ jobs:
           chmod +x mvnw
           ./mvnw clean test \
             -DbaseUri=http://127.0.0.1:3001 \
-            -DbasePath=/api
+            -DbasePath=/api \
+            -Dapi.client.debug=false \
+            -Dapi.client.log.level=info \
+            -Dlog4j.skipJansi=true
 
       - name: Install Allure CLI
         if: always()
@@ -72,17 +79,53 @@ jobs:
         run: allure generate ./allure-results -o ./allure-report --clean
         continue-on-error: true
 
-      - name: Publish JUnit reports to gh-pages
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: projects-tests/rest-assured-api/allure-report/
-          destination_dir: tests-dashboard/reports/api-rest-assured
-          keep_files: true
-        continue-on-error: true
+      - name: Copy REST Assured reports to tests-dashboard
+        if: always()
+        run: |
+          mkdir -p tests-dashboard/reports/api-rest-assured
+          rm -f tests-dashboard/reports/api-rest-assured/*.xml
+          if [ -d projects-tests/rest-assured-api/target/surefire-reports ]; then
+            cp projects-tests/rest-assured-api/target/surefire-reports/*.xml tests-dashboard/reports/api-rest-assured/ 2>/dev/null || true
+          fi
+          mkdir -p tests-dashboard/reports/rest-assured-allure-report
+          rm -rf tests-dashboard/reports/rest-assured-allure-report/*
+          if [ -d projects-tests/rest-assured-api/allure-report ]; then
+            cp -R projects-tests/rest-assured-api/allure-report/. tests-dashboard/reports/rest-assured-allure-report/
+          fi
+          if ls tests-dashboard/reports/api-rest-assured/*.xml 1>/dev/null 2>&1; then
+            {
+              echo '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>REST Assured JUnit</title></head><body><h1>JUnit XML (REST Assured API)</h1><ul>'
+              for f in tests-dashboard/reports/api-rest-assured/*.xml; do
+                b=$(basename "$f")
+                echo "<li><a href=\"${b}\">${b}</a></li>"
+              done
+              echo '</ul></body></html>'
+            } > tests-dashboard/reports/api-rest-assured/index.html
+          fi
 
       - name: Stop backend stack
         if: always()
         run: docker compose down
+
+      - name: Restore dashboard history from gh-pages
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          git checkout origin/gh-pages -- tests-dashboard/reports/history 2>/dev/null || true
+
+      - name: Generate dashboard metrics
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: node ./tests-dashboard/generate-dashboard-metrics.js || true
+
+      - name: Publish tests-dashboard to gh-pages
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: tests-dashboard
+          publish_branch: gh-pages
+          destination_dir: tests-dashboard
+          keep_files: true
+        continue-on-error: true
