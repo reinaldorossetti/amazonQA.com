@@ -1,3 +1,250 @@
+# 📊 Tests Dashboard
+
+![Java 25 e RestAssured](./docs/java-25-restassured-banner.png)
+
+Uma suíte de testes de API com **Java 25**, **REST Assured**, **JUnit 5**, **JSON Schema**, **Log4j 2** e **Allure Report**.
+
+O objetivo é simples: transformar validações técnicas de API em **evidência clara de qualidade**, fácil de entender por QA, desenvolvimento, liderança técnica e produto.
+
+👉 **[Leia as regras de arquitetura do dashboard aqui](../../tests-dashboard/docs/RULES.md)**
+
+---
+
+## 🗂️ Estrutura de Pastas
+
+```
+projects-tests/rest-assured-api/
+│
+├── pom.xml                         # Dependências, plugins, Java 25 na CI e profiles Maven
+├── mvnw / mvnw.cmd                 # Maven Wrapper para execução padronizada
+├── .env                            # Configuração local de ambiente (não versionado)
+│
+├── docs/
+│   └── java-25-restassured-banner.png
+│
+├── src/test/java/com/tester/api/
+│   ├── base/                       # BaseApiTest e EnvironmentConfig
+│   ├── client/                     # Clients REST por domínio: users, products, cart, orders, payments
+│   ├── fixture/                    # Massa de dados com Datafaker e documentos brasileiros
+│   ├── model/request/              # Records de payloads enviados para a API
+│   ├── model/response/             # Records de respostas mapeadas
+│   ├── specs/                      # RequestSpecs e ResponseSpecs reutilizáveis
+│   ├── support/                    # AuthSession, TestFlows, EnvFileLoader e ClientLogging
+│   └── tests/                      # Cenários por feature: Users, Products, Cart, Orders, Payments
+│
+├── src/test/resources/
+│   ├── schemas/                    # JSON Schemas para validação de contrato
+│   ├── log4j2.xml                  # Logs coloridos e níveis por ambiente
+│   └── junit-platform.properties   # Paralelismo JUnit 5
+│
+├── allure-results/                 # Evidências geradas pelos testes
+├── allure-report/                  # HTML Allure gerado localmente ou na CI
+└── target/surefire-reports/        # Relatórios JUnit XML consumidos pelo dashboard
+```
+
+> **Nota:** `allure-results/`, `allure-report/`, `target/` e arquivos `.env` são artefatos de execução. Eles contam a história dos testes, mas não devem virar código-fonte versionado.
+
+---
+
+## 🚀 Dev Quickstart (local)
+
+### 1. Inicie o servidor estático (da raiz do repo):
+
+Antes de testar qualidade, precisamos ter uma API viva para validar.
+
+```bash
+cd server-ts
+npm install
+npm run seed
+npm run dev
+```
+
+Ou, se quiser algo mais próximo da esteira:
+
+```bash
+docker compose up -d --build postgres server-ts
+npx --yes wait-on@7.2.0 --timeout 120000 http://127.0.0.1:3001/api/products
+```
+
+### 2. Inicie a API de geração de métricas:
+
+Configure o ambiente da suíte REST Assured:
+
+```dotenv
+BASE_URI=http://127.0.0.1:3001
+BASE_PATH=/api
+
+SEED_ADMIN_EMAIL=reiload@gmail.com
+SEED_ADMIN_PASSWORD=rei2026@QA
+
+SEED_SUPPORT_EMAIL=suporte@tester.com
+SEED_SUPPORT_PASSWORD=suporte2026@QA
+```
+
+Depois execute:
+
+```powershell
+cd projects-tests/rest-assured-api
+mvn test
+```
+
+### 3. Abra no navegador:
+
+Depois da execução, gere o relatório visual:
+
+```powershell
+mvn allure:serve
+```
+
+Relatório publicado pela esteira:
+
+```
+https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/
+```
+
+Documentação Swagger da API:
+
+```
+https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/swagger/index.html
+```
+
+---
+
+## ⚙️ Como funciona a Esteira CI
+
+O arquivo `.github/workflows/rest-assured-api-pipeline.yml` executa uma validação completa da API em ambiente controlado.
+
+```text
+setup     -> Prepara Node.js 22, Java 25 Temurin e cache Maven
+stack     -> Sobe PostgreSQL e server-ts com Docker Compose
+tests     -> Executa a suíte REST Assured com logs em nível INFO
+allure    -> Gera relatório Allure com evidências dos testes
+dashboard -> Copia JUnit XML e Allure para o tests-dashboard
+deploy    -> Publica os relatórios no GitHub Pages
+```
+
+### O que o `generate-dashboard-metrics.js` produz:
+
+- `dashboard-metrics.json` — consolida o resultado mais recente da execução
+- `history/YYYY-MM-DD-HHhMMmSSs.json` — mantém histórico para análise de tendência
+- `history/dates.json` — lista as últimas execuções exibidas no dashboard
+- `latest-scan.json` — ajuda a entender quais artefatos foram encontrados na CI
+
+Na prática, isso transforma um comando de teste em informação útil para tomada de decisão: passou, falhou, onde falhou e qual impacto isso tem para a qualidade.
+
+---
+
+## 📐 Métricas de Eficiência de QA (Cálculos e Validação)
+
+Testar API não é apenas validar status code. É proteger contrato, regra de negócio, segurança, fluxo de compra, autenticação, pagamento e integridade dos dados.
+
+### 1. Automation ROI (Economia de Automação)
+
+A automação com REST Assured reduz o tempo de validação manual em fluxos críticos da API.
+
+- **Fórmula**: `(Tempo Manual - Tempo Automático) × Nº de Execuções × Valor da Hora`
+- **Escopo do cálculo**: considera testes automatizados de API executados na CI e publicados no dashboard.
+- **Pesos**:
+    - Tempo Manual: tempo estimado para validar endpoints manualmente via Postman/Swagger
+    - Tempo Automático: tempo real da suíte no Maven/Surefire
+    - Valor da Hora: referência financeira para estimar retorno da automação
+    - Nº de Execuções: histórico de snapshots publicados
+- **Exemplo**: quanto mais a suíte roda de forma confiável na CI, maior é a economia de tempo e menor é o risco de regressão chegar tarde.
+
+🧮 Validação do Cálculo (Cenário: 250 Testes)
+
+Imagine 250 validações de API sendo feitas manualmente antes de uma release.
+
+Se cada validação levar 3 minutos, temos 750 minutos de esforço manual. Automatizando, a mesma cobertura pode ser executada em poucos minutos na esteira, várias vezes por semana, com evidência auditável.
+
+O valor não está apenas na economia financeira. O maior ganho está em **feedback rápido** e **confiança para entregar**.
+
+### 2. Defect Density (Densidade de Defeitos)
+
+Ajuda a observar onde a API concentra mais falhas por volume de código ou por domínio funcional.
+
+- **Fórmula**: `Bugs Detectados / (Linhas de Código / 1000)`
+- **Heurística**: falhas em endpoints críticos, como autenticação, carrinho, pedidos e pagamentos, indicam pontos de atenção para evolução da arquitetura.
+- **Exemplo**: uma área com poucos endpoints e muitas falhas merece investigação antes de ganhar novas features.
+
+### 3. Flakiness Rate (Taxa de Instabilidade)
+
+Mede a confiabilidade da suíte. Teste instável é perigoso porque reduz a confiança da equipe.
+
+- **Fórmula**: `(Testes Instáveis / Total de Testes) × 100`
+- **Definição**: testes que alternam entre sucesso e falha sem mudança real no código.
+
+Uma suíte de API saudável precisa ser rápida, determinística e fácil de diagnosticar.
+
+### 4. Defect Leakage (Fuga de Defeitos)
+
+Mostra o quanto o processo de qualidade está conseguindo segurar problemas antes da produção.
+
+- **Fórmula**: `(Bugs de Produção / (Bugs de Produção + Bugs de QA)) × 100`
+- **Fonte**: falhas encontradas na CI, evidências Allure, contratos JSON Schema e regressões em endpoints críticos.
+
+Quanto menor a fuga, mais eficiente está o processo de qualidade.
+
+### 5. Automation Coverage (Cobertura de Automação)
+
+Mostra o quanto dos principais comportamentos da API está protegido por testes automatizados.
+
+- **Fórmula**: `(Casos Automatizados / Casos Totais) × 100`
+- **Nota**: nesta suíte, a cobertura passa por usuários, produtos, carrinho, pedidos, pagamentos, suporte e validação de contrato com JSON Schema.
+
+Cobertura não é sobre quantidade por quantidade. É sobre proteger o que gera risco real para o produto.
+
+---
+
+## 🏗️ Arquitetura de Dados e Lógica de Geração
+
+A suíte foi organizada para separar responsabilidade: teste conta a história, client executa a chamada, fixture prepara dados e schema valida contrato.
+
+### Fluxograma de Dados
+
+```mermaid
+graph TD
+    A[GitHub Actions / Execução Local] --> B{REST Assured Tests}
+    B -->|Users / Auth| C[UsersClient]
+    B -->|Products / Support| D[ProductsClient]
+    B -->|Cart / Orders / Payments| E[CartClient / OrdersClient / PaymentsClient]
+    B -->|Contract| F[schemas/*.schema.json]
+
+    C & D & E & F --> G[Surefire JUnit XML]
+    C & D & E & F --> H[Allure Results]
+
+    G --> I[tests-dashboard/reports/api-rest-assured]
+    H --> J[tests-dashboard/reports/rest-assured-allure-report]
+    I & J --> K[Tests Dashboard]
+```
+
+### 🔍 Lógica de Descoberta (Auto-Discovery)
+
+1.  **Testes Unitários**: nesta suíte, o foco não é teste unitário; o papel principal é validar comportamento real da API.
+2.  **Testes E2E (Playwright)**:
+    *   A suíte REST Assured complementa os testes E2E.
+    *   Ela valida a API sem browser, com feedback mais rápido.
+    *   Os cenários espelham os specs Playwright de API para manter paridade de comportamento.
+3.  **Persistência Híbrida**:
+    *   **JUnit XML**: alimenta métricas do dashboard.
+    *   **Allure HTML**: entrega evidência visual com severidade, feature, request/response e falhas.
+
+## 📝 Notas Técnicas
+
+- **API de Dados**: a suíte valida `server-ts` em `http://127.0.0.1:3001/api` localmente e na CI.
+- **Internacionalização**: os dados e mensagens consideram o contexto PT-BR do projeto.
+- **Debug**: localmente, o Log4j 2 pode mostrar corpo da response em DEBUG; na CI, o padrão é INFO para logs objetivos.
+- **Extensibilidade**: para adicionar uma nova feature de API, siga o padrão `tests/<dominio>`, `client/<Dominio>Client`, fixtures dedicadas e schema quando houver contrato relevante.
+
+---
+
+Qualidade de API não é apenas “deu 200 OK”.
+
+É saber se o contrato continua válido, se a regra de negócio está protegida, se o fluxo crítico ainda funciona e se o time consegue tomar decisões com evidência.
+
+Essa é a proposta da suíte **REST Assured API** integrada ao **Tests Dashboard**.
+
+#QualidadeDeSoftware #QA #TestAutomation #RestAssured #Java25 #APITesting #AllureReport #ContinuousTesting #DevOps
 # 🧪 REST Assured API (`rest-assured-api`)
 
 # JAVA 25 and RestAssured
@@ -15,11 +262,11 @@ Para consultar as rotas, *payloads* e regras de negócio testadas por essa suít
 
 Esta suíte de testes API trabalha com múltiplas versões Java para tirar proveito dos avanços de performance sem perder compatibilidade:
 
-| Papel | Versão | Onde |
-|-------|--------|------|
-| **Compilação** | **21** (`maven.compiler.release=21` no `pom.xml`) | Bytecode e linguagem dos testes |
-| **Execução local (opcional)** | **26** via Maven Toolchains | `.mvn/toolchains.xml` + profile `jdk26-toolchain` |
-| **Execução na CI** | **25** (Temurin) | [`.github/workflows/rest-assured-api-pipeline.yml`](../../.github/workflows/rest-assured-api-pipeline.yml) |
+```text
+Compilação              -> Java 21 (maven.compiler.release=21 no pom.xml)
+Execução local opcional -> Java 26 via Maven Toolchains (.mvn/toolchains.xml + profile jdk26-toolchain)
+Execução na CI          -> Java 25 Temurin (.github/workflows/rest-assured-api-pipeline.yml)
+```
 
 O código compila com **release 21**, mas as versões **25 (LTS)** e **26 (Early Access)** oferecem melhorias contínuas em I/O de rede e performance. Para forçar o JDK 26 localmente sem alterar o Java do seu sistema inteiro, usamos o `toolchains.xml` (veja [Requisitos](#instalar-e-configurar-o-jdk)).
 
@@ -72,14 +319,14 @@ var listRes = CartClient.list(token, "userId=" + user.userId());
 
 Cenários em `src/test/java/com/tester/api/tests/*/*ApiTest.java`. Cada classe usa `@Epic("API")` e `@Feature(...)` para o Allure.
 
-| Classe | Feature Allure | Espelho Playwright |
-|--------|----------------|-------------------|
-| `UsersApiTest` | Usuários | `web/e2e/specs/api/users.api.spec.ts` |
-| `ProductsApiTest` | Products | `products.api.spec.ts` |
-| `CartApiTest` | Cart | `cart.api.spec.ts` |
-| `OrdersApiTest` | Pedidos | `orders.api.spec.ts` |
-| `PaymentsApiTest` | Pagamentos | `payments.api.spec.ts` |
-| `SupportProductsApiTest` | Suporte / produtos | `support-products.api.spec.ts` |
+```text
+UsersApiTest           -> Feature: Usuários           -> Espelho: web/e2e/specs/api/users.api.spec.ts
+ProductsApiTest        -> Feature: Products           -> Espelho: products.api.spec.ts
+CartApiTest            -> Feature: Cart               -> Espelho: cart.api.spec.ts
+OrdersApiTest          -> Feature: Pedidos            -> Espelho: orders.api.spec.ts
+PaymentsApiTest        -> Feature: Pagamentos         -> Espelho: payments.api.spec.ts
+SupportProductsApiTest -> Feature: Suporte / produtos -> Espelho: support-products.api.spec.ts
+```
 
 **Camadas:** `*ApiTest` → `*Client` + `RequestSpecs` / `ResponseSpecs` → `*Fixture` / `AuthSession` / `TestFlows`.
 
@@ -104,14 +351,31 @@ UsersClient.login(new LoginRequest(user.email(), user.password()))
 
 ### Schemas adicionados
 
-| Feature | Teste | Schema |
-|---------|-------|--------|
-| `UsersApiTest` | `deveValidarJsonSchemaDaRespostaDeLogin` | `schemas/users-login-response.schema.json` |
-| `ProductsApiTest` | `deveValidarJsonSchemaDaListaDeProdutos` | `schemas/products-list-response.schema.json` |
-| `CartApiTest` | `deveValidarJsonSchemaDaListaDoCarrinho` | `schemas/cart-list-response.schema.json` |
-| `OrdersApiTest` | `deveValidarJsonSchemaDaListaDePedidos` | `schemas/orders-list-response.schema.json` |
-| `PaymentsApiTest` | `deveValidarJsonSchemaDaRespostaDePagamento` | `schemas/payment-response.schema.json` |
-| `SupportProductsApiTest` | `apiSp13SupportDeveValidarJsonSchemaDoProdutoCriado` | `schemas/support-product-response.schema.json` |
+```text
+UsersApiTest
+  Teste  -> deveValidarJsonSchemaDaRespostaDeLogin
+  Schema -> schemas/users-login-response.schema.json
+
+ProductsApiTest
+  Teste  -> deveValidarJsonSchemaDaListaDeProdutos
+  Schema -> schemas/products-list-response.schema.json
+
+CartApiTest
+  Teste  -> deveValidarJsonSchemaDaListaDoCarrinho
+  Schema -> schemas/cart-list-response.schema.json
+
+OrdersApiTest
+  Teste  -> deveValidarJsonSchemaDaListaDePedidos
+  Schema -> schemas/orders-list-response.schema.json
+
+PaymentsApiTest
+  Teste  -> deveValidarJsonSchemaDaRespostaDePagamento
+  Schema -> schemas/payment-response.schema.json
+
+SupportProductsApiTest
+  Teste  -> apiSp13SupportDeveValidarJsonSchemaDoProdutoCriado
+  Schema -> schemas/support-product-response.schema.json
+```
 
 Rodar somente os testes de schema:
 
@@ -252,11 +516,11 @@ allure open allure-report
 
 Após a esteira [REST Assured API Pipeline](#-esteira-github-actions), os relatórios ficam no **Tests Dashboard** (GitHub Pages):
 
-| Relatório | URL |
-|-----------|-----|
-| **Allure (principal)** | [https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/) |
-| **JUnit XML (índice)** | [https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/api-rest-assured/](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/api-rest-assured/) |
-| **Dashboard QA** | [https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/) |
+```text
+Allure principal -> https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/
+JUnit XML índice -> https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/api-rest-assured/
+Dashboard QA     -> https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/
+```
 
 No dashboard, os cards **Integração - REST Assured (Allure)** e **Integração - REST Assured (JUnit)** apontam para essas pastas.
 
@@ -323,10 +587,10 @@ Override na linha de comando:
 
 O módulo usa **somente Apache Log4j 2** (`org.apache.logging.log4j`). Configuração: `src/test/resources/log4j2.xml` ([Log4j 2.26.0](https://github.com/apache/logging-log4j2/releases)) — console com nível e mensagem coloridos. JUL de bibliotecas terceiras é redirecionado via `log4j-jul` no Surefire.
 
-| Nível | Quando |
-|-------|--------|
-| **INFO** | Status HTTP em cada request nos `*Client` (`ClientLogging.logResponse`) |
-| **DEBUG** | Corpo da response (padrão local; desligado na CI) |
+```text
+INFO  -> Status HTTP em cada request nos *Client (ClientLogging.logResponse)
+DEBUG -> Corpo da response (padrão local; desligado na CI)
+```
 
 **Local:** profile `api-client-debug` ativo por padrão — `mvn test` já loga status + body.
 
@@ -352,13 +616,13 @@ Desativar cores (CI / terminal sem ANSI):
 
 Arquivo: `src/test/resources/junit-platform.properties`.
 
-| Propriedade | Valor | Significado |
-|-------------|-------|-------------|
-| `parallel.enabled` | `true` | Paralelismo JUnit 5 ativo |
-| `config.strategy` | `fixed` | Pool fixo |
-| `fixed.parallelism` | `3` | Até 3 threads no pool |
-| `mode.classes.default` | `concurrent` | Classes `*ApiTest` em paralelo |
-| `mode.default` | `concurrent` | Métodos `@Test` em paralelo na classe |
+```text
+parallel.enabled     = true       -> Paralelismo JUnit 5 ativo
+config.strategy      = fixed      -> Pool fixo
+fixed.parallelism    = 3          -> Até 3 threads no pool
+mode.classes.default = concurrent -> Classes *ApiTest em paralelo
+mode.default         = concurrent -> Métodos @Test em paralelo na classe
+```
 
 Cada teste cria dados únicos (e-mail/CPF via **Datafaker**) para reduzir colisão entre threads.
 
@@ -406,12 +670,23 @@ mvn clean test
 
 ### Problemas comuns
 
-| Sintoma | Causa provável | Solução |
-|---------|----------------|---------|
-| `Connection refused` em `127.0.0.1:3001` | API parada | `npm run dev` em `server-ts/` ou `docker compose up` |
-| `401` / `403` em fluxos admin | Seed ou `.env` desatualizado | `npm run seed` e confira `SEED_*` no `.env` |
-| `PKIX path building failed` | Certificado corporativo | Truststore do JDK ou `settings.xml` corporativo |
-| `No tests were executed` | Filtro `-Dtest` errado | Use nome simples da classe: `-Dtest=UsersApiTest` |
+```text
+Connection refused em 127.0.0.1:3001
+  Causa   -> API parada
+  Solução -> npm run dev em server-ts/ ou docker compose up
+
+401 / 403 em fluxos admin
+  Causa   -> Seed ou .env desatualizado
+  Solução -> npm run seed e confira SEED_* no .env
+
+PKIX path building failed
+  Causa   -> Certificado corporativo
+  Solução -> Truststore do JDK ou settings.xml corporativo
+
+No tests were executed
+  Causa   -> Filtro -Dtest errado
+  Solução -> Use nome simples da classe: -Dtest=UsersApiTest
+```
 
 ---
 
@@ -483,12 +758,12 @@ cd projects-tests/rest-assured-api
 
 ### Relatórios publicados
 
-| Destino | Caminho no repo / gh-pages |
-|---------|----------------------------|
-| Allure HTML | `tests-dashboard/reports/rest-assured-allure-report/` |
-| JUnit Surefire | `tests-dashboard/reports/api-rest-assured/` |
-| Online (Allure) | [rest-assured-allure-report](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/) |
-| Online (JUnit) | [api-rest-assured](https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/api-rest-assured/) |
+```text
+Allure HTML    -> tests-dashboard/reports/rest-assured-allure-report/
+JUnit Surefire -> tests-dashboard/reports/api-rest-assured/
+Online Allure  -> https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/rest-assured-allure-report/
+Online JUnit   -> https://reinaldorossetti.github.io/amazonQA.com/tests-dashboard/reports/api-rest-assured/
+```
 
 > Verifique o status do job no GitHub Actions; com `continue-on-error: true`, o workflow pode concluir mesmo com testes falhando.
 
@@ -557,15 +832,35 @@ flowchart LR
   T --> A[AuthSession / TestFlows]
 ```
 
-| Camada | Responsabilidade | Exemplo |
-|--------|------------------|---------|
-| **`*ApiTest`** | Cenário, asserts Hamcrest/REST Assured, `@DisplayName` | `CartApiTest` |
-| **`*Client`** | Verbos HTTP, paths, logging | `OrdersClient` |
-| **`RequestSpecs` / `ResponseSpecs`** | Headers, auth, status esperados | `givenAdmin()`, `expectOk()` |
-| **`*Fixture`** | Payloads e dados aleatórios (Datafaker pt-BR) | `UserFixture.randomEmail()` |
-| **`AuthSession`** | Token JWT após login | `loginAsSupport()` |
-| **`BaseApiTest`** | `RestAssured.baseURI`, filtro Allure | `@BeforeAll globalSetup` |
-| **`schemas/*.schema.json`** | Contratos JSON das respostas principais | `users-login-response.schema.json` |
+```text
+*ApiTest
+  Responsabilidade -> Cenário, asserts Hamcrest/REST Assured, @DisplayName
+  Exemplo          -> CartApiTest
+
+*Client
+  Responsabilidade -> Verbos HTTP, paths, logging
+  Exemplo          -> OrdersClient
+
+RequestSpecs / ResponseSpecs
+  Responsabilidade -> Headers, auth, status esperados
+  Exemplo          -> givenAdmin(), expectOk()
+
+*Fixture
+  Responsabilidade -> Payloads e dados aleatórios (Datafaker pt-BR)
+  Exemplo          -> UserFixture.randomEmail()
+
+AuthSession
+  Responsabilidade -> Token JWT após login
+  Exemplo          -> loginAsSupport()
+
+BaseApiTest
+  Responsabilidade -> RestAssured.baseURI, filtro Allure
+  Exemplo          -> @BeforeAll globalSetup
+
+schemas/*.schema.json
+  Responsabilidade -> Contratos JSON das respostas principais
+  Exemplo          -> users-login-response.schema.json
+```
 
 **Paridade Playwright:** mesmos endpoints e regras de negócio que `web/e2e/specs/api/*.api.spec.ts`; útil para regressão API sem browser.
 
@@ -575,17 +870,43 @@ flowchart LR
 
 ### Stack principal
 
-| Componente | Versão | Documentação |
-|------------|--------|--------------|
-| **REST Assured** | 6.0.0 | [rest-assured.io](https://rest-assured.io/) |
-| **REST Assured JSON Schema Validator** | 6.0.0 | [Baeldung - JSON Schema Validation](https://www.baeldung.com/rest-assured-json-schema) |
-| **JUnit Jupiter** | 5.11.4 | [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/) |
-| **Hamcrest** | 3.0 | [hamcrest.org](http://hamcrest.org/) |
-| **Allure JUnit 5** | 2.34.0 | [docs.qameta.io/allure](https://docs.qameta.io/allure/) |
-| **Log4j 2** | 2.26.0 | [logging.apache.org/log4j/2.x](https://logging.apache.org/log4j/2.x/) |
-| **Datafaker** | 2.5.4 | [datafaker.net](https://www.datafaker.net/) |
-| **dotenv-java** | 3.2.0 | [GitHub](https://github.com/cdimascio/dotenv-java) |
-| **Maven Surefire** | 3.5.5 | [Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/) |
+```text
+REST Assured
+  Versão        -> 6.0.0
+  Documentação  -> https://rest-assured.io/
+
+REST Assured JSON Schema Validator
+  Versão        -> 6.0.0
+  Documentação  -> https://www.baeldung.com/rest-assured-json-schema
+
+JUnit Jupiter
+  Versão        -> 5.11.4
+  Documentação  -> https://junit.org/junit5/docs/current/user-guide/
+
+Hamcrest
+  Versão        -> 3.0
+  Documentação  -> http://hamcrest.org/
+
+Allure JUnit 5
+  Versão        -> 2.34.0
+  Documentação  -> https://docs.qameta.io/allure/
+
+Log4j 2
+  Versão        -> 2.26.0
+  Documentação  -> https://logging.apache.org/log4j/2.x/
+
+Datafaker
+  Versão        -> 2.5.4
+  Documentação  -> https://www.datafaker.net/
+
+dotenv-java
+  Versão        -> 3.2.0
+  Documentação  -> https://github.com/cdimascio/dotenv-java
+
+Maven Surefire
+  Versão        -> 3.5.5
+  Documentação  -> https://maven.apache.org/surefire/maven-surefire-plugin/
+```
 
 ### Monorepo
 
