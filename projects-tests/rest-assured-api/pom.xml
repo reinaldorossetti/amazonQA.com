@@ -21,7 +21,7 @@
     <restassured.version>6.0.0</restassured.version>
     <junit.jupiter.version>5.11.4</junit.jupiter.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <jackson.version>2.18.3</jackson.version>
+    <jackson.version>2.22.0</jackson.version>
     <allure.version>2.34.0</allure.version>
     <allure.maven.version>3.0.1</allure.maven.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
